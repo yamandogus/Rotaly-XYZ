@@ -1,150 +1,141 @@
-import Link from "next/link"
-import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from "lucide-react"
+import { Link } from '@/i18n/routing'
+import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react"
 
 export function Footer() {
   return (
-    <footer className="border-t bg-background">
+    <footer className="bg-blue-600 text-white">
       <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-          {/* Logo & Description */}
+          {/* Kategoriler */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="h-6 w-6 rounded bg-primary" />
-              <span className="font-bold text-lg">Rotaly</span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              En iyi otel rezervasyon deneyimi için doğru adrestesiniz. 
-              Konforlu konaklama seçenekleri ve uygun fiyatlar.
-            </p>
-            <div className="flex space-x-2">
-              <Link
-                href="#"
-                className="rounded-md p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-              >
-                <Facebook className="h-4 w-4" />
-              </Link>
-              <Link
-                href="#"
-                className="rounded-md p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-              >
-                <Twitter className="h-4 w-4" />
-              </Link>
-              <Link
-                href="#"
-                className="rounded-md p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-              >
-                <Instagram className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold">Hızlı Linkler</h3>
+            <h3 className="text-lg font-semibold">Kategoriler</h3>
             <nav className="flex flex-col space-y-2">
               <Link
-                href="/hotels"
-                className="text-sm text-muted-foreground hover:text-foreground"
+                href="/categories/hotel"
+                className="text-sm text-blue-100 hover:text-white"
               >
-                Oteller
+                Otel
               </Link>
               <Link
+                href="/categories/villa"
+                className="text-sm text-blue-100 hover:text-white"
+              >
+                Villa
+              </Link>
+              <Link
+                href="/categories/apartment"
+                className="text-sm text-blue-100 hover:text-white"
+              >
+                Kiralık Daire
+              </Link>
+              <Link
+                href="/categories/bungalow"
+                className="text-sm text-blue-100 hover:text-white"
+              >
+                Bungalov
+              </Link>
+              <Link
+                href="/categories/pension"
+                className="text-sm text-blue-100 hover:text-white"
+              >
+                Pansiyon
+              </Link>
+              <Link
+                href="/categories/camp"
+                className="text-sm text-blue-100 hover:text-white"
+              >
+                Kamp
+              </Link>
+            </nav>
+          </div>
+
+          {/* Destek */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Destek</h3>
+            <nav className="flex flex-col space-y-2">
+              <Link
+                href="/support/faq"
+                className="text-sm text-blue-100 hover:text-white"
+              >
+                Sıkça Sorulan Sorular
+              </Link>
+              <Link
+                href="/support/live-chat"
+                className="text-sm text-blue-100 hover:text-white"
+              >
+                Canlı Destek
+              </Link>
+              <Link
+                href="/support/cancellation"
+                className="text-sm text-blue-100 hover:text-white"
+              >
+                İptal ve Değişim
+              </Link>
+            </nav>
+          </div>
+
+          {/* Bizi Keşfet */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Bizi Keşfet</h3>
+            <nav className="flex flex-col space-y-2">
+              <Link
                 href="/about"
-                className="text-sm text-muted-foreground hover:text-foreground"
+                className="text-sm text-blue-100 hover:text-white"
               >
                 Hakkımızda
               </Link>
               <Link
-                href="/contact"
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                İletişim
-              </Link>
-              <Link
-                href="/help"
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                Yardım
-              </Link>
-            </nav>
-          </div>
-
-          {/* Support */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold">Destek</h3>
-            <nav className="flex flex-col space-y-2">
-              <Link
-                href="/terms"
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                Kullanım Şartları
-              </Link>
-              <Link
                 href="/privacy"
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                Gizlilik Politikası
-              </Link>
-              <Link
-                href="/faq"
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                SSS
-              </Link>
-              <Link
-                href="/cancel"
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                İptal Politikası
-              </Link>
-            </nav>
-          </div>
-
-          {/* Contact Info */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold">İletişim</h3>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <Mail className="h-4 w-4" />
-                <span>info@rotaly.com</span>
-              </div>
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <Phone className="h-4 w-4" />
-                <span>+90 (212) 123 45 67</span>
-              </div>
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4" />
-                <span>İstanbul, Türkiye</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-8 border-t pt-8">
-          <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
-            <p className="text-sm text-muted-foreground">
-              © 2024 Rotaly. Tüm hakları saklıdır.
-            </p>
-            <div className="flex space-x-4">
-              <Link
-                href="/terms"
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                Şartlar
-              </Link>
-              <Link
-                href="/privacy"
-                className="text-sm text-muted-foreground hover:text-foreground"
+                className="text-sm text-blue-100 hover:text-white"
               >
                 Gizlilik
               </Link>
               <Link
-                href="/cookies"
-                className="text-sm text-muted-foreground hover:text-foreground"
+                href="/terms"
+                className="text-sm text-blue-100 hover:text-white"
               >
-                Çerezler
+                Şartlar ve Koşullar
+              </Link>
+            </nav>
+          </div>
+
+          {/* Bizi Takip Et */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Bizi Takip Et</h3>
+            <div className="flex space-x-4">
+              <Link
+                href="#"
+                className="rounded-md p-2 text-blue-100 hover:text-white hover:bg-blue-500"
+              >
+                <Facebook className="h-5 w-5" />
+              </Link>
+              <Link
+                href="#"
+                className="rounded-md p-2 text-blue-100 hover:text-white hover:bg-blue-500"
+              >
+                <Twitter className="h-5 w-5" />
+              </Link>
+              <Link
+                href="#"
+                className="rounded-md p-2 text-blue-100 hover:text-white hover:bg-blue-500"
+              >
+                <Instagram className="h-5 w-5" />
+              </Link>
+              <Link
+                href="#"
+                className="rounded-md p-2 text-blue-100 hover:text-white hover:bg-blue-500"
+              >
+                <Linkedin className="h-5 w-5" />
               </Link>
             </div>
+          </div>
+        </div>
+
+        <div className="mt-8 border-t border-blue-500 pt-8">
+          <div className="text-center">
+            <p className="text-sm text-blue-100">
+              © All rights reserved
+            </p>
           </div>
         </div>
       </div>

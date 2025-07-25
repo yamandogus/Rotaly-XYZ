@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
 import { 
@@ -12,9 +11,13 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { User, Settings, LogOut, Menu } from "lucide-react"
 import { useState } from "react"
+import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/routing'
+import { LanguageSwitcher } from "../language-switcher"
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const t = useTranslations('Navigation')
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -22,8 +25,12 @@ export function Navbar() {
         {/* Logo */}
         <div className="mr-4 flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <div className="h-6 w-6 rounded bg-primary" />
-            <span className="font-bold">Rotaly</span>
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+              <span className="text-white font-bold text-sm">R</span>
+            </div>
+            <span className="font-bold text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Rotaly
+            </span>
           </Link>
         </div>
 
@@ -34,22 +41,11 @@ export function Navbar() {
               href="/hotels"
               className="transition-colors hover:text-foreground/80 text-foreground/60"
             >
-              Oteller
-            </Link>
-            <Link
-              href="/about"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-            >
-              Hakkımızda
-            </Link>
-            <Link
-              href="/contact"
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-            >
-              İletişim
+              {t('hotels')}
             </Link>
           </nav>
         </div>
+
 
         {/* Right Side */}
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
@@ -64,6 +60,9 @@ export function Navbar() {
           </Button>
 
           <div className="flex items-center space-x-2">
+            {/* Language Switcher */}
+            <LanguageSwitcher />
+            
             {/* Theme Toggle */}
             <ModeToggle />
 
@@ -87,13 +86,13 @@ export function Navbar() {
                 <DropdownMenuItem asChild>
                   <Link href="/dashboard">
                     <Settings className="mr-2 h-4 w-4" />
-                    Dashboard
+                    {t('dashboard')}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/login">
                     <LogOut className="mr-2 h-4 w-4" />
-                    Giriş Yap
+                    {t('login')}
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -112,22 +111,16 @@ export function Navbar() {
                 className="text-sm font-medium transition-colors hover:text-primary"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Oteller
+                {t('hotels')}
               </Link>
-              <Link
-                href="/about"
-                className="text-sm font-medium transition-colors hover:text-primary"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Hakkımızda
-              </Link>
-              <Link
-                href="/contact"
-                className="text-sm font-medium transition-colors hover:text-primary"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                İletişim
-              </Link>
+              
+              {/* Mobile Language Switcher */}
+              <div className="pt-2 border-t">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-muted-foreground">Dil</span>
+                  <LanguageSwitcher />
+                </div>
+              </div>
             </nav>
           </div>
         </div>
