@@ -37,7 +37,7 @@ git push -u origin <ismin>
 **Örnek**
 
 ```bash
-git git checkout -b meliha origin/development
+git checkout -b meliha origin/development
 git push -u origin meliha
 ```
 
