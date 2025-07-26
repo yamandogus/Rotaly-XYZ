@@ -39,6 +39,28 @@ enum RoomFeature {
   HAIR_DRYER
 }
 
+enum HotelType {
+  APARTMENT
+  HOTEL
+  VILLA
+  BUNGALOW
+  ROOM
+  RESORT
+  HOSTEL
+  CAMP
+}
+
+enum HotelFeatureS {
+  WIFI
+  POOL
+  SPA
+  PARKING
+  GYM
+  PET_FRIENDLY
+  RESTAURANT
+  BREAKFAST_INCLUDED
+}
+
 enum SupportStatus {
   OPEN
   IN_PROGRESS
@@ -65,34 +87,62 @@ model User {
   supportRequests Support[] @relation("UserSupport")
   handledSupports Support[] @relation("SupportRep")
 
-  sentMessages     Message[] @relation("SentMessages")
-  receivedMessages Message[] @relation("ReceivedMessages")
+  sentMessages     Message[]  @relation("SentMessages")
+  receivedMessages Message[]  @relation("ReceivedMessages")
   Comment          Comment[]
+  Favorite         Favorite[]
 
   @@map("users")
 }
 
-model Hotel {
-  id          String    @id @default(uuid())
-  name        String
-  description String?
-  location    String
-  address     String
-  city        String
-  country     String
-  rating      Float?
-  ownerId     String
-  isActive    Boolean   @default(true)
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  deletedAt   DateTime? @map("deleted_at")
+model Favorite {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  hotel     Hotel    @relation(fields: [hotelId], references: [id])
+  hotelId   String
+  createdAt DateTime @default(now())
 
-  owner   User      @relation("HotelOwner", fields: [ownerId], references: [id])
-  rooms   Room[]
-  images  Image[]
-  Comment Comment[]
+  @@unique([userId, hotelId])
+}
+
+model Hotel {
+  id           String    @id @default(uuid())
+  name         String
+  description  String?
+  location     String
+  address      String
+  city         String
+  country      String
+  rating       Float?
+  discountRate Float?
+  isDiscounted Boolean   @default(false)
+  ownerId      String
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  owner        User           @relation("HotelOwner", fields: [ownerId], references: [id])
+  rooms        Room[]
+  images       Image[]
+  Comment      Comment[]
+  HotelFeature HotelFeature[]
+  Favorite     Favorite[]
 
   @@map("hotels")
+}
+
+model HotelFeature {
+  id      String       @id @default(uuid())
+  hotelId String
+  type    HotelFeature @relation("HotelFeatureType", fields: [hotelFeatureId], references: [id])
+  hotel   Hotel        @relation(fields: [hotelId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  hotelFeatureId String
+  HotelFeature   HotelFeature[] @relation("HotelFeatureType")
 }
 
 model Comment {
@@ -160,7 +210,7 @@ model Reservation {
   checkOut   DateTime
   guests     Int
   totalPrice Float
-  status     ReservationStatus @default(PENDING)
+  status     ReservationStatus @default(CONFIRMED)
   createdAt  DateTime          @default(now()) @map("created_at")
   updatedAt  DateTime          @updatedAt @map("updated_at")
   deletedAt  DateTime?         @map("deleted_at")
@@ -207,6 +257,14 @@ model Message {
   deletedAt  DateTime? @map("deleted_at")
 
   @@map("messages")
+}
+
+model EmailLog {
+  id      String   @id @default(uuid())
+  to      String
+  subject String
+  body    String
+  sentAt  DateTime @default(now())
 }
 
 model Token {
