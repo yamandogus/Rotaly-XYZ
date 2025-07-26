@@ -1,0 +1,223 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  OWNER
+  ADMIN
+  SUPPORT
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum RoomFeature {
+  WIFI
+  AIR_CONDITIONER
+  TV
+  MINIBAR
+  SAFE_BOX
+  BALCONY
+  ROOM_SERVICE
+  BATH_TUB
+  HAIR_DRYER
+}
+
+enum SupportStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+model User {
+  id             String    @id @default(uuid())
+  name           String
+  surname        String
+  email          String    @unique
+  phone          String    @unique
+  hashedPassword String
+  role           Role      @default(CUSTOMER)
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+
+  hotels       Hotel[]       @relation("HotelOwner")
+  reservations Reservation[]
+  tokens       Token[]
+
+  supportRequests Support[] @relation("UserSupport")
+  handledSupports Support[] @relation("SupportRep")
+
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  Comment          Comment[]
+
+  @@map("users")
+}
+
+model Hotel {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  location    String
+  address     String
+  city        String
+  country     String
+  rating      Float?
+  ownerId     String
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  owner   User      @relation("HotelOwner", fields: [ownerId], references: [id])
+  rooms   Room[]
+  images  Image[]
+  Comment Comment[]
+
+  @@map("hotels")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  rating    Int
+  text      String?
+  hotel     Hotel    @relation(fields: [hotelId], references: [id])
+  hotelId   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("comments")
+}
+
+model Room {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  price       Float
+  capacity    Int
+  bedCount    Int
+  isAvailable Boolean   @default(true)
+  hotelId     String
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  hotel         Hotel               @relation(fields: [hotelId], references: [id])
+  bookings      Reservation[]
+  featureStatus RoomFeatureStatus[]
+  images        Image[]
+
+  @@map("rooms")
+}
+
+model RoomFeatureStatus {
+  id          String      @id @default(uuid())
+  feature     RoomFeature
+  isAvailable Boolean     @default(false)
+  room        Room        @relation(fields: [roomId], references: [id])
+  roomId      String
+  deletedAt   DateTime?   @map("deleted_at")
+
+  @@map("room_feature_statuses")
+}
+
+model Image {
+  id        String    @id @default(uuid())
+  url       String
+  hotel     Hotel?    @relation(fields: [hotelId], references: [id])
+  hotelId   String?
+  room      Room?     @relation(fields: [roomId], references: [id])
+  roomId    String?
+  createdAt DateTime  @default(now()) @map("created_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("images")
+}
+
+model Reservation {
+  id         String            @id @default(uuid())
+  checkIn    DateTime
+  checkOut   DateTime
+  guests     Int
+  totalPrice Float
+  status     ReservationStatus @default(PENDING)
+  createdAt  DateTime          @default(now()) @map("created_at")
+  updatedAt  DateTime          @updatedAt @map("updated_at")
+  deletedAt  DateTime?         @map("deleted_at")
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  room   Room   @relation(fields: [roomId], references: [id])
+  roomId String
+
+  @@map("reservations")
+}
+
+model Support {
+  id        String        @id @default(uuid())
+  subject   String
+  status    SupportStatus @default(OPEN)
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @updatedAt @map("updated_at")
+  closedAt  DateTime?     @map("closed_at")
+
+  user   User   @relation("UserSupport", fields: [userId], references: [id])
+  userId String
+
+  supportRep   User?   @relation("SupportRep", fields: [supportRepId], references: [id])
+  supportRepId String?
+
+  messages Message[]
+
+  @@map("supports")
+}
+
+model Message {
+  id         String    @id @default(uuid())
+  content    String
+  sender     User      @relation("SentMessages", fields: [senderId], references: [id])
+  senderId   String
+  receiver   User      @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  receiverId String
+  support    Support   @relation(fields: [supportId], references: [id])
+  supportId  String
+  createdAt  DateTime  @default(now()) @map("created_at")
+  readAt     DateTime?
+  deletedAt  DateTime? @map("deleted_at")
+
+  @@map("messages")
+}
+
+model Token {
+  id        String    @id @default(uuid())
+  userId    String    @map("user_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  expiresAt DateTime  @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("tokens")
+}
