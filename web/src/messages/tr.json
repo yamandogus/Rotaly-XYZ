@@ -1,0 +1,44 @@
+{
+  "Navigation": {
+    "home": "Ana Sayfa",
+    "hotels": "Oteller",
+    "bookings": "Rezervasyonlar",
+    "dashboard": "Panel",
+    "about": "Hakkımızda",
+    "admin": "Yönetici",
+    "login": "Giriş Yap",
+    "register": "Kayıt Ol"
+  },
+  "HomePage": {
+    "title": "Rotaly - Otel Rezervasyon Sistemi",
+    "subtitle": "Modern otel rezervasyon ve yönetim sistemi",
+    "searchPlaceholder": "Otel, Pansiyon, Kiralık daire Ara",
+    "welcomeMessage": "Hoş geldiniz! En iyi otelleri keşfedin."
+  },
+  "Common": {
+    "search": "Ara",
+    "book": "Rezervasyon Yap",
+    "login": "Giriş Yap",
+    "register": "Kayıt Ol",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "view": "Görüntüle",
+    "loading": "Yükleniyor...",
+    "error": "Bir hata oluştu",
+    "success": "İşlem başarılı"
+  },
+  "Dashboard": {
+    "title": "Panel",
+    "bookings": "Rezervasyonlar",
+    "hotels": "Otellerim",
+    "profile": "Profil"
+  },
+  "Admin": {
+    "title": "Yönetici Paneli",
+    "users": "Kullanıcılar",
+    "hotels": "Oteller",
+    "reservations": "Rezervasyonlar"
+  }
+} 

@@ -1,0 +1,44 @@
+{
+  "Navigation": {
+    "home": "Home",
+    "hotels": "Hotels",
+    "bookings": "Bookings",
+    "dashboard": "Dashboard",
+    "about": "About",
+    "admin": "Admin",
+    "login": "Login",
+    "register": "Register"
+  },
+  "HomePage": {
+    "title": "Rotaly - Hotel Reservation System",
+    "subtitle": "Modern hotel reservation and management system",
+    "searchPlaceholder": "Search Hotel, Pension, Rental apartment",
+    "welcomeMessage": "Welcome! Discover the best hotels."
+  },
+  "Common": {
+    "search": "Search",
+    "book": "Book Now",
+    "login": "Login",
+    "register": "Register",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Operation successful"
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "bookings": "Bookings",
+    "hotels": "My Hotels",
+    "profile": "Profile"
+  },
+  "Admin": {
+    "title": "Admin Panel",
+    "users": "Users",
+    "hotels": "Hotels",
+    "reservations": "Reservations"
+  }
+} 
