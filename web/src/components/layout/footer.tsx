@@ -1,9 +1,11 @@
 import { Link } from '@/i18n/routing'
 import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react"
+import { useTranslations } from 'next-intl'
 
 export function Footer() {
+  const t = useTranslations('Footer')
   return (
-    <footer className="bg-blue-600 text-white">
+    <footer className="bg-[#1E4EAE] text-white">
       <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Kategoriler */}
@@ -14,37 +16,37 @@ export function Footer() {
                 href="/categories/hotel"
                 className="text-sm text-blue-100 hover:text-white"
               >
-                Otel
+                {t("hotel")}
               </Link>
               <Link
                 href="/categories/villa"
                 className="text-sm text-blue-100 hover:text-white"
               >
-                Villa
+                {t("villa")}
               </Link>
               <Link
                 href="/categories/apartment"
                 className="text-sm text-blue-100 hover:text-white"
               >
-                Kiralık Daire
+                {t("apartment")}
               </Link>
               <Link
                 href="/categories/bungalow"
                 className="text-sm text-blue-100 hover:text-white"
               >
-                Bungalov
+                {t("bungalow")}
               </Link>
               <Link
                 href="/categories/pension"
                 className="text-sm text-blue-100 hover:text-white"
               >
-                Pansiyon
+                {t("pension")}
               </Link>
               <Link
                 href="/categories/camp"
                 className="text-sm text-blue-100 hover:text-white"
               >
-                Kamp
+                {t("camp")}
               </Link>
             </nav>
           </div>
@@ -57,19 +59,19 @@ export function Footer() {
                 href="/support/faq"
                 className="text-sm text-blue-100 hover:text-white"
               >
-                Sıkça Sorulan Sorular
+                {t("faq")}
               </Link>
               <Link
                 href="/support/live-chat"
                 className="text-sm text-blue-100 hover:text-white"
               >
-                Canlı Destek
+                {t("live-chat")}
               </Link>
               <Link
                 href="/support/cancellation"
                 className="text-sm text-blue-100 hover:text-white"
               >
-                İptal ve Değişim
+                {t("cancellation")}
               </Link>
             </nav>
           </div>
@@ -82,19 +84,19 @@ export function Footer() {
                 href="/about"
                 className="text-sm text-blue-100 hover:text-white"
               >
-                Hakkımızda
+                {t("about")}
               </Link>
               <Link
                 href="/privacy"
                 className="text-sm text-blue-100 hover:text-white"
               >
-                Gizlilik
+                {t("privacy")}
               </Link>
               <Link
                 href="/terms"
                 className="text-sm text-blue-100 hover:text-white"
               >
-                Şartlar ve Koşullar
+                {t("terms")}
               </Link>
             </nav>
           </div>
@@ -134,7 +136,7 @@ export function Footer() {
         <div className="mt-8 border-t border-blue-500 pt-8">
           <div className="text-center">
             <p className="text-sm text-blue-100">
-              © All rights reserved
+              {t("copyright")}
             </p>
           </div>
         </div>

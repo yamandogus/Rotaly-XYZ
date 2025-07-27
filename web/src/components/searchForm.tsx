@@ -1,24 +1,34 @@
+"use client"
+
 import React from 'react'
 import { Label } from './ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { Button } from './ui/button'
 import { Search } from 'lucide-react'
 import { DatePicker } from './date-picker'
+import { useTypewriter } from 'react-simple-typewriter'
 
-const searchForm = () => {
+const SearchForm = () => {
+  const [text] = useTypewriter({
+    words: ['Otel', 'Pansiyon', 'Kiralık Daire'],
+    loop: true,
+    typeSpeed: 80,
+    deleteSpeed: 60,
+    delaySpeed: 1000,
+  })
   return (
     <div className="relative -mt-60 z-10 px-4">
           <div className="container mx-auto max-w-5xl">
-            <div className="bg-white rounded-2xl shadow-2xl p-6">
+            <div className="bg-card border border-border rounded-2xl shadow-2xl p-6">
               {/* bilgisayar için */}
               <div className="hidden lg:grid lg:grid-cols-5 gap-4 items-end">
                 {/* Şehir Seçimi */}
                 <div className="flex flex-col gap-2">
-                  <Label className="text-sm font-medium text-gray-700">
-                    Şehir
+                  <Label className="text-sm font-medium text-foreground">
+                    {text}
                   </Label>
                   <Select>
-                    <SelectTrigger className="w-full h-11 border border-gray-300 focus:border-blue-500">
+                    <SelectTrigger className="w-full h-11 border border-border focus:border-blue-500">
                       <SelectValue placeholder="Şehir seçin" />
                     </SelectTrigger>
                     <SelectContent>
@@ -32,28 +42,28 @@ const searchForm = () => {
                 </div>
 
                 {/* Giriş Tarihi */}
-                <div className="flex flex-col gap-2 border-l-[0.5px] border-gray-300 pl-2">
-                  <Label className="text-sm font-medium text-gray-700">
+                <div className="flex flex-col gap-2 border-l-[0.5px] border-border pl-2">
+                  <Label className="text-sm font-medium text-foreground">
                     Giriş Tarihi
                   </Label>
                   <DatePicker />
                 </div>
 
                 {/* Çıkış Tarihi */}
-                <div className="flex flex-col gap-2 border-l-[0.5px] border-gray-300 pl-2">
-                  <Label className="text-sm font-medium text-gray-700">
+                <div className="flex flex-col gap-2 border-l-[0.5px] border-border pl-2">
+                  <Label className="text-sm font-medium text-foreground">
                     Çıkış Tarihi
                   </Label>
                   <DatePicker/>
                 </div>
 
                 {/* Kişi Sayısı */}
-                <div className="flex flex-col gap-2 border-l-[0.5px] border-gray-300 pl-2">
-                  <Label className="text-sm font-medium text-gray-700">
+                <div className="flex flex-col gap-2 border-l-[0.5px] border-border pl-2">
+                  <Label className="text-sm font-medium text-foreground">
                     Kişi Sayısı
                   </Label>
                   <Select>
-                    <SelectTrigger className="w-full h-11 border border-gray-300 focus:border-blue-500">
+                    <SelectTrigger className="w-full h-11 border border-border focus:border-blue-500">
                       <SelectValue placeholder="Kişi sayısı" />
                     </SelectTrigger>
                     <SelectContent>
@@ -80,11 +90,11 @@ const searchForm = () => {
                 {/* İlk Satır - Şehir ve Kişi Sayısı */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-2">
-                    <Label className="text-sm font-medium text-gray-700">
+                    <Label className="text-sm font-medium text-foreground">
                       Şehir
                     </Label>
                     <Select>
-                      <SelectTrigger className="w-full h-11 border border-gray-300 focus:border-blue-500">
+                      <SelectTrigger className="w-full h-11 border border-border focus:border-blue-500">
                         <SelectValue placeholder="Şehir seçin" />
                       </SelectTrigger>
                       <SelectContent>
@@ -98,11 +108,11 @@ const searchForm = () => {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <Label className="text-sm font-medium text-gray-700">
+                    <Label className="text-sm font-medium text-foreground">
                       Kişi Sayısı
                     </Label>
                     <Select>
-                      <SelectTrigger className="w-full h-11 border border-gray-300 focus:border-blue-500">
+                      <SelectTrigger className="w-full h-11 border border-border focus:border-blue-500">
                         <SelectValue placeholder="Kişi sayısı" />
                       </SelectTrigger>
                       <SelectContent>
@@ -119,14 +129,14 @@ const searchForm = () => {
                 {/* İkinci Satır - Tarihler */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-2">
-                    <Label className="text-sm font-medium text-gray-700">
+                    <Label className="text-sm font-medium text-foreground">
                       Giriş Tarihi
                     </Label>
                     <DatePicker/>
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <Label className="text-sm font-medium text-gray-700">
+                    <Label className="text-sm font-medium text-foreground">
                       Çıkış Tarihi
                     </Label>
                     <DatePicker/>
@@ -147,4 +157,4 @@ const searchForm = () => {
   )
 }
 
-export default searchForm
+export default SearchForm

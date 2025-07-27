@@ -4,16 +4,19 @@ import Image from "next/image";
 import { Sparkles, HeartIcon, LocateIcon, CarIcon } from "lucide-react";
 import { Rating, RatingButton } from "./ui/shadcn-io/rating";
 import { Button } from "./ui/button";
+import { Link } from "@/i18n/routing";
 
 interface HotelCardProps {
   item: number;
 }
 
 const HotelCard = ({ item }: HotelCardProps) => {
+
+
   return (
     <Card
       key={item}
-      className="bg-white rounded-2xl overflow-hidden transition-shadow duration-300 border-0 shadow-[0_0_10px_rgba(0,0,0,0.2)] hover:shadow-[0_0_15px_rgba(0,0,0,0.25)] gap-0 pt-1 pb-2 cursor-pointer group"
+      className="bg-card border border-border rounded-2xl overflow-hidden transition-shadow duration-300 shadow-[0_0_10px_rgba(0,0,0,0.2)] hover:shadow-[0_0_15px_rgba(0,0,0,0.25)] dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] gap-0 pt-1 pb-2 cursor-pointer group"
     >
       <CardHeader className="relative p-0">
         <div className="relative h-52 w-full">
@@ -42,24 +45,24 @@ const HotelCard = ({ item }: HotelCardProps) => {
 
       <CardContent className="p-4 pb-2">
         {/* Otel Adı */}
-        <h3 className="font-semibold text-gray-900 mb-2 text-lg leading-tight">
+        <h3 className="font-semibold text-foreground mb-2 text-lg leading-tight">
           Riad Deluxe Hotel
         </h3>
 
         {/* Lokasyon ve Rating - tek satırda */}
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-1 text-gray-500">
+          <div className="flex items-center gap-1 text-muted-foreground">
             <LocateIcon className="w-4 h-4" />
             <span className="text-sm">Marakeş, Fas</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-sm font-semibold text-gray-900">4.7</span>
+            <span className="text-sm font-semibold text-foreground">4.7</span>
             <Rating defaultValue={3} readOnly>
               {Array.from({ length: 5 }).map((_, index) => (
                 <RatingButton key={index} size={10} />
               ))}
             </Rating>
-            <span className="text-xs text-gray-500 ml-1">(120)</span>
+            <span className="text-xs text-muted-foreground ml-1">(120)</span>
           </div>
         </div>
 
@@ -106,12 +109,14 @@ const HotelCard = ({ item }: HotelCardProps) => {
 
       <CardFooter className="p-4 pt-4 flex justify-between items-center gap-2 pb-0">
         <div className="flex flex-col">
-          <span className="text-sm text-gray-500 mb-1">4 gece için</span>
+          <span className="text-sm text-muted-foreground mb-1">4 gece için</span>
           <span className="text-xl font-bold text-blue-600">40.000 TL</span>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-6 rounded-xl font-semibold text-sm shadow-sm hover:shadow-md transition-all cursor-pointer">
-          Detaylı İncele
-        </Button>
+        <Link href={`/hotels/${item}`}>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-6 rounded-xl font-semibold text-sm shadow-sm hover:shadow-md transition-all cursor-pointer">
+            Detaylı İncele
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   );
