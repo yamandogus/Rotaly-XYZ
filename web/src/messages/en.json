@@ -7,7 +7,8 @@
     "about": "About",
     "admin": "Admin",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "searchPlaceholder": "Search Hotel, Pension, Rental apartment"
   },
   "HomePage": {
     "title": "Rotaly - Hotel Reservation System",
@@ -40,5 +41,20 @@
     "users": "Users",
     "hotels": "Hotels",
     "reservations": "Reservations"
+  },
+  "Footer": {
+    "copyright": "© All rights reserved",
+    "hotel": "Hotel",
+    "villa": "Villa",
+    "apartment": "Apartment",
+    "bungalow": "Bungalow",
+    "pension": "Pension",
+    "camp": "Camp",
+    "faq": "FAQ",
+    "live-chat": "Live Chat",
+    "cancellation": "Cancellation",
+    "about": "About",
+    "privacy": "Privacy",
+    "terms": "Terms"
   }
 } 

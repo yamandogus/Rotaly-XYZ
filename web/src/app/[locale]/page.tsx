@@ -15,8 +15,6 @@ export default function HomePage({params}: Props) {
           <p className="text-xl text-gray-600 mb-8">{t('subtitle')}</p>
           <p className="text-lg">{t('welcomeMessage')}</p>
         </div>
-        
-
       </div>
     </div>
   );

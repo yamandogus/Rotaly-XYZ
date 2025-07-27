@@ -40,6 +40,11 @@ export async function generateMetadata({
   return {
     title: locale === 'tr' ? "Rotaly - Otel Rezervasyon Sistemi" : "Rotaly - Hotel Reservation System",
     description: locale === 'tr' ? "Modern otel rezervasyon ve yönetim sistemi" : "Modern hotel reservation and management system",
+    icons: {
+      icon: "/images/RT.png",
+      shortcut: "/images/RT.png",
+      apple: "/images/RT.png",
+    },
   };
 }
 

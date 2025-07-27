@@ -7,7 +7,8 @@
     "about": "Hakkımızda",
     "admin": "Yönetici",
     "login": "Giriş Yap",
-    "register": "Kayıt Ol"
+    "register": "Kayıt Ol",
+    "searchPlaceholder": "Otel, Pansiyon, Kiralık Daire Ara"
   },
   "HomePage": {
     "title": "Rotaly - Otel Rezervasyon Sistemi",
@@ -40,5 +41,20 @@
     "users": "Kullanıcılar",
     "hotels": "Oteller",
     "reservations": "Rezervasyonlar"
+  },
+  "Footer": {
+    "copyright": "Tüm hakları saklıdır",
+    "hotel": "Otel",
+    "villa": "Villa",
+    "apartment": "Kiralık Daire",
+    "bungalow": "Bungalov",
+    "pension": "Pansiyon",
+    "camp": "Kamp",
+    "faq": "Sıkça Sorulan Sorular",
+    "live-chat": "Canlı Destek",
+    "cancellation": "İptal ve Değişim",
+    "about": "Hakkımızda",
+    "privacy": "Gizlilik",
+    "terms": "Şartlar ve Koşullar"
   }
 } 
