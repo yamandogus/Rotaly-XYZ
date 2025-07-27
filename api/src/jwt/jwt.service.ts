@@ -9,7 +9,7 @@ class JwtService {
     this.prisma = new PrismaClient();
   }
 
-  private extractTokenFromHeader(authorizationHeader: string): string {
+  extractTokenFromHeader(authorizationHeader: string): string {
     if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
       const error = new Error("Invalid or missing Authorization header");
       error.name = "UnauthorizedError";
