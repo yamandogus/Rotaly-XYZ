@@ -8,6 +8,12 @@ CREATE TYPE "ReservationStatus" AS ENUM ('PENDING', 'CONFIRMED', 'CANCELLED', 'C
 CREATE TYPE "RoomFeature" AS ENUM ('WIFI', 'AIR_CONDITIONER', 'TV', 'MINIBAR', 'SAFE_BOX', 'BALCONY', 'ROOM_SERVICE', 'BATH_TUB', 'HAIR_DRYER');
 
 -- CreateEnum
+CREATE TYPE "HotelType" AS ENUM ('APARTMENT', 'HOTEL', 'VILLA', 'BUNGALOW', 'ROOM', 'RESORT', 'HOSTEL', 'CAMP');
+
+-- CreateEnum
+CREATE TYPE "HotelFeatures" AS ENUM ('WIFI', 'POOL', 'SPA', 'PARKING', 'GYM', 'PET_FRIENDLY', 'RESTAURANT', 'BREAKFAST_INCLUDED');
+
+-- CreateEnum
 CREATE TYPE "SupportStatus" AS ENUM ('OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED');
 
 -- CreateTable
@@ -19,11 +25,26 @@ CREATE TABLE "users" (
     "phone" TEXT NOT NULL,
     "hashedPassword" TEXT NOT NULL,
     "role" "Role" NOT NULL DEFAULT 'CUSTOMER',
+    "isVerified" BOOLEAN NOT NULL DEFAULT false,
+    "verificationOTP" TEXT,
+    "verification_otp_expires" TIMESTAMP(3),
+    "resetPasswordOTP" TEXT,
+    "reset_password_otp_expires" TIMESTAMP(3),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "deleted_at" TIMESTAMP(3),
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "favorites" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "hotelId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "favorites_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -36,6 +57,9 @@ CREATE TABLE "hotels" (
     "city" TEXT NOT NULL,
     "country" TEXT NOT NULL,
     "rating" DOUBLE PRECISION,
+    "discountRate" DOUBLE PRECISION,
+    "isDiscounted" BOOLEAN NOT NULL DEFAULT false,
+    "type" "HotelType" NOT NULL,
     "ownerId" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -43,6 +67,16 @@ CREATE TABLE "hotels" (
     "deleted_at" TIMESTAMP(3),
 
     CONSTRAINT "hotels_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "hotel_props" (
+    "id" TEXT NOT NULL,
+    "hotelId" TEXT NOT NULL,
+    "feature" "HotelFeatures" NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "hotel_props_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -92,6 +126,7 @@ CREATE TABLE "images" (
     "url" TEXT NOT NULL,
     "hotelId" TEXT,
     "roomId" TEXT,
+    "userId" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "deleted_at" TIMESTAMP(3),
 
@@ -135,12 +170,23 @@ CREATE TABLE "messages" (
     "content" TEXT NOT NULL,
     "senderId" TEXT NOT NULL,
     "receiverId" TEXT NOT NULL,
-    "supportId" TEXT NOT NULL,
+    "supportId" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "readAt" TIMESTAMP(3),
     "deleted_at" TIMESTAMP(3),
 
     CONSTRAINT "messages_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "email_logs" (
+    "id" TEXT NOT NULL,
+    "to" TEXT NOT NULL,
+    "subject" TEXT NOT NULL,
+    "body" TEXT NOT NULL,
+    "sentAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "email_logs_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -161,8 +207,20 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 -- CreateIndex
 CREATE UNIQUE INDEX "users_phone_key" ON "users"("phone");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "favorites_userId_hotelId_key" ON "favorites"("userId", "hotelId");
+
+-- AddForeignKey
+ALTER TABLE "favorites" ADD CONSTRAINT "favorites_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "favorites" ADD CONSTRAINT "favorites_hotelId_fkey" FOREIGN KEY ("hotelId") REFERENCES "hotels"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
 -- AddForeignKey
 ALTER TABLE "hotels" ADD CONSTRAINT "hotels_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "hotel_props" ADD CONSTRAINT "hotel_props_hotelId_fkey" FOREIGN KEY ("hotelId") REFERENCES "hotels"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "comments" ADD CONSTRAINT "comments_hotelId_fkey" FOREIGN KEY ("hotelId") REFERENCES "hotels"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -183,6 +241,9 @@ ALTER TABLE "images" ADD CONSTRAINT "images_hotelId_fkey" FOREIGN KEY ("hotelId"
 ALTER TABLE "images" ADD CONSTRAINT "images_roomId_fkey" FOREIGN KEY ("roomId") REFERENCES "rooms"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "images" ADD CONSTRAINT "images_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "reservations" ADD CONSTRAINT "reservations_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -201,7 +262,7 @@ ALTER TABLE "messages" ADD CONSTRAINT "messages_senderId_fkey" FOREIGN KEY ("sen
 ALTER TABLE "messages" ADD CONSTRAINT "messages_receiverId_fkey" FOREIGN KEY ("receiverId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "messages" ADD CONSTRAINT "messages_supportId_fkey" FOREIGN KEY ("supportId") REFERENCES "supports"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "messages" ADD CONSTRAINT "messages_supportId_fkey" FOREIGN KEY ("supportId") REFERENCES "supports"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "tokens" ADD CONSTRAINT "tokens_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
