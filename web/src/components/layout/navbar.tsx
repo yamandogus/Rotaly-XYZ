@@ -12,12 +12,10 @@ import {
 import {
   User,
   Settings,
-  LogOut,
   Menu,
   Heart,
   Bell,
   SearchIcon,
-  X,
   Mic,
 } from "lucide-react";
 import { useState } from "react";
@@ -27,12 +25,20 @@ import { LanguageSwitcher } from "../language-switcher";
 import Image from "next/image";
 import { Input } from "../ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useTheme } from "next-themes";
+import { NotificationSuccess } from "../notifications/notification-succes";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = useTranslations("Navigation");
   const [isListOpen, setIsListOpen] = useState(false);
+  const { theme } = useTheme();
+  const darkMode = theme === "dark";
 
+  const handleListOpen = () => {
+    setIsListOpen(!isListOpen);
+    NotificationSuccess("Success", "Dinliyor...");
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm dark:shadow-gray-900">
@@ -61,10 +67,10 @@ export function Navbar() {
             />
             <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 pointer-events-none opacity-50" />
             <Mic
-              color={isListOpen ? "red" : "blue"}
+              color={darkMode ? "white" : "black"}
               size={isListOpen ? 18 : 16}
               className={`absolute right-2.5 top-2.5 opacity-50 cursor-pointer z-10 `}
-              onClick={() => setIsListOpen(!isListOpen)}
+              onClick={handleListOpen}
             />
           </div>
         </div>
@@ -134,8 +140,14 @@ export function Navbar() {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/login">
-                    <LogOut className="mr-2 h-4 w-4" />
+                    <User className="mr-2 h-4 w-4" />
                     {t("login")}
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/register">
+                    <User className="mr-2 h-4 w-4" />
+                    {t("register")}
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
