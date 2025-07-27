@@ -28,7 +28,7 @@ export class EmailService {
       };
 
       const result = await transporter.sendMail(mailOptions);
-      console.log("Verification email sent successfully:", result.messageId);
+      console.log("Verification email sent successfully");
       return true;
     } catch (error) {
       console.error("Error sending verification email:", error);
@@ -62,7 +62,7 @@ export class EmailService {
       };
 
       const result = await transporter.sendMail(mailOptions);
-      console.log("Password reset email sent successfully:", result.messageId);
+      console.log("Password reset email sent successfully");
       return true;
     } catch (error) {
       console.error("Error sending password reset email:", error);
@@ -95,7 +95,7 @@ export class EmailService {
       };
 
       const result = await transporter.sendMail(mailOptions);
-      console.log("Welcome email sent successfully:", result.messageId);
+      console.log("Welcome email sent successfully");
       return true;
     } catch (error) {
       console.error("Error sending welcome email:", error);

@@ -7,20 +7,20 @@ import { emailService } from "../modules/email/service";
 async function main() {
   // verification email test
   const success1 = await emailService.sendVerificationEmail(
-    "caglayagmuricer@gmail.com", // receiver email
-    "Çağla" // receiver name
+    "user@example.com",
+    "Jane Doe"
   );
 
   // password reset email test
   const success2 = await emailService.sendPasswordResetEmail(
-    "caglayagmuricer@gmail.com",
-    "Çağla"
+    "user@example.com",
+    "Jane Doe"
   );
 
   // welcome email test
   const success3 = await emailService.sendWelcomeEmail(
-    "caglayagmuricer@gmail.com",
-    "Çağla"
+    "user@example.com",
+    "Jane Doe"
   );
 
   console.log("Verification email sent successfully:", success1);

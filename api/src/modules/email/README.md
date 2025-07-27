@@ -21,6 +21,12 @@ api/src/modules/email/templates/password-reset.html # Password reset email templ
 api/src/utils/otp.ts                              # OTP generation utility
 ```
 
+## Run Tests
+
+```bash
+npx ts-node src/tests/test-email.ts
+```
+
 ## Usage Examples
 
 ### Import the service

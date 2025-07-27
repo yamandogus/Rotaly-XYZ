@@ -1,14 +1,16 @@
+import crypto from "crypto";
+
 /**
  * Generate a random OTP (One-Time Password)
- * @param length - length of the OTP (default: 6)
- * @returns a string containing the OTP
+ * @param length - Length of the OTP, default is 6
+ * @return string - Generated OTP
  */
 export function generateOTP(length: number = 6): string {
-  const digits = "0123456789";
+  const buffer = crypto.randomBytes(length);
   let otp = "";
 
   for (let i = 0; i < length; i++) {
-    otp += digits[Math.floor(Math.random() * 10)];
+    otp += (buffer[i] % 10).toString();
   }
 
   return otp;
