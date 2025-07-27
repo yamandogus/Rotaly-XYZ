@@ -1,11 +1,10 @@
-import { Link } from '@/i18n/routing'
-import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react"
-import { useTranslations } from 'next-intl'
+import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 export function Footer() {
-  const t = useTranslations('Footer')
+  const t = useTranslations("Footer");
   return (
-    <footer className="bg-[#1E4EAE] text-white">
+    <footer className="bg-[#1E4EAE] dark:bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Kategoriler */}
@@ -107,27 +106,65 @@ export function Footer() {
             <div className="flex space-x-4">
               <Link
                 href="#"
-                className="rounded-md p-2 text-blue-100 hover:text-white hover:bg-blue-500"
+                className="rounded-md p-2 text-blue-100 hover:scale-110 transition-all duration-300"
               >
-                <Facebook className="h-5 w-5" />
-              </Link>
-              <Link
-                href="#"
-                className="rounded-md p-2 text-blue-100 hover:text-white hover:bg-blue-500"
-              >
-                <Twitter className="h-5 w-5" />
-              </Link>
-              <Link
-                href="#"
-                className="rounded-md p-2 text-blue-100 hover:text-white hover:bg-blue-500"
-              >
-                <Instagram className="h-5 w-5" />
-              </Link>
-              <Link
-                href="#"
-                className="rounded-md p-2 text-blue-100 hover:text-white hover:bg-blue-500"
-              >
-                <Linkedin className="h-5 w-5" />
+                <svg
+                  fill="#fff"
+                  xmlns="http://www.w3.org/2000/svg"
+                  x="0px"
+                  y="0px"
+                  width="40"
+                  height="40"
+                  viewBox="0 0 48 48"
+                >
+                  <radialGradient
+                    id="yOrnnhliCrdS2gy~4tD8ma_Xy10Jcu1L2Su_gr1"
+                    cx="19.38"
+                    cy="42.035"
+                    r="44.899"
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop offset="0" stopColor="#fd5"></stop>
+                    <stop offset=".328" stopColor="#ff543f"></stop>
+                    <stop offset=".348" stopColor="#fc5245"></stop>
+                    <stop offset=".504" stopColor="#e64771"></stop>
+                    <stop offset=".643" stopColor="#d53e91"></stop>
+                    <stop offset=".761" stopColor="#cc39a4"></stop>
+                    <stop offset=".841" stopColor="#c837ab"></stop>
+                  </radialGradient>
+                  <path
+                    fill="url(#yOrnnhliCrdS2gy~4tD8ma_Xy10Jcu1L2Su_gr1)"
+                    d="M34.017,41.99l-20,0.019c-4.4,0.004-8.003-3.592-8.008-7.992l-0.019-20	c-0.004-4.4,3.592-8.003,7.992-8.008l20-0.019c4.4-0.004,8.003,3.592,8.008,7.992l0.019,20	C42.014,38.383,38.417,41.986,34.017,41.99z"
+                  ></path>
+                  <radialGradient
+                    id="yOrnnhliCrdS2gy~4tD8mb_Xy10Jcu1L2Su_gr2"
+                    cx="11.786"
+                    cy="5.54"
+                    r="29.813"
+                    gradientTransform="matrix(1 0 0 .6663 0 1.849)"
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop offset="0" stopColor="#4168c9"></stop>
+                    <stop
+                      offset=".999"
+                      stopColor="#4168c9"
+                      stopOpacity="0"
+                    ></stop>
+                  </radialGradient>
+                  <path
+                    fill="url(#yOrnnhliCrdS2gy~4tD8mb_Xy10Jcu1L2Su_gr2)"
+                    d="M34.017,41.99l-20,0.019c-4.4,0.004-8.003-3.592-8.008-7.992l-0.019-20	c-0.004-4.4,3.592-8.003,7.992-8.008l20-0.019c4.4-0.004,8.003,3.592,8.008,7.992l0.019,20	C42.014,38.383,38.417,41.986,34.017,41.99z"
+                  ></path>
+                  <path
+                    fill="#fff"
+                    d="M24,31c-3.859,0-7-3.14-7-7s3.141-7,7-7s7,3.14,7,7S27.859,31,24,31z M24,19c-2.757,0-5,2.243-5,5	s2.243,5,5,5s5-2.243,5-5S26.757,19,24,19z"
+                  ></path>
+                  <circle cx="31.5" cy="16.5" r="1.5" fill="#fff"></circle>
+                  <path
+                    fill="#fff"
+                    d="M30,37H18c-3.859,0-7-3.14-7-7V18c0-3.86,3.141-7,7-7h12c3.859,0,7,3.14,7,7v12	C37,33.86,33.859,37,30,37z M18,13c-2.757,0-5,2.243-5,5v12c0,2.757,2.243,5,5,5h12c2.757,0,5-2.243,5-5V18c0-2.757-2.243-5-5-5H18z"
+                  ></path>
+                </svg>
               </Link>
             </div>
           </div>
@@ -135,12 +172,10 @@ export function Footer() {
 
         <div className="mt-8 border-t border-blue-500 pt-8">
           <div className="text-center">
-            <p className="text-sm text-blue-100">
-              {t("copyright")}
-            </p>
+            <p className="text-sm text-blue-100">{t("copyright")}</p>
           </div>
         </div>
       </div>
     </footer>
-  )
-} 
+  );
+}
