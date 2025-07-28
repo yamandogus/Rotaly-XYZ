@@ -184,8 +184,3 @@ export const isHotelOwner = async (
     });
   }
 };
-
-// auth.middleware.ts
-// validate.middleware.t
-
-// errorhandler

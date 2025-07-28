@@ -1,23 +1,9 @@
 import { z } from "zod";
-export interface VerifyEmailDTO {
-  email: string;
-  verificationOTP: string;
-}
+export const verifyEmailSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  verificationOTP: z
+    .string()
+    .min(6, "Verification OTP must be at least 6 characters"),
+});
 
-export interface ResendVerificationEmailDTO {
-  email: string;
-}
-
-export interface VerifyEmailResponseDTO {
-  status: "success" | "error";
-  message: string;
-  data?: {
-    isVerified: boolean;
-  };
-}
-
-export interface VerifyEmailErrorDTO {
-  status: "error";
-  message: string;
-  errors?: Record<string, string[]>;
-}
+export type VerifyEmailSchemaType = z.infer<typeof verifyEmailSchema>;

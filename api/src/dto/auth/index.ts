@@ -1,6 +1,5 @@
-import * as loginDTO from "./login-dto";
-import * as registerDTO from "./register-dto";
-import * as verifyEmailDTO from "./verify-email.dto";
-import * as resetPasswordDTO from "./reset-password.dto";
-
-export { loginDTO, registerDTO, verifyEmailDTO, resetPasswordDTO };
+export * from "./login-dto";
+export * from "./register-dto";
+export * from "./verify-email.dto";
+export * from "./reset-password.dto";
+export * from "./update-user.dto";
