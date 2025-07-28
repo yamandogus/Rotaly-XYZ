@@ -76,7 +76,6 @@ export class EmailService {
    * @param name - receiver name
    * @returns Promise<boolean>
    */
-  /* TODO: CREATE WELCOME EMAIL TEMPLATE */
   async sendWelcomeEmail(email: string, name: string): Promise<boolean> {
     try {
       const mailOptions = {
@@ -86,12 +85,13 @@ export class EmailService {
         },
         to: email,
         subject: "Welcome to Rotaly XYZ!",
-        html: `
-          <h2>Welcome to Rotaly XYZ, ${name}!</h2>
-          <p>Thank you for joining our platform. We're excited to have you on board!</p>
-          <p>You can now start exploring our hotel booking services.</p>
-          <p>Best regards,<br>The Rotaly XYZ Team</p>
-        `,
+        template: "welcome",
+        context: {
+          name: name,
+          year: new Date().getFullYear(),
+          platformUrl:
+            process.env.FRONTEND_URL || "https://rotaly-xyz.vercel.app/",
+        },
       };
 
       const result = await transporter.sendMail(mailOptions);
