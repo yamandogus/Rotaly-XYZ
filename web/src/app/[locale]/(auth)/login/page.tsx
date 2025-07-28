@@ -2,19 +2,56 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import React from "react";
 import {
   BottomGradient,
   GoogleIcon,
   LabelInputContainer,
 } from "../register/page";
+import { toast } from "react-hot-toast";
 
 export default function LoginPage() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form submitted");
-  };
+  const router = useRouter();
+
+
+const testUser = {
+  email: "user@user.com",
+  password: "123456",
+};
+
+const testHotel = {
+  email: "hotel@hotel.com",
+  password: "123456",
+};
+
+const testAdmin = {
+  email: "admin@admin.com",
+  password: "123456",
+};
+
+const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  const formData = new FormData(e.target as HTMLFormElement);
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  console.log("Login attempt:", { email, password });
+
+  if (email === testUser.email && password === testUser.password) {
+    toast.success("Kullanıcı girişi başarılı");
+    router.push("/");
+  } else if (email === testHotel.email && password === testHotel.password) {
+    toast.success("Otel girişi başarılı");
+    router.push("/dashboard/hotel");
+  } else if (email === testAdmin.email && password === testAdmin.password) {
+    toast.success("Admin girişi başarılı");
+    router.push("/dashboard/admin");
+  } else {
+    toast.error("Hatalı e-posta veya şifre!");
+  }
+};
+
   return (
     <div>
       <div className="min-h-screen flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
@@ -26,26 +63,17 @@ export default function LoginPage() {
             E-posta adresinize giriş yapın ve otel rezervasyonlarınızı yönetin
           </p>
 
-          <form className="my-8" onSubmit={handleSubmit}>
+          <form className="my-8" onSubmit={handleLogin}>
             <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
               <LabelInputContainer>
                 <Label htmlFor="email">E-posta Adresi</Label>
-                <Input id="email" placeholder="ornek@email.com" type="email" />
+                <Input id="email" name="email" placeholder="ornek@email.com" type="email" required />
               </LabelInputContainer>
               <LabelInputContainer>
                 <Label htmlFor="password">Şifre</Label>
-                <Input id="password" placeholder="••••••••" type="password" />
+                <Input id="password" name="password" placeholder="••••••••" type="password" required />
               </LabelInputContainer>
             </div>
-
-            <LabelInputContainer className="mb-8">
-              <Label htmlFor="confirmPassword">Şifre Tekrar</Label>
-              <Input
-                id="confirmPassword"
-                placeholder="••••••••"
-                type="password"
-              />
-            </LabelInputContainer>
 
             <button
               className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset]"
