@@ -1,30 +1,8 @@
 import { z } from "zod";
-export interface LoginDTO {
-  email: string;
-  password: string;
-}
 
-export interface LoginResponseDTO {
-  status: "success" | "error";
-  message?: string;
-  data?: {
-    user: {
-      id: string;
-      name: string;
-      surname: string;
-      email: string;
-      role: string;
-      isVerified: boolean;
-    };
-    tokens: {
-      accessToken: string;
-      refreshToken: string;
-    };
-  };
-}
+export const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
 
-export interface LoginErrorDTO {
-  status: "error";
-  message: string;
-  errors?: Record<string, string[]>;
-}
+export type LoginSchemaType = z.infer<typeof loginSchema>;

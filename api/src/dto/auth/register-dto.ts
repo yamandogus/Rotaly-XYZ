@@ -1,35 +1,12 @@
 import { z } from "zod";
-export interface RegisterDTO {
-  name: string;
-  surname: string;
-  email: string;
-  phone: string;
-  password: string;
-  confirmPassword: string;
-}
 
-export interface RegisterResponseDTO {
-  status: "success" | "error";
-  message?: string;
-  data?: {
-    user: {
-      id: string;
-      name: string;
-      surname: string;
-      email: string;
-      phone: string;
-      role: string;
-      isVerified: boolean;
-    };
-    tokens: {
-      accessToken: string;
-      refreshToken: string;
-    };
-  };
-}
+export const registerSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  surname: z.string().min(1, "Surname is required"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(1, "Phone is required"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string().min(6, "Password must be at least 6 characters"),
+});
 
-export interface RegisterErrorDTO {
-  status: "error";
-  message: string;
-  errors?: Record<string, string[]>;
-}
+export type RegisterSchemaType = z.infer<typeof registerSchema>;
