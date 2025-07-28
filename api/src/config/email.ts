@@ -7,7 +7,7 @@ dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 export const emailConfig = {
   host: "smtp-relay.brevo.com",
-  port: parseInt("587"),
+  port: 587,
   secure: false,
   auth: {
     user: process.env.SMTP_USER,
