@@ -47,13 +47,13 @@ export function Navbar() {
         <div className="flex-1 flex justify-start">
           <Link href="/" className="flex items-center space-x-3">
             <Image
-              src="/images/RT.png"
+              src="/images/logo3.png"
               alt="logo"
-              width={200}
-              height={200}
-              className="w-20 h-20"
+              width={100}
+              height={100}
+              className="w-12 h-12 hover:scale-105 transition-transform duration-300"
             />
-            <span className="text-xl font-bold text-foreground">ROTALY</span>
+            <span className="text-lg font-bold text-foreground">ROTALY</span>
           </Link>
         </div>
 
