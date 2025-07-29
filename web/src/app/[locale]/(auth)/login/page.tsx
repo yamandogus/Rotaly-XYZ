@@ -10,6 +10,7 @@ import {
   LabelInputContainer,
 } from "../register/page";
 import { toast } from "react-hot-toast";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,16 +19,19 @@ export default function LoginPage() {
 const testUser = {
   email: "user@user.com",
   password: "123456",
+  role: "user",
 };
 
 const testHotel = {
   email: "hotel@hotel.com",
   password: "123456",
+  role: "hotel",
 };
 
 const testAdmin = {
   email: "admin@admin.com",
   password: "123456",
+  role: "admin",
 };
 
 const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
@@ -35,20 +39,30 @@ const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
   const formData = new FormData(e.target as HTMLFormElement);
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+  const role = formData.get("role") as string;
+  console.log("Login attempt:", { email, password, role });
 
-  console.log("Login attempt:", { email, password });
-
-  if (email === testUser.email && password === testUser.password) {
+  // Normal kullanıcı girişi
+  if (email === testUser.email && password === testUser.password && role === "user") {
+    localStorage.setItem("userRole", "user");
     toast.success("Kullanıcı girişi başarılı");
-    router.push("/");
-  } else if (email === testHotel.email && password === testHotel.password) {
+    router.push("/dashboard");
+  } 
+  // Otel girişi
+  else if (email === testHotel.email && password === testHotel.password && role === "hotel") {
+    localStorage.setItem("userRole", "hotel");
     toast.success("Otel girişi başarılı");
-    router.push("/dashboard/hotel");
-  } else if (email === testAdmin.email && password === testAdmin.password) {
+    router.push("/dashboard");
+  } 
+  // Admin girişi
+  else if (email === testAdmin.email && password === testAdmin.password && role === "admin") {
+    localStorage.setItem("userRole", "admin");
     toast.success("Admin girişi başarılı");
-    router.push("/dashboard/admin");
-  } else {
-    toast.error("Hatalı e-posta veya şifre!");
+    router.push("/dashboard");
+  } 
+  // Hatalı giriş
+  else {
+    toast.error("Hatalı e-posta, şifre veya rol seçimi!");
   }
 };
 
@@ -72,6 +86,19 @@ const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
               <LabelInputContainer>
                 <Label htmlFor="password">Şifre</Label>
                 <Input id="password" name="password" placeholder="••••••••" type="password" required />
+              </LabelInputContainer>
+              <LabelInputContainer>
+                <Label htmlFor="role">Rol</Label>
+                <Select name="role" required>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seçiniz" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="user">Kullanıcı</SelectItem>
+                    <SelectItem value="hotel">Otel</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                  </SelectContent>
+                </Select>
               </LabelInputContainer>
             </div>
 

@@ -7,9 +7,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import StoreProvider from "@/components/store-provider";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
-import { Toaster } from "react-hot-toast";
+import LayoutWrapper from "./layout-wrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -79,16 +77,9 @@ export default async function LocaleLayout({ children, params }: Props) {
               enableSystem
               disableTransitionOnChange
             >
-              <div className="flex min-h-screen flex-col">
-                <Navbar />
-                <main className="flex-1">
-                  <div className="max-w-7xl mx-auto min-h-screen">
-                    {children}
-                  </div>
-                  <Toaster position="bottom-right" reverseOrder={false} />
-                </main>
-                <Footer />
-              </div>
+              <LayoutWrapper>
+                {children}
+              </LayoutWrapper>
             </ThemeProvider>
           </StoreProvider>
         </NextIntlClientProvider>
