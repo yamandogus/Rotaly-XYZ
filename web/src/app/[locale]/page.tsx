@@ -4,10 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import {
-  CalendarIcon,
-  UsersIcon,
   MapPinIcon,
-  SearchIcon,
   Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -47,9 +44,7 @@ export default function HomePage() {
   };
 
   const categories = [
-    // t() fonksiyonunun direkt olarak istediğiniz metni (Daire, Hotel vb.) döndürdüğünü varsayıyorum.
-    // Eğer t("categoryDaire") "Apartment" gibi bir şey döndürüyorsa,
-    // o zaman çeviri dosyanızda "categoryDaire": "Daire" olarak ayarlı olmalıdır.
+   
     { name: t("categoryDaire"), label: "Daire", icon: "/icons/daire.svg" },
     { name: t("categoryHotel"), label: "Hotel", icon: "/icons/otel.svg" },
     { name: t("categoryVilla"), label: "Villa", icon: "/icons/villa.svg" },
@@ -140,7 +135,7 @@ export default function HomePage() {
    <main className="flex-1">
   <section className="relative w-full flex flex-col items-center bg-white overflow-hidden">
     
-    {/* MAPPA GÖRSELİ - TAM ÜSTE BİTİŞİK */}
+   
     <div className="absolute top-0 left-0 w-full h-[400px] flex justify-center items-start pointer-events-none z-0">
       <Image
         src="/images/MAPPA.png"
@@ -151,7 +146,7 @@ export default function HomePage() {
       />
     </div>
 
-    {/* SLOGAN - MAPPA'nın üzerinde */}
+   
     <div className="relative z-10 w-full flex flex-col items-center justify-center pt-12 pb-12 px-4 text-center">
       <h1 className="text-2xl md:text-4xl font-bold mb-4">
         {t("heroHeading")}
@@ -161,7 +156,7 @@ export default function HomePage() {
 </p>
     </div>
 
-    {/* HEADER.JPG GÖRSELİ */}
+   
     <div className="relative w-full h-[60vh] -mt-12 z-10">
       <Image
         src="/images/header.jpg"
@@ -172,7 +167,6 @@ export default function HomePage() {
       />
     </div>
 
-    {/* SEARCH FORM */}
     <div className="relative z-10 w-full max-w-3xl -mt-12 px-4 mb-12">
       <SearchForm />
     </div>
@@ -206,7 +200,7 @@ export default function HomePage() {
 </section>
 
 
-{/* popüler kategoriler */}
+
 <section className="max-w-7xl mx-auto px-4 py-12">
   <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8 text-center md:text-left">
     {t("destinationsHeading")}
@@ -234,7 +228,7 @@ export default function HomePage() {
 </section>
 
 
-      {/* Special Offers Section */}
+     
       <section className="max-w-7xl mx-auto px-4 py-12">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground">
