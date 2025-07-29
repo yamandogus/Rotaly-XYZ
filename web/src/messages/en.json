@@ -4,21 +4,51 @@
     "hotels": "Hotels",
     "bookings": "Bookings",
     "dashboard": "Dashboard",
-    "about": "About",
+    "about": "About Us",
     "admin": "Admin",
     "login": "Login",
     "register": "Register",
-    "searchPlaceholder": "Search Hotel, Pension, Rental apartment"
+    "searchPlaceholder": "Search Hotel, Pension, Apartment for Rent"
   },
   "HomePage": {
-    "title": "Rotaly - Hotel Reservation System",
+    "title": "Rotaly - Hotel Booking System",
     "subtitle": "Modern hotel reservation and management system",
-    "searchPlaceholder": "Search Hotel, Pension, Rental apartment",
-    "welcomeMessage": "Welcome! Discover the best hotels."
+    "searchPlaceholder": "Search Hotel, Pension, Apartment for Rent",
+    "welcomeMessage": "Welcome! Discover the best hotels.",
+    "heroHeading": "Your Dream Accommodation Is Just a Click Away",
+    "heroSubheading": "Explore accommodation options in your favorite destinations at the most attractive prices.",
+    "cityPlaceholder": "City",
+    "checkInDatePlaceholder": "Check-in Date",
+    "checkOutDatePlaceholder": "Check-out Date",
+    "guestCountPlaceholder": "Number of Guests",
+    "guests": "Guests",
+    "searchButton": "Search",
+    "popularCategoriesHeading": "Popular Categories",
+    "categoryHotel": "Hotel",
+    "categoryVilla": "Villa",
+    "categoryApartment": "Apartment",
+    "categoryBungalow": "Bungalow",
+    "categoryRoom": "Room",
+    "categoryCountryHouse": "Country House",
+    "categoryPension": "Pension",
+    "categoryCamp": "Camp",
+    "destinationsHeading": "Destinations",
+    "destinationParis": "Paris",
+    "destinationMarrakech": "Marrakech",
+    "destinationRome": "Rome",
+    "destinationIzmir": "Izmir",
+    "destinationBarcelona": "Barcelona",
+    "destinationAntalya": "Antalya",
+    "specialOffersHeading": "Special Offers",
+    "viewAllOffers": "View All",
+    "offerKiadDeluxeHotel": "Kiad Deluxe Hotel",
+    "offerMarmaris": "Marmaris",
+    "reviewsCount": "{count} Reviews",
+    "viewDetailsButton": "View Details"
   },
   "Common": {
     "search": "Search",
-    "book": "Book Now",
+    "book": "Book",
     "login": "Login",
     "register": "Register",
     "save": "Save",
@@ -43,7 +73,7 @@
     "reservations": "Reservations"
   },
   "Footer": {
-    "copyright": "© All rights reserved",
+    "copyright": "All rights reserved",
     "hotel": "Hotel",
     "villa": "Villa",
     "apartment": "Apartment",
@@ -52,9 +82,9 @@
     "camp": "Camp",
     "faq": "FAQ",
     "live-chat": "Live Chat",
-    "cancellation": "Cancellation",
-    "about": "About",
-    "privacy": "Privacy",
-    "terms": "Terms"
+    "cancellation": "Cancellation and Change",
+    "about": "About Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms and Conditions"
   }
-} 
+}

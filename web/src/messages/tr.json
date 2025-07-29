@@ -14,7 +14,38 @@
     "title": "Rotaly - Otel Rezervasyon Sistemi",
     "subtitle": "Modern otel rezervasyon ve yönetim sistemi",
     "searchPlaceholder": "Otel, Pansiyon, Kiralık daire Ara",
-    "welcomeMessage": "Hoş geldiniz! En iyi otelleri keşfedin."
+    "welcomeMessage": "Hoş geldiniz! En iyi otelleri keşfedin.",
+    
+    "heroHeading": "Hayalinizdeki Konaklama Bir Tık Uzağınızda",
+    "heroSubheading": "Sevdiğiniz destinasyonlarda, en cazip fiyatlarla konaklama seçeneklerini keşfedin.",
+    "cityPlaceholder": "Şehir",
+    "checkInDatePlaceholder": "Giriş Tarihi",
+    "checkOutDatePlaceholder": "Çıkış Tarihi",
+    "guestCountPlaceholder": "Kişi Sayısı",
+    "guests": "Kişi",
+    "searchButton": "Ara",
+    "popularCategoriesHeading": "Popüler Kategoriler",
+    "categoryHotel": "Otel",
+    "categoryVilla": "Villa",
+    "categoryDaire": "Daire",
+    "categoryBungalow": "Bungalov",
+    "categoryRoom": "Oda",
+    "categoryCountryHouse": "Kır Köyü",
+    "categoryPension": "Pansiyon",
+    "categoryCamp": "Kamp",
+    "destinationsHeading": "Destinasyonlar",
+    "destinationParis": "Paris",
+    "destinationMarrakech": "Marakeş",
+    "destinationRome": "Roma",
+    "destinationIzmir": "İzmir",
+    "destinationBarcelona": "Barselona",
+    "destinationAntalya": "Antalya",
+    "specialOffersHeading": "Özel Fırsatlar",
+    "viewAllOffers": "Tümünü gör",
+    "offerKiadDeluxeHotel": "Kiad Deluxe Hotel",
+    "offerMarmaris": "Marmaris",
+    "reviewsCount": "{count} Yorum",
+    "viewDetailsButton": "Detayları Görüntüle"
   },
   "Common": {
     "search": "Ara",
@@ -57,4 +88,4 @@
     "privacy": "Gizlilik",
     "terms": "Şartlar ve Koşullar"
   }
-} 
+}

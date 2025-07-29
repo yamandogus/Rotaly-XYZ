@@ -17,7 +17,8 @@ const SearchForm = () => {
     delaySpeed: 1000,
   })
   return (
-    <div className="relative -mt-60 z-10 px-4">
+   <div className="relative z-10 px-4">
+
           <div className="container mx-auto max-w-5xl">
             <div className="bg-card border border-border rounded-2xl shadow-2xl p-6">
               {/* bilgisayar için */}
