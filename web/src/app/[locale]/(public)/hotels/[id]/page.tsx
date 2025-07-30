@@ -1,87 +1,69 @@
-'use client'
+"use client";
+import React from "react";
+import HotelTabs from "@/components/hotel/hotel-tabs";
+import { format } from "date-fns";
+import { tr } from "date-fns/locale";
+import RecentlyViewedHotels from "@/components/hotel/recently-viewed-hotels";
+import Breadcrumbs from "@/components/hotel/bread-crumbs";
+import ImageGallery from "@/components/hotel/image-gallery";
+import HotelInfo from "@/components/hotel/hotel-info";
+import BookingForm from "@/components/hotel/booking-form";
 
-import React, { useState } from 'react'
-import BookingInformationPage from './booking/information/page'
-import BookingPaymentPage from './booking/payment/page'
-import BookingConfirmationPage from './booking/confirmation/page'
-import { Check } from 'lucide-react'
+const HotelDetailPageContent = () => {
+  // State'ler
+  const [checkInDate, setCheckInDate] = React.useState<Date | undefined>(new Date());
+  const [checkOutDate, setCheckOutDate] = React.useState<Date | undefined>(() => {
+    const today = new Date();
+    today.setDate(today.getDate() + 4); // Görselde 4 gece seçili
+    return today;
+  });
+  const [adults, setAdults] = React.useState(1); // Görselde başlangıç 1 kişi
 
-export default function BookingPage() {
-  const [currentStep, setCurrentStep] = useState(1)
-
-  const steps = [
-    { id: 1, title: 'Konaklama Bilgileri' },
-    { id: 2, title: 'Ödeme Bilgileri' },
-    { id: 3, title: 'Rezervasyon Onayı' }
-  ]
+  // Gece sayısı hesaplama
+  const calculateNights = (checkin: Date | undefined, checkout: Date | undefined) => {
+    if (!checkin || !checkout) return 0;
+    const diffTime = Math.abs(checkout.getTime() - checkin.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
+  const numberOfNights = calculateNights(checkInDate, checkOutDate);
 
   return (
-    <div className='min-h-screen bg-background'>
-      {/* Sayfa Numaraları */}
-      <div className='w-full py-8 px-4'>
-        <div className='max-w-4xl mx-auto'>
-          <div className='flex items-center justify-between'>
-            {steps.map((step, index) => (
-              <React.Fragment key={step.id}>
-                {/* Sayfa Numarası ve Başlık */}
-                <div className='flex flex-row justify-center items-center gap-2'>
-                  <div className={`
-                    w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-md
-                    ${currentStep > step.id 
-                      ? 'bg-green-500' 
-                      : currentStep === step.id 
-                        ? 'bg-blue-500' 
-                        : 'bg-gray-300 dark:bg-gray-600'
-                    }
-                    transition-all duration-300
-                  `}>
-                    {currentStep > step.id ? (
-                      <Check className='w-6 h-6 text-white' />
-                    ) : (
-                      <span className={`
-                        ${currentStep > step.id || currentStep === step.id 
-                          ? 'text-white' 
-                          : 'text-gray-600 dark:text-gray-300'
-                        }
-                      `}>
-                        {step.id}
-                      </span>
-                    )}
-                  </div>
-                  <div className={`
-                    text-sm font-medium text-center
-                    ${currentStep >= step.id 
-                      ? 'text-gray-900 dark:text-gray-100' 
-                      : 'text-gray-500 dark:text-gray-400'
-                    }
-                  `}>
-                    {step.title}
-                  </div>
-                </div>
+    <main className="container mx-auto px-4 py-8 min-h-[calc(100vh-160px)]">
+      {/* Breadcrumbs */}
+      <Breadcrumbs />
 
-                {/* Bağlantı Çizgisi */}
-                {index < steps.length - 1 && (
-                  <div className={`
-                    flex-1 h-0.5 mx-4 rounded-full
-                    ${currentStep > step.id 
-                      ? 'bg-green-500' 
-                      : 'bg-gray-300 dark:bg-gray-600'
-                    }
-                    transition-all duration-300
-                  `} />
-                )}
-              </React.Fragment>
-            ))}
-          </div>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 lg:flex lg:gap-6">
+        {/* Sol: Galeri */}
+        <ImageGallery />
+
+       
+        <div className="lg:w-1/3 mt-6 lg:mt-0 flex flex-col gap-4">
+         
+
+          <BookingForm
+            checkInDate={checkInDate}
+            setCheckInDate={setCheckInDate}
+            checkOutDate={checkOutDate}
+            setCheckOutDate={setCheckOutDate}
+            adults={adults}
+            setAdults={setAdults}
+            numberOfNights={numberOfNights}
+            price={40500}
+          />
+
+          {/* Özellikler */}
+          <HotelInfo />
         </div>
       </div>
 
-      {/* Sayfa İçeriği */}
-      <div className='max-w-6xl mx-auto px-4 pb-8'>
-        {currentStep === 1 && <BookingInformationPage setCurrentStep={setCurrentStep} />}
-        {currentStep === 2 && <BookingPaymentPage setCurrentStep={setCurrentStep} />}
-        {currentStep === 3 && <BookingConfirmationPage setCurrentStep={setCurrentStep} />}
-      </div>
-    </div>
-  )
-} 
+      {/* Sekmeler */}
+      <HotelTabs />
+
+      {/* En Son Baktıklarınız */}
+      <RecentlyViewedHotels />
+    </main>
+  );
+};
+
+export default HotelDetailPageContent;
