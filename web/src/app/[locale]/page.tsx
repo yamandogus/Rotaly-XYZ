@@ -143,7 +143,7 @@ export default function HomePage() {
   return (
     <main className="flex-1">
       {/* Hero */}
-      <section className="relative w-full flex flex-col items-center bg-white overflow-hidden">
+      <section className="relative w-full flex flex-col items-center overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-[400px] flex justify-center items-start pointer-events-none z-0">
           <Image
             src="/images/MAPPA.png"
@@ -173,7 +173,7 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="relative z-10 w-full max-w-3xl -mt-12 px-4 mb-12">
+        <div className="relative z-10 w-full max-w-6xl -mt-12 px-4 mb-12">
           <SearchForm />
         </div>
 
@@ -188,13 +188,13 @@ export default function HomePage() {
                 key={category.name}
                 className="w-full max-w-[160px] flex items-center justify-center space-x-3 p-4 rounded-full bg-gray-100 shadow-sm cursor-pointer hover:bg-gray-200 transition-colors duration-200 border border-gray-300 dark:bg-gray-800 dark:border-gray-700"
               >
-                <div className="w-10 h-8 flex items-center justify-center bg-white rounded-full">
+                <div className="w-10 h-8 flex items-center justify-center rounded-full">
                   <Image
                     src={category.icon}
                     alt={category.name}
                     width={32}
                     height={32}
-                    className="w-8 h-8"
+                    className="w-8 h-8 rounded-full"
                   />
                 </div>
                 <span className="text-sm font-medium text-foreground whitespace-nowrap">
