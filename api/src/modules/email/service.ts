@@ -15,7 +15,7 @@ export class EmailService {
       const mailOptions = {
         from: {
           name: String(process.env.EMAIL_FROM_NAME),
-          address: String(process.env.SMTP_USER),
+          address: "verify@rotaly-xyz.com",
         },
         to: email,
         subject: "Email Verification - Rotaly XYZ",
@@ -49,7 +49,7 @@ export class EmailService {
       const mailOptions = {
         from: {
           name: String(process.env.EMAIL_FROM_NAME),
-          address: String(process.env.SMTP_USER),
+          address: "reset@rotaly-xyz.com",
         },
         to: email,
         subject: "Password Reset - Rotaly XYZ",
@@ -81,7 +81,7 @@ export class EmailService {
       const mailOptions = {
         from: {
           name: String(process.env.EMAIL_FROM_NAME),
-          address: String(process.env.SMTP_USER),
+          address: "noreply@rotaly-xyz.com",
         },
         to: email,
         subject: "Welcome to Rotaly XYZ!",
