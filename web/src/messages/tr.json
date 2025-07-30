@@ -11,10 +11,6 @@
     "searchPlaceholder": "Otel, Pansiyon, Kiralık Daire Ara"
   },
   "HomePage": {
-    "title": "Rotaly - Otel Rezervasyon Sistemi",
-    "subtitle": "Modern otel rezervasyon ve yönetim sistemi",
-    "searchPlaceholder": "Otel, Pansiyon, Kiralık daire Ara",
-    "welcomeMessage": "Hoş geldiniz! En iyi otelleri keşfedin.",
     
     "heroHeading": "Hayalinizdeki Konaklama Bir Tık Uzağınızda",
     "heroSubheading": "Sevdiğiniz destinasyonlarda, en cazip fiyatlarla konaklama seçeneklerini keşfedin.",
@@ -42,8 +38,9 @@
     "destinationAntalya": "Antalya",
     "specialOffersHeading": "Özel Fırsatlar",
     "viewAllOffers": "Tümünü gör",
-    "offerKiadDeluxeHotel": "Kiad Deluxe Hotel",
+    "offerKiadDeluxeHotel": "Kiad Deluxe Otel",
     "offerMarmaris": "Marmaris",
+    "specialOffers": "Özel Teklifler",
     "reviewsCount": "{count} Yorum",
     "viewDetailsButton": "Detayları Görüntüle"
   },

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import SearchForm from "@/components/searchForm";
 import HotelCard from "@/components/hotelCard";
+
 import {
   Pagination,
   PaginationContent,
@@ -12,10 +13,25 @@ import {
 } from "@/components/ui/pagination";
 import { Filters } from "@/components/filters";
 
-// Mock data
+// Otel verisi
+const hotelData = {
+  id: 1,
+  name: "Riad Deluxe Hotel",
+  location: "Marakeş, Fas",
+  rating: 4.5,
+  price: "40.290 TL",
+  image: "/images/opportunity1.jpg",
+  cancel: true,
+  breakfast: true,
+  parking: true,
+  nights: 4, 
+};
+
+
 const mockHotels = Array.from({ length: 45 }, (_, i) => ({
+  ...hotelData,
   id: i + 1,
-  name: `Otel ${i + 1}`,
+  nights: 4
 }));
 
 const ITEMS_PER_PAGE = 9;
@@ -24,7 +40,7 @@ interface CategoryPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-// Basit pagination helper
+// Pagination hesaplama
 function getPaginationData(
   totalItems: number,
   currentPage: number,
@@ -37,14 +53,13 @@ function getPaginationData(
   return { totalPages, currentItems };
 }
 
-// Basit URL helper
+// Sayfa URL'si oluşturma
 function createPageUrl(
   page: number,
   searchParams: { [key: string]: string | string[] | undefined }
 ) {
   const params = new URLSearchParams();
 
-  // Mevcut parametreleri koru (sadece string olanları)
   for (const [key, value] of Object.entries(searchParams || {})) {
     if (typeof value === "string" && key !== "page") {
       params.set(key, value);
@@ -55,7 +70,7 @@ function createPageUrl(
   return `?${params.toString()}`;
 }
 
-// Basit pagination render
+// Pagination butonları render
 function renderPaginationItems(
   currentPage: number,
   totalPages: number,
@@ -64,7 +79,6 @@ function renderPaginationItems(
   const items = [];
 
   for (let i = 1; i <= totalPages; i++) {
-    // İlk 2, son 2, ve mevcut sayfa ±1 göster
     if (i <= 2 || i >= totalPages - 1 || Math.abs(i - currentPage) <= 1) {
       items.push(
         <PaginationItem key={i}>
@@ -76,9 +90,7 @@ function renderPaginationItems(
           </PaginationLink>
         </PaginationItem>
       );
-    }
-    // Ellipsis ekle
-    else if (
+    } else if (
       (i === 3 && currentPage > 4) ||
       (i === totalPages - 2 && currentPage < totalPages - 3)
     ) {
@@ -98,6 +110,7 @@ export default async function CategoryPage({
 }: CategoryPageProps) {
   const resolvedSearchParams = await searchParams;
   const currentPage = Number(resolvedSearchParams?.page) || 1;
+
   const { totalPages, currentItems } = getPaginationData(
     mockHotels.length,
     currentPage,
@@ -120,37 +133,61 @@ export default async function CategoryPage({
 
         <SearchForm />
 
-        {/* Main Content */}
+        {/* Ana içerik */}
         <div className="container mx-auto px-4 pt-32 pb-8">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-3">
-            {/* Filters Sidebar */}
+            {/* Filtreler */}
             <Filters />
 
-            {/* Hotels List */}
+            {/* Otel Listesi */}
             <div className="lg:col-span-3">
               <div className="bg-background">
-                {/* Header */}
+                {/* Başlık */}
                 <div className="px-6 flex justify-between items-center">
-                  <h2 className="text-xl font-bold text-foreground">Marakeş için 45 sonuç bulundu</h2>
+                  <h2 className="text-xl font-bold text-foreground">
+                    Marakeş için {mockHotels.length} sonuç bulundu
+                  </h2>
                   <div className="text-sm text-muted-foreground">
                     {mockHotels.length} sonuç (Sayfa {currentPage}/{totalPages})
                   </div>
                 </div>
 
-                {/* Hotels Grid */}
+                {/* Oteller grid */}
                 <div className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[30px]">
-                    {currentItems.map((hotel: { id: number; name: string }) => (
-                      <HotelCard key={hotel.id} item={hotel.id} />
-                    ))}
+                    {currentItems.map((hotel, index) => {
+                      // Boolean özellikler için açıklamalar
+                      const cancelText = hotel.cancel
+                        ? "Ücretsiz iptal"
+                        : "İptal edilemez";
+                      const breakfastText = hotel.breakfast
+                        ? "Kahvaltı dahil"
+                        : "Kahvaltı dahil değil";
+                      const parkingText = hotel.parking
+                        ? "Otopark mevcut"
+                        : "Otopark yok";
+
+                      return (
+                        <HotelCard
+                          key={hotel.id}
+                          item={{
+                            ...hotel,
+                            cancelText,
+                            breakfastText,
+                            parkingText,
+                            // nights zaten hotel nesnesinde var, geçiyoruz
+                          }}
+                        />
+                      );
+                    })}
                   </div>
 
-                  {/* Pagination */}
+                  {/* Sayfalama */}
                   {totalPages > 1 && (
                     <div className="flex justify-center items-center mt-10">
                       <Pagination className="flex justify-end items-center">
                         <PaginationContent>
-                          {/* Previous */}
+                          {/* Önceki */}
                           {currentPage > 1 && (
                             <PaginationItem>
                               <PaginationPrevious
@@ -162,14 +199,14 @@ export default async function CategoryPage({
                             </PaginationItem>
                           )}
 
-                          {/* Page Numbers */}
+                          {/* Sayfa numaraları */}
                           {renderPaginationItems(
                             currentPage,
                             totalPages,
                             resolvedSearchParams
                           )}
 
-                          {/* Next */}
+                          {/* Sonraki */}
                           {currentPage < totalPages && (
                             <PaginationItem>
                               <PaginationNext

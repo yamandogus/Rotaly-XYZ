@@ -24,10 +24,12 @@
     "guests": "Guests",
     "searchButton": "Search",
     "popularCategoriesHeading": "Popular Categories",
-    "categoryHotel": "Hotel",
-    "categoryVilla": "Villa",
-    "categoryApartment": "Apartment",
-    "categoryBungalow": "Bungalow",
+   
+  "categoryDaire": "Apartment",
+  "categoryHotel": "Hotel",
+  "categoryVilla": "Villa",
+  "categoryBungalow": "Bungalow",
+
     "categoryRoom": "Room",
     "categoryCountryHouse": "Country House",
     "categoryPension": "Pension",

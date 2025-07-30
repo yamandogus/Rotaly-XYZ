@@ -1,50 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import { useTranslations } from "next-intl";
-import {
-  MapPinIcon,
-  Star,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import SearchForm from "@/components/searchForm";
+import HotelCard from "@/components/hotelCard";
 
 export default function HomePage() {
-  const t = useTranslations("HomePage"); // 'HomePage' namespace for translations
-
-  const [city, setCity] = useState("");
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
-  const [guests, setGuests] = useState("1");
-
-  const handleSearch = () => {
-    // Arama mantığı buraya eklenecek
-    console.log({ city, checkIn, checkOut, guests });
-    alert(
-      `${city} şehrinde ${checkIn} tarihinden ${checkOut} tarihine ${guests} kişi için arama yapılıyor...`
-    );
-  };
+  const t = useTranslations("HomePage");
 
   const categories = [
-   
     { name: t("categoryDaire"), label: "Daire", icon: "/icons/daire.svg" },
     { name: t("categoryHotel"), label: "Hotel", icon: "/icons/otel.svg" },
     { name: t("categoryVilla"), label: "Villa", icon: "/icons/villa.svg" },
@@ -72,30 +36,46 @@ export default function HomePage() {
       rating: 4.5,
       price: "40.290 TL",
       image: "/images/opportunity1.jpg",
+      cancel: true,
+      breakfast: true,
+      parking: true,
+      nights: 4,
     },
     {
       id: 2,
       name: t("offerKiadDeluxeHotel"),
       location: t("offerMarmaris"),
-      rating: 4.5,
-      price: "40.290 TL",
+      rating: 4.3,
+      price: "39.000 TL",
       image: "/images/opportunity2jpg.jpg",
+      cancel: true,
+      breakfast: true,
+      parking: true,
+      nights: 3,
     },
     {
       id: 3,
       name: t("offerKiadDeluxeHotel"),
       location: t("offerMarmaris"),
-      rating: 4.5,
-      price: "40.290 TL",
+      rating: 4.2,
+      price: "42.500 TL",
       image: "/images/opportunity3.jpg",
+      cancel: true,
+      breakfast: true,
+      parking: true,
+      nights: 5,
     },
     {
       id: 4,
       name: t("offerKiadDeluxeHotel"),
       location: t("offerMarmaris"),
-      rating: 4.5,
-      price: "40.290 TL",
+      rating: 4.8,
+      price: "47.800 TL",
       image: "/images/opportunity4.jpg",
+      cancel: true,
+      breakfast: true,
+      parking: true,
+      nights: 6,
     },
     {
       id: 5,
@@ -104,6 +84,10 @@ export default function HomePage() {
       rating: 4.5,
       price: "40.290 TL",
       image: "/images/opportunity5.jpg",
+      cancel: true,
+      breakfast: true,
+      parking: true,
+      nights: 4,
     },
     {
       id: 6,
@@ -112,6 +96,10 @@ export default function HomePage() {
       rating: 4.5,
       price: "40.290 TL",
       image: "/images/opportunity6.jpg",
+      cancel: true,
+      breakfast: true,
+      parking: true,
+      nights: 4,
     },
     {
       id: 7,
@@ -120,6 +108,10 @@ export default function HomePage() {
       rating: 4.5,
       price: "40.290 TL",
       image: "/images/opportunity7.jpg",
+      cancel: true,
+      breakfast: true,
+      parking: true,
+      nights: 4,
     },
     {
       id: 8,
@@ -128,12 +120,17 @@ export default function HomePage() {
       rating: 4.5,
       price: "40.290 TL",
       image: "/images/opportunity8.jpg",
+      cancel: true,
+      breakfast: true,
+      parking: true,
+      nights: 4,
     },
   ];
 
   return (
-   <main className="flex-1">
-  <section className="relative w-full flex flex-col items-center bg-white overflow-hidden">
+    <main className="flex-1">
+      {/* Hero */}
+     <section className="relative w-full flex flex-col items-center bg-white overflow-hidden">
     
    
     <div className="absolute top-0 left-0 w-full h-[400px] flex justify-center items-start pointer-events-none z-0">
@@ -170,9 +167,10 @@ export default function HomePage() {
     <div className="relative z-10 w-full max-w-3xl -mt-12 px-4 mb-12">
       <SearchForm />
     </div>
-  </section>
+  
 
-  <section className="max-w-7xl mx-auto px-4 py-12">
+
+         <section className="max-w-7xl mx-auto px-4 py-12">
   <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8 text-center md:text-left">
     {t("popularCategoriesHeading")}
   </h2>
@@ -200,8 +198,7 @@ export default function HomePage() {
 </section>
 
 
-
-<section className="max-w-7xl mx-auto px-4 py-12">
+      <section className="max-w-7xl mx-auto px-4 py-12">
   <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8 text-center md:text-left">
     {t("destinationsHeading")}
   </h2>
@@ -227,55 +224,29 @@ export default function HomePage() {
   </div>
 </section>
 
+        {/* Special Offers */}
+        <section className="max-w-7xl mx-auto px-4 my-12">
+          <h2 className="text-lg font-semibold text-foreground mb-6">{t("specialOffers")}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {specialOffers.map((offer) => {
+              const cancelText = offer.cancel ? "Ücretsiz iptal" : "İptal edilemez";
+              const breakfastText = offer.breakfast ? "Kahvaltı dahil" : "Kahvaltı dahil değil";
+              const parkingText = offer.parking ? "Otopark" : "Otopark bulunmamakta";
 
-     
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-            {t("specialOffersHeading")}
-          </h2>
-          <Button variant="link" className="text-[#2F6FED] hover:underline p-0 h-auto">
-            {t("viewAllOffers")} &rarr;
-          </Button>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {specialOffers.map((offer) => (
-            <Card
-              key={offer.id}
-              className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-gray-800 dark:border-gray-700"
-            >
-              <AspectRatio ratio={16 / 9}>
-                <Image
-                  src={offer.image}
-                  alt={offer.name}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-t-lg"
+              return (
+                <HotelCard
+                  key={offer.id}
+                  item={{
+                    ...offer,
+                    cancelText,
+                    breakfastText,
+                    parkingText,
+                  }}
                 />
-              </AspectRatio>
-              <CardContent className="p-4">
-                <CardTitle className="text-lg font-semibold mb-2 text-foreground">
-                  {offer.name}
-                </CardTitle>
-                <CardDescription className="text-sm text-muted-foreground mb-2">
-                  <MapPinIcon className="inline-block h-4 w-4 mr-1 text-gray-500" />
-                  {offer.location}
-                </CardDescription>
-                <div className="flex items-center text-sm text-gray-600 dark:text-gray-400 mb-3">
-                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                  <span>{offer.rating}</span>
-                  <span className="ml-2">({t("reviewsCount", { count: 120 })})</span> {/* Örnek yorum sayısı */}
-                </div>
-                <div className="text-xl font-bold text-[#2F6FED] mb-4">
-                  {offer.price}
-                </div>
-                <Button className="w-full bg-[#2F6FED] hover:bg-[#255fd7] text-white rounded-md">
-                  {t("viewDetailsButton")}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+              );
+            })}
+          </div>
+        </section>
       </section>
     </main>
   );
