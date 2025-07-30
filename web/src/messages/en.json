@@ -33,6 +33,7 @@
     "categoryRoom": "Room",
     "categoryCountryHouse": "Country House",
     "categoryPension": "Pension",
+    "categoryDaire": "Daire",
     "categoryCamp": "Camp",
     "destinationsHeading": "Destinations",
     "destinationParis": "Paris",
@@ -47,6 +48,9 @@
     "offerMarmaris": "Marmaris",
     "reviewsCount": "{count} Reviews",
     "viewDetailsButton": "View Details"
+  },
+  "CategoryPage": {
+    "resultsFound": "{count} results found"
   },
   "Common": {
     "search": "Search",

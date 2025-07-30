@@ -44,6 +44,9 @@
     "reviewsCount": "{count} Yorum",
     "viewDetailsButton": "Detayları Görüntüle"
   },
+  "CategoryPage": {
+    "resultsFound": "{count} sonuç bulundu"
+  },
   "Common": {
     "search": "Ara",
     "book": "Rezervasyon Yap",
