@@ -8,7 +8,6 @@ import { NavUser } from "@/components/dashboard/nav-user";
 
 import {
   IconDashboard,
-  IconListDetails,
   IconChartBar,
   IconFolder,
   IconUsers,
@@ -21,6 +20,8 @@ import {
   IconDatabase,
   IconReport,
   IconFileWord,
+  IconBuilding,
+  IconUserCheck,
 } from "@tabler/icons-react";
 
 import {
@@ -33,6 +34,77 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+
+type UserRole = "admin" | "hotel" | "user" | null;
+
+const getNavMainByRole = (role: UserRole) => {
+  switch (role) {
+    case "admin":
+      return [
+        {
+          title: "Anasayfa",
+          url: "/dashboard",
+          icon: <IconDashboard />,
+        },
+        {
+          title: "Oteller",
+          url: "/dashboard/admin/hotels",
+          icon: <IconBuilding />,
+        },
+        {
+          title: "Müşteriler",
+          url: "/dashboard/admin/customers",
+          icon: <IconUsers />,
+        },
+        {
+          title: "Şirket Bilgileri",
+          url: "/dashboard/admin/company",
+          icon: <IconFileDescription />,
+        },
+        {
+          title: "Adminler",
+          url: "/dashboard/admin/admins",
+          icon: <IconUserCheck />,
+        },
+        {
+          title: "Profile",
+          url: "/dashboard/admin/profile",
+          icon: <IconFolder />,
+        },
+      ];
+    case "hotel":
+      return [
+        {
+          title: "Anasayfa",
+          url: "/dashboard",
+          icon: <IconDashboard />,
+        },
+        {
+          title: "Hotel Bilgileri",
+          url: "/dashboard/hotel/hotel-info",
+          icon: <IconBuilding />,
+        },
+        {
+          title: "Rezervasyonlar",
+          url: "/dashboard/hotel/reservations",
+          icon: <IconChartBar />,
+        },
+        {
+          title: "Profile",
+          url: "/dashboard/hotel/profile",
+          icon: <IconFolder />,
+        },
+        {
+          title: "Şirket Bilgileri",
+          url: "/dashboard/hotel/company",
+          icon: <IconFileDescription />,
+        },
+      ];
+    default:
+      return [];
+  }
+};
 
 const data = {
   user: {
@@ -40,33 +112,6 @@ const data = {
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  navMain: [
-    {
-      title: "Anasayfa",
-      url: "#",
-      icon: <IconDashboard />,
-    },
-    {
-      title: "Odalar",
-      url: "#",
-      icon: <IconListDetails />,
-    },
-    {
-      title: "Rezervasyonlar",
-      url: "#",
-      icon: <IconChartBar />,
-    },
-    {
-      title: "Müşteriler",
-      url: "#",
-      icon: <IconFolder />,
-    },
-    {
-      title: "Hizmetler",
-      url: "#",
-      icon: <IconUsers />,
-    },
-  ],
   navClouds: [
     {
       title: "Raporlar",
@@ -152,6 +197,16 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const [userRole, setUserRole] = useState<UserRole>(null);
+
+  useEffect(() => {
+    // Kullanıcı rolünü localStorage'dan al
+    const role = localStorage.getItem("userRole") as UserRole;
+    setUserRole(role);
+  }, []);
+
+  const navMainItems = getNavMainByRole(userRole);
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -178,7 +233,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMainItems} />
         <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
