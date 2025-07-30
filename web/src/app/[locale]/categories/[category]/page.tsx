@@ -11,6 +11,7 @@ import {
   PaginationEllipsis,
 } from "@/components/ui/pagination";
 import { Filters } from "@/components/filters";
+import { getTranslations } from "next-intl/server";
 
 // Mock data
 const mockHotels = Array.from({ length: 45 }, (_, i) => ({
@@ -103,6 +104,7 @@ export default async function CategoryPage({
     currentPage,
     ITEMS_PER_PAGE
   );
+  const t = await getTranslations("CategoryPage");
 
   return (
     <div className="min-h-screen bg-background">
@@ -118,7 +120,9 @@ export default async function CategoryPage({
           />
         </div>
 
-        <SearchForm />
+        <div className="-mt-[200px]">
+          <SearchForm />
+        </div>
 
         {/* Main Content */}
         <div className="container mx-auto px-4 pt-32 pb-8">
@@ -131,9 +135,9 @@ export default async function CategoryPage({
               <div className="bg-background">
                 {/* Header */}
                 <div className="px-6 flex justify-between items-center">
-                  <h2 className="text-xl font-bold text-foreground">Marakeş için 45 sonuç bulundu</h2>
+                  <h2 className="text-xl font-bold text-foreground">{t("resultsFound", { count: mockHotels.length })}</h2>
                   <div className="text-sm text-muted-foreground">
-                    {mockHotels.length} sonuç (Sayfa {currentPage}/{totalPages})
+                    {t("resultsFound", { count: mockHotels.length })} (Sayfa {currentPage}/{totalPages})
                   </div>
                 </div>
 

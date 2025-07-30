@@ -46,7 +46,7 @@ const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
   if (email === testUser.email && password === testUser.password && role === "user") {
     localStorage.setItem("userRole", "user");
     toast.success("Kullanıcı girişi başarılı");
-    router.push("/dashboard");
+    router.push("/");
   } 
   // Otel girişi
   else if (email === testHotel.email && password === testHotel.password && role === "hotel") {
@@ -79,15 +79,15 @@ const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
 
           <form className="my-8" onSubmit={handleLogin}>
             <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
-              <LabelInputContainer>
+              <LabelInputContainer className="w-full">
                 <Label htmlFor="email">E-posta Adresi</Label>
                 <Input id="email" name="email" placeholder="ornek@email.com" type="email" required />
               </LabelInputContainer>
-              <LabelInputContainer>
+              <LabelInputContainer className="w-full">
                 <Label htmlFor="password">Şifre</Label>
                 <Input id="password" name="password" placeholder="••••••••" type="password" required />
               </LabelInputContainer>
-              <LabelInputContainer>
+              <LabelInputContainer className="w-full">
                 <Label htmlFor="role">Rol</Label>
                 <Select name="role" required>
                   <SelectTrigger>
