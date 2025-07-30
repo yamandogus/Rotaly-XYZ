@@ -78,7 +78,7 @@ const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
           </p>
 
           <form className="my-8" onSubmit={handleLogin}>
-            <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+            <div className="mb-4 flex flex-col space-y-2">
               <LabelInputContainer className="w-full">
                 <Label htmlFor="email">E-posta Adresi</Label>
                 <Input id="email" name="email" placeholder="ornek@email.com" type="email" required />
