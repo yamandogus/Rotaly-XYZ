@@ -1,11 +1,91 @@
-import React from 'react'
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import React from "react";
+import { Button } from "@/components/ui/button";
+import HotelSummary from "@/components/booking/hotel-summary";
+import { bookingData, hotelData } from "@/data/dumy";
 
-const BookingInformationPage = () => {
-  return (
-    <div>
-        <h1>Bilgiler</h1>
-    </div>
-  )
+interface BookingInformationPageProps {
+  setCurrentStep: (step: number) => void;
 }
 
-export default BookingInformationPage
+const BookingInformationPage = ({
+  setCurrentStep,
+}: BookingInformationPageProps) => {
+  // Sample data - bu gerçek uygulamada props veya API'dan gelecek
+
+
+  return (
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20">
+        <div className="flex flex-col gap-6">
+          <form action="" className="flex flex-col gap-4 border border-gray-200 dark:border-gray-700 rounded-md p-4 bg-white dark:bg-card">
+            <div className="flex flex-row gap-2">
+              <div className="flex flex-col gap-2 w-full">
+                <Label htmlFor="name">Adınız</Label>
+                <Input
+                  type="text"
+                  id="name"
+                  className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-800"
+                />
+              </div>
+              <div className="flex flex-col gap-2 w-full">
+                <Label htmlFor="surname">Soyadınız</Label>
+                <Input
+                  type="text"
+                  id="surname"
+                  className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-800"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                type="email"
+                id="email"
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-800"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="country">Ülke/Bölge</Label>
+              <Input
+                type="text"
+                id="country"
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-800"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="phone">Telefon Numarası</Label>
+              <Input
+                type="text"
+                id="phone"
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-800"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label>Özel İstek</Label>
+              <Textarea
+                id="message"
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 h-24 bg-white dark:bg-gray-800"
+              />
+            </div>
+            <div className="flex justify-end">
+              <Button
+                onClick={() => setCurrentStep(2)}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+              >
+                Ödeme ile devam et
+              </Button>
+            </div>
+          </form>
+        </div>
+        
+        {/* Hotel Summary Component kullanımı */}
+        <HotelSummary hotel={hotelData} booking={bookingData} />
+      </div>
+    </div>
+  );
+};
+
+export default BookingInformationPage;

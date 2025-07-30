@@ -1,0 +1,190 @@
+"use client";
+
+import * as React from "react";
+import { NavDocuments } from "@/components/dashboard/nav-documents";
+import { NavMain } from "@/components/dashboard/nav-main";
+import { NavSecondary } from "@/components/dashboard/nav-secondary";
+import { NavUser } from "@/components/dashboard/nav-user";
+
+import {
+  IconDashboard,
+  IconListDetails,
+  IconChartBar,
+  IconFolder,
+  IconUsers,
+  IconCamera,
+  IconFileDescription,
+  IconFileAi,
+  IconSettings,
+  IconHelp,
+  IconSearch,
+  IconDatabase,
+  IconReport,
+  IconFileWord,
+} from "@tabler/icons-react";
+
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import Image from "next/image";
+
+const data = {
+  user: {
+    name: "shadcn",
+    email: "m@example.com",
+    avatar: "/avatars/shadcn.jpg",
+  },
+  navMain: [
+    {
+      title: "Anasayfa",
+      url: "#",
+      icon: <IconDashboard />,
+    },
+    {
+      title: "Odalar",
+      url: "#",
+      icon: <IconListDetails />,
+    },
+    {
+      title: "Rezervasyonlar",
+      url: "#",
+      icon: <IconChartBar />,
+    },
+    {
+      title: "Müşteriler",
+      url: "#",
+      icon: <IconFolder />,
+    },
+    {
+      title: "Hizmetler",
+      url: "#",
+      icon: <IconUsers />,
+    },
+  ],
+  navClouds: [
+    {
+      title: "Raporlar",
+      icon: <IconCamera />,
+      isActive: true,
+      url: "#",
+      items: [
+        {
+          title: "Aktif Rezervasyonlar",
+          url: "#",
+        },
+        {
+          title: "Pasif Rezervasyonlar",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Müşteriler",
+      icon: <IconFileDescription />,
+      url: "#",
+      items: [
+        {
+          title: "Aktif Müşteriler",
+          url: "#",
+        },
+        {
+          title: "Pasif Müşteriler",
+          url: "#",
+        },
+      ],
+    },
+    {
+     title: "Hizmetler",
+      icon: <IconFileAi />,
+      url: "#",
+      items: [
+        {
+          title: "Active Proposals",
+          url: "#",
+        },
+        {
+          title: "Archived",
+          url: "#",
+        },
+      ],
+    },
+  ],
+  navSecondary: [
+    {
+      title: "Ayarlar",
+      url: "#",
+      icon: <IconSettings />,
+    },
+    {
+      title: "Yardım",
+      url: "#",
+      icon: <IconHelp />,
+    },
+    {
+      title: "Arama",
+      url: "#",
+      icon: <IconSearch />,
+    },
+  ],
+  documents: [
+    {
+      name: "Veri Tabanı",
+      url: "#", 
+      icon: <IconDatabase />,
+    },
+    {
+      name: "Raporlar",
+      url: "#",
+      icon: <IconReport />,
+    },
+    {
+      name: "Word Yardımcısı",
+      url: "#",
+      icon: <IconFileWord />,
+    },
+  ],
+};
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  return (
+    <Sidebar collapsible="offcanvas" {...props}>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              className="data-[slot=sidebar-menu-button]:!p-1.5"
+            >
+              <div className="flex flex-row items-center gap-2">
+                <Image
+                  src="/images/logo3.png"
+                  alt="Rotaly"
+                  className="w-10 h-10"
+                  width={40}
+                  height={40}
+                />
+                <a href="#">
+                  <span className="text-xl font-bold ">Rotaly</span>
+                </a>
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
+        <NavMain items={data.navMain} />
+        <NavDocuments items={data.documents} />
+        <NavSecondary items={data.navSecondary} className="mt-auto" />
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
+    </Sidebar>
+  );
+}
