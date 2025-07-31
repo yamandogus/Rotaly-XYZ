@@ -8,7 +8,10 @@
     "admin": "Yönetici",
     "login": "Giriş Yap",
     "register": "Kayıt Ol",
-    "searchPlaceholder": "Otel, Pansiyon, Kiralık Daire Ara"
+    "searchPlaceholder": "Otel, Pansiyon, Kiralık Daire Ara",
+    "logout": "Çıkış Yap",
+    "Hotels Add": "Otel Ekle",
+    "profile": "Profil"
   },
   "HomePage": {
     

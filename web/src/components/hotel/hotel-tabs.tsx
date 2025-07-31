@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Rating, RatingButton } from "../ui/shadcn-io/rating";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 
 export default function HotelTabs() {
@@ -17,12 +17,12 @@ export default function HotelTabs() {
         </TabsList>
 
                <TabsContent value="description" className="pt-4 text-gray-700 dark:text-gray-300">
-            <h2 className="text-xl font-semibold mb-3">Marakeş'in Kalbinde Huzurlu Bir Kaçış</h2>
+            <h2 className="text-xl font-semibold mb-3">Marakeş&apos;in Kalbinde Huzurlu Bir Kaçış</h2>
             <p className="mb-4">
-              Marakeş'in kalbinde yer alan Riad Deluxe, geleneksel Fas mimarisiyle modern konforu birleştiriyor. Geniş avlusu, serinletici havuzu ve huzurlu bahçeleriyle şehrin gürültüsünden uzaklaşmak için ideal bir sığınak sunar. Her odası özenle dekore edilmiş olup, Fas el sanatlarının zenginliğini yansıtır.
+              Marakeş&apos;in kalbinde yer alan Riad Deluxe, geleneksel Fas mimarisiyle modern konforu birleştiriyor. Geniş avlusu, serinletici havuzu ve huzurlu bahçeleriyle şehrin gürültüsünden uzaklaşmak için ideal bir sığınak sunar. Her odası özenle dekore edilmiş olup, Fas el sanatlarının zenginliğini yansıtır.
             </p>
             <p className="mb-4">
-              Tüm önemli turistik mekanlara yürüme mesafesinde olan otelimiz, Djemaa el-Fna Meydanı'na ve Medine çarşılarına kolay erişim sağlar. Misafirlerimiz, geleneksel Fas hamamımızda rahatlayabilir veya çatı terasımızda panoramik şehir manzarası eşliğinde nane çayı keyfi yapabilirler.
+              Tüm önemli turistik mekanlara yürüme mesafesinde olan otelimiz, Djemaa el-Fna Meydanı&apos;na ve Medine çarşılarına kolay erişim sağlar. Misafirlerimiz, geleneksel Fas hamamımızda rahatlayabilir veya çatı terasımızda panoramik şehir manzarası eşliğinde nane çayı keyfi yapabilirler.
             </p>
             <h3 className="text-lg font-semibold mb-2 mt-4">Odalar ve Süitler</h3>
             <ul className="list-disc list-inside mb-4 space-y-1">
@@ -43,9 +43,9 @@ export default function HotelTabs() {
             </ul>
             <h3 className="text-lg font-semibold mb-2 mt-4">Yerel İpuçları</h3>
             <ul className="list-disc list-inside mb-4 space-y-1">
-              <li>Djemaa el-Fna Meydanı'nı ziyaret edin ve akşam yemeği için yerel yemek tezgahlarını deneyin.</li>
-              <li>Medine'nin dar sokaklarında kaybolun ve el yapımı ürünler bulun.</li>
-              <li>Jardin Majorelle'i keşfedin.</li>
+              <li>Djemaa el-Fna Meydanı&apos;nı ziyaret edin ve akşam yemeği için yerel yemek tezgahlarını deneyin.</li>
+              <li>Medine&apos;nin dar sokaklarında kaybolun ve el yapımı ürünler bulun.</li>
+              <li>Jardin Majorelle&apos;i keşfedin.</li>
               <li>Baharat çarşılarını ziyaret edin.</li>
             </ul>
           </TabsContent>
@@ -105,7 +105,7 @@ export default function HotelTabs() {
                   <span className="text-sm text-gray-500 ml-2">5 gün önce</span>
                 </div>
                 <p className="text-sm">
-                  "Harika bir deneyimdi! Otelin konumu muhteşem, personel çok ilgili ve odalar tertemizdi. Kesinlikle tekrar kalacağım."
+                  &quot;Harika bir deneyimdi! Otelin konumu muhteşem, personel çok ilgili ve odalar tertemizdi. Kesinlikle tekrar kalacağım.&quot;
                 </p>
               </div>
               <div className="border rounded-lg p-4">
@@ -119,7 +119,7 @@ export default function HotelTabs() {
                   <span className="text-sm text-gray-500 ml-2">2 hafta önce</span>
                 </div>
                 <p className="text-sm">
-                  "Otel çok şık, Fas atmosferini sonuna kadar yaşatıyor. Kahvaltı biraz daha çeşitli olabilirdi ama genel olarak çok memnun kaldık."
+                  &quot;Otel çok şık, Fas atmosferini sonuna kadar yaşatıyor. Kahvaltı biraz daha çeşitli olabilirdi ama genel olarak çok memnun kaldık.&quot;
                 </p>
               </div>
               <Button variant="outline" className="w-full mt-4">Tüm Değerlendirmeleri Gör</Button>
@@ -140,7 +140,7 @@ export default function HotelTabs() {
                 <span className="text-lg font-semibold">Harita Yükleniyor...</span>
               </div>
             </div>
-            <Button variant="outline" className="mt-4">Google Haritalar'da Aç</Button>
+            <Button variant="outline" className="mt-4">Google Haritalar&apos;da Aç</Button>
           </TabsContent>
       </Tabs>
     </div>

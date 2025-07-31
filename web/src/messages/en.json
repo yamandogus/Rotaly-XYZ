@@ -8,7 +8,10 @@
     "admin": "Admin",
     "login": "Login",
     "register": "Register",
-    "searchPlaceholder": "Search Hotel, Pension, Apartment for Rent"
+    "searchPlaceholder": "Search Hotel, Pension, Apartment for Rent",
+    "logout": "Logout",
+    "Hotels Add": "Hotels Add",
+    "profile": "Profile"
   },
   "HomePage": {
     "title": "Rotaly - Hotel Booking System",
