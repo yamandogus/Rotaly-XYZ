@@ -17,6 +17,7 @@ import {
   Bell,
   SearchIcon,
   Mic,
+  MessageCircle,
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -154,6 +155,12 @@ export function Navbar() {
                   <Link href="/hotel">
                     <User className="mr-2 h-4 w-4" />
                     {t("Hotels Add")}
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/support/contact">
+                    <MessageCircle className="mr-2 h-4 w-4" />
+                    {t("contact")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>

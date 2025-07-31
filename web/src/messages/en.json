@@ -11,7 +11,8 @@
     "searchPlaceholder": "Search Hotel, Pension, Apartment for Rent",
     "logout": "Logout",
     "Hotels Add": "Hotels Add",
-    "profile": "Profile"
+    "profile": "Profile",
+    "contact": "Contact"
   },
   "HomePage": {
     "title": "Rotaly - Hotel Booking System",
