@@ -33,7 +33,7 @@ const HotelDetailPageContent = () => {
       {/* Breadcrumbs */}
       <Breadcrumbs />
 
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 lg:flex lg:gap-6">
+      <div className="bg-white dark:bg-card rounded-lg shadow-md p-6 lg:flex lg:gap-6">
         {/* Sol: Galeri */}
         <ImageGallery />
 

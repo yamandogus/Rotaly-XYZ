@@ -156,7 +156,7 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
                 {booking.nights} gece
               </span>
               <span className="text-gray-900 dark:text-gray-100 font-medium">
-                {booking.basePrice.toLocaleString()} TL
+                {booking.basePrice.toLocaleString('tr-TR')} TL
               </span>
             </div>
             <div className="flex justify-between items-center">
@@ -164,7 +164,7 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
                 Vergiler ve Hizmet Bedeli
               </span>
               <span className="text-gray-900 dark:text-gray-100 font-medium">
-                {booking.taxesAndFees.toLocaleString()} TL
+                {booking.taxesAndFees.toLocaleString('tr-TR')} TL
               </span>
             </div>
           </div>
@@ -177,7 +177,7 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
               Toplam
             </span>
             <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              {booking.total.toLocaleString()} TL
+              {booking.total.toLocaleString('tr-TR')} TL
             </span>
           </div>
         </div>

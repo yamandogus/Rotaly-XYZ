@@ -5,6 +5,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { tr } from "date-fns/locale";
 import { MapPinIcon, MinusIcon, PlusIcon, StarIcon } from "lucide-react";
 import { format } from "date-fns";
+import Link from "next/link";
 
 interface BookingFormProps {
   checkInDate: Date | undefined;
@@ -34,15 +35,15 @@ const BookingForm: React.FC<BookingFormProps> = ({
     date ? format(date, "dd/MM/yyyy", { locale: tr }) : "";
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 w-full">
+    <div className="bg-white dark:bg-card dark:border dark:border-border rounded-xl shadow-md p-6 w-full">
       {/* Başlık ve puan */}
       <div className="mb-4">
-        <h1 className="text-2xl font-bold">Riad Deluxe Hotel</h1>
-        <div className="flex items-center gap-2 text-gray-600 text-sm mt-1">
+        <h1 className="text-2xl font-bold dark:text-white">Riad Deluxe Hotel</h1>
+        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm mt-1">
           <MapPinIcon className="w-4 h-4" />
-          <span>Marakeş, Fas</span>
-          <span className="mx-1">·</span>
-          <span className="font-semibold">{rating}</span>
+          <span className="dark:text-white">Marakeş, Fas</span>
+          <span className="mx-1 dark:text-white">·</span>
+          <span className="font-semibold dark:text-white">{rating}</span>
           <div className="flex items-center">
             {Array.from({ length: totalStars }).map((_, i) => (
               <StarIcon
@@ -56,13 +57,13 @@ const BookingForm: React.FC<BookingFormProps> = ({
               />
             ))}
           </div>
-          <span className="text-gray-400">(120)</span>
+          <span className="text-gray-400 dark:text-gray-400">(120)</span>
         </div>
       </div>
 
       {/* Giriş Tarihi */}
-      <div className="mb-3">
-        <label className="block text-xs font-medium mb-1 text-black">Giriş</label>
+      <div className="mb-3 g">
+        <label className="block text-xs font-medium mb-1 text-black dark:text-white">Giriş</label>
         <Popover>
           <PopoverTrigger asChild>
             <div className="rounded-lg bg-white shadow-sm px-3 py-2 cursor-pointer border border-gray-200">
@@ -89,7 +90,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
       {/* Çıkış Tarihi */}
       <div className="mb-3">
-        <label className="block text-xs font-medium mb-1 text-black">Çıkış</label>
+        <label className="block text-xs font-medium mb-1 text-black dark:text-white">Çıkış</label>
         <Popover>
           <PopoverTrigger asChild>
             <div className="rounded-lg bg-white shadow-sm px-3 py-2 cursor-pointer border border-gray-200">
@@ -116,7 +117,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
       {/* Kişi Sayısı */}
       <div className="mb-4">
-        <label className="block text-xs font-medium mb-1 text-black">Kişi</label>
+        <label className="block text-xs font-medium mb-1 text-black dark:text-white">Kişi</label>
         <div className="flex items-center border rounded-md px-2 py-1 w-32 bg-white justify-between">
           <button
             onClick={() => setAdults(Math.max(1, adults - 1))}
@@ -145,9 +146,11 @@ const BookingForm: React.FC<BookingFormProps> = ({
       </div>
 
       {/* Butonlar */}
+      <Link href="/hotels/1/booking">
       <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold">
         Rezervasyon yap
       </Button>
+      </Link>
       <Button
         variant="outline"
         className="w-full mt-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold"
