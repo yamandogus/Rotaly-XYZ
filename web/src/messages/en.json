@@ -8,7 +8,11 @@
     "admin": "Admin",
     "login": "Login",
     "register": "Register",
-    "searchPlaceholder": "Search Hotel, Pension, Apartment for Rent"
+    "searchPlaceholder": "Search Hotel, Pension, Apartment for Rent",
+    "logout": "Logout",
+    "Hotels Add": "Hotels Add",
+    "profile": "Profile",
+    "contact": "Contact"
   },
   "HomePage": {
     "title": "Rotaly - Hotel Booking System",
@@ -24,9 +28,9 @@
     "guests": "Guests",
     "searchButton": "Search",
     "popularCategoriesHeading": "Popular Categories",
+    "categoryDaire": "Apartment",
     "categoryHotel": "Hotel",
     "categoryVilla": "Villa",
-    "categoryApartment": "Apartment",
     "categoryBungalow": "Bungalow",
     "categoryRoom": "Room",
     "categoryCountryHouse": "Country House",
@@ -40,11 +44,15 @@
     "destinationBarcelona": "Barcelona",
     "destinationAntalya": "Antalya",
     "specialOffersHeading": "Special Offers",
+    "specialOffers": "Special Offers",
     "viewAllOffers": "View All",
     "offerKiadDeluxeHotel": "Kiad Deluxe Hotel",
     "offerMarmaris": "Marmaris",
     "reviewsCount": "{count} Reviews",
     "viewDetailsButton": "View Details"
+  },
+  "CategoryPage": {
+    "resultsFound": "{count} results found"
   },
   "Common": {
     "search": "Search",

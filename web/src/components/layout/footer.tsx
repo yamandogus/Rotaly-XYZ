@@ -105,7 +105,8 @@ export function Footer() {
             <h3 className="text-lg font-semibold">Bizi Takip Et</h3>
             <div className="flex space-x-4">
               <Link
-                href="#"
+                href="https://www.instagram.com/rotaly_xyz/"
+                target="_blank"
                 className="rounded-md p-2 text-blue-100 hover:scale-110 transition-all duration-300"
               >
                 <svg
