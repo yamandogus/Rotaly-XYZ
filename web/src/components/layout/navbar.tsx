@@ -18,6 +18,7 @@ import {
   SearchIcon,
   Mic,
   MessageCircle,
+  Hotel,
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -28,9 +29,18 @@ import { Input } from "../ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useTheme } from "next-themes";
 import { NotificationSuccess } from "../notifications/notification-succes";
+import {
+  Sheet,
+  SheetClose,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "../ui/sheet";
+import { SheetTrigger } from "../ui/sheet";
+import { SheetContent } from "../ui/sheet";
 
 export function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = useTranslations("Navigation");
   const [isListOpen, setIsListOpen] = useState(false);
   const { theme } = useTheme();
@@ -59,7 +69,7 @@ export function Navbar() {
         </div>
 
         {/* Search - Orta */}
-        <div className="flex-1 flex justify-center">
+        <div className="hidden md:flex flex-1 justify-center">
           <div className="relative w-full">
             <Input
               type="search"
@@ -77,17 +87,7 @@ export function Navbar() {
         </div>
 
         {/* Right Side - Sağ taraf */}
-        <div className="flex-1 flex items-center justify-end space-x-2">
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle Menu</span>
-          </Button>
-
+        <div className="hidden md:flex flex-1 items-center justify-end space-x-2">
           <div className="flex items-center space-x-2">
             <Button
               variant="ghost"
@@ -173,34 +173,84 @@ export function Navbar() {
             </DropdownMenu>
           </div>
         </div>
+        <div className="md:hidden flex justify-end">
+          <ModeToggle />
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Toggle Menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>ROTALY</SheetTitle>
+                <SheetDescription>
+                  ROTALY ile rezervasyon yapın, otel bulun, otel rezervasyonu
+                  yapın.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="grid flex-1 auto-rows-min gap-6 px-4">
+                <SheetClose asChild>
+                <Link href="/dashboard" >
+                  <Button variant="outline" className="w-full">
+                    <Settings className="h-5 w-5" />
+                    {t("dashboard")}
+                  </Button>
+                </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                <Link href="/login" >
+                  <Button variant="outline" className="w-full">
+                    <User className="h-5 w-5" />
+                    {t("login")}
+                  </Button>
+                </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                <Link href="/register" >
+                  <Button variant="outline" className="w-full">
+                    <User className="h-5 w-5" />
+                    {t("register")}
+                  </Button>
+                </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                <Link href="/hotel" >
+                  <Button variant="outline" className="w-full">
+                    <Hotel className="h-5 w-5" />
+                    {t("Hotels Add")}
+                  </Button>
+                </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                <Link href="/support/contact" >
+                  <Button variant="outline" className="w-full">
+                    <MessageCircle className="h-5 w-5" />
+                    {t("contact")}
+                  </Button>
+                </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                <Link href="/profile" >
+                  <Button variant="outline" className="w-full">
+                    <User className="h-5 w-5" />
+                    {t("profile")}
+                  </Button>
+                </Link> 
+                </SheetClose>
+              </div>
+              <SheetFooter>
+                <SheetClose asChild>
+                  <Button variant="outline">Kapat</Button>
+                </SheetClose>
+              </SheetFooter>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
 
       {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="border-t md:hidden">
-          <div className="max-w-7xl mx-auto px-4 py-4">
-            <nav className="flex flex-col space-y-3">
-              <Link
-                href="/hotels"
-                className="text-sm font-medium transition-colors hover:text-primary"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t("hotels")}
-              </Link>
-
-              {/* Mobile Language Switcher */}
-              <div className="pt-2 border-t">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-muted-foreground">
-                    Dil
-                  </span>
-                  <LanguageSwitcher />
-                </div>
-              </div>
-            </nav>
-          </div>
-        </div>
-      )}
     </nav>
   );
 }

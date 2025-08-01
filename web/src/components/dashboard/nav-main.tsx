@@ -1,7 +1,6 @@
 "use client"
 
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { Link } from "@/i18n/routing"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -26,9 +25,9 @@ export function NavMain({
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton tooltip={item.title} asChild>
-                <Link href={item.url}>
+                <Link className="hover:text-blue-500 transition-all duration-300" href={item.url}>
                   {item.icon}
-                  <span>{item.title}</span>
+                  <span >{item.title}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
