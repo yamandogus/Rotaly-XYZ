@@ -9,7 +9,7 @@ import PricingSectionCards from "@/components/hotel/pricing-cards";
 
 const HotelPage = () => {
   return (
-    <div className="container mx-auto min-h-screen">
+    <div className="container mx-auto min-h-screen px-4 md:px-0">
       {/* header */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center justify-center my-10">
         <div className="flex flex-col gap-2 flex-wrap">
