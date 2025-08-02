@@ -8,19 +8,17 @@
     "admin": "Admin",
     "login": "Login",
     "register": "Register",
-    "searchPlaceholder": "Search Hotel, Pension, Apartment for Rent",
+    "searchPlaceholder": "Search for Hotel, Pension, Apartment",
     "logout": "Logout",
-    "Hotels Add": "Hotels Add",
+
+    "Hotels Add": "Add Hotel",
     "profile": "Profile",
-    "contact": "Contact"
+    "contact":"Contact"
+
   },
   "HomePage": {
-    "title": "Rotaly - Hotel Booking System",
-    "subtitle": "Modern hotel reservation and management system",
-    "searchPlaceholder": "Search Hotel, Pension, Apartment for Rent",
-    "welcomeMessage": "Welcome! Discover the best hotels.",
-    "heroHeading": "Your Dream Accommodation Is Just a Click Away",
-    "heroSubheading": "Explore accommodation options in your favorite destinations at the most attractive prices.",
+    "heroHeading": "Your Dream Stay is Just a Click Away",
+    "heroSubheading": "Discover the best stays in your favorite destinations at the most attractive prices.",
     "cityPlaceholder": "City",
     "checkInDatePlaceholder": "Check-in Date",
     "checkOutDatePlaceholder": "Check-out Date",
@@ -28,9 +26,9 @@
     "guests": "Guests",
     "searchButton": "Search",
     "popularCategoriesHeading": "Popular Categories",
-    "categoryDaire": "Apartment",
     "categoryHotel": "Hotel",
     "categoryVilla": "Villa",
+    "categoryDaire": "Apartment",
     "categoryBungalow": "Bungalow",
     "categoryRoom": "Room",
     "categoryCountryHouse": "Country House",
@@ -44,10 +42,10 @@
     "destinationBarcelona": "Barcelona",
     "destinationAntalya": "Antalya",
     "specialOffersHeading": "Special Offers",
-    "specialOffers": "Special Offers",
     "viewAllOffers": "View All",
     "offerKiadDeluxeHotel": "Kiad Deluxe Hotel",
     "offerMarmaris": "Marmaris",
+    "specialOffers": "Special Deals",
     "reviewsCount": "{count} Reviews",
     "viewDetailsButton": "View Details"
   },
@@ -56,7 +54,7 @@
   },
   "Common": {
     "search": "Search",
-    "book": "Book",
+    "book": "Book Now",
     "login": "Login",
     "register": "Register",
     "save": "Save",
@@ -107,6 +105,22 @@
     "hotels": "Hotels",
     "reservations": "Reservations"
   },
+  "Profile": {
+    "title": "My Profile",
+    "subtitle": "Review your information",
+    "personalInfo": "Personal Information",
+    "addressInfo": "Address Information",
+    "edit": "Edit",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "dob": "Date of Birth",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "role": "User Role",
+    "country": "Country",
+    "city": "City",
+    "postalCode": "Postal Code"
+  },
   "Footer": {
     "copyright": "All rights reserved",
     "hotel": "Hotel",
@@ -117,9 +131,21 @@
     "camp": "Camp",
     "faq": "FAQ",
     "live-chat": "Live Chat",
-    "cancellation": "Cancellation and Change",
+    "cancellation": "Cancellation & Changes",
     "about": "About Us",
-    "privacy": "Privacy Policy",
-    "terms": "Terms and Conditions"
+    "privacy": "Privacy",
+    "terms": "Terms & Conditions"
+  },
+  "contact": {
+    "title": "CONTACT US",
+    "contactForm": "CONTACT FORM",
+    "nameLabel": "Your Name:",
+    "emailLabel": "Your Email Address:",
+    "phoneLabel": "Phone:",
+    "messageLabel": "Your Message:",
+    "submit": "Submit",
+    "followUs": "- Follow Us",
+    "addressTitle": "ADDRESS",
+    "contactTitle": "CONTACT"
   }
 }

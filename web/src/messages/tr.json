@@ -12,10 +12,12 @@
     "logout": "Çıkış Yap",
     "Hotels Add": "Otel Ekle",
     "profile": "Profil",
-    "contact": "İletişim"
+
+    "contact":"İletişim"
+
   },
+
   "HomePage": {
-    
     "heroHeading": "Hayalinizdeki Konaklama Bir Tık Uzağınızda",
     "heroSubheading": "Sevdiğiniz destinasyonlarda, en cazip fiyatlarla konaklama seçeneklerini keşfedin.",
     "cityPlaceholder": "Şehir",
@@ -104,6 +106,24 @@
     "hotels": "Oteller",
     "reservations": "Rezervasyonlar"
   },
+
+"Profile": {
+  "title": "Profilim",
+  "subtitle": "Bilgilerinizi gözden geçirin",
+  "personalInfo": "Kişisel Bilgiler",
+  "addressInfo": "Adres Bilgileri",
+  "edit": "Düzenle",
+  "firstName": "Adı",
+  "lastName": "Soyadı",
+  "dob": "Doğum Tarihi",
+  "email": "E-posta Adresi",
+  "phone": "Telefon Numarası",
+  "role": "Kullanıcı Rolü",
+  "country": "Ülke",
+  "city": "Şehir",
+  "postalCode": "Posta Kodu"
+},
+
   "Footer": {
     "copyright": "Tüm hakları saklıdır",
     "hotel": "Otel",
@@ -118,5 +138,19 @@
     "about": "Hakkımızda",
     "privacy": "Gizlilik",
     "terms": "Şartlar ve Koşullar"
+  },
+    "contact": {
+    "title": "BİZE ULAŞIN",
+    "contactForm": "İLETİŞİM FORMU",
+    "nameLabel": "Adınız Soyadınız:",
+    "emailLabel": "E-Mail Adresiniz:",
+    "phoneLabel": "Telefon:",
+    "messageLabel": "Mesajınız:",
+    "submit": "Gönder",
+    "followUs": "- Bizi Takip Edin",
+    "addressTitle": "ADRES",
+  "contactTitle": "İLETİŞİM"
   }
+
+
 }
