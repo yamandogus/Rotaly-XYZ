@@ -1,19 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building2Icon, HotelIcon, UsersIcon, BarChart3Icon, SettingsIcon, ShieldCheckIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function AdminDashboard() {
+  const router = useRouter();
   return (
     <div className="p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-card border border-border rounded-lg shadow-sm p-8">
-          <h1 className="text-3xl font-bold text-foreground">
-            Admin Dashboard
-          </h1>
-          <p className="text-muted-foreground mt-4">
-            Admin paneline hoş geldiniz. Sistem yönetimi, otel kontrolü ve kullanıcı yönetimi işlemlerini buradan gerçekleştirebilirsiniz.
-          </p>
-        </div>
-        
+
         {/* Ana Menü Kartları */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
           <Card className="bg-card cursor-pointer hover:shadow-md transition-shadow">
@@ -67,7 +61,7 @@ export default function AdminDashboard() {
 
         {/* İkincil Menü Kartları */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-          <Card className="bg-card cursor-pointer hover:shadow-md transition-shadow">
+          <Card onClick={() => router.push("/dashboard/admin/company")} className="bg-card cursor-pointer hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex flex-col justify-center items-center gap-2">
                 <Building2Icon className="w-10 h-10 text-orange-500" />

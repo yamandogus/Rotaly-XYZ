@@ -105,6 +105,28 @@
     "hotels": "Hotels",
     "reservations": "Reservations"
   },
+  "Company": {
+    "title": "Company details",
+    "subtitle": "Let's get your account set up and running.",
+    "companyLogo": "Company logo",
+    "companyName": "Company name",
+    "emailAddress": "Email address",
+    "companyVatOrTaxId": "Company VAT or Tax ID",
+    "billingAddress": "Billing address",
+    "country": "Country",
+    "address": "Address",
+    "city": "City",
+    "state": "State",
+    "postalCode": "Postal code",
+    "upload": "Upload",
+    "continue": "Continue",
+    "changesSaved": "Changes saved",
+    "turkey": "Turkey",
+    "unitedStates": "United States",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit"
+  },
   "Profile": {
     "title": "My Profile",
     "subtitle": "Review your information",
@@ -147,5 +169,33 @@
     "followUs": "- Follow Us",
     "addressTitle": "ADDRESS",
     "contactTitle": "CONTACT"
+  },
+
+  "Customers": {
+    "allRegisteredUsers": "All registered users",
+    "joinedThisMonth": "Joined this month",
+    "purchasedIn30Days": "Purchased in 30 days",
+    "inactiveFor90Days": "Inactive for 90+ days",
+    "customerList": "Customer List",
+    "search": "Search...",
+    "filter": "Filter",
+    "sortBy": "Sort By",
+    "customerId": "Customer ID",
+    "customerInformation": "Customer Information",
+    "country": "Country",
+    "createdAt": "Created at",
+    "lastPurchase": "Last Purchase",
+    "totalSpend": "Total Spend",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "viewDetails": "View Details",
+    "edit": "Edit",
+    "delete": "Delete",
+    "name": "Name",
+    "dateCreated": "Date Created",
+    "allStatus": "All Status",
+    "id": "ID",
+    "created": "Created"
   }
 }
