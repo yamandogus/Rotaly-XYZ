@@ -100,6 +100,28 @@
     "notifications": "Bildirimler",
     "logout": "Çıkış Yap"
   },
+  "Company": {
+    "title": "Şirket Bilgileri",
+    "subtitle": "Hesabınızı kurun ve çalıştırın.",
+    "companyLogo": "Şirket logosu",
+    "companyName": "Şirket adı",
+    "emailAddress": "E-posta adresi",
+    "companyVatOrTaxId": "Şirket KDV veya Vergi Kimlik Numarası",
+    "billingAddress": "Fatura adresi",
+    "country": "Ülke",
+    "address": "Adres",
+    "city": "Şehir",
+    "state": "İl/Eyalet",
+    "postalCode": "Posta kodu",
+    "upload": "Yükle",
+    "continue": "Devam Et",
+    "changesSaved": "Değişiklikler kaydedildi",
+    "turkey": "Türkiye",
+    "unitedStates": "Amerika Birleşik Devletleri",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "edit": "Düzenle"
+  },
   "Admin": {
     "title": "Yönetici Paneli",
     "users": "Kullanıcılar",
@@ -149,8 +171,35 @@
     "submit": "Gönder",
     "followUs": "- Bizi Takip Edin",
     "addressTitle": "ADRES",
-  "contactTitle": "İLETİŞİM"
-  }
+    "contactTitle": "İLETİŞİM"
+  },
 
+  "Customers": {
+    "allRegisteredUsers": "Tüm kayıtlı kullanıcılar",
+    "joinedThisMonth": "Bu ay katılanlar",
+    "purchasedIn30Days": "30 gün içinde satın alanlar", 
+    "inactiveFor90Days": "90+ gün boyunca inaktif",
+    "customerList": "Müşteri Listesi",
+    "search": "Ara...",
+    "filter": "Filtrele",
+    "sortBy": "Sırala",
+    "customerId": "Müşteri ID",
+    "customerInformation": "Müşteri Bilgileri",
+    "country": "Ülke",
+    "createdAt": "Oluşturulma Tarihi",
+    "lastPurchase": "Son Satın Alma",
+    "totalSpend": "Toplam Harcama",
+    "status": "Durum",
+    "active": "Aktif",
+    "inactive": "İnaktif",
+    "viewDetails": "Detayları Gör",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "name": "İsim",
+    "dateCreated": "Oluşturulma Tarihi",
+    "allStatus": "Tüm Durumlar",
+    "id": "ID",
+    "created": "Oluşturuldu"
+  }
 
 }
