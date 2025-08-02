@@ -1,15 +1,6 @@
 
 "use client";
 
-import React, { useState } from "react";
-
-
-const HotelPage = () => {
-  <div>Hotelpage</div>
- 
-};
-
-
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
