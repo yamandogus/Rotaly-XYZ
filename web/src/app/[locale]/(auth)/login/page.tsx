@@ -10,7 +10,6 @@ import {
   LabelInputContainer,
 } from "../register/page";
 import { toast } from "react-hot-toast";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -39,30 +38,28 @@ const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
   const formData = new FormData(e.target as HTMLFormElement);
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
-  const role = formData.get("role") as string;
-  console.log("Login attempt:", { email, password, role });
 
   // Normal kullanıcı girişi
-  if (email === testUser.email && password === testUser.password && role === "user") {
+  if (email === testUser.email && password === testUser.password) {
     localStorage.setItem("userRole", "user");
     toast.success("Kullanıcı girişi başarılı");
     router.push("/");
   } 
   // Otel girişi
-  else if (email === testHotel.email && password === testHotel.password && role === "hotel") {
+  else if (email === testHotel.email && password === testHotel.password) {
     localStorage.setItem("userRole", "hotel");
     toast.success("Otel girişi başarılı");
     router.push("/dashboard");
   } 
   // Admin girişi
-  else if (email === testAdmin.email && password === testAdmin.password && role === "admin") {
+  else if (email === testAdmin.email && password === testAdmin.password) {
     localStorage.setItem("userRole", "admin");
     toast.success("Admin girişi başarılı");
     router.push("/dashboard");
   } 
   // Hatalı giriş
   else {
-    toast.error("Hatalı e-posta, şifre veya rol seçimi!");
+    toast.error("Hatalı e-posta veya şifre!");
   }
 };
 
@@ -86,19 +83,6 @@ const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
               <LabelInputContainer className="w-full">
                 <Label htmlFor="password">Şifre</Label>
                 <Input id="password" name="password" placeholder="••••••••" type="password" required />
-              </LabelInputContainer>
-              <LabelInputContainer className="w-full">
-                <Label htmlFor="role">Rol</Label>
-                <Select name="role" required>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seçiniz" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="user">Kullanıcı</SelectItem>
-                    <SelectItem value="hotel">Otel</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
-                  </SelectContent>
-                </Select>
               </LabelInputContainer>
             </div>
 

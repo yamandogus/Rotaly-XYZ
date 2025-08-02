@@ -1,6 +1,10 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { tr } from "date-fns/locale";
 import { MapPinIcon, MinusIcon, PlusIcon, StarIcon } from "lucide-react";
@@ -35,13 +39,11 @@ const BookingForm: React.FC<BookingFormProps> = ({
     date ? format(date, "dd/MM/yyyy", { locale: tr }) : "";
 
   return (
-
     <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-xl shadow-md p-6 w-full border border-gray-200 dark:border-gray-700 transition-colors">
       {/* Başlık ve puan */}
       <div className="mb-4">
         <h1 className="text-2xl font-bold">Riad Deluxe Hotel</h1>
         <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300 text-sm mt-1">
-
           <MapPinIcon className="w-4 h-4" />
           <span className="dark:text-white">Marakeş, Fas</span>
           <span className="mx-1 dark:text-white">·</span>
@@ -61,7 +63,6 @@ const BookingForm: React.FC<BookingFormProps> = ({
           </div>
 
           <span className="text-gray-400 dark:text-gray-500">(120)</span>
-
         </div>
       </div>
 
@@ -100,7 +101,6 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
       {/* Çıkış Tarihi */}
       <div className="mb-3">
-
         <label className="block text-xs font-medium mb-1 text-gray-800 dark:text-gray-200">
           Çıkış
         </label>
@@ -133,10 +133,10 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
       {/* Kişi Sayısı */}
       <div className="mb-4">
-
-        <label className="block text-xs font-medium mb-1 text-gray-800 dark:text-gray-200">Kişi</label>
+        <label className="block text-xs font-medium mb-1 text-gray-800 dark:text-gray-200">
+          Kişi
+        </label>
         <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-md px-2 py-1 w-32 bg-white dark:bg-gray-800 justify-between">
-
           <button
             onClick={() => setAdults(Math.max(1, adults - 1))}
             type="button"
@@ -144,7 +144,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
           >
             <MinusIcon className="w-5 h-5" />
           </button>
-          <span className="text-sm font-semibold text-black dark:text-white">{adults}</span>
+          <span className="text-sm font-semibold text-black dark:text-white">
+            {adults}
+          </span>
           <button
             onClick={() => setAdults(adults + 1)}
             type="button"
@@ -167,10 +169,10 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
       {/* Butonlar */}
 
-      <Button className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white py-2 rounded-md font-semibold">
-
-        Rezervasyon yap
-      </Button>
+      <Link href="/hotels/1/booking" className="w-full">
+        <Button className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white py-2 rounded-md font-semibold">
+          <p className="text-sm">Rezervasyon yap</p>
+        </Button>
       </Link>
       <Button
         variant="outline"
