@@ -20,7 +20,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Rating, RatingButton } from "./ui/shadcn-io/rating";
-import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "./ui/input";

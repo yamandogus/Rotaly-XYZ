@@ -16,6 +16,7 @@ import { useTypewriter } from "react-simple-typewriter";
 import { Input } from "./ui/input";
 
 const SearchForm = () => {
+
   const [text] = useTypewriter({
     words: ["Otel", "Pansiyon", "Kiralık Daire"],
     loop: true,
@@ -229,6 +230,8 @@ const SearchForm = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div>
       </div>
     </div>
   );
