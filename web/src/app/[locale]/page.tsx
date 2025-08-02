@@ -41,7 +41,7 @@ export default function HomePage() {
     { name: t("destinationAntalya"), image: "/images/antalya.jpg" },
   ];
 
-  const specialOffers = [
+const specialOffers = [
     {
       id: 1,
       name: t("offerKiadDeluxeHotel"),
@@ -210,11 +210,11 @@ export default function HomePage() {
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8 text-center md:text-left">
             {t("destinationsHeading")}
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
             {destinations.map((destination) => (
               <div
                 key={destination.name}
-                className="flex flex-col items-center space-y-3 cursor-pointer hover:scale-105 transition-transform duration-200"
+                className="flex flex-col items-center space-y-3 cursor-pointer hover:scale-105 transition-transform duration-300"
               >
                 <div className="w-40 h-60 rounded-full overflow-hidden shadow-lg border-4 border-gray-200 dark:border-gray-700 relative">
                   <Image
