@@ -12,11 +12,8 @@
     "logout": "Çıkış Yap",
     "Hotels Add": "Otel Ekle",
     "profile": "Profil",
-
     "contact":"İletişim"
-
   },
-
   "HomePage": {
     "heroHeading": "Hayalinizdeki Konaklama Bir Tık Uzağınızda",
     "heroSubheading": "Sevdiğiniz destinasyonlarda, en cazip fiyatlarla konaklama seçeneklerini keşfedin.",
@@ -106,24 +103,41 @@
     "hotels": "Oteller",
     "reservations": "Rezervasyonlar"
   },
-
-"Profile": {
-  "title": "Profilim",
-  "subtitle": "Bilgilerinizi gözden geçirin",
-  "personalInfo": "Kişisel Bilgiler",
-  "addressInfo": "Adres Bilgileri",
-  "edit": "Düzenle",
-  "firstName": "Adı",
-  "lastName": "Soyadı",
-  "dob": "Doğum Tarihi",
-  "email": "E-posta Adresi",
-  "phone": "Telefon Numarası",
-  "role": "Kullanıcı Rolü",
-  "country": "Ülke",
-  "city": "Şehir",
-  "postalCode": "Posta Kodu"
-},
-
+  "Profile": {
+    "title": "Profilim",
+    "subtitle": "Bilgilerinizi gözden geçirin",
+    "personalInfo": "Kişisel Bilgiler",
+    "addressInfo": "Adres Bilgileri",
+    "edit": "Düzenle",
+    "firstName": "Adı",
+    "lastName": "Soyadı",
+    "dob": "Doğum Tarihi",
+    "email": "E-posta Adresi",
+    "phone": "Telefon Numarası",
+    "role": "Kullanıcı Rolü",
+    "country": "Ülke",
+    "city": "Şehir",
+    "postalCode": "Posta Kodu",
+    "reservations": "Rezervasyonlar",
+    "pastReservations": "Geçmiş Rezervasyonlar",
+    "activeReservations": "Aktif Rezervasyonlar",
+    "totalReservations": "Toplam: {count} rezervasyon",
+    "hotelName": "Otel Adı",
+    "checkInDate": "Giriş Tarihi",
+    "checkOutDate": "Çıkış Tarihi",
+    "guests": "Misafirler",
+    "status": "Durum",
+    "price": "Fiyat",
+    "confirmed": "Onaylandı",
+    "pending": "Beklemede",
+    "completed": "Tamamlandı",
+    "save": "Kaydet",
+    "fieldRequired": "Bu alan boş bırakılamaz",
+    "invalidEmail": "Geçerli bir e-posta adresi girin",
+    "invalidPhone": "Geçerli telefon: +90 5XX XXX XXXX formatında olmalı",
+    "reservationsDescription": "Aktif rezervasyonlarınız burada listelenecek.",
+    "pastReservationsDescription": "Geçmiş rezervasyonlarınız burada listelenecek."
+  },
   "Footer": {
     "copyright": "Tüm hakları saklıdır",
     "hotel": "Otel",
@@ -139,7 +153,7 @@
     "privacy": "Gizlilik",
     "terms": "Şartlar ve Koşullar"
   },
-    "contact": {
+  "contact": {
     "title": "BİZE ULAŞIN",
     "contactForm": "İLETİŞİM FORMU",
     "nameLabel": "Adınız Soyadınız:",
@@ -149,8 +163,6 @@
     "submit": "Gönder",
     "followUs": "- Bizi Takip Edin",
     "addressTitle": "ADRES",
-  "contactTitle": "İLETİŞİM"
+    "contactTitle": "İLETİŞİM"
   }
-
-
 }

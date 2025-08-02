@@ -10,11 +10,9 @@
     "register": "Register",
     "searchPlaceholder": "Search for Hotel, Pension, Apartment",
     "logout": "Logout",
-
     "Hotels Add": "Add Hotel",
     "profile": "Profile",
     "contact":"Contact"
-
   },
   "HomePage": {
     "heroHeading": "Your Dream Stay is Just a Click Away",
@@ -119,7 +117,26 @@
     "role": "User Role",
     "country": "Country",
     "city": "City",
-    "postalCode": "Postal Code"
+    "postalCode": "Postal Code",
+    "reservations": "Reservations",
+    "pastReservations": "Past Reservations",
+    "activeReservations": "Active Reservations",
+    "totalReservations": "Total: {count} reservations",
+    "hotelName": "Hotel Name",
+    "checkInDate": "Check-in Date",
+    "checkOutDate": "Check-out Date",
+    "guests": "Guests",
+    "status": "Status",
+    "price": "Price",
+    "confirmed": "Confirmed",
+    "pending": "Pending",
+    "completed": "Completed",
+    "save": "Save",
+    "fieldRequired": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidPhone": "Please enter a valid phone number in format: +90 5XX XXX XXXX",
+    "reservationsDescription": "Your active reservations will be listed here.",
+    "pastReservationsDescription": "Your past reservations will be listed here."
   },
   "Footer": {
     "copyright": "All rights reserved",
