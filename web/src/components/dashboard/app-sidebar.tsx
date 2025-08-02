@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { NavMain } from "@/components/dashboard/nav-main";
-import { NavSecondary } from "@/components/dashboard/nav-secondary";
 import { NavUser } from "@/components/dashboard/nav-user";
 
 import {
@@ -10,14 +9,8 @@ import {
   IconChartBar,
   IconFolder,
   IconUsers,
-  IconCamera,
   IconFileDescription,
-  IconFileAi,
-  IconSettings,
-  IconHelp,
-  IconSearch,
   IconBuilding,
-  IconUserCheck,
 } from "@tabler/icons-react";
 
 import {
@@ -57,11 +50,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: <IconDashboard />,
           },
           {
-            title: t("hotels"),
-            url: "/dashboard/admin/hotels",
-            icon: <IconBuilding />,
-          },
-          {
             title: t("customers"),
             url: "/dashboard/admin/customers",
             icon: <IconUsers />,
@@ -70,11 +58,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             title: t("company"),
             url: "/dashboard/admin/company",
             icon: <IconFileDescription />,
-          },
-          {
-            title: t("admins"),
-            url: "/dashboard/admin/admins",
-            icon: <IconUserCheck />,
           },
           {
             title: t("profile"),
@@ -98,11 +81,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             title: t("reservations"),
             url: "/dashboard/hotel/reservations",
             icon: <IconChartBar />,
-          },
-          {
-            title: t("profile"),
-            url: "/dashboard/hotel/profile",
-            icon: <IconFolder />,
           },
           {
             title: t("company"),

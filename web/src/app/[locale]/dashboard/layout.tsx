@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import { SiteHeader } from "@/components/dashboard/site-header";
+import Image from "next/image";
 
 type Props = {
   children: ReactNode;
@@ -35,8 +36,11 @@ export default function DashboardLayout({ children }: Props) {
   // Loading state
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg">Yükleniyor...</div>
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <div>
+          <Image src="/images/logo3.png" alt="Loading" width={100} height={100} />
+          <div className="text-lg">Yükleniyor...</div>
+        </div>
       </div>
     );
   }
