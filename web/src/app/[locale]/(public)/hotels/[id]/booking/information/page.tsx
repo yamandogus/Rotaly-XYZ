@@ -82,7 +82,22 @@ const BookingInformationPage = ({
         </div>
         
         {/* Hotel Summary Component kullanımı */}
-        <HotelSummary hotel={hotelData} booking={bookingData} />
+        <HotelSummary 
+          hotel={{
+            id: hotelData[0].id.toString(),
+            name: hotelData[0].name,
+            location: hotelData[0].location,
+            image: hotelData[0].image,
+            rating: hotelData[0].rating,
+            ratingCount: 120, // Default rating count
+            features: {
+              cancelFree: hotelData[0].cancel,
+              breakfast: hotelData[0].breakfast,
+              parking: hotelData[0].parking,
+            }
+          }} 
+          booking={bookingData} 
+        />
       </div>
     </div>
   );

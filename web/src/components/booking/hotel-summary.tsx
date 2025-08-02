@@ -1,8 +1,9 @@
-import React from 'react';
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { Rating, RatingButton } from '@/components/ui/shadcn-io/rating';
-import { Car, Camera, UtensilsCrossed } from 'lucide-react';
+import React from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Rating, RatingButton } from "@/components/ui/shadcn-io/rating";
+import { Car, Camera, UtensilsCrossed } from "lucide-react";
+import { hotelData } from "@/data/dumy";
 
 interface HotelSummaryProps {
   hotel: {
@@ -12,7 +13,7 @@ interface HotelSummaryProps {
     image: string;
     rating: number;
     ratingCount: number;
-    features: {
+    features?: {
       cancelFree: boolean;
       breakfast: boolean;
       parking: boolean;
@@ -46,15 +47,21 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
             height={500}
           />
         </div>
-        
+
         <div className="flex flex-row justify-between gap-2 mt-2">
           <div className="flex flex-col">
-            <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{hotel.name}</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 pt-1">{hotel.location}</p>
+            <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+              {hotel.name}
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 pt-1">
+              {hotel.location}
+            </p>
           </div>
           <div className="flex flex-row gap-1 items-center">
-            <p className="text-sm text-gray-500 dark:text-gray-400">{hotel.rating}</p>
-            <Rating defaultValue={hotel.rating} readOnly>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              {hotel.rating}
+            </p>
+            <Rating defaultValue={hotelData[0].rating} readOnly>
               {Array.from({ length: 5 }).map((_, index) => (
                 <RatingButton
                   key={index}
@@ -63,12 +70,14 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
                 />
               ))}
             </Rating>
-            <p className="text-sm text-gray-500 dark:text-gray-400">({hotel.ratingCount})</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              ({hotel.ratingCount})
+            </p>
           </div>
         </div>
-        
+
         <div className="flex flex-row gap-2 flex-wrap mt-2">
-          {hotel.features.cancelFree && (
+          {hotel.features?.cancelFree && (
             <Button
               size="sm"
               className="bg-red-50 dark:bg-red-950 text-xs text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 hover:bg-red-100 dark:hover:bg-red-900 px-3 py-2 rounded-md flex items-center gap-2"
@@ -78,7 +87,7 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
               Ücretsiz İptal
             </Button>
           )}
-          {hotel.features.breakfast && (
+          {hotel.features?.breakfast && (
             <Button
               size="sm"
               className="bg-green-50 dark:bg-green-950 text-xs text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800 hover:bg-green-100 dark:hover:bg-green-900 px-3 py-2 rounded-md flex items-center gap-2"
@@ -88,7 +97,7 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
               Kahvaltı dahil
             </Button>
           )}
-          {hotel.features.parking && (
+          {hotel.features?.parking && (
             <Button
               size="sm"
               className="bg-blue-50 dark:bg-blue-950 text-xs text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900 px-3 py-2 rounded-md flex items-center gap-2"
@@ -156,7 +165,7 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
                 {booking.nights} gece
               </span>
               <span className="text-gray-900 dark:text-gray-100 font-medium">
-                {booking.basePrice.toLocaleString('tr-TR')} TL
+                {booking.basePrice.toLocaleString("tr-TR")} TL
               </span>
             </div>
             <div className="flex justify-between items-center">
@@ -164,7 +173,7 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
                 Vergiler ve Hizmet Bedeli
               </span>
               <span className="text-gray-900 dark:text-gray-100 font-medium">
-                {booking.taxesAndFees.toLocaleString('tr-TR')} TL
+                {booking.taxesAndFees.toLocaleString("tr-TR")} TL
               </span>
             </div>
           </div>
@@ -177,7 +186,7 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
               Toplam
             </span>
             <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              {booking.total.toLocaleString('tr-TR')} TL
+              {booking.total.toLocaleString("tr-TR")} TL
             </span>
           </div>
         </div>
@@ -186,4 +195,4 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
   );
 };
 
-export default HotelSummary; 
+export default HotelSummary;

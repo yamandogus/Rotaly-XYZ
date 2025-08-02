@@ -25,7 +25,7 @@ const HotelCard = ({ item }: HotelCardProps) => {
   return (
     <Card
       key={item.id}
-      className="bg-card border border-border rounded-2xl overflow-hidden transition-shadow duration-300 shadow-[0_0_10px_rgba(0,0,0,0.2)] hover:shadow-[0_0_15px_rgba(0,0,0,0.25)] dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] gap-0 pt-1 pb-2 cursor-pointer group"
+      className="bg-card border border-border rounded-2xl overflow-hidden transition-shadow duration-300 shadow-[0_0_10px_rgba(0,0,0,0.2)] hover:shadow-[0_0_15px_rgba(0,0,0,0.25)] dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] gap-0 pt-1 pb-2 cursor-pointer group flex flex-col h-full"
     >
       <CardHeader className="relative p-0">
         <div className="relative h-52 w-full">
@@ -50,7 +50,7 @@ const HotelCard = ({ item }: HotelCardProps) => {
         </div>
       </CardHeader>
 
-      <CardContent className="p-4 pb-2">
+      <CardContent className="p-4 pb-2 flex-grow">
         <h3 className="font-semibold text-foreground mb-2 text-lg leading-tight">
           {item.name}
         </h3>
@@ -62,17 +62,19 @@ const HotelCard = ({ item }: HotelCardProps) => {
           </div>
           <div className="flex items-center gap-1">
             {/* Dinamik puan */}
-            <span className="text-sm font-semibold text-foreground">{item.rating.toFixed(1)}</span>
+            <span className="text-sm font-semibold text-foreground">
+              {item.rating.toFixed(1)}
+            </span>
             {/* Sarı ve daha büyük yıldızlar */}
-           <Rating defaultValue={item.rating} readOnly>
-                       {Array.from({ length: 5 }).map((_, index) => (
-                         <RatingButton
-                           key={index}
-                           size={14}
-                           className="text-yellow-500"
-                         />
-                       ))}
-                     </Rating>
+            <Rating defaultValue={item.rating} readOnly>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <RatingButton
+                  key={index}
+                  size={14}
+                  className="text-yellow-500"
+                />
+              ))}
+            </Rating>
             <span className="text-xs text-muted-foreground ml-1">(120)</span>
           </div>
         </div>
@@ -123,7 +125,7 @@ const HotelCard = ({ item }: HotelCardProps) => {
         </div>
       </CardContent>
 
-      <CardFooter className="p-4 pt-4 flex justify-between items-center gap-2 pb-0">
+      <CardFooter className="p-4 pt-4 flex justify-between items-center gap-2 mt-auto">
         <div className="flex flex-col">
           <span className="text-sm text-muted-foreground mb-1">
             {item.nights} gece için

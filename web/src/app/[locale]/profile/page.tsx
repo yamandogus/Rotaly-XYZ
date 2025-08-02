@@ -14,9 +14,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useTranslations } from "next-intl";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
+import { DatePicker } from "@/components/date-picker";
 
 export default function ProfilePage() {
   const t = useTranslations("Profile");
@@ -197,21 +196,7 @@ export default function ProfilePage() {
                 </Label>
 
                 {field.id === "dob" ? (
-                  <DatePicker
-                    selected={new Date(field.value)}
-                    onChange={(date) => {
-                      const updated = [...tempData];
-                      updated[idx].value = date?.toISOString().split("T")[0] ?? "";
-                      setTempData(updated);
-                    }}
-                    dateFormat="dd.MM.yyyy"
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    className={`w-full p-2 rounded border ${
-                      errors[field.id] ? "border-red-500" : "border-gray-300"
-                    } dark:bg-gray-800 dark:text-white`}
-                  />
+                  <DatePicker/>
                 ) : (
                   <Input
                     id={field.id}
