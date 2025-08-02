@@ -1,9 +1,11 @@
-import React from 'react'
+"use client";
+
+import React, { useState } from "react";
+
 
 const HotelPage = () => {
-  return (
-    <div>page</div>
-  )
-}
+  <div>Hotelpage</div>
+ 
+};
 
-export default HotelPage
+export default HotelPage;
