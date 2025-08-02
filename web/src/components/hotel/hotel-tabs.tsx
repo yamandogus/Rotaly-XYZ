@@ -8,7 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 export default function HotelTabs() {
   return (
-    <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+    <div className="mt-8 bg-white dark:bg-card rounded-lg shadow-md p-6">
       <Tabs defaultValue="description" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="description">Açıklama</TabsTrigger>

@@ -1,27 +1,72 @@
-# Email Service Documentation
+# Email Module - Rotaly XYZ
 
-This email service is built using nodemailer and nodemailer-express-handlebars with Brevo (formerly Sendinblue) SMTP configuration.
+This module handles all email communications for the Rotaly XYZ platform using nodemailer and handlebars templates.
+
+## Structure
+
+```
+├── README.md
+├── partials
+│   ├── footer.hbs
+│   ├── header.hbs
+│   └── styles.hbs
+├── service.ts
+└── templates
+    ├── password-reset.hbs
+    ├── verification.hbs
+    └── welcome.hbs
+```
 
 ## Features
 
 - ✅ Email verification with OTP
 - ✅ Password reset emails
 - ✅ Welcome emails
-- ✅ Booking confirmation emails
-- ✅ HTML email templates with Handlebars
+- ✅ Modular template system with partials
+- ✅ Responsive email design
 - ✅ Environment variable configuration
+- ✅ Handlebars templating system
 
-## Files Created
+## Templates
 
-```
-api/src/config/email.ts                           # Email configuration and transporter
-api/src/modules/email/service.ts                  # Email service class with methods
-api/src/modules/email/templates/verification.html # Verification email template
-api/src/modules/email/templates/password-reset.html # Password reset email template
-api/src/utils/otp.ts                              # OTP generation utility
-```
+### 1. Verification Email (`verification.hbs`)
+
+### 2. Password Reset Email (`password-reset.hbs`)
+
+### 3. Welcome Email (`welcome.hbs`)
+
+## Partials System
+
+### Header (`partials/header.hbs`)
+
+- Rotaly XYZ logo and branding
+- Usage: `{{> partials/header title="Your Title"}}`
+
+### Footer (`partials/footer.hbs`)
+
+- Copyright information
+- Customizable footer message
+- Closing HTML tags
+- Usage: `{{> partials/footer footerMessage="Your message"}}`
+
+## Styling System
+
+### Modifying Styles
+
+- Edit `partials/styles.hbs` for global style changes
+- Test responsive design on mobile devices
+
+### Key Classes
+
+- `.email-container`: Main email wrapper
+- `.title.{type}`: Colored titles for different email types
+- `.otp-container.{type}`: Styled OTP code containers
+- `.features-grid`: Responsive grid for welcome email features
+- `.highlight`: Brand color highlights
 
 ## Run Tests
+
+From api folder run :
 
 ```bash
 npx ts-node src/tests/test-email.ts

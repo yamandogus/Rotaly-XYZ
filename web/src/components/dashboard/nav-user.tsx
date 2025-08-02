@@ -1,6 +1,6 @@
 "use client"
 
-
+import { useTranslations } from "next-intl"
 import {
   Avatar,
   AvatarFallback,
@@ -32,6 +32,7 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const t = useTranslations("Dashboard")
 
   return (
     <SidebarMenu>
@@ -79,21 +80,21 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
          
-                Hesap Ayarları
+                {t("account-settings")}
               </DropdownMenuItem>
               <DropdownMenuItem>
            
-                Fatura Bilgileri
+                {t("billing-info")}
               </DropdownMenuItem>
               <DropdownMenuItem>
            
-                Bildirimler
+                {t("notifications")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
            
-              Çıkış Yap
+              {t("logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

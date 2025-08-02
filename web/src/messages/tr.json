@@ -12,7 +12,9 @@
     "logout": "Çıkış Yap",
     "Hotels Add": "Otel Ekle",
     "profile": "Profil",
+
     "contact":"İletişim"
+
   },
 
   "HomePage": {
@@ -69,7 +71,34 @@
     "title": "Panel",
     "bookings": "Rezervasyonlar",
     "hotels": "Otellerim",
-    "profile": "Profil"
+    "profile": "Profil",
+    "Hotel Management System": "Otel Yönetim Sistemi",
+    "home": "Anasayfa",
+    "customers": "Müşteriler",
+    "company": "Şirket Bilgileri",
+    "admins": "Adminler",
+    "hotel-info": "Otel Bilgileri",
+    "reservations": "Rezervasyonlar",
+    "reports": "Raporlar",
+    "active-reservations": "Aktif Rezervasyonlar",
+    "passive-reservations": "Pasif Rezervasyonlar",
+    "active-customers": "Aktif Müşteriler",
+    "passive-customers": "Pasif Müşteriler",
+    "services": "Hizmetler",
+    "active-proposals": "Aktif Teklifler",
+    "archived": "Arşivlenmiş",
+    "settings": "Ayarlar",
+    "help": "Yardım",
+    "search": "Arama",
+    "documents": "Belgeler",
+    "more": "Daha Fazla",
+    "open": "Aç",
+    "share": "Paylaş",
+    "delete": "Sil",
+    "account-settings": "Hesap Ayarları",
+    "billing-info": "Fatura Bilgileri",
+    "notifications": "Bildirimler",
+    "logout": "Çıkış Yap"
   },
   "Admin": {
     "title": "Yönetici Paneli",

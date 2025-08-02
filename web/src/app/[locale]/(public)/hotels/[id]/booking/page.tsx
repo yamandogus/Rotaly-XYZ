@@ -5,6 +5,7 @@ import BookingInformationPage from './information/page'
 import BookingPaymentPage from './payment/page'
 import BookingConfirmationPage from './confirmation/page'
 import { Check } from 'lucide-react'
+import BookingSuccessPage from './success/page'
 
 export default function BookingPage() {
   const [currentStep, setCurrentStep] = useState(1)
@@ -80,7 +81,7 @@ export default function BookingPage() {
       <div className='max-w-6xl mx-auto px-4 pb-8'>
         {currentStep === 1 && <BookingInformationPage setCurrentStep={setCurrentStep} />}
         {currentStep === 2 && <BookingPaymentPage setCurrentStep={setCurrentStep} />}
-        {currentStep === 3 && <BookingConfirmationPage setCurrentStep={setCurrentStep} />}
+        {currentStep === 3 && <BookingSuccessPage setCurrentStep={setCurrentStep} />}
       </div>
     </div>
   )

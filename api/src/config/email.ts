@@ -9,10 +9,7 @@ export const emailConfig = {
   host: "smtp-relay.brevo.com",
   port: 587,
   secure: false,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
+  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
 };
 
 // creating transporter with email config
@@ -21,12 +18,12 @@ export const transporter = nodemailer.createTransport(emailConfig);
 // configuring handlebars options
 const handlebarsOptions = {
   viewEngine: {
-    extName: ".html",
-    partialsDir: path.resolve(__dirname, "../modules/email/templates"),
+    extname: ".hbs",
+    partialsDir: path.resolve(__dirname, "../modules/email/partials"),
     defaultLayout: false,
   },
   viewPath: path.resolve(__dirname, "../modules/email/templates"),
-  extName: ".html",
+  extName: ".hbs",
 } as any;
 
 // using handlebars with nodemailer

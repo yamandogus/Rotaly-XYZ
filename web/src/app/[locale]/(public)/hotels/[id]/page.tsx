@@ -33,7 +33,9 @@ const HotelDetailPageContent = () => {
       {/* Breadcrumbs */}
       <Breadcrumbs />
 
+
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md dark:shadow-lg p-6 lg:flex lg:gap-6 transition-colors duration-300">
+
         {/* Sol: Galeri */}
         <ImageGallery />
 

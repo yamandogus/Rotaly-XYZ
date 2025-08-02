@@ -15,7 +15,7 @@ export class EmailService {
       const mailOptions = {
         from: {
           name: String(process.env.EMAIL_FROM_NAME),
-          address: String(process.env.SMTP_USER),
+          address: "verify@rotaly-xyz.com",
         },
         to: email,
         subject: "Email Verification - Rotaly XYZ",
@@ -49,7 +49,7 @@ export class EmailService {
       const mailOptions = {
         from: {
           name: String(process.env.EMAIL_FROM_NAME),
-          address: String(process.env.SMTP_USER),
+          address: "reset@rotaly-xyz.com",
         },
         to: email,
         subject: "Password Reset - Rotaly XYZ",
@@ -76,22 +76,22 @@ export class EmailService {
    * @param name - receiver name
    * @returns Promise<boolean>
    */
-  /* TODO: CREATE WELCOME EMAIL TEMPLATE */
   async sendWelcomeEmail(email: string, name: string): Promise<boolean> {
     try {
       const mailOptions = {
         from: {
           name: String(process.env.EMAIL_FROM_NAME),
-          address: String(process.env.SMTP_USER),
+          address: "noreply@rotaly-xyz.com",
         },
         to: email,
         subject: "Welcome to Rotaly XYZ!",
-        html: `
-          <h2>Welcome to Rotaly XYZ, ${name}!</h2>
-          <p>Thank you for joining our platform. We're excited to have you on board!</p>
-          <p>You can now start exploring our hotel booking services.</p>
-          <p>Best regards,<br>The Rotaly XYZ Team</p>
-        `,
+        template: "welcome",
+        context: {
+          name: name,
+          year: new Date().getFullYear(),
+          platformUrl:
+            process.env.FRONTEND_URL || "https://rotaly-xyz.vercel.app/",
+        },
       };
 
       const result = await transporter.sendMail(mailOptions);
