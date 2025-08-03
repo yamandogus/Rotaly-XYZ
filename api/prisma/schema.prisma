@@ -76,6 +76,7 @@ enum SupportCategory {
   GENERAL
   COMPLAINT
   FEATURE_REQUEST
+  OTHER
 }
 
 model User {
@@ -108,8 +109,6 @@ model User {
   comments  Comment[]
   favorites Favorite[]
   images    Image[]    @relation("UserImages")
-  uploadedAttachments SupportAttachment[] @relation("UploadedAttachments")
-  messageAttachments MessageAttachment[] @relation("MessageAttachments")
 
   @@map("users")
 }
@@ -245,6 +244,28 @@ model Reservation {
   @@map("reservations")
 }
 
+model Attachment {
+  id            String    @id @default(uuid())
+  filename      String
+  originalName  String    @map("original_name")
+  mimeType      String    @map("mime_type")
+  size          Int
+  url           String
+  uploadedBy    User      @relation("UserAttachments", fields: [uploadedById], references: [id])
+  uploadedById  String    @map("uploaded_by_id")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  // optional relations - only one is used per attachment
+  support       Support?  @relation(fields: [supportId], references: [id])
+  supportId     String?
+
+  message       Message?  @relation(fields: [messageId], references: [id])
+  messageId     String?
+
+  @@map("attachments")
+}
+
 model Support {
   id        String        @id @default(uuid())
   subject   String
@@ -263,26 +284,9 @@ model Support {
   supportRepId String?
 
   messages Message[]
-  attachments SupportAttachment[]
+  attachments Attachment[]
 
   @@map("supports")
-}
-
-model SupportAttachment {
-  id          String    @id @default(uuid())
-  filename    String
-  originalName String   @map("original_name")
-  mimeType    String    @map("mime_type")
-  size        Int       // File size in bytes
-  url         String    // Storage URL or path
-  support     Support   @relation(fields: [supportId], references: [id])
-  supportId   String
-  uploadedBy  User      @relation("UploadedAttachments", fields: [uploadedById], references: [id])
-  uploadedById String   @map("uploaded_by_id")
-  createdAt   DateTime  @default(now()) @map("created_at")
-  deletedAt   DateTime? @map("deleted_at")
-
-  @@map("support_attachments")
 }
 
 model Message {
@@ -298,26 +302,9 @@ model Message {
   readAt     DateTime?
   deletedAt  DateTime? @map("deleted_at")
 
-  attachments MessageAttachment[]
+  attachments Attachment[]
 
   @@map("messages")
-}
-
-model MessageAttachment {
-  id          String    @id @default(uuid())
-  filename    String
-  originalName String   @map("original_name")
-  mimeType    String    @map("mime_type")
-  size        Int       // File size in bytes
-  url         String    // Storage URL or path
-  message     Message   @relation(fields: [messageId], references: [id])
-  messageId   String
-  uploadedBy  User      @relation("MessageAttachments", fields: [uploadedById], references: [id])
-  uploadedById String   @map("uploaded_by_id")
-  createdAt   DateTime  @default(now()) @map("created_at")
-  deletedAt   DateTime? @map("deleted_at")
-
-  @@map("message_attachments")
 }
 
 model EmailLog {
