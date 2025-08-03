@@ -2,22 +2,15 @@
 
 import * as React from "react";
 import { NavMain } from "@/components/dashboard/nav-main";
-import { NavSecondary } from "@/components/dashboard/nav-secondary";
 import { NavUser } from "@/components/dashboard/nav-user";
 
 import {
   IconDashboard,
   IconChartBar,
-  IconFolder,
   IconUsers,
-  IconCamera,
   IconFileDescription,
-  IconFileAi,
-  IconSettings,
-  IconHelp,
-  IconSearch,
   IconBuilding,
-  IconUserCheck,
+  IconUser,
 } from "@tabler/icons-react";
 
 import {
@@ -57,29 +50,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: <IconDashboard />,
           },
           {
-            title: t("hotels"),
-            url: "/dashboard/admin/hotels",
-            icon: <IconBuilding />,
-          },
-          {
-            title: t("customers"),
+            title: t("customer-management"),
             url: "/dashboard/admin/customers",
             icon: <IconUsers />,
           },
           {
-            title: t("company"),
+            title: t("statistics-reports"),
+            url: "/dashboard/admin/statistics",
+            icon: <IconChartBar />,
+          },
+          {
+            title: t("company-settings"),
             url: "/dashboard/admin/company",
             icon: <IconFileDescription />,
           },
           {
-            title: t("admins"),
-            url: "/dashboard/admin/admins",
-            icon: <IconUserCheck />,
-          },
-          {
             title: t("profile"),
             url: "/dashboard/admin/profile",
-            icon: <IconFolder />,
+            icon: <IconUser />,
           },
         ];
       case "hotel":
@@ -98,11 +86,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             title: t("reservations"),
             url: "/dashboard/hotel/reservations",
             icon: <IconChartBar />,
-          },
-          {
-            title: t("profile"),
-            url: "/dashboard/hotel/profile",
-            icon: <IconFolder />,
           },
           {
             title: t("company"),

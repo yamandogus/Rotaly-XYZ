@@ -13,27 +13,7 @@ import {
 } from "@/components/ui/pagination";
 import { Filters } from "@/components/filters";
 import { getTranslations } from "next-intl/server";
-
-// Otel verisi
-const hotelData = {
-  id: 1,
-  name: "Riad Deluxe Hotel",
-  location: "Marakeş, Fas",
-  rating: 4.5,
-  price: "40.290 TL",
-  image: "/images/opportunity1.jpg",
-  cancel: true,
-  breakfast: true,
-  parking: true,
-  nights: 4, 
-};
-
-
-const mockHotels = Array.from({ length: 45 }, (_, i) => ({
-  ...hotelData,
-  id: i + 1,
-  nights: 4
-}));
+import { hotelData } from "@/data/dumy";
 
 const ITEMS_PER_PAGE = 9;
 
@@ -49,7 +29,7 @@ function getPaginationData(
 ) {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = mockHotels.slice(startIndex, startIndex + itemsPerPage);
+  const currentItems = hotelData.slice(startIndex, startIndex + itemsPerPage);
 
   return { totalPages, currentItems };
 }
@@ -113,7 +93,7 @@ export default async function CategoryPage({
   const currentPage = Number(resolvedSearchParams?.page) || 1;
 
   const { totalPages, currentItems } = getPaginationData(
-    mockHotels.length,
+    hotelData.length,
     currentPage,
     ITEMS_PER_PAGE
   );
@@ -148,7 +128,7 @@ export default async function CategoryPage({
               <div className="bg-background">
                 {/* Başlık */}
                 <div className="px-6 flex justify-between items-center">
-                  <h2 className="text-xl font-bold text-foreground">{t("resultsFound", { count: mockHotels.length })}</h2>
+                  <h2 className="text-xl font-bold text-foreground">{t("resultsFound", { count: hotelData.length })}</h2>
                   <div className="text-sm text-muted-foreground">
                     Sayfa {currentPage}/{totalPages}
                   </div>
@@ -161,7 +141,7 @@ export default async function CategoryPage({
                       // Boolean özellikler için açıklamalar
                       const cancelText = hotel.cancel
                         ? "Ücretsiz iptal"
-                        : "İptal edilemez";
+                        : "Ücretsiz iptal edilemez";
                       const breakfastText = hotel.breakfast
                         ? "Kahvaltı dahil"
                         : "Kahvaltı dahil değil";

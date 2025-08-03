@@ -6,13 +6,13 @@ const Breadcrumbs = () => (
     <ol className="list-none p-0 inline-flex items-center flex-wrap">
       <li className="flex items-center">
         <Home className="w-4 h-4 mr-1 text-black" />
-        <Link href="/" className="text-black hover:underline">
+        <Link href="/" className="text-black hover:underline dark:text-white">
           Anasayfa
         </Link>
         <span className="mx-2">/</span>
       </li>
       <li className="flex items-center">
-        <Link href="/categories/hotel" className="text-black hover:underline">
+        <Link href="/categories/hotel" className="text-black hover:underline dark:text-white">
           Otel
         </Link>
         <span className="mx-2">/</span>

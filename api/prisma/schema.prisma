@@ -99,6 +99,7 @@ model User {
   hotels       Hotel[]       @relation("HotelOwner")
   reservations Reservation[]
   tokens       Token[]
+  paymentCards PaymentCard[]
 
   supportRequests Support[] @relation("UserSupport")
   handledSupports Support[] @relation("SupportRep")
@@ -125,23 +126,46 @@ model Favorite {
   @@map("favorites")
 }
 
+model PaymentCard {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  token     String // Tokenleştirilmiş kart bilgisi
+  brand     String // Kart markası (Visa, Mastercard vb.)
+  last4     String // Kartın son 4 hanesi
+  expiresAt DateTime // Son kullanma tarihi
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("payment_cards")
+}
+
 model Hotel {
-  id           String    @id @default(uuid())
-  name         String
-  description  String?
-  location     String
-  address      String
-  city         String
-  country      String
-  rating       Float?
-  discountRate Float?
-  isDiscounted Boolean   @default(false)
-  type         HotelType
-  ownerId      String
-  isActive     Boolean   @default(true)
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-  deletedAt    DateTime? @map("deleted_at")
+  id                String    @id @default(uuid())
+  name              String
+  description       String?
+  location          String
+  address           String
+  city              String
+  country           String
+  rating            Float?
+  discountRate      Float? // İndirim oranı
+  isDiscounted      Boolean   @default(false) // İndirim aktif mi?
+  discountStartDate DateTime? // İndirim başlangıç tarihi
+  discountEndDate   DateTime? // İndirim bitiş tarihi
+  type              HotelType
+  ownerId           String
+  isActive          Boolean   @default(true)
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+  deletedAt         DateTime? @map("deleted_at")
+
+  taxId               String? // Vergi kimlik numarası
+  taxOffice           String? // Vergi dairesi
+  tradeRegistryNumber String? // Ticaret sicil numarası
+  businessLicense     String? // İşletme ruhsatı numarası
+  addressProof        String? // Adres kanıtı (Belge URL'si veya dosya yolu)
+  taxCertificate      String? // Vergi levhası (Belge URL'si veya dosya yolu)
 
   owner     User         @relation("HotelOwner", fields: [ownerId], references: [id])
   rooms     Room[]
