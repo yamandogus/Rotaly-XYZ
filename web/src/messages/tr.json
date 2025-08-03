@@ -72,7 +72,9 @@
     "bookings": "Rezervasyonlar",
     "hotels": "Otellerim",
     "profile": "Profil",
-    "Hotel Management System": "Otel Yönetim Sistemi",
+    "admin-management-system": "Admin Yönetim Sistemi",
+    "hotel-management-system": "Otel Yönetim Sistemi",
+    "rotaly": "Rotaly",
     "home": "Anasayfa",
     "customers": "Müşteriler",
     "company": "Şirket Bilgileri",
@@ -80,6 +82,7 @@
     "hotel-info": "Otel Bilgileri",
     "reservations": "Rezervasyonlar",
     "reports": "Raporlar",
+    "statistics": "İstatistikler",
     "active-reservations": "Aktif Rezervasyonlar",
     "passive-reservations": "Pasif Rezervasyonlar",
     "active-customers": "Aktif Müşteriler",
@@ -98,7 +101,13 @@
     "account-settings": "Hesap Ayarları",
     "billing-info": "Fatura Bilgileri",
     "notifications": "Bildirimler",
-    "logout": "Çıkış Yap"
+    "logout": "Çıkış Yap",
+    "user-management": "Kullanıcı Yönetimi",
+    "customer-management": "Müşteri Yönetimi",
+    "statistics-reports": "İstatistikler & Raporlar",
+    "company-settings": "Şirket Ayarları",
+    "security-audit": "Güvenlik & Denetim",
+    "system-settings": "Sistem Ayarları"
   },
   "Company": {
     "title": "Şirket Bilgileri",
