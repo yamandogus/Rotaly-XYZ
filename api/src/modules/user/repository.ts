@@ -1,5 +1,5 @@
 import Prisma from "../../config/db";
-import { RegisterSchemaType, UpdateUserSchemaType } from "src/dto/auth";
+import { RegisterSchemaType, UpdateUserSchemaType } from "../../dto/auth";
 
 export class UserRepository {
   async findAll() {
