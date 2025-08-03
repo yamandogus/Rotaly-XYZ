@@ -71,7 +71,9 @@
     "bookings": "Bookings",
     "hotels": "My Hotels",
     "profile": "Profile",
-    "Hotel Management System": "Hotel Management System",
+    "admin-management-system": "Admin Management System",
+    "hotel-management-system": "Hotel Management System",
+    "rotaly": "Rotaly",
     "home": "Home",
     "customers": "Customers",
     "company": "Company",
@@ -79,6 +81,7 @@
     "hotel-info": "Hotel Info",
     "reservations": "Reservations",
     "reports": "Reports",
+    "statistics": "Statistics",
     "active-reservations": "Active Reservations",
     "passive-reservations": "Passive Reservations",
     "active-customers": "Active Customers",
@@ -97,7 +100,13 @@
     "account-settings": "Account Settings",
     "billing-info": "Billing Information",
     "notifications": "Notifications",
-    "logout": "Logout"
+    "logout": "Logout",
+    "user-management": "User Management",
+    "customer-management": "Customer Management",
+    "statistics-reports": "Statistics & Reports",
+    "company-settings": "Company Settings",
+    "security-audit": "Security & Audit",
+    "system-settings": "System Settings"
   },
   "Admin": {
     "title": "Admin Panel",
