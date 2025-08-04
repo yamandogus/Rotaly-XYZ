@@ -206,5 +206,16 @@
     "allStatus": "All Status",
     "id": "ID",
     "created": "Created"
+  },
+  "ResetPassword": {
+    "title": "Reset Password",
+    "description": "Please enter your email to reset your password",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "confirm_password_description": "Please enter your password again",
+    "password_description": "Please enter your password",
+    "submit": "Reset Password",
+    "back": "Back to Login"
   }
 }
