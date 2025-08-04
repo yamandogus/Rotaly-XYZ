@@ -1,30 +1,94 @@
 import { emailService } from "../modules/email/service";
 
-async function testSupportEmail() {
-  console.log("Testing support email forwarding...");
+async function testContactEmailEnglish() {
+  console.log("Testing contact email forwarding (English)...");
 
   try {
     const result = await emailService.sendContactEmail(
       "test@example.com",
       "Test User",
       "Test Support Request",
-      "This is a test message to verify the support email forwarding functionality is working correctly."
+      "This is a test message to verify the support email forwarding functionality is working correctly.",
+      "en"
     );
 
-    console.log("Support email test result:", result);
+    console.log("English contact email test result:", result);
 
     if (result) {
-      console.log("✅ Support email sent successfully!");
+      console.log("✅ English contact email sent successfully!");
     } else {
-      console.log("❌ Failed to send support email");
+      console.log("❌ Failed to send English contact email");
     }
+
+    return result;
   } catch (error) {
-    console.error("Error testing support email:", error);
+    console.error("Error testing English contact email:", error);
+    return false;
   }
 }
 
-if (require.main === module) {
-  testSupportEmail();
+async function testContactEmailTurkish() {
+  console.log("Testing contact email forwarding (Turkish)...");
+
+  try {
+    const result = await emailService.sendContactEmail(
+      "test@example.com",
+      "Test Kullanıcı",
+      "Test Destek İsteği",
+      "Bu, destek e-postası yönlendirme işlevinin doğru çalıştığını doğrulamak için bir test mesajıdır.",
+      "tr"
+    );
+
+    console.log("Turkish contact email test result:", result);
+
+    if (result) {
+      console.log("✅ Turkish contact email sent successfully!");
+    } else {
+      console.log("❌ Failed to send Turkish contact email");
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Error testing Turkish contact email:", error);
+    return false;
+  }
 }
 
-export { testSupportEmail };
+async function testAllContactEmails() {
+  console.log("🧪 Starting comprehensive contact email tests...\n");
+
+  const englishResult = await testContactEmailEnglish();
+  console.log("");
+
+  const turkishResult = await testContactEmailTurkish();
+  console.log("");
+
+  console.log("📊 Test Summary:");
+  console.log(
+    `English template test: ${englishResult ? "✅ PASSED" : "❌ FAILED"}`
+  );
+  console.log(
+    `Turkish template test: ${turkishResult ? "✅ PASSED" : "❌ FAILED"}`
+  );
+
+  const allPassed = englishResult && turkishResult;
+  console.log(
+    `\n🎯 Overall result: ${
+      allPassed ? "✅ ALL TESTS PASSED" : "❌ SOME TESTS FAILED"
+    }`
+  );
+
+  return allPassed;
+}
+
+// run every test if the file is executed from cmd
+// npx ts-node src/tests/test-contact-email.ts
+if (require.main === module) {
+  testAllContactEmails();
+}
+
+export {
+  testContactEmailEnglish,
+  testContactEmailTurkish,
+  testAllContactEmails,
+};

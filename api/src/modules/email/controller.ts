@@ -178,12 +178,16 @@ export class EmailController {
 
       const { fromEmail, fromName, subject, message } = validation.data;
 
-      // Send support email
+      // Extract locale from URL path parameter
+      const locale = req.params.locale;
+
+      // Send support email with locale
       const emailSent = await emailService.sendContactEmail(
         fromEmail,
         fromName,
         subject,
-        message
+        message,
+        locale
       );
 
       if (!emailSent) {

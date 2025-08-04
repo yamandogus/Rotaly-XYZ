@@ -109,15 +109,19 @@ export class EmailService {
    * @param fromName - sender name
    * @param subject - email subject
    * @param message - email message content
+   * @param locale - language locale (en, tr)
    * @returns Promise<boolean>
    */
   async sendContactEmail(
     fromEmail: string,
     fromName: string,
     subject: string,
-    message: string
+    message: string,
+    locale: string = "en"
   ): Promise<boolean> {
     try {
+      const templateName = locale === "tr" ? "tr/contact" : "en/contact";
+
       const mailOptions = {
         from: {
           name: String(process.env.EMAIL_FROM_NAME),
@@ -126,7 +130,7 @@ export class EmailService {
         to: String(process.env.MAIL_TO), // real email address to receive contact-us forms sent
         replyTo: fromEmail, // original sender to reply to
         subject: `[Contact Us] ${subject}`,
-        template: "contact",
+        template: templateName,
         context: {
           fromName: fromName,
           fromEmail: fromEmail,
