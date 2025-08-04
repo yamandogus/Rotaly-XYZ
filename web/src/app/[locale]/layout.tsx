@@ -35,19 +35,83 @@ export async function generateMetadata({
 }: Omit<Props, "children">): Promise<Metadata> {
   const { locale } = await params;
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://rotaly.com';
+  
   return {
-    title:
-      locale === "tr"
-        ? "Rotaly - Otel Rezervasyon Sistemi"
-        : "Rotaly - Hotel Reservation System",
-    description:
-      locale === "tr"
-        ? "Modern otel rezervasyon ve yönetim sistemi"
-        : "Modern hotel reservation and management system",
-    icons: {
-      icon: "/images/logo3.png",
-      shortcut: "/images/logo3.png",
-      apple: "/images/logo3.png",
+    title: {
+      default: locale === "tr" 
+        ? "Rotaly - En İyi Otel Rezervasyon Sistemi | Uygun Fiyatlı Konaklama"
+        : "Rotaly - Best Hotel Reservation System | Affordable Accommodation",
+      template: locale === "tr" 
+        ? "%s | Rotaly Otel Rezervasyon"
+        : "%s | Rotaly Hotel Reservation"
+    },
+    description: locale === "tr"
+      ? "Türkiye'nin en güvenilir otel rezervasyon platformu. 1000+ otel, en uygun fiyatlar, ücretsiz iptal. Antalya, İstanbul, İzmir ve daha fazlası."
+      : "Turkey's most reliable hotel reservation platform. 1000+ hotels, best prices, free cancellation. Antalya, Istanbul, Izmir and more.",
+    keywords: locale === "tr"
+      ? "otel rezervasyon, konaklama, tatil, antalya otel, istanbul otel, izmir otel, uygun fiyat otel"
+      : "hotel reservation, accommodation, vacation, antalya hotel, istanbul hotel, izmir hotel, affordable hotel",
+    authors: [{ name: "Rotaly Team" }],
+    creator: "Rotaly",
+    publisher: "Rotaly",
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
+    metadataBase: new URL(baseUrl),
+    alternates: {
+      canonical: '/',
+      languages: {
+        'tr': '/tr',
+        'en': '/en',
+      },
+    },
+    openGraph: {
+      type: 'website',
+      locale: locale,
+      url: baseUrl,
+      title: locale === "tr" 
+        ? "Rotaly - En İyi Otel Rezervasyon Sistemi"
+        : "Rotaly - Best Hotel Reservation System",
+      description: locale === "tr"
+        ? "Türkiye'nin en güvenilir otel rezervasyon platformu"
+        : "Turkey's most reliable hotel reservation platform",
+      siteName: 'Rotaly',
+      images: [
+        {
+          url: '/images/logo3.png',
+          width: 1200,
+          height: 630,
+          alt: 'Rotaly Logo',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: locale === "tr" 
+        ? "Rotaly - En İyi Otel Rezervasyon Sistemi"
+        : "Rotaly - Best Hotel Reservation System",
+      description: locale === "tr"
+        ? "Türkiye'nin en güvenilir otel rezervasyon platformu"
+        : "Turkey's most reliable hotel reservation platform",
+      images: ['/images/logo3.png'],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    verification: {
+      google: 'your-google-verification-code',
+      yandex: 'your-yandex-verification-code',
     },
   };
 }
