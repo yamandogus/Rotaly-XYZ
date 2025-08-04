@@ -6,11 +6,22 @@ export class EmailService {
    * Send verification email
    * @param email - receiver email address
    * @param name - receiver name
+   * @param locale - language locale (en, tr)
    * @returns Promise<boolean>
    */
-  async sendVerificationEmail(email: string, name: string): Promise<boolean> {
+  async sendVerificationEmail(
+    email: string,
+    name: string,
+    locale: string = "en"
+  ): Promise<boolean> {
     try {
       const otp = generateOTP();
+      const templateName =
+        locale === "tr" ? "tr/verification" : "en/verification";
+      const subject =
+        locale === "tr"
+          ? "E-posta Doğrulama - Rotaly XYZ"
+          : "Email Verification - Rotaly XYZ";
 
       const mailOptions = {
         from: {
@@ -18,8 +29,8 @@ export class EmailService {
           address: "verify@rotaly-xyz.com",
         },
         to: email,
-        subject: "Email Verification - Rotaly XYZ",
-        template: "verification",
+        subject: subject,
+        template: templateName,
         context: {
           name: name,
           otp: otp,
@@ -27,7 +38,7 @@ export class EmailService {
         },
       };
 
-      const result = await transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions);
       console.log("Verification email sent successfully");
       return true;
     } catch (error) {
@@ -40,11 +51,22 @@ export class EmailService {
    * Send password reset email
    * @param email - receiver email address
    * @param name - receiver name
+   * @param locale - language locale (en, tr)
    * @returns Promise<boolean>
    */
-  async sendPasswordResetEmail(email: string, name: string): Promise<boolean> {
+  async sendPasswordResetEmail(
+    email: string,
+    name: string,
+    locale: string = "en"
+  ): Promise<boolean> {
     try {
       const otp = generateOTP();
+      const templateName =
+        locale === "tr" ? "tr/password-reset" : "en/password-reset";
+      const subject =
+        locale === "tr"
+          ? "Şifre Sıfırlama - Rotaly XYZ"
+          : "Password Reset - Rotaly XYZ";
 
       const mailOptions = {
         from: {
@@ -52,8 +74,8 @@ export class EmailService {
           address: "reset@rotaly-xyz.com",
         },
         to: email,
-        subject: "Password Reset - Rotaly XYZ",
-        template: "password-reset",
+        subject: subject,
+        template: templateName,
         context: {
           name: name,
           otp: otp,
@@ -61,7 +83,7 @@ export class EmailService {
         },
       };
 
-      const result = await transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions);
       console.log("Password reset email sent successfully");
       return true;
     } catch (error) {
@@ -74,18 +96,29 @@ export class EmailService {
    * Send welcome email
    * @param email - receiver email address
    * @param name - receiver name
+   * @param locale - language locale (en, tr)
    * @returns Promise<boolean>
    */
-  async sendWelcomeEmail(email: string, name: string): Promise<boolean> {
+  async sendWelcomeEmail(
+    email: string,
+    name: string,
+    locale: string = "en"
+  ): Promise<boolean> {
     try {
+      const templateName = locale === "tr" ? "tr/welcome" : "en/welcome";
+      const subject =
+        locale === "tr"
+          ? "Rotaly XYZ'ye Hoş Geldiniz!"
+          : "Welcome to Rotaly XYZ!";
+
       const mailOptions = {
         from: {
           name: String(process.env.EMAIL_FROM_NAME),
           address: "noreply@rotaly-xyz.com",
         },
         to: email,
-        subject: "Welcome to Rotaly XYZ!",
-        template: "welcome",
+        subject: subject,
+        template: templateName,
         context: {
           name: name,
           year: new Date().getFullYear(),
@@ -94,11 +127,58 @@ export class EmailService {
         },
       };
 
-      const result = await transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions);
       console.log("Welcome email sent successfully");
       return true;
     } catch (error) {
       console.error("Error sending welcome email:", error);
+      return false;
+    }
+  }
+
+  /**
+   * Send support email forwarding
+   * @param fromEmail - sender email address
+   * @param fromName - sender name
+   * @param subject - email subject
+   * @param message - email message content
+   * @param locale - language locale (en, tr)
+   * @returns Promise<boolean>
+   */
+  async sendContactEmail(
+    fromEmail: string,
+    fromName: string,
+    subject: string,
+    message: string,
+    locale: string = "en"
+  ): Promise<boolean> {
+    try {
+      const templateName = locale === "tr" ? "tr/contact" : "en/contact";
+
+      const mailOptions = {
+        from: {
+          name: String(process.env.EMAIL_FROM_NAME),
+          address: "support@rotaly-xyz.com",
+        },
+        to: String(process.env.MAIL_TO), // real email address to receive contact-us forms sent
+        replyTo: fromEmail, // original sender to reply to
+        subject: `[Contact Us] ${subject}`,
+        template: templateName,
+        context: {
+          fromName: fromName,
+          fromEmail: fromEmail,
+          subject: subject,
+          message: message,
+          date: new Date().toLocaleString(),
+          year: new Date().getFullYear(),
+        },
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log("Support email forwarded successfully");
+      return true;
+    } catch (error) {
+      console.error("Error forwarding support email:", error);
       return false;
     }
   }
