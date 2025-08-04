@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import { UserService } from "./service";
-import { RegisterSchemaType, UpdateUserSchemaType } from "../../dto/auth";
+import {
+  ChangePasswordSchemaType,
+  RegisterSchemaType,
+  UpdateUserSchemaType,
+} from "../../dto/auth";
 import { AppError } from "../../utils/appError";
 
 const userService = new UserService();
@@ -148,6 +152,31 @@ export class UserController {
         res.status(500).json({
           success: false,
           message: "Kullanıcı güncellenirken bir hata oluştu",
+        });
+      }
+    }
+  }
+  async changePassword(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const passwordData = req.body as ChangePasswordSchemaType;
+
+      await userService.changePassword(id, passwordData);
+
+      res.status(200).json({
+        success: true,
+        message: "Password changed successfully",
+      });
+    } catch (error) {
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Şifre değiştirme işlemi sırasında bir hata oluştu",
         });
       }
     }

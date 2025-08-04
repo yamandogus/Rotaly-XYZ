@@ -1,10 +1,7 @@
 import { Router } from "express";
 import { UserController } from "./controller";
-import {
-  authenticateToken,
-  verifiedUser,
-} from "../../middleware/jwt.middleware";
-import { authorizeRoles } from "../../middleware/auth.middleware";
+import { authenticateToken } from "../../middleware/jwt.middleware";
+import { authorizeRoles, verifiedUser } from "../../middleware/auth.middleware";
 import { Role } from "@prisma/client";
 
 const router = Router();
