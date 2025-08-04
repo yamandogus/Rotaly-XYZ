@@ -93,6 +93,15 @@ export class UserController {
       });
     } catch (error) {
       if (error instanceof AppError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Kullanıcı getirilirken bir hata oluştu",
+        });
       }
     }
   }
