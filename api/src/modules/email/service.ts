@@ -6,11 +6,22 @@ export class EmailService {
    * Send verification email
    * @param email - receiver email address
    * @param name - receiver name
+   * @param locale - language locale (en, tr)
    * @returns Promise<boolean>
    */
-  async sendVerificationEmail(email: string, name: string): Promise<boolean> {
+  async sendVerificationEmail(
+    email: string,
+    name: string,
+    locale: string = "en"
+  ): Promise<boolean> {
     try {
       const otp = generateOTP();
+      const templateName =
+        locale === "tr" ? "tr/verification" : "en/verification";
+      const subject =
+        locale === "tr"
+          ? "E-posta Doğrulama - Rotaly XYZ"
+          : "Email Verification - Rotaly XYZ";
 
       const mailOptions = {
         from: {
@@ -18,8 +29,8 @@ export class EmailService {
           address: "verify@rotaly-xyz.com",
         },
         to: email,
-        subject: "Email Verification - Rotaly XYZ",
-        template: "verification",
+        subject: subject,
+        template: templateName,
         context: {
           name: name,
           otp: otp,
@@ -40,11 +51,22 @@ export class EmailService {
    * Send password reset email
    * @param email - receiver email address
    * @param name - receiver name
+   * @param locale - language locale (en, tr)
    * @returns Promise<boolean>
    */
-  async sendPasswordResetEmail(email: string, name: string): Promise<boolean> {
+  async sendPasswordResetEmail(
+    email: string,
+    name: string,
+    locale: string = "en"
+  ): Promise<boolean> {
     try {
       const otp = generateOTP();
+      const templateName =
+        locale === "tr" ? "tr/password-reset" : "en/password-reset";
+      const subject =
+        locale === "tr"
+          ? "Şifre Sıfırlama - Rotaly XYZ"
+          : "Password Reset - Rotaly XYZ";
 
       const mailOptions = {
         from: {
@@ -52,8 +74,8 @@ export class EmailService {
           address: "reset@rotaly-xyz.com",
         },
         to: email,
-        subject: "Password Reset - Rotaly XYZ",
-        template: "password-reset",
+        subject: subject,
+        template: templateName,
         context: {
           name: name,
           otp: otp,
@@ -74,18 +96,29 @@ export class EmailService {
    * Send welcome email
    * @param email - receiver email address
    * @param name - receiver name
+   * @param locale - language locale (en, tr)
    * @returns Promise<boolean>
    */
-  async sendWelcomeEmail(email: string, name: string): Promise<boolean> {
+  async sendWelcomeEmail(
+    email: string,
+    name: string,
+    locale: string = "en"
+  ): Promise<boolean> {
     try {
+      const templateName = locale === "tr" ? "tr/welcome" : "en/welcome";
+      const subject =
+        locale === "tr"
+          ? "Rotaly XYZ'ye Hoş Geldiniz!"
+          : "Welcome to Rotaly XYZ!";
+
       const mailOptions = {
         from: {
           name: String(process.env.EMAIL_FROM_NAME),
           address: "noreply@rotaly-xyz.com",
         },
         to: email,
-        subject: "Welcome to Rotaly XYZ!",
-        template: "welcome",
+        subject: subject,
+        template: templateName,
         context: {
           name: name,
           year: new Date().getFullYear(),

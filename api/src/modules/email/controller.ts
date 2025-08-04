@@ -17,7 +17,7 @@ export class EmailController {
    */
   async sendVerificationEmail(req: Request, res: Response): Promise<void> {
     try {
-      // Validate request body
+      // validate request body using Zod
       const validation = verificationEmailSchema.safeParse(req.body);
 
       if (!validation.success) {
@@ -31,8 +31,14 @@ export class EmailController {
 
       const { email, name } = validation.data;
 
-      // Send verification email
-      const emailSent = await emailService.sendVerificationEmail(email, name);
+      // extracting locale from URL path param, default to 'en'
+      const locale = req.params.locale || "en";
+
+      const emailSent = await emailService.sendVerificationEmail(
+        email,
+        name,
+        locale
+      );
 
       if (!emailSent) {
         throw new AppError("Failed to send verification email", 500);
@@ -66,7 +72,6 @@ export class EmailController {
    */
   async sendPasswordResetEmail(req: Request, res: Response): Promise<void> {
     try {
-      // Validate request body
       const validation = passwordResetEmailSchema.safeParse(req.body);
 
       if (!validation.success) {
@@ -80,8 +85,13 @@ export class EmailController {
 
       const { email, name } = validation.data;
 
-      // Send password reset email
-      const emailSent = await emailService.sendPasswordResetEmail(email, name);
+      const locale = req.params.locale || "en";
+
+      const emailSent = await emailService.sendPasswordResetEmail(
+        email,
+        name,
+        locale
+      );
 
       if (!emailSent) {
         throw new AppError("Failed to send password reset email", 500);
@@ -115,7 +125,6 @@ export class EmailController {
    */
   async sendWelcomeEmail(req: Request, res: Response): Promise<void> {
     try {
-      // validate req body
       const validation = welcomeEmailSchema.safeParse(req.body);
 
       if (!validation.success) {
@@ -129,8 +138,13 @@ export class EmailController {
 
       const { email, name } = validation.data;
 
-      // send welcome email
-      const emailSent = await emailService.sendWelcomeEmail(email, name);
+      const locale = req.params.locale || "en";
+
+      const emailSent = await emailService.sendWelcomeEmail(
+        email,
+        name,
+        locale
+      );
 
       if (!emailSent) {
         throw new AppError("Failed to send welcome email", 500);
@@ -164,7 +178,6 @@ export class EmailController {
    */
   async forwardContactEmail(req: Request, res: Response): Promise<void> {
     try {
-      // Validate request body
       const validation = supportEmailSchema.safeParse(req.body);
 
       if (!validation.success) {
@@ -178,10 +191,8 @@ export class EmailController {
 
       const { fromEmail, fromName, subject, message } = validation.data;
 
-      // Extract locale from URL path parameter
-      const locale = req.params.locale;
+      const locale = req.params.locale || "en";
 
-      // Send support email with locale
       const emailSent = await emailService.sendContactEmail(
         fromEmail,
         fromName,

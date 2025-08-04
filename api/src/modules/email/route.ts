@@ -4,35 +4,38 @@ import { emailController } from "./controller";
 const router = Router();
 
 /**
- * POST /api/email/verification
+ * POST /api/email/:locale/verification
  * Send verification email
  */
 router.post(
-  "/verification",
+  "/:locale/verification",
   emailController.sendVerificationEmail.bind(emailController)
 );
 
 /**
- * POST /api/email/password-reset
+ * POST /api/email/:locale/password-reset
  * Send password reset email
  */
 router.post(
-  "/password-reset",
+  "/:locale/password-reset",
   emailController.sendPasswordResetEmail.bind(emailController)
 );
 
 /**
- * POST /api/email/welcome
+ * POST /api/email/:locale/welcome
  * Send welcome email
  */
-router.post("/welcome", emailController.sendWelcomeEmail.bind(emailController));
+router.post(
+  "/:locale/welcome",
+  emailController.sendWelcomeEmail.bind(emailController)
+);
 
 /**
- * POST /api/email/contact-us
+ * POST /api/email/:locale/contact-us
  * Forward contact email to real email address
  */
 router.post(
-  "/contact-us",
+  "/:locale/contact-us",
   emailController.forwardContactEmail.bind(emailController)
 );
 
