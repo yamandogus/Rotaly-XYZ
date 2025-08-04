@@ -34,7 +34,6 @@ export async function generateMetadata({
   params,
 }: Omit<Props, "children">): Promise<Metadata> {
   const { locale } = await params;
-  const messages = await getMessages({ locale });
 
   return {
     title:
@@ -46,9 +45,9 @@ export async function generateMetadata({
         ? "Modern otel rezervasyon ve yönetim sistemi"
         : "Modern hotel reservation and management system",
     icons: {
-      icon: "/images/RT.png",
-      shortcut: "/images/RT.png",
-      apple: "/images/RT.png",
+      icon: "/images/logo3.png",
+      shortcut: "/images/logo3.png",
+      apple: "/images/logo3.png",
     },
   };
 }

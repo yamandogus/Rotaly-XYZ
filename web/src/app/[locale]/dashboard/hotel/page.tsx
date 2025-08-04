@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CalendarDaysIcon, BedDoubleIcon, SettingsIcon, BarChart3Icon, UsersIcon, StarIcon } from "lucide-react";
+import Link from "next/link";
 
 export default function HotelDashboard() {
   return (
@@ -65,24 +66,25 @@ export default function HotelDashboard() {
           </Card>
         </div>
 
-        {/* İkincil Özellik Kartları */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-          <Card className="bg-card cursor-pointer hover:shadow-md transition-shadow">
-            <CardHeader>
-              <div className="flex flex-col justify-center items-center gap-2">
-                <BarChart3Icon className="w-10 h-10 text-orange-500" />
-                <CardTitle className="text-center">
-                  İstatistikler & Raporlar
-                </CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="">
-              <p className="text-center text-sm text-muted-foreground">
-                Doluluk oranları, gelir analizleri ve performans raporlarını görüntüleyebilirsiniz.
-              </p>
-            </CardContent>
-          </Card>
-          
+     {/* İkincil Özellik Kartları */}
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+  <Link href="/statistics">
+    <Card className="bg-card cursor-pointer hover:shadow-md transition-shadow">
+      <CardHeader>
+        <div className="flex flex-col justify-center items-center gap-2">
+          <BarChart3Icon className="w-10 h-10 text-orange-500" />
+          <CardTitle className="text-center">
+            İstatistikler & Raporlar
+          </CardTitle>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <p className="text-center text-sm text-muted-foreground">
+          Doluluk oranları, gelir analizleri ve performans raporlarını görüntüleyebilirsiniz.
+        </p>
+      </CardContent>
+    </Card>
+  </Link>
           <Card className="bg-card cursor-pointer hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex flex-col justify-center items-center gap-2">

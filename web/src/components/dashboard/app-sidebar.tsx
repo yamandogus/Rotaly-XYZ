@@ -7,10 +7,10 @@ import { NavUser } from "@/components/dashboard/nav-user";
 import {
   IconDashboard,
   IconChartBar,
-  IconFolder,
   IconUsers,
   IconFileDescription,
   IconBuilding,
+  IconUser,
 } from "@tabler/icons-react";
 
 import {
@@ -50,19 +50,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: <IconDashboard />,
           },
           {
-            title: t("customers"),
+            title: t("customer-management"),
             url: "/dashboard/admin/customers",
             icon: <IconUsers />,
           },
           {
-            title: t("company"),
+            title: t("statistics-reports"),
+            url: "/dashboard/admin/statistics",
+            icon: <IconChartBar />,
+          },
+          {
+            title: t("company-settings"),
             url: "/dashboard/admin/company",
             icon: <IconFileDescription />,
           },
           {
             title: t("profile"),
             url: "/dashboard/admin/profile",
-            icon: <IconFolder />,
+            icon: <IconUser />,
           },
         ];
       case "hotel":

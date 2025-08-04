@@ -69,14 +69,17 @@
     "bookings": "Rezervasyonlar",
     "hotels": "Otellerim",
     "profile": "Profil",
-    "Hotel Management System": "Otel Yönetim Sistemi",
+    "admin-management-system": "Admin Yönetim Sistemi",
+    "hotel-management-system": "Otel Yönetim Sistemi",
+    "rotaly": "Rotaly",
     "home": "Anasayfa",
-    "customers": "Müşteriler",
+    "customers": "Müşteriler",  
     "company": "Şirket Bilgileri",
     "admins": "Adminler",
     "hotel-info": "Otel Bilgileri",
     "reservations": "Rezervasyonlar",
     "reports": "Raporlar",
+    "statistics": "İstatistikler",
     "active-reservations": "Aktif Rezervasyonlar",
     "passive-reservations": "Pasif Rezervasyonlar",
     "active-customers": "Aktif Müşteriler",
@@ -95,7 +98,35 @@
     "account-settings": "Hesap Ayarları",
     "billing-info": "Fatura Bilgileri",
     "notifications": "Bildirimler",
-    "logout": "Çıkış Yap"
+    "logout": "Çıkış Yap",
+    "user-management": "Kullanıcı Yönetimi",
+    "customer-management": "Müşteri Yönetimi",
+    "statistics-reports": "İstatistikler & Raporlar",
+    "company-settings": "Şirket Ayarları",
+    "security-audit": "Güvenlik & Denetim",
+    "system-settings": "Sistem Ayarları"
+  },
+  "Company": {
+    "title": "Şirket Bilgileri",
+    "subtitle": "Hesabınızı kurun ve çalıştırın.",
+    "companyLogo": "Şirket logosu",
+    "companyName": "Şirket adı",
+    "emailAddress": "E-posta adresi",
+    "companyVatOrTaxId": "Şirket KDV veya Vergi Kimlik Numarası",
+    "billingAddress": "Fatura adresi",
+    "country": "Ülke",
+    "address": "Adres",
+    "city": "Şehir",
+    "state": "İl/Eyalet",
+    "postalCode": "Posta kodu",
+    "upload": "Yükle",
+    "continue": "Devam Et",
+    "changesSaved": "Değişiklikler kaydedildi",
+    "turkey": "Türkiye",
+    "unitedStates": "Amerika Birleşik Devletleri",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "edit": "Düzenle"
   },
   "Admin": {
     "title": "Yönetici Paneli",
@@ -164,5 +195,49 @@
     "followUs": "- Bizi Takip Edin",
     "addressTitle": "ADRES",
     "contactTitle": "İLETİŞİM"
+<<<<<<< HEAD
   }
+=======
+  },
+
+  "Customers": {
+    "allRegisteredUsers": "Tüm kayıtlı kullanıcılar",
+    "joinedThisMonth": "Bu ay katılanlar",
+    "purchasedIn30Days": "30 gün içinde satın alanlar", 
+    "inactiveFor90Days": "90+ gün boyunca inaktif",
+    "customerList": "Müşteri Listesi",
+    "search": "Ara...",
+    "filter": "Filtrele",
+    "sortBy": "Sırala",
+    "customerId": "Müşteri ID",
+    "customerInformation": "Müşteri Bilgileri",
+    "country": "Ülke",
+    "createdAt": "Oluşturulma Tarihi",
+    "lastPurchase": "Son Satın Alma",
+    "totalSpend": "Toplam Harcama",
+    "status": "Durum",
+    "active": "Aktif",
+    "inactive": "İnaktif",
+    "viewDetails": "Detayları Gör",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "name": "İsim",
+    "dateCreated": "Oluşturulma Tarihi",
+    "allStatus": "Tüm Durumlar",
+    "id": "ID",
+    "created": "Oluşturuldu"
+  },
+  "ResetPassword": {
+    "title": "Şifremi Unuttum",
+    "description": "Lütfen e-posta adresinizi giriniz",
+    "email": "E-posta Adresi",
+    "password": "Şifre",
+    "confirm_password": "Şifre Tekrarı",
+    "confirm_password_description": "Şifrenizi tekrar giriniz",
+    "password_description": "Lütfen şifrenizi giriniz",
+    "submit": "Şifremi Sıfırla",
+    "back": "Giriş Yap"
+  }
+
+>>>>>>> main
 }

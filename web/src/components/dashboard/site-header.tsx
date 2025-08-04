@@ -29,11 +29,11 @@ export function SiteHeader() {
 
   const getHeaderTitle = () => {
     if (userRole === "admin") {
-      return "Admin Yönetim Sistemi";
+      return t("admin-management-system");
     } else if (userRole === "hotel") {
-      return `${hotelName} Yönetim Sistemi`;
+      return `${hotelName} ${t("hotel-management-system")}`;
     }
-    return "Rotaly";
+    return t("rotaly");
   };
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
