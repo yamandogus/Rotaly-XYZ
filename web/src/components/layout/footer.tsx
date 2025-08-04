@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 export function Footer() {
   const t = useTranslations("Footer");
@@ -172,7 +173,8 @@ export function Footer() {
         </div>
 
         <div className="mt-8 border-t border-blue-500 pt-8">
-          <div className="text-center">
+          <div className="text-center flex flex-row items-center justify-center">
+            <Image src='/images/logo3.png' alt='logo' width={50} height={50} />
             <p className="text-sm text-blue-100">{t("copyright")}</p>
           </div>
         </div>

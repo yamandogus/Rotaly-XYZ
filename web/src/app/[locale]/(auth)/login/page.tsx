@@ -14,54 +14,53 @@ import { toast } from "react-hot-toast";
 export default function LoginPage() {
   const router = useRouter();
 
+  const testUser = {
+    email: "user@user.com",
+    password: "123456",
+    role: "user",
+  };
 
-const testUser = {
-  email: "user@user.com",
-  password: "123456",
-  role: "user",
-};
+  const testHotel = {
+    email: "hotel@hotel.com",
+    password: "123456",
+    role: "hotel",
+  };
 
-const testHotel = {
-  email: "hotel@hotel.com",
-  password: "123456",
-  role: "hotel",
-};
+  const testAdmin = {
+    email: "admin@admin.com",
+    password: "123456",
+    role: "admin",
+  };
 
-const testAdmin = {
-  email: "admin@admin.com",
-  password: "123456",
-  role: "admin",
-};
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
-const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  const formData = new FormData(e.target as HTMLFormElement);
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-
-  // Normal kullanıcı girişi
-  if (email === testUser.email && password === testUser.password) {
-    localStorage.setItem("userRole", "user");
-    toast.success("Kullanıcı girişi başarılı");
-    router.push("/");
-  } 
-  // Otel girişi
-  else if (email === testHotel.email && password === testHotel.password) {
-    localStorage.setItem("userRole", "hotel");
-    toast.success("Otel girişi başarılı");
-    router.push("/dashboard");
-  } 
-  // Admin girişi
-  else if (email === testAdmin.email && password === testAdmin.password) {
-    localStorage.setItem("userRole", "admin");
-    toast.success("Admin girişi başarılı");
-    router.push("/dashboard");
-  } 
-  // Hatalı giriş
-  else {
-    toast.error("Hatalı e-posta veya şifre!");
-  }
-};
+    // Normal kullanıcı girişi
+    if (email === testUser.email && password === testUser.password) {
+      localStorage.setItem("userRole", "user");
+      toast.success("Kullanıcı girişi başarılı");
+      router.push("/");
+    }
+    // Otel girişi
+    else if (email === testHotel.email && password === testHotel.password) {
+      localStorage.setItem("userRole", "hotel");
+      toast.success("Otel girişi başarılı");
+      router.push("/dashboard");
+    }
+    // Admin girişi
+    else if (email === testAdmin.email && password === testAdmin.password) {
+      localStorage.setItem("userRole", "admin");
+      toast.success("Admin girişi başarılı");
+      router.push("/dashboard");
+    }
+    // Hatalı giriş
+    else {
+      toast.error("Hatalı e-posta veya şifre!");
+    }
+  };
 
   return (
     <div>
@@ -78,12 +77,32 @@ const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
             <div className="mb-4 flex flex-col space-y-2">
               <LabelInputContainer className="w-full">
                 <Label htmlFor="email">E-posta Adresi</Label>
-                <Input id="email" name="email" placeholder="ornek@email.com" type="email" required />
+                <Input
+                  id="email"
+                  name="email"
+                  placeholder="ornek@email.com"
+                  type="email"
+                  required
+                />
               </LabelInputContainer>
               <LabelInputContainer className="w-full">
                 <Label htmlFor="password">Şifre</Label>
-                <Input id="password" name="password" placeholder="••••••••" type="password" required />
+                <Input
+                  id="password"
+                  name="password"
+                  placeholder="••••••••"
+                  type="password"
+                  required
+                />
               </LabelInputContainer>
+            </div>
+            <div className="flex justify-end my-2">
+              <Link
+                href="/reset-password"
+                className="text-sm text-primary hover:underline"
+              >
+                Şifremi Unuttum
+              </Link>
             </div>
 
             <button
