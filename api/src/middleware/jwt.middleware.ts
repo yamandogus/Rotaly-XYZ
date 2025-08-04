@@ -39,43 +39,6 @@ export const authenticateToken = (
   });
 };
 
-// Kullanıcı doğrulama durumu kontrolü middleware'i
-export const verifiedUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    if (!req.user) {
-      return res.status(401).json({
-        status: "error",
-        message: "Authentication required",
-      });
-    }
-
-    // isVerified kontrolü için prisma sorgusu
-
-    const user = await Prisma.user.findUnique({
-      where: { id: req.user.userId },
-      select: { isVerified: true },
-    });
-
-    if (!user?.isVerified) {
-      return res.status(403).json({
-        status: "error",
-        message: "Email verification required",
-      });
-    }
-
-    next();
-  } catch (error) {
-    return res.status(500).json({
-      status: "error",
-      message: "Internal server error",
-    });
-  }
-};
-
 // İsteğe bağlı token doğrulama
 export const optionalAuthenticateToken = (
   req: Request,
@@ -97,7 +60,9 @@ export const optionalAuthenticateToken = (
     req.user = decoded;
     next();
   } catch (error) {
-    // Token geçersiz olsa bile isteği engelleme
-    next();
+    return res.status(500).json({
+      status: "error",
+      message: "Internal server error",
+    });
   }
 };
