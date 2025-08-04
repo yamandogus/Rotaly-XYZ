@@ -27,7 +27,7 @@ export class EmailService {
         },
       };
 
-      const result = await transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions);
       console.log("Verification email sent successfully");
       return true;
     } catch (error) {
@@ -61,7 +61,7 @@ export class EmailService {
         },
       };
 
-      const result = await transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions);
       console.log("Password reset email sent successfully");
       return true;
     } catch (error) {
@@ -94,11 +94,54 @@ export class EmailService {
         },
       };
 
-      const result = await transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions);
       console.log("Welcome email sent successfully");
       return true;
     } catch (error) {
       console.error("Error sending welcome email:", error);
+      return false;
+    }
+  }
+
+  /**
+   * Send support email forwarding
+   * @param fromEmail - sender email address
+   * @param fromName - sender name
+   * @param subject - email subject
+   * @param message - email message content
+   * @returns Promise<boolean>
+   */
+  async sendContactEmail(
+    fromEmail: string,
+    fromName: string,
+    subject: string,
+    message: string
+  ): Promise<boolean> {
+    try {
+      const mailOptions = {
+        from: {
+          name: String(process.env.EMAIL_FROM_NAME),
+          address: "support@rotaly-xyz.com",
+        },
+        to: String(process.env.MAIL_TO), // real email address to receive contact-us forms sent
+        replyTo: fromEmail, // original sender to reply to
+        subject: `[Contact Us] ${subject}`,
+        template: "contact",
+        context: {
+          fromName: fromName,
+          fromEmail: fromEmail,
+          subject: subject,
+          message: message,
+          date: new Date().toLocaleString(),
+          year: new Date().getFullYear(),
+        },
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log("Support email forwarded successfully");
+      return true;
+    } catch (error) {
+      console.error("Error forwarding support email:", error);
       return false;
     }
   }
