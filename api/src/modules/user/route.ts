@@ -1,57 +1,63 @@
 import { Router } from "express";
 import { UserController } from "./controller";
-import { validateBody, validateId } from "../../middleware/validate.middleware";
-import { RegisterSchemaType, UpdateUserSchemaType } from "../../dto/auth/index";
-import { authMiddleware } from "../../middleware/auth.middleware";
+import {
+  authenticateToken,
+  verifiedUser,
+} from "../../middleware/jwt.middleware";
+import { authorizeRoles } from "../../middleware/auth.middleware";
+import { Role } from "@prisma/client";
 
 const router = Router();
+const userController = new UserController();
+
+router.post("/api/users", userController.add);
+router.get(
+  "/api/users/me",
+  authenticateToken,
+  verifiedUser,
+  userController.profile
+);
+router.put(
+  "/api/users/me",
+  authenticateToken,
+  verifiedUser,
+  userController.updateProfile
+);
+
+router.get(
+  "/api/users/:id",
+  authenticateToken,
+  verifiedUser,
+  authorizeRoles(Role.ADMIN),
+  userController.ById
+);
+router.get(
+  "/api/users/:email",
+  authenticateToken,
+  verifiedUser,
+  authorizeRoles(Role.ADMIN),
+  userController.ByEmail
+);
+router.get(
+  "/api/users/:phone",
+  authenticateToken,
+  verifiedUser,
+  authorizeRoles(Role.ADMIN),
+  userController.ByPhone
+);
+router.put(
+  "/api/users/:id",
+  authenticateToken,
+  verifiedUser,
+  authorizeRoles(Role.ADMIN),
+  userController.update
+);
+router.delete(
+  "/api/users/:id",
+  authenticateToken,
+  verifiedUser,
+  authorizeRoles(Role.ADMIN),
+  userController.delete
+);
 
 export default router;
-
-/**
- * ID'ye göre kullanıcı getir
- * @route GET /api/users/:id
- * @access Private
- */
-
-/**
- * Email'e göre kullanıcı getir
- * @route GET /api/users/email/:email
- * @access Private (Admin only)
- */
-
-/**
- * Telefon numarasına göre kullanıcı getir
- * @route GET /api/users/phone/:phone
- * @access Private (Admin only)
- */
-
-/**
-   * Yeni kullanıcı ekle
-   * @route POST /api/users
-   * @access Private (Admin only)
-
-
-  /**
-   * Kullanıcı bilgilerini güncelle
-   * @route PUT /api/users/:id
-   * @access Private
-   */
-
-/**
- * Kullanıcıyı sil (soft delete)
- * @route DELETE /api/users/:id
- * @access Private (Admin only)
- */
-
-/**
- * Kendi profilini getir
- * @route GET /api/users/me
- * @access Private
- */
-
-/**
- * Kendi profilini güncelle
- * @route PUT /api/users/me
- * @access Private
- */
