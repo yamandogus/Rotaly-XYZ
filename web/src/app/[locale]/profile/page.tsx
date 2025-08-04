@@ -60,17 +60,17 @@ export default function ProfilePage() {
       const val = field.value.trim();
 
       if (!val) {
-        newErrors[field.id] = "Boş bırakılamaz";
+        newErrors[field.id] = t("fieldRequired");
       } else if (
         field.id === "email" &&
         !/^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/.test(val)
       ) {
-        newErrors[field.id] = "Geçerli bir e-posta girin";
+        newErrors[field.id] = t("invalidEmail");
       } else if (
         field.id === "phone" &&
         !/^\+90\s5\d{2}\s\d{3}\s\d{4}$/.test(val)
       ) {
-        newErrors[field.id] = "Geçerli telefon: +90 5XX XXX XXXX formatında olmalı";
+        newErrors[field.id] = t("invalidPhone");
       }
     });
 
@@ -102,9 +102,9 @@ export default function ProfilePage() {
         <div className="w-full md:w-80">
           <TabsList className="flex flex-col gap-3 self-start mt-8 ml-4 w-full bg-transparent p-6">
             {[
-              { value: "profile", label: "Profil", icon: "👤" },
-              { value: "reservations", label: "Rezervasyonlar", icon: "📅" },
-              { value: "past", label: "Geçmiş Rezervasyonlar", icon: "🕓" },
+              { value: "profile", label: t("title"), icon: "👤" },
+              { value: "reservations", label: t("reservations"), icon: "📅" },
+              { value: "past", label: t("pastReservations"), icon: "🕓" },
             ].map((tab) => (
               <TabsTrigger
                 key={tab.value}
@@ -119,9 +119,6 @@ export default function ProfilePage() {
             ))}
           </TabsList>
         </div>
-
-
-
 
         {/* Sağ içerikler */}
         <div className="flex-1 space-y-10">
@@ -202,18 +199,18 @@ export default function ProfilePage() {
           <TabsContent value="reservations">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
               <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
-                Rezervasyonlar
+                {t("reservations")}
               </h2>
-              <p className="text-gray-600 dark:text-gray-400">Aktif rezervasyonlarınız burada listelenecek.</p>
+              <p className="text-gray-600 dark:text-gray-400">{t("reservationsDescription")}</p>
             </div>
           </TabsContent>
 
           <TabsContent value="past">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
               <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
-                Geçmiş Rezervasyonlar
+                {t("pastReservations")}
               </h2>
-              <p className="text-gray-600 dark:text-gray-400">Geçmiş rezervasyonlarınız burada listelenecek.</p>
+              <p className="text-gray-600 dark:text-gray-400">{t("pastReservationsDescription")}</p>
             </div>
           </TabsContent>
         </div>
@@ -274,7 +271,7 @@ export default function ProfilePage() {
               onClick={handleSave}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white"
             >
-              Kaydet
+              {t("save")}
             </Button>
           </DialogFooter>
         </DialogContent>

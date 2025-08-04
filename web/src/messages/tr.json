@@ -12,11 +12,8 @@
     "logout": "Çıkış Yap",
     "Hotels Add": "Otel Ekle",
     "profile": "Profil",
-
     "contact":"İletişim"
-
   },
-
   "HomePage": {
     "heroHeading": "Hayalinizdeki Konaklama Bir Tık Uzağınızda",
     "heroSubheading": "Sevdiğiniz destinasyonlarda, en cazip fiyatlarla konaklama seçeneklerini keşfedin.",
@@ -137,24 +134,41 @@
     "hotels": "Oteller",
     "reservations": "Rezervasyonlar"
   },
-
-"Profile": {
-  "title": "Profilim",
-  "subtitle": "Bilgilerinizi gözden geçirin",
-  "personalInfo": "Kişisel Bilgiler",
-  "addressInfo": "Adres Bilgileri",
-  "edit": "Düzenle",
-  "firstName": "Adı",
-  "lastName": "Soyadı",
-  "dob": "Doğum Tarihi",
-  "email": "E-posta Adresi",
-  "phone": "Telefon Numarası",
-  "role": "Kullanıcı Rolü",
-  "country": "Ülke",
-  "city": "Şehir",
-  "postalCode": "Posta Kodu"
-},
-
+  "Profile": {
+    "title": "Profilim",
+    "subtitle": "Bilgilerinizi gözden geçirin",
+    "personalInfo": "Kişisel Bilgiler",
+    "addressInfo": "Adres Bilgileri",
+    "edit": "Düzenle",
+    "firstName": "Adı",
+    "lastName": "Soyadı",
+    "dob": "Doğum Tarihi",
+    "email": "E-posta Adresi",
+    "phone": "Telefon Numarası",
+    "role": "Kullanıcı Rolü",
+    "country": "Ülke",
+    "city": "Şehir",
+    "postalCode": "Posta Kodu",
+    "reservations": "Rezervasyonlar",
+    "pastReservations": "Geçmiş Rezervasyonlar",
+    "activeReservations": "Aktif Rezervasyonlar",
+    "totalReservations": "Toplam: {count} rezervasyon",
+    "hotelName": "Otel Adı",
+    "checkInDate": "Giriş Tarihi",
+    "checkOutDate": "Çıkış Tarihi",
+    "guests": "Misafirler",
+    "status": "Durum",
+    "price": "Fiyat",
+    "confirmed": "Onaylandı",
+    "pending": "Beklemede",
+    "completed": "Tamamlandı",
+    "save": "Kaydet",
+    "fieldRequired": "Bu alan boş bırakılamaz",
+    "invalidEmail": "Geçerli bir e-posta adresi girin",
+    "invalidPhone": "Geçerli telefon: +90 5XX XXX XXXX formatında olmalı",
+    "reservationsDescription": "Aktif rezervasyonlarınız burada listelenecek.",
+    "pastReservationsDescription": "Geçmiş rezervasyonlarınız burada listelenecek."
+  },
   "Footer": {
     "copyright": "Tüm hakları saklıdır",
     "hotel": "Otel",
@@ -170,7 +184,7 @@
     "privacy": "Gizlilik",
     "terms": "Şartlar ve Koşullar"
   },
-    "contact": {
+  "contact": {
     "title": "BİZE ULAŞIN",
     "contactForm": "İLETİŞİM FORMU",
     "nameLabel": "Adınız Soyadınız:",
@@ -181,7 +195,10 @@
     "followUs": "- Bizi Takip Edin",
     "addressTitle": "ADRES",
     "contactTitle": "İLETİŞİM"
+
   },
+
+  
 
   "Customers": {
     "allRegisteredUsers": "Tüm kayıtlı kullanıcılar",
@@ -220,6 +237,75 @@
     "password_description": "Lütfen şifrenizi giriniz",
     "submit": "Şifremi Sıfırla",
     "back": "Giriş Yap"
+  },
+  
+  "Reservations": {
+    "active": "Aktif",
+    "completed": "Tamamlandı",
+    "room": "Oda",
+    "persons": "kişilik",
+
+    "searchPlaceholder": "Misafir adı veya e-posta ile arayın",
+    "selectRoom": "Oda Seçin",
+    "allRooms": "Tüm Odalar",
+
+    "selectDate": "Tarih Seçin",
+    "allDates": "Tüm Tarihler",
+
+    "noReservations": "Rezervasyon bulunamadı",
+    "noReservationsForRoom": "{{roomNumber}} numaralı oda için rezervasyon bulunamadı",
+    "noReservationsMessage": "Seçilen kriterlere uygun rezervasyon yok.",
+    "reservations": "rezervasyon",
+
+    "title": "Rezervasyon Yönetimi",
+    "subtitle": "Otel rezervasyonlarınızı görüntüleyin ve yönetin",
+    "activeReservations": "Aktif Rezervasyonlar",
+    "pastReservations": "Geçmiş Rezervasyonlar"
+  },
+  
+  "Statistics": {
+    "title": "İstatistikler",
+    "dateRange": "Ocak - Ağustos",
+    "allRooms": "Tüm Odalar",
+    "compare": "Karşılaştır",
+    "exportCsv": ".csv Dışa Aktar",
+    "payments": {
+      "received": {
+        "title": "Alınan Ödemeler",
+        "status": "{count} Rezervasyon Ödendi"
+      },
+      "pending": {
+        "title": "Bekleyen Ödemeler",
+        "status": "{count} Rezervasyon Bekliyor"
+      }
+    },
+    "revenueSharing": {
+      "title": "Gelir Paylaşımı",
+      "description": "Gelir kategorilerine göre dağılım",
+      "rooms": "Odalar",
+      "food": "Yemekler",
+      "extraServices": "Ek Hizmetler"
+    },
+    "paymentTypes": {
+      "title": "Ödeme Türleri",
+      "description": "Tercih edilen ödeme yöntemleri",
+      "noData": "Henüz veri yok"
+    },
+    "reservationSources": {
+      "title": "Rezervasyon Kaynakları",
+      "description": "Gelirin kaynağa göre dağılımı"
+    },
+    "revenueAndOccupancy": {
+      "title": "Gelir ve Doluluk",
+      "description": "Son aylara ait tahmini veriler",
+      "occupancy": "Doluluk",
+      "totalRevenue": "Toplam Gelir"
+    }
   }
+
+
+
+
+
 
 }
