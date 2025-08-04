@@ -14,7 +14,6 @@ import {
   Settings,
   Menu,
   Heart,
-  Bell,
   SearchIcon,
   Mic,
   MessageCircle,
@@ -28,7 +27,7 @@ import Image from "next/image";
 import { Input } from "../ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useTheme } from "next-themes";
-import { NotificationSuccess } from "../notifications/notification-succes";
+import Notification from "../notifications/page";
 import {
   Sheet,
   SheetClose,
@@ -39,6 +38,7 @@ import {
 } from "../ui/sheet";
 import { SheetTrigger } from "../ui/sheet";
 import { SheetContent } from "../ui/sheet";
+import { toast } from "react-hot-toast";
 
 export function Navbar() {
   const t = useTranslations("Navigation");
@@ -48,7 +48,14 @@ export function Navbar() {
 
   const handleListOpen = () => {
     setIsListOpen(!isListOpen);
-    NotificationSuccess("Success", "Dinliyor...");
+    toast.success("Success", {
+      duration: 3000,
+      position: "top-right",
+    });
+    toast.error("Error", {
+      duration: 3000,
+      position: "top-right",
+    });
   };
 
   return (
@@ -89,22 +96,24 @@ export function Navbar() {
         {/* Right Side - Sağ taraf */}
         <div className="hidden md:flex flex-1 items-center justify-end space-x-2">
           <div className="flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="relative cursor-pointer"
-            >
-              <Heart className="h-5 w-5" />
-            </Button>
+            {/* Favorites */}
+            <Link href="/favorites">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="relative cursor-pointer"
+              >
+                <Heart className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 bg-[#ed2f2f] text-white rounded-full text-xs w-4 h-4 flex items-center justify-center text-[10px] font-medium">
+                  3
+                </span>
+              </Button>
+            </Link>
 
-            <Button
-              variant="ghost"
-              size="sm"
-              className="relative cursor-pointer"
-            >
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-1 right-1 bg-[#2F6FED] text-white rounded-full text-xs w-2 h-2 flex items-center justify-center"></span>
-            </Button>
+            {/* Notification */}
+            <div className="flex items-center">
+              <Notification />
+            </div>
 
             {/* Language Switcher */}
             <LanguageSwitcher />
@@ -169,13 +178,12 @@ export function Navbar() {
                     {t("profile")}
                   </Link>
                 </DropdownMenuItem>
-                   <DropdownMenuItem asChild>
+                <DropdownMenuItem asChild>
                   <Link href="/contact">
                     <User className="mr-2 h-4 w-4" />
                     {t("contact")}
                   </Link>
                 </DropdownMenuItem>
-
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -199,52 +207,52 @@ export function Navbar() {
               </SheetHeader>
               <div className="grid flex-1 auto-rows-min gap-6 px-4">
                 <SheetClose asChild>
-                <Link href="/dashboard" >
-                  <Button variant="outline" className="w-full">
-                    <Settings className="h-5 w-5" />
-                    {t("dashboard")}
-                  </Button>
-                </Link>
+                  <Link href="/dashboard">
+                    <Button variant="outline" className="w-full">
+                      <Settings className="h-5 w-5" />
+                      {t("dashboard")}
+                    </Button>
+                  </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                <Link href="/login" >
-                  <Button variant="outline" className="w-full">
-                    <User className="h-5 w-5" />
-                    {t("login")}
-                  </Button>
-                </Link>
+                  <Link href="/login">
+                    <Button variant="outline" className="w-full">
+                      <User className="h-5 w-5" />
+                      {t("login")}
+                    </Button>
+                  </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                <Link href="/register" >
-                  <Button variant="outline" className="w-full">
-                    <User className="h-5 w-5" />
-                    {t("register")}
-                  </Button>
-                </Link>
+                  <Link href="/register">
+                    <Button variant="outline" className="w-full">
+                      <User className="h-5 w-5" />
+                      {t("register")}
+                    </Button>
+                  </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                <Link href="/hotel" >
-                  <Button variant="outline" className="w-full">
-                    <Hotel className="h-5 w-5" />
-                    {t("Hotels Add")}
-                  </Button>
-                </Link>
+                  <Link href="/hotel">
+                    <Button variant="outline" className="w-full">
+                      <Hotel className="h-5 w-5" />
+                      {t("Hotels Add")}
+                    </Button>
+                  </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                <Link href="/support/contact" >
-                  <Button variant="outline" className="w-full">
-                    <MessageCircle className="h-5 w-5" />
-                    {t("contact")}
-                  </Button>
-                </Link>
+                  <Link href="/support/contact">
+                    <Button variant="outline" className="w-full">
+                      <MessageCircle className="h-5 w-5" />
+                      {t("contact")}
+                    </Button>
+                  </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                <Link href="/profile" >
-                  <Button variant="outline" className="w-full">
-                    <User className="h-5 w-5" />
-                    {t("profile")}
-                  </Button>
-                </Link> 
+                  <Link href="/profile">
+                    <Button variant="outline" className="w-full">
+                      <User className="h-5 w-5" />
+                      {t("profile")}
+                    </Button>
+                  </Link>
                 </SheetClose>
               </div>
               <SheetFooter>

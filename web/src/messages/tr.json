@@ -76,7 +76,7 @@
     "hotel-management-system": "Otel Yönetim Sistemi",
     "rotaly": "Rotaly",
     "home": "Anasayfa",
-    "customers": "Müşteriler",
+    "customers": "Müşteriler",  
     "company": "Şirket Bilgileri",
     "admins": "Adminler",
     "hotel-info": "Otel Bilgileri",
@@ -209,6 +209,17 @@
     "allStatus": "Tüm Durumlar",
     "id": "ID",
     "created": "Oluşturuldu"
+  },
+  "ResetPassword": {
+    "title": "Şifremi Unuttum",
+    "description": "Lütfen e-posta adresinizi giriniz",
+    "email": "E-posta Adresi",
+    "password": "Şifre",
+    "confirm_password": "Şifre Tekrarı",
+    "confirm_password_description": "Şifrenizi tekrar giriniz",
+    "password_description": "Lütfen şifrenizi giriniz",
+    "submit": "Şifremi Sıfırla",
+    "back": "Giriş Yap"
   }
 
 }
