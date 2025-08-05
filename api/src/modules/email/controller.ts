@@ -17,7 +17,6 @@ export class EmailController {
    */
   async sendVerificationEmail(req: Request, res: Response): Promise<void> {
     try {
-      // validate request body using Zod
       const validation = verificationEmailSchema.safeParse(req.body);
 
       if (!validation.success) {
@@ -31,16 +30,16 @@ export class EmailController {
 
       const { email, name } = validation.data;
 
-      // extracting locale from URL path param, default to 'en'
+      // extracting locale from URL path param :locale, default to 'en'
       const locale = req.params.locale || "en";
 
-      const emailSent = await emailService.sendVerificationEmail(
+      const isEmailSent = await emailService.sendVerificationEmail(
         email,
         name,
         locale
       );
 
-      if (!emailSent) {
+      if (!isEmailSent) {
         throw new AppError("Failed to send verification email", 500);
       }
 
@@ -87,13 +86,13 @@ export class EmailController {
 
       const locale = req.params.locale || "en";
 
-      const emailSent = await emailService.sendPasswordResetEmail(
+      const isEmailSent = await emailService.sendPasswordResetEmail(
         email,
         name,
         locale
       );
 
-      if (!emailSent) {
+      if (!isEmailSent) {
         throw new AppError("Failed to send password reset email", 500);
       }
 
@@ -140,13 +139,13 @@ export class EmailController {
 
       const locale = req.params.locale || "en";
 
-      const emailSent = await emailService.sendWelcomeEmail(
+      const isEmailSent = await emailService.sendWelcomeEmail(
         email,
         name,
         locale
       );
 
-      if (!emailSent) {
+      if (!isEmailSent) {
         throw new AppError("Failed to send welcome email", 500);
       }
 
@@ -193,7 +192,7 @@ export class EmailController {
 
       const locale = req.params.locale || "en";
 
-      const emailSent = await emailService.sendContactEmail(
+      const isEmailSent = await emailService.sendContactEmail(
         fromEmail,
         fromName,
         subject,
@@ -201,7 +200,7 @@ export class EmailController {
         locale
       );
 
-      if (!emailSent) {
+      if (!isEmailSent) {
         throw new AppError("Failed to send contact us email", 500);
       }
 
