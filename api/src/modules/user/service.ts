@@ -86,10 +86,7 @@ export class UserService {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(data.newPassword, saltRounds);
 
-    await userRepository.update(id, {
-      ...data,
-      hashedPassword: hashedPassword,
-    });
+    await userRepository.updatePassword(id, hashedPassword);
     return { message: "Password changed successfully" };
   }
 
