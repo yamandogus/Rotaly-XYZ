@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Toaster } from "react-hot-toast";
+import ChatWidget from "@/components/chat/chat-widget";
 
 type Props = {
   children: ReactNode;
@@ -33,6 +34,7 @@ export default function LayoutWrapper({ children }: Props) {
           {children}
         </div>
         <Toaster position="bottom-right" reverseOrder={false} />
+        <ChatWidget />
       </main>
       <Footer />
     </div>
