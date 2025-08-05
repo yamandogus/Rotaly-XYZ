@@ -527,7 +527,10 @@ export default function ReservationTabs() {
     : filteredByRoom;
 
   return (
-    <div className="max-w-7xl mx-auto p-6 w-full min-h-screen dark:bg-gray-900 dark:text-gray-100">
+ <div className="max-w-7xl mx-auto p-6 w-full min-h-screen bg-white text-gray-900 dark:bg-card dark:text-gray-100">
+
+
+
       <Tabs
         value={activeTab}
         onValueChange={(tab) => {
@@ -538,23 +541,24 @@ export default function ReservationTabs() {
         }}
         className="w-full"
       >
-        <TabsList className="grid grid-cols-2 w-full max-w-3xl mx-auto mb-8 gap-4">
-          <TabsTrigger
-            value="active"
-            className="flex-1 flex items-center justify-center gap-2"
-          >
-            <span className="w-2.5 h-2.5 bg-green-500 rounded-full" />
-            {t("activeReservations")}
-          </TabsTrigger>
+       <TabsList className="grid grid-cols-2 w-full max-w-3xl mx-auto mb-8 gap-4 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+  <TabsTrigger
+    value="active"
+    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-gray-800 dark:text-gray-100 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900"
+  >
+    <span className="w-2.5 h-2.5 bg-green-500 rounded-full" />
+    {t("activeReservations")}
+  </TabsTrigger>
 
-          <TabsTrigger
-            value="past"
-            className="flex-1 flex items-center justify-center gap-2"
-          >
-            <span className="w-2.5 h-2.5 bg-red-500 rounded-full" />
-            {t("pastReservations")}
-          </TabsTrigger>
-        </TabsList>
+  <TabsTrigger
+    value="past"
+    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-gray-800 dark:text-gray-100 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900"
+  >
+    <span className="w-2.5 h-2.5 bg-red-500 rounded-full" />
+    {t("pastReservations")}
+  </TabsTrigger>
+</TabsList>
+
 
         <TabsContent value="active" className="mt-0 w-full">
           <RoomSelector
