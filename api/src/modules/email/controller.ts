@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { emailService } from "./service";
 import {
-  supportEmailSchema,
+  contactUsEmailSchema,
   verificationEmailSchema,
   passwordResetEmailSchema,
   welcomeEmailSchema,
@@ -172,13 +172,13 @@ export class EmailController {
   }
 
   /**
-   * Forward support email to real email address
+   * Forward contact us email to real email address
    * @param req - Express req object
    * @param res - Express res object
    */
   async forwardContactEmail(req: Request, res: Response): Promise<void> {
     try {
-      const validation = supportEmailSchema.safeParse(req.body);
+      const validation = contactUsEmailSchema.safeParse(req.body);
 
       if (!validation.success) {
         res.status(400).json({
@@ -202,12 +202,12 @@ export class EmailController {
       );
 
       if (!emailSent) {
-        throw new AppError("Failed to send support email", 500);
+        throw new AppError("Failed to send contact us email", 500);
       }
 
       res.status(200).json({
         success: true,
-        message: "Support email sent successfully",
+        message: "contact us email sent successfully",
       });
     } catch (error) {
       console.error("Error in forwardContactEmail:", error);
