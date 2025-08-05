@@ -190,34 +190,18 @@ const RevenueAndOccupancyCard = () => {
 const StatisticPage = () => {
   const t = useTranslations("Statistics");
   return (
-    <div className="flex-1 space-y-6 p-4 sm:p-6 lg:p-8 pt-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">{t("title")}</h2>
-        <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline" size="sm" className="text-xs">
-            <span className="hidden sm:inline">{t("dateRange")}</span>
-            <span className="sm:hidden">Tarih</span>
-            <ChevronDown className="h-4 w-4 ml-1 sm:ml-2" />
-          </Button>
-          <Button variant="outline" size="sm" className="text-xs">
-            <span className="hidden sm:inline">{t("allRooms")}</span>
-            <span className="sm:hidden">Odalar</span>
-            <ChevronDown className="h-4 w-4 ml-1 sm:ml-2" />
-          </Button>
-          <Button size="sm" className="text-xs">
-            <Repeat className="h-4 w-4 mr-1" />
-            <span className="hidden sm:inline">{t("compare")}</span>
-            <span className="sm:hidden">Karşılaştır</span>
-          </Button>
-          <Button variant="outline" size="sm" className="text-xs">
-            <Download className="h-4 w-4 mr-1" />
-            <span className="hidden sm:inline">{t("exportCsv")}</span>
-            <span className="sm:hidden">Dışa Aktar</span>
-          </Button>
+    <div className="flex-1 space-y-6 p-8 pt-6 ">
+      <div className="flex items-center justify-between space-y-2">
+        <h2 className="text-3xl font-bold tracking-tight">{t("title")}</h2>
+        <div className="flex items-center space-x-2">
+          <Button variant="outline"><span>{t("dateRange")}</span><ChevronDown className="h-4 w-4 ml-2" /></Button>
+          <Button variant="outline"><span>{t("allRooms")}</span><ChevronDown className="h-4 w-4 ml-2" /></Button>
+          <Button><Repeat className="h-4 w-4 mr-1" />{t("compare")}</Button>
+          <Button variant="outline"><Download className="h-4 w-4 mr-1" />{t("exportCsv")}</Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-4">
         <StatsCard
           title={t("payments.received.title")}
           status={t("payments.received.status", { count: 6 })}
@@ -230,18 +214,10 @@ const StatisticPage = () => {
           tlValue="8.080"
           icon={<AlertCircle className="h-4 w-4 text-yellow-500" />}
         />
-        <div className="md:col-span-2 lg:col-span-1">
-          <RevenueSharingCard />
-        </div>
-        <div className="md:col-span-2 lg:col-span-1">
-          <PaymentTypeCard />
-        </div>
-        <div className="md:col-span-1 lg:col-span-1">
-          <ReservationSourceCard />
-        </div>
-        <div className="md:col-span-2 lg:col-span-3">
-          <RevenueAndOccupancyCard />
-        </div>
+        <RevenueSharingCard />
+        <PaymentTypeCard />
+        <ReservationSourceCard />
+        <RevenueAndOccupancyCard />
       </div>
     </div>
   );
