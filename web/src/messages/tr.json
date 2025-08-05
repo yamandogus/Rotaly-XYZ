@@ -167,7 +167,9 @@
     "invalidEmail": "Geçerli bir e-posta adresi girin",
     "invalidPhone": "Geçerli telefon: +90 5XX XXX XXXX formatında olmalı",
     "reservationsDescription": "Aktif rezervasyonlarınız burada listelenecek.",
-    "pastReservationsDescription": "Geçmiş rezervasyonlarınız burada listelenecek."
+    "pastReservationsDescription": "Geçmiş rezervasyonlarınız burada listelenecek.",
+    "notifications": "Bildirimler",
+  "notificationsDescription": "Güncel bildirimlerinizi buradan görüntüleyebilirsiniz."
   },
   "Footer": {
     "copyright": "Tüm hakları saklıdır",
@@ -253,12 +255,10 @@
     "allDates": "Tüm Tarihler",
 
     "noReservations": "Rezervasyon bulunamadı",
-    "noReservationsForRoom": "{{roomNumber}} numaralı oda için rezervasyon bulunamadı",
+    "noReservationsForRoom": "{roomNumber} numaralı oda için rezervasyon bulunamadı",
     "noReservationsMessage": "Seçilen kriterlere uygun rezervasyon yok.",
     "reservations": "rezervasyon",
 
-    "title": "Rezervasyon Yönetimi",
-    "subtitle": "Otel rezervasyonlarınızı görüntüleyin ve yönetin",
     "activeReservations": "Aktif Rezervasyonlar",
     "pastReservations": "Geçmiş Rezervasyonlar"
   },
