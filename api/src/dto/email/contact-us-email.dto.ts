@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const supportEmailSchema = z.object({
+export const contactUsEmailSchema = z.object({
   fromEmail: z.string().email("Invalid email address"),
   fromName: z.string().min(1, "Name is required").max(100, "Name too long"),
   subject: z
@@ -13,4 +13,4 @@ export const supportEmailSchema = z.object({
     .max(5000, "Message too long"),
 });
 
-export type SupportEmailSchemaType = z.infer<typeof supportEmailSchema>;
+export type ContactUsEmailSchemaType = z.infer<typeof contactUsEmailSchema>;
