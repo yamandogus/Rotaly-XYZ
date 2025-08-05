@@ -1,0 +1,42 @@
+{{> header title="E-posta Doğrulama"}}
+
+      <h1 class="title verification">E-posta Doğrulama Gerekli</h1>
+
+      <div class="greeting">Merhaba <span class="highlight">{{name}}</span>,</div>
+
+      <div class="content">
+        <p>
+          Rotaly XYZ'ye kaydolduğunuz için teşekkür ederiz! Hesap kurulumunuzu 
+          tamamlamak ve harika otelleri rezerve etmeye başlamak için e-posta 
+          adresinizi doğrulamanız gerekmektedir.
+        </p>
+
+        <p>E-postanızı onaylamak için aşağıdaki doğrulama kodunu kullanın:</p>
+      </div>
+
+      <div class="otp-container verification">
+        <div class="otp-label">Doğrulama Kodunuz</div>
+        <div class="otp-code verification">{{otp}}</div>
+        <div style="font-size: 12px; color: #888; margin-top: 10px">
+          Bu kod 10 dakika içinde geçerliliğini yitirecektir
+        </div>
+      </div>
+
+      <div class="content">
+        <p>
+          Hesabınızı etkinleştirmek ve özel otel fırsatlarımızı keşfetmeye 
+          başlamak için bu kodu doğrulama formuna girin.
+        </p>
+      </div>
+
+      <div class="warning">
+        <strong>Güvenlik Bildirimi:</strong> Rotaly XYZ'de bir hesap oluşturmadıysanız, 
+        lütfen bu e-postayı dikkate almayın. E-posta adresiniz yanlışlıkla girilmiş olabilir.
+      </div>
+
+      <div class="content">
+        <p>Yardıma mı ihtiyacınız var? Destek ekibimizle support@rotaly-xyz.com adresinden iletişime geçin</p>
+        <p>Rotaly XYZ ailesine hoş geldiniz!</p>
+      </div>
+
+{{> footer footerMessage="Bu otomatik bir mesajdır, lütfen bu e-postaya yanıt vermeyin."}}

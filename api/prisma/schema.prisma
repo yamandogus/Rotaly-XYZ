@@ -62,6 +62,23 @@ enum SupportStatus {
   CLOSED
 }
 
+enum SupportPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum SupportCategory {
+  TECHNICAL
+  BILLING
+  RESERVATION
+  GENERAL
+  COMPLAINT
+  FEATURE_REQUEST
+  OTHER
+}
+
 model User {
   id                      String    @id @default(uuid())
   name                    String
@@ -251,10 +268,37 @@ model Reservation {
   @@map("reservations")
 }
 
+/*
+model Attachment {
+  id            String    @id @default(uuid())
+  filename      String
+  originalName  String    @map("original_name")
+  mimeType      String    @map("mime_type")
+  size          Int
+  url           String
+  uploadedBy    User      @relation("UserAttachments", fields: [uploadedById], references: [id])
+  uploadedById  String    @map("uploaded_by_id")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  deletedAt     DateTime? @map("deleted_at")
+
+  // optional relations - only one is used per attachment
+  support       Support?  @relation(fields: [supportId], references: [id])
+  supportId     String?
+
+  message       Message?  @relation(fields: [messageId], references: [id])
+  messageId     String?
+
+  @@map("attachments")
+}
+*/
+
 model Support {
   id        String        @id @default(uuid())
   subject   String
+  body      String
   status    SupportStatus @default(OPEN)
+  priority  SupportPriority @default(MEDIUM)
+  category  SupportCategory @default(GENERAL)
   createdAt DateTime      @default(now()) @map("created_at")
   updatedAt DateTime      @updatedAt @map("updated_at")
   closedAt  DateTime?     @map("closed_at")
@@ -266,6 +310,7 @@ model Support {
   supportRepId String?
 
   messages Message[]
+  //attachments Attachment[]
 
   @@map("supports")
 }
@@ -282,6 +327,8 @@ model Message {
   createdAt  DateTime  @default(now()) @map("created_at")
   readAt     DateTime?
   deletedAt  DateTime? @map("deleted_at")
+
+  //attachments Attachment[]
 
   @@map("messages")
 }

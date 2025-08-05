@@ -1,6 +1,11 @@
 import { UserRepository } from "./repository";
-import { RegisterSchemaType, UpdateUserSchemaType } from "src/dto/auth";
+import {
+  RegisterSchemaType,
+  UpdateUserSchemaType,
+  ChangePasswordSchemaType,
+} from "src/dto/auth";
 import bcrypt from "bcrypt";
+import { AppError } from "src/utils/appError";
 
 const userRepository = new UserRepository();
 
@@ -8,7 +13,7 @@ export class UserService {
   async getAll() {
     const users = await userRepository.findAll();
     if (!users || users.length === 0) {
-      throw new Error("Users not found");
+      throw new AppError("Users not found", 404);
     }
     return users;
   }
@@ -16,7 +21,7 @@ export class UserService {
   async getById(id: string) {
     const user = await userRepository.findById(id);
     if (!user || user.deletedAt) {
-      throw new Error("User not found");
+      throw new AppError("User not found", 404);
     }
     return user;
   }
@@ -24,7 +29,7 @@ export class UserService {
   async getByEmail(email: string) {
     const user = await userRepository.findByEmail(email);
     if (!user || user.deletedAt) {
-      throw new Error("User not found");
+      throw new AppError("User not found", 404);
     }
     return user;
   }
@@ -32,42 +37,64 @@ export class UserService {
   async getByPhone(phone: string) {
     const user = await userRepository.findByPhone(phone);
     if (!user || user.deletedAt) {
-      throw new Error("User not found");
+      throw new AppError("User not found", 404);
     }
     return user;
   }
 
-  async add(data: RegisterSchemaType) {
-    const user = await this.getByEmail(data.email);
-    if (user) {
-      throw new Error("User already exists");
-    }
+  async checkEmailUnique(email: string, excludeUserId?: string): Promise<void> {
+    const existingUser = await userRepository.findByEmail(email);
 
+    if (existingUser && (!excludeUserId || existingUser.id !== excludeUserId)) {
+      throw new AppError("Email address is already in use", 409);
+    }
+  }
+  async add(data: RegisterSchemaType) {
+    await this.checkEmailUnique(data.email);
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(data.password, saltRounds);
 
-    return userRepository.create({ ...data, password: hashedPassword });
+    return userRepository.create({
+      ...data,
+      password: hashedPassword,
+    });
   }
 
   async update(id: string, data: UpdateUserSchemaType) {
     const user = await this.getById(id);
     if (!user) {
-      throw new Error("User not found");
+      throw new AppError("User not found", 404);
     }
-
-    if (data.password) {
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(data.password, saltRounds);
-      return userRepository.update(id, { ...data, password: hashedPassword });
+    if (data.email && data.email !== user.email) {
+      await this.checkEmailUnique(data.email, id);
     }
-
     return userRepository.update(id, data);
+  }
+
+  async changePassword(id: string, data: ChangePasswordSchemaType) {
+    const user = await this.getById(id);
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
+    const isPasswordValid = await bcrypt.compare(
+      data.currentPassword,
+      user.hashedPassword
+    );
+    if (!isPasswordValid) {
+      throw new AppError("Current password is incorrect", 401);
+    }
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(data.newPassword, saltRounds);
+
+    const { currentPassword, newPassword, ...rest } = data;
+    await userRepository.update(id, { ...data, hashedPassword });
+    return { message: "Password changed successfully" };
   }
 
   async delete(id: string) {
     const user = await this.getById(id);
     if (!user) {
-      throw new Error("User not found");
+      throw new AppError("User not found", 404);
     }
     return userRepository.delete(id);
   }

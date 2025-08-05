@@ -2,8 +2,6 @@
 
 import React from "react";
 import HotelTabs from "@/components/hotel/hotel-tabs";
-import { format } from "date-fns";
-import { tr } from "date-fns/locale";
 import RecentlyViewedHotels from "@/components/hotel/recently-viewed-hotels";
 import Breadcrumbs from "@/components/hotel/bread-crumbs";
 import ImageGallery from "@/components/hotel/image-gallery";
