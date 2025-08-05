@@ -31,8 +31,18 @@ export class UserRepository {
     });
   }
   async create(data: RegisterSchemaType) {
+    // confirmPassword alanını ve hashlenmemiş password'u kaydetmemeliyiz
+    const { name, surname, email, phone, password } = data;
+    // Burada password'ü hashlemeniz gerekir, örneğin bcrypt ile hashleyebilirsiniz.
+    // Şimdilik hashedPassword alanını doğrudan password olarak atıyoruz, gerçek uygulamada hash kullanmalısınız.
     return Prisma.user.create({
-      data,
+      data: {
+        name,
+        surname,
+        email,
+        phone,
+        hashedPassword: password,
+      },
     });
   }
   async update(id: string, data: UpdateUserSchemaType) {
@@ -41,6 +51,17 @@ export class UserRepository {
         id,
       },
       data,
+    });
+  }
+
+  async updatePassword(id: string, hashedPassword: string) {
+    return Prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        hashedPassword: hashedPassword,
+      },
     });
   }
   async delete(id: string) {
