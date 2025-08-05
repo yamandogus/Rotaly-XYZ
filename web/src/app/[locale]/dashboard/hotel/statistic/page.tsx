@@ -190,7 +190,8 @@ const RevenueAndOccupancyCard = () => {
 const StatisticPage = () => {
   const t = useTranslations("Statistics");
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 bg-gray-50 dark:bg-gray-900">
+<div className="flex-1 space-y-6 p-8 pt-6 dark:bg-card">
+
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">{t("title")}</h2>
         <div className="flex items-center space-x-2">

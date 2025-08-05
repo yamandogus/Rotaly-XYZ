@@ -53,12 +53,7 @@ export default function HotelDashboard() {
   return (
     <div className="p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-card border border-border rounded-lg shadow-sm p-8 mb-6">
-          <h1 className="text-3xl font-bold text-foreground">Otel Yönetim Paneli</h1>
-          <p className="text-muted-foreground mt-4">
-            Otel yönetim paneline hoş geldiniz. Rezervasyonlarınızı, odalarınızı ve otel bilgilerinizi buradan yönetebilirsiniz.
-          </p>
-        </div>
+     
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
           {hotelMenu.map((item, index) => {
