@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { emailService } from "./service";
 import {
-  supportEmailSchema,
+  contactUsEmailSchema,
   verificationEmailSchema,
   passwordResetEmailSchema,
   welcomeEmailSchema,
@@ -17,7 +17,6 @@ export class EmailController {
    */
   async sendVerificationEmail(req: Request, res: Response): Promise<void> {
     try {
-      // validate request body using Zod
       const validation = verificationEmailSchema.safeParse(req.body);
 
       if (!validation.success) {
@@ -31,16 +30,16 @@ export class EmailController {
 
       const { email, name } = validation.data;
 
-      // extracting locale from URL path param, default to 'en'
+      // extracting locale from URL path param :locale, default to 'en'
       const locale = req.params.locale || "en";
 
-      const emailSent = await emailService.sendVerificationEmail(
+      const isEmailSent = await emailService.sendVerificationEmail(
         email,
         name,
         locale
       );
 
-      if (!emailSent) {
+      if (!isEmailSent) {
         throw new AppError("Failed to send verification email", 500);
       }
 
@@ -87,13 +86,13 @@ export class EmailController {
 
       const locale = req.params.locale || "en";
 
-      const emailSent = await emailService.sendPasswordResetEmail(
+      const isEmailSent = await emailService.sendPasswordResetEmail(
         email,
         name,
         locale
       );
 
-      if (!emailSent) {
+      if (!isEmailSent) {
         throw new AppError("Failed to send password reset email", 500);
       }
 
@@ -140,13 +139,13 @@ export class EmailController {
 
       const locale = req.params.locale || "en";
 
-      const emailSent = await emailService.sendWelcomeEmail(
+      const isEmailSent = await emailService.sendWelcomeEmail(
         email,
         name,
         locale
       );
 
-      if (!emailSent) {
+      if (!isEmailSent) {
         throw new AppError("Failed to send welcome email", 500);
       }
 
@@ -172,13 +171,13 @@ export class EmailController {
   }
 
   /**
-   * Forward support email to real email address
+   * Forward contact us email to real email address
    * @param req - Express req object
    * @param res - Express res object
    */
   async forwardContactEmail(req: Request, res: Response): Promise<void> {
     try {
-      const validation = supportEmailSchema.safeParse(req.body);
+      const validation = contactUsEmailSchema.safeParse(req.body);
 
       if (!validation.success) {
         res.status(400).json({
@@ -193,7 +192,7 @@ export class EmailController {
 
       const locale = req.params.locale || "en";
 
-      const emailSent = await emailService.sendContactEmail(
+      const isEmailSent = await emailService.sendContactEmail(
         fromEmail,
         fromName,
         subject,
@@ -201,13 +200,13 @@ export class EmailController {
         locale
       );
 
-      if (!emailSent) {
-        throw new AppError("Failed to send support email", 500);
+      if (!isEmailSent) {
+        throw new AppError("Failed to send contact us email", 500);
       }
 
       res.status(200).json({
         success: true,
-        message: "Support email sent successfully",
+        message: "contact us email sent successfully",
       });
     } catch (error) {
       console.error("Error in forwardContactEmail:", error);

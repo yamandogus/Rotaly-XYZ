@@ -3,9 +3,9 @@ import {
   RegisterSchemaType,
   UpdateUserSchemaType,
   ChangePasswordSchemaType,
-} from "src/dto/auth";
+} from "../../dto/auth";
 import bcrypt from "bcrypt";
-import { AppError } from "src/utils/appError";
+import { AppError } from "../../utils/appError";
 
 const userRepository = new UserRepository();
 
@@ -86,8 +86,7 @@ export class UserService {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(data.newPassword, saltRounds);
 
-    const { currentPassword, newPassword, ...rest } = data;
-    await userRepository.update(id, { ...data, hashedPassword });
+    await userRepository.updatePassword(id, hashedPassword);
     return { message: "Password changed successfully" };
   }
 
