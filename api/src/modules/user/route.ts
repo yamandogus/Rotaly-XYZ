@@ -20,7 +20,20 @@ router.put(
   verifiedUser,
   userController.updateProfile
 );
+router.patch(
+  "/api/users/me/password",
+  authenticateToken,
+  verifiedUser,
+  userController.changePassword
+);
 
+router.patch(
+  "/api/users/:id/change-password",
+  authenticateToken,
+  verifiedUser,
+  authorizeRoles(Role.ADMIN),
+  userController.changePassword
+);
 router.get(
   "/api/users/:id",
   authenticateToken,
