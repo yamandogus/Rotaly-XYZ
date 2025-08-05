@@ -39,4 +39,4 @@ router.post(
   emailController.forwardContactEmail.bind(emailController)
 );
 
-export { router as emailRoutes };
+export default router;

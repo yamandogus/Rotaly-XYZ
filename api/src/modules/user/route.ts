@@ -82,4 +82,4 @@ router.delete(
   userController.delete
 );
 
-export { router as userRoutes };
+export default router;
