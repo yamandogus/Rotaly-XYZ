@@ -21,6 +21,7 @@ import { DatePicker } from "@/components/date-picker";
 export default function ProfilePage() {
   const t = useTranslations("Profile");
 
+
   const [personalInfo, setPersonalInfo] = useState([
     { id: "firstName", label: t("firstName"), value: "Ahmet" },
     { id: "lastName", label: t("lastName"), value: "Yıldız" },
@@ -36,10 +37,33 @@ export default function ProfilePage() {
     { id: "postalCode", label: t("postalCode"), value: "ERT 1254" },
   ]);
 
+  const [notifications, setNotifications] = useState([
+  {
+    id: 1,
+    message: "Yeni rezervasyonunuz onaylandı.",
+    date: "2025-08-01T10:00:00Z",
+    read: false,
+  },
+  {
+    id: 2,
+    message: "Profil bilgileriniz başarıyla güncellendi.",
+    date: "2025-07-30T15:30:00Z",
+    read: true,
+  },
+  {
+    id: 3,
+    message: "Sistem bakımı nedeniyle 5 Ağustos'ta hizmet verilemeyecek.",
+    date: "2025-07-28T08:15:00Z",
+    read: false,
+  },
+]);
+
+
   const [editSection, setEditSection] = useState<"personal" | "address" | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [tempData, setTempData] = useState<typeof personalInfo>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  
 
   const handleEditClick = (section: "personal" | "address") => {
     const data =
@@ -105,6 +129,7 @@ export default function ProfilePage() {
               { value: "profile", label: t("title"), icon: "👤" },
               { value: "reservations", label: t("reservations"), icon: "📅" },
               { value: "past", label: t("pastReservations"), icon: "🕓" },
+              { value: "notifications", label: t("notifications"), icon: "🔔" },
             ].map((tab) => (
               <TabsTrigger
                 key={tab.value}
@@ -213,6 +238,45 @@ export default function ProfilePage() {
               <p className="text-gray-600 dark:text-gray-400">{t("pastReservationsDescription")}</p>
             </div>
           </TabsContent>
+
+      <TabsContent value="notifications">
+  <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+    <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+      {t("notifications")}
+    </h2>
+
+    <div className="space-y-4">
+      {notifications.length === 0 ? (
+        <p className="text-gray-600 dark:text-gray-400">{t("noNotifications")}</p>
+      ) : (
+        notifications.map((notif) => (
+          <div
+            key={notif.id}
+            className={`p-4 rounded-lg border ${
+              notif.read
+                ? "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900"
+                : "border-blue-400 bg-blue-50 dark:bg-blue-900"
+            }`}
+          >
+            <div className="flex justify-between items-center">
+              <p
+                className={`text-sm ${
+                  notif.read ? "text-gray-800 dark:text-gray-200" : "font-semibold text-blue-800 dark:text-blue-200"
+                }`}
+              >
+                {notif.message}
+              </p>
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                {format(new Date(notif.date), "dd.MM.yyyy HH:mm")}
+              </span>
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  </div>
+</TabsContent>
+
         </div>
       </Tabs>
 
@@ -254,9 +318,7 @@ export default function ProfilePage() {
                       setTempData(updated);
                     }}
                     placeholder={field.id === "phone" ? "+90 532 123 4567" : undefined}
-                    className={`dark:bg-gray-800 dark:text-white ${
-                      errors[field.id] ? "border-red-500" : ""
-                    }`}
+                    className={`dark:bg-gray-800 dark:text-white ${errors[field.id] ? "border-red-500" : ""}`}
                   />
                 )}
                 {errors[field.id] && (

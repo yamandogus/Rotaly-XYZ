@@ -154,7 +154,7 @@ const reservations = {
       dates: "25.03.2025 - 28.03.2025",
       price: "3.500₺",
       avatar: "/guests/mira.jpg",
-      status: "completed"
+      status: "active"
     },
     {
       roomNumber: 101,
@@ -164,7 +164,7 @@ const reservations = {
       dates: "22.03.2025 - 24.03.2025",
       price: "3.500₺",
       avatar: "/guests/mira.jpg",
-      status: "completed"
+      status: "active"
     },
       {
       roomNumber: 101,
@@ -174,7 +174,7 @@ const reservations = {
       dates: "02.04.2025 - 05.04.2025",
       price: "4.400₺",
       avatar: "/guests/kaan.jpg",
-      status: "completed"
+      status: "active"
     },
     {
       roomNumber: 101,
@@ -184,7 +184,7 @@ const reservations = {
       dates: "16.04.2025 - 20.04.2025",
       price: "3.800₺",
       avatar: "/guests/leyla.jpg",
-      status: "completed"
+      status: "active"
     },
     
    {
@@ -195,7 +195,7 @@ const reservations = {
       dates: "02.04.2025 - 05.04.2025",
       price: "4.400₺",
       avatar: "/guests/kaan.jpg",
-      status: "completed"
+      status: "active"
     },
     {
       roomNumber: 105,
@@ -205,7 +205,7 @@ const reservations = {
       dates: "10.04.2025 - 13.04.2025",
       price: "3.800₺",
       avatar: "/guests/leyla.jpg",
-      status: "completed"
+      status: "active"
     },
 
     {
@@ -262,6 +262,8 @@ const reservations = {
   ]
 }
 
+
+
 type Reservation = {
   guestName: string;
   avatar: string;
@@ -273,18 +275,16 @@ type Reservation = {
   status: "active" | "past" | string;
 };
 
-function ReservationCard({ reservation }: { reservation: any }) {
+function ReservationCard({ reservation }: { reservation: Reservation }) {
   const t = useTranslations("Reservations");
 
-  const getStatusColor = (status: string) => {
-    return status === "active"
+  const getStatusColor = (status: string) =>
+    status === "active"
       ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
       : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
-  };
 
-  const getStatusText = (status: string) => {
-    return status === "active" ? t("active") : t("completed");
-  };
+  const getStatusText = (status: string) =>
+    status === "active" ? t("active") : t("completed");
 
   return (
     <Card className="hover:shadow-lg transition-shadow duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
@@ -292,10 +292,7 @@ function ReservationCard({ reservation }: { reservation: any }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Avatar className="w-12 h-12">
-              <AvatarImage
-                src={reservation.avatar}
-                alt={reservation.guestName}
-              />
+              <AvatarImage src={reservation.avatar} alt={reservation.guestName} />
               <AvatarFallback>
                 {reservation.guestName
                   .split(" ")
@@ -344,7 +341,6 @@ function ReservationCard({ reservation }: { reservation: any }) {
   );
 }
 
-
 function RoomSelector({
   rooms,
   selectedRoom,
@@ -361,47 +357,46 @@ function RoomSelector({
   const t = useTranslations("Reservations");
 
   return (
-    <div className="mb-8 w-full">
-      <div className="relative w-full max-w-md mx-auto">
-        <Input
-          type="text"
-          placeholder={t("searchPlaceholder")}
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-          className="pl-10 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
-        />
-        <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400 dark:text-gray-500" />
-      </div>
-      <div className="flex flex-col items-center gap-4 mb-6 mt-6">
-        <div className="flex items-center gap-2">
-          <Hotel className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{t("selectRoom")}</h3>
-        </div>
-      </div>
+   <div className="mb-8 w-full max-w-3xl mx-auto flex gap-4">
+  <div className="flex-1 relative">
+  <Input
+  type="text"
+  placeholder={t("searchPlaceholder")}
+  value={searchQuery}
+  onChange={(e) => onSearchChange(e.target.value)}
+  className="pl-10 mt-7.5 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+/>
+    <Search className="absolute left-3 top-9.5 w-5 h-5 text-gray-400 dark:text-gray-500" />
+  </div>
 
-      <div className="flex flex-wrap gap-3 justify-center max-w-full overflow-x-auto">
-        <Button
-          variant={selectedRoom === null ? "default" : "outline"}
-          onClick={() => onRoomSelect(null)}
-          className="flex items-center gap-2 flex-shrink-0"
-        >
-          <Hotel className="w-4 h-4" />
-          {t("allRooms")}
-        </Button>
+  <div className="flex-1 flex flex-col">
+    <label
+      htmlFor="room-select"
+      className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1"
+    >
+      <Hotel className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+      {t("selectRoom")}
+    </label>
+ <select
+  id="room-select"
+  value={selectedRoom === null ? "" : selectedRoom}
+  onChange={(e) => {
+    const val = e.target.value;
+    onRoomSelect(val === "" ? null : Number(val));
+  }}
+  className="w-full rounded border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-1.5 text-sm"
+>
+  <option value="">{t("allRooms")}</option>
+  {rooms.map((room) => (
+    <option key={room} value={room}>
+      {t("room")} {room}
+    </option>
+  ))}
+</select>
 
-        {rooms.map((room) => (
-          <Button
-            key={room}
-            variant={selectedRoom === room ? "default" : "outline"}
-            onClick={() => onRoomSelect(room)}
-            className="flex items-center gap-2 flex-shrink-0"
-          >
-            <Hotel className="w-4 h-4" />
-            {t("room")} {room}
-          </Button>
-        ))}
-      </div>
-    </div>
+  </div>
+</div>
+
   );
 }
 
@@ -410,7 +405,7 @@ function RoomDateSelector({
   selectedDate,
   onDateSelect,
 }: {
-  reservations: any[];
+  reservations: Reservation[];
   selectedDate: string | null;
   onDateSelect: (date: string | null) => void;
 }) {
@@ -420,7 +415,7 @@ function RoomDateSelector({
   if (dates.length === 0) return null;
 
   return (
-    <div className="mb-6 flex flex-col items-center">
+    <div className="mb-6  flex flex-col items-center">
       <label className="mb-2 font-medium text-gray-900 dark:text-gray-100">{t("selectDate")}</label>
       <select
         className="border rounded px-3 py-2 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
@@ -479,7 +474,7 @@ function renderReservations(
   );
 
   return (
-    <div className="space-y-8 w-full">
+    <div className="space-y-8 w-full mt-10">
       {Object.entries(grouped).map(([roomNumber, entries]) => (
         <section key={roomNumber} className="w-full">
           <div className="flex items-center gap-3 mb-6 justify-center">
@@ -510,6 +505,8 @@ function renderReservations(
 export default function ReservationTabs() {
   const t = useTranslations("Reservations");
 
+
+
   const [selectedRoom, setSelectedRoom] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState("active");
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -531,13 +528,6 @@ export default function ReservationTabs() {
 
   return (
     <div className="max-w-7xl mx-auto p-6 w-full min-h-screen dark:bg-gray-900 dark:text-gray-100">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-          {t("title")}
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">{t("subtitle")}</p>
-      </div>
-
       <Tabs
         value={activeTab}
         onValueChange={(tab) => {
@@ -548,10 +538,10 @@ export default function ReservationTabs() {
         }}
         className="w-full"
       >
-        <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto mb-8">
+        <TabsList className="grid grid-cols-2 w-full max-w-3xl mx-auto mb-8 gap-4">
           <TabsTrigger
             value="active"
-            className="flex items-center justify-center gap-2"
+            className="flex-1 flex items-center justify-center gap-2"
           >
             <span className="w-2.5 h-2.5 bg-green-500 rounded-full" />
             {t("activeReservations")}
@@ -559,7 +549,7 @@ export default function ReservationTabs() {
 
           <TabsTrigger
             value="past"
-            className="flex items-center justify-center gap-2"
+            className="flex-1 flex items-center justify-center gap-2"
           >
             <span className="w-2.5 h-2.5 bg-red-500 rounded-full" />
             {t("pastReservations")}

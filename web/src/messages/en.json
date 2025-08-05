@@ -167,7 +167,9 @@
     "invalidEmail": "Please enter a valid email address",
     "invalidPhone": "Please enter a valid phone number in format: +90 5XX XXX XXXX",
     "reservationsDescription": "Your active reservations will be listed here.",
-    "pastReservationsDescription": "Your past reservations will be listed here."
+    "pastReservationsDescription": "Your past reservations will be listed here.",
+     "notifications": "Notifications",
+  "notificationsDescription": "You can view your recent notifications here."
   },
   "Footer": {
     "copyright": "All rights reserved",
@@ -250,12 +252,10 @@
     "allDates": "All Dates",
 
     "noReservations": "No reservations found",
-    "noReservationsForRoom": "No reservations found for room {{roomNumber}}",
+    "noReservationsForRoom": "No reservations found for room {roomNumber}",
     "noReservationsMessage": "No reservations match the selected criteria.",
     "reservations": "reservations",
 
-    "title": "Reservation Management",
-    "subtitle": "View and manage your hotel reservations",
     "activeReservations": "Active Reservations",
     "pastReservations": "Past Reservations"
   },
