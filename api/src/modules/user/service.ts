@@ -3,9 +3,9 @@ import {
   RegisterSchemaType,
   UpdateUserSchemaType,
   ChangePasswordSchemaType,
-} from "src/dto/auth";
+} from "../../dto/auth";
 import bcrypt from "bcrypt";
-import { AppError } from "src/utils/appError";
+import { AppError } from "../../utils/appError";
 
 const userRepository = new UserRepository();
 
