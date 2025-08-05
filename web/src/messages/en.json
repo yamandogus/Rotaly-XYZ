@@ -169,7 +169,15 @@
     "reservationsDescription": "Your active reservations will be listed here.",
     "pastReservationsDescription": "Your past reservations will be listed here.",
      "notifications": "Notifications",
-  "notificationsDescription": "You can view your recent notifications here."
+    "notificationsDescription": "You can view your recent notifications here.",
+    "passwordOperations": "Password Operations",
+    "changePassword": "Change Password",
+    "passwordSettingsDescription": "Update your password regularly to keep your account secure.",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "passwordsDoNotMatch": "New passwords do not match."
+    
   },
   "Footer": {
     "copyright": "All rights reserved",

@@ -169,7 +169,18 @@
     "reservationsDescription": "Aktif rezervasyonlarınız burada listelenecek.",
     "pastReservationsDescription": "Geçmiş rezervasyonlarınız burada listelenecek.",
     "notifications": "Bildirimler",
-  "notificationsDescription": "Güncel bildirimlerinizi buradan görüntüleyebilirsiniz."
+    "notificationsDescription": "Güncel bildirimlerinizi buradan görüntüleyebilirsiniz.",
+      "passwordOperations": "Şifre İşlemleri",
+    "changePassword": "Şifre Değiştir",
+    "passwordSettingsDescription": "Hesabınızın güvenliği için şifrenizi düzenli olarak güncelleyin.",
+    "currentPassword": "Mevcut Şifre",
+    "newPassword": "Yeni Şifre",
+    "confirmNewPassword": "Yeni Şifre (Tekrar)",
+    "passwordsDoNotMatch": "Yeni şifreler eşleşmiyor."
+ 
+   
+ 
+
   },
   "Footer": {
     "copyright": "Tüm hakları saklıdır",
