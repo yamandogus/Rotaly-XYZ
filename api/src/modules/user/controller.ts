@@ -1,10 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "./service";
-import {
-  ChangePasswordSchemaType,
-  RegisterSchemaType,
-  UpdateUserSchemaType,
-} from "../../dto/auth";
+import { RegisterSchemaType, UpdateUserSchemaType } from "../../dto/auth";
 import { AppError } from "../../utils/appError";
 
 const userService = new UserService();
@@ -156,31 +152,6 @@ export class UserController {
       }
     }
   }
-  async changePassword(req: Request, res: Response): Promise<void> {
-    try {
-      const { id } = req.params;
-      const passwordData = req.body as ChangePasswordSchemaType;
-
-      await userService.changePassword(id, passwordData);
-
-      res.status(200).json({
-        success: true,
-        message: "Password changed successfully",
-      });
-    } catch (error) {
-      if (error instanceof AppError) {
-        res.status(error.statusCode).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Şifre değiştirme işlemi sırasında bir hata oluştu",
-        });
-      }
-    }
-  }
 
   async delete(req: Request, res: Response): Promise<void> {
     try {
@@ -200,60 +171,6 @@ export class UserController {
         res.status(500).json({
           success: false,
           message: "Kullanıcı silinirken bir hata oluştu",
-        });
-      }
-    }
-  }
-
-  async profile(req: Request, res: Response): Promise<void> {
-    try {
-      const userId = req.user?.userId;
-      if (!userId) {
-        throw new AppError("User not found", 404);
-      }
-      const user = await userService.getById(userId);
-      res.status(200).json({
-        success: true,
-        data: user,
-      });
-    } catch (error) {
-      if (error instanceof AppError) {
-        res.status(error.statusCode).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Kullanıcı profili getirilirken bir hata oluştu",
-        });
-      }
-    }
-  }
-
-  async updateProfile(req: Request, res: Response): Promise<void> {
-    try {
-      const userId = req.user?.userId;
-      if (!userId) {
-        throw new AppError("User not found", 404);
-      }
-      const updateData = req.body as UpdateUserSchemaType;
-      const user = await userService.update(userId, updateData);
-      res.status(200).json({
-        success: true,
-        data: user,
-        message: "Profile updated successfully",
-      });
-    } catch (error) {
-      if (error instanceof AppError) {
-        res.status(error.statusCode).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Kullanıcı güncellenirken bir hata oluştu",
         });
       }
     }

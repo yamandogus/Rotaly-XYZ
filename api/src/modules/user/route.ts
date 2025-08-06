@@ -11,36 +11,6 @@ const userController = new UserController();
 // Register a new user
 router.post("", userController.add);
 
-// GET /api/users/me
-// Get current user's profile
-router.get("/me", authenticateToken, verifiedUser, userController.profile);
-
-// PUT /api/users/me
-// Update current user's profile
-router.put(
-  "/me",
-  authenticateToken,
-  verifiedUser,
-  userController.updateProfile
-);
-
-// PATCH /api/users/me/password
-router.patch(
-  "/me/password",
-  authenticateToken,
-  verifiedUser,
-  userController.changePassword
-);
-
-// PATCH /api/users/:id/change-password
-router.patch(
-  "/:id/change-password",
-  authenticateToken,
-  verifiedUser,
-  authorizeRoles(Role.ADMIN),
-  userController.changePassword
-);
-
 // GET /api/users/:id
 router.get(
   "/:id",

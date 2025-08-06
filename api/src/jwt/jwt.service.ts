@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import * as jwt from "jsonwebtoken";
 import { TokenPayload } from "../types/express";
 
-class JwtService {
+export class JwtService {
   private prisma: PrismaClient;
 
   constructor() {
@@ -193,5 +193,3 @@ class JwtService {
     };
   }
 }
-
-export default new JwtService();
