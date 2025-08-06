@@ -38,25 +38,28 @@ export default function ProfilePage() {
   ]);
 
   const [notifications, setNotifications] = useState([
-  {
-    id: 1,
-    message: "Yeni rezervasyonunuz onaylandı.",
-    date: "2025-08-01T10:00:00Z",
-    read: false,
-  },
-  {
-    id: 2,
-    message: "Profil bilgileriniz başarıyla güncellendi.",
-    date: "2025-07-30T15:30:00Z",
-    read: true,
-  },
-  {
-    id: 3,
-    message: "Sistem bakımı nedeniyle 5 Ağustos'ta hizmet verilemeyecek.",
-    date: "2025-07-28T08:15:00Z",
-    read: false,
-  },
-]);
+
+    {
+      id: 1,
+      message: "Yeni rezervasyonunuz onaylandı.",
+      date: "2025-08-01T10:00:00Z",
+      read: false,
+    },
+    {
+      id: 2,
+      message: "Profil bilgileriniz başarıyla güncellendi.",
+      date: "2025-07-30T15:30:00Z",
+      read: true,
+    },
+    {
+      id: 3,
+      message: "Sistem bakımı nedeniyle 5 Ağustos'ta hizmet verilemeyecek.",
+      date: "2025-07-28T08:15:00Z",
+      read: false,
+    },
+  ]);
+
+
 
 
   const [editSection, setEditSection] = useState<"personal" | "address" | null>(null);
@@ -64,6 +67,14 @@ export default function ProfilePage() {
   const [tempData, setTempData] = useState<typeof personalInfo>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   
+
+  const [openPasswordDialog, setOpenPasswordDialog] = useState(false);
+  const [passwords, setPasswords] = useState({
+    current: "",
+    new: "",
+    confirm: "",
+  });
+  const [passwordErrors, setPasswordErrors] = useState<Record<string, string>>({});
 
   const handleEditClick = (section: "personal" | "address") => {
     const data =
@@ -102,6 +113,21 @@ export default function ProfilePage() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const validatePasswordChange = () => {
+    const newErrors: Record<string, string> = {};
+    const { current, new: newPass, confirm } = passwords;
+
+    if (!current) newErrors.current = t("fieldRequired");
+    if (!newPass) newErrors.new = t("fieldRequired");
+    if (!confirm) newErrors.confirm = t("fieldRequired");
+
+    if (newPass && confirm && newPass !== confirm)
+      newErrors.confirm = t("passwordsDoNotMatch");
+
+    setPasswordErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSave = () => {
     if (!validate()) return;
 
@@ -116,13 +142,22 @@ export default function ProfilePage() {
     setOpenDialog(false);
   };
 
+  const handlePasswordSave = () => {
+    if (!validatePasswordChange()) return;
+
+    console.log("Password changed:", passwords);
+
+    setPasswords({ current: "", new: "", confirm: "" });
+    setPasswordErrors({});
+    setOpenPasswordDialog(false);
+  };
+
   const getFieldValue = (data: typeof personalInfo, id: string) =>
     data.find((f) => f.id === id)?.value || "";
 
   return (
     <div className="min-h-screen p-6 md:p-10 max-w-7xl mx-auto">
       <Tabs defaultValue="profile" className="flex flex-col md:flex-row gap-8">
-        {/* Sol menü */}
         <div className="w-full md:w-80">
           <TabsList className="flex flex-col gap-3 self-start mt-8 ml-4 w-full bg-transparent p-6">
             {[
@@ -145,7 +180,6 @@ export default function ProfilePage() {
           </TabsList>
         </div>
 
-        {/* Sağ içerikler */}
         <div className="flex-1 space-y-10">
           <TabsContent value="profile" className="space-y-10">
             <div>
@@ -219,6 +253,25 @@ export default function ProfilePage() {
                 </section>
               )
             )}
+
+            {/* Şifre alanı */}
+            <section className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md p-6 space-y-6">
+              <div className="flex justify-between items-center border-b border-gray-300/40 dark:border-gray-600 pb-2">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                  {t("passwordOperations")}
+                </h3>
+                <Button
+                  onClick={() => setOpenPasswordDialog(true)}
+                  className="bg-blue-500 hover:bg-blue-600 text-white"
+                >
+                  <Edit className="mr-2 h-4 w-4" />
+                  {t("changePassword")}
+                </Button>
+              </div>
+              <p className="text-ml text-gray-500 dark:text-gray-400">
+                {t("passwordSettingsDescription")}
+              </p>
+            </section>
           </TabsContent>
 
           <TabsContent value="reservations">
@@ -239,48 +292,50 @@ export default function ProfilePage() {
             </div>
           </TabsContent>
 
-      <TabsContent value="notifications">
-  <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
-    <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
-      {t("notifications")}
-    </h2>
 
-    <div className="space-y-4">
-      {notifications.length === 0 ? (
-        <p className="text-gray-600 dark:text-gray-400">{t("noNotifications")}</p>
-      ) : (
-        notifications.map((notif) => (
-          <div
-            key={notif.id}
-            className={`p-4 rounded-lg border ${
-              notif.read
-                ? "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900"
-                : "border-blue-400 bg-blue-50 dark:bg-blue-900"
-            }`}
-          >
-            <div className="flex justify-between items-center">
-              <p
-                className={`text-sm ${
-                  notif.read ? "text-gray-800 dark:text-gray-200" : "font-semibold text-blue-800 dark:text-blue-200"
-                }`}
-              >
-                {notif.message}
-              </p>
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                {format(new Date(notif.date), "dd.MM.yyyy HH:mm")}
-              </span>
+          <TabsContent value="notifications">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+                {t("notifications")}
+              </h2>
+              <div className="space-y-4">
+                {notifications.length === 0 ? (
+                  <p className="text-gray-600 dark:text-gray-400">{t("noNotifications")}</p>
+                ) : (
+                  notifications.map((notif) => (
+                    <div
+                      key={notif.id}
+                      className={`p-4 rounded-lg border ${
+                        notif.read
+                          ? "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900"
+                          : "border-blue-400 bg-blue-50 dark:bg-blue-900"
+                      }`}
+                    >
+                      <div className="flex justify-between items-center">
+                        <p
+                          className={`text-sm ${
+                            notif.read
+                              ? "text-gray-800 dark:text-gray-200"
+                              : "font-semibold text-blue-800 dark:text-blue-200"
+                          }`}
+                        >
+                          {notif.message}
+                        </p>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          {format(new Date(notif.date), "dd.MM.yyyy HH:mm")}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
-          </div>
-        ))
-      )}
-    </div>
-  </div>
-</TabsContent>
+          </TabsContent>
 
         </div>
       </Tabs>
 
-      {/* Düzenleme Diyaloğu */}
+      {/* Bilgi düzenleme diyaloğu */}
       <Dialog
         open={openDialog}
         onOpenChange={(isOpen) => {
@@ -331,6 +386,54 @@ export default function ProfilePage() {
           <DialogFooter className="pt-4">
             <Button
               onClick={handleSave}
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+            >
+              {t("save")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Şifre değiştirme diyaloğu */}
+      <Dialog open={openPasswordDialog} onOpenChange={setOpenPasswordDialog}>
+        <DialogContent className="sm:max-w-md bg-white dark:bg-gray-900 rounded-xl p-6">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold text-gray-900 dark:text-white">
+              {t("changePassword")}
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            {[
+              { id: "current", label: t("currentPassword") },
+              { id: "new", label: t("newPassword") },
+              { id: "confirm", label: t("confirmNewPassword") },
+            ].map((field) => (
+              <div key={field.id} className="space-y-1">
+                <Label htmlFor={field.id} className="text-gray-700 dark:text-gray-300">
+                  {field.label}
+                </Label>
+                <Input
+                  id={field.id}
+                  type="password"
+                  value={passwords[field.id as keyof typeof passwords]}
+                  onChange={(e) =>
+                    setPasswords((prev) => ({ ...prev, [field.id]: e.target.value }))
+                  }
+                  className={`dark:bg-gray-800 dark:text-white ${
+                    passwordErrors[field.id] ? "border-red-500" : ""
+                  }`}
+                />
+                {passwordErrors[field.id] && (
+                  <p className="text-sm text-red-500">{passwordErrors[field.id]}</p>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <DialogFooter className="pt-4">
+            <Button
+              onClick={handlePasswordSave}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white"
             >
               {t("save")}
