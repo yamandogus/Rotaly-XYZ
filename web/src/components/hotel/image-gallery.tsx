@@ -1,64 +1,108 @@
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+"use client";
 
-const thumbnails = [
-  { src: "/images/detail2.jpg", alt: "Hotel Thumbnail 1" },
-  { src: "/images/detail3.jpg", alt: "Hotel Thumbnail 2" },
-  { src: "/images/detail4.jpg", alt: "Hotel Thumbnail 3" },
-  { src: "/images/detail5.jpg", alt: "Hotel Thumbnail 4", overlay: "16+" },
+import Image from "next/image";
+import { useState, useCallback, useEffect } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import React from "react";
+
+const images = [
+  { src: "/images/detail3.jpg", alt: "Hotel Image 1" },
+  { src: "/images/detail2.jpg", alt: "Hotel Image 2" },
+  { src: "/images/detail5.jpg", alt: "Hotel Image 3" },
+  { src: "/images/detail4.jpg", alt: "Hotel Image 4", overlay: "16+" },
 ];
 
-const ImageGallery = () => (
-  <div className="lg:w-[700px]">
-  
-    <div className="relative h-[550px] w-full rounded-2xl overflow-hidden mb-4">
-      <Image
-        src="/images/detail1.jpg"
-        alt="Riad Deluxe Hotel"
-        fill
-        className="object-cover"
-        priority
-      />
-      <Button
-        variant="ghost"
-        size="icon"
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/70 rounded-full shadow"
-      >
-        <ChevronLeftIcon className="w-6 h-6" />
-      </Button>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/70 rounded-full shadow"
-      >
-        <ChevronRightIcon className="w-6 h-6" />
-      </Button>
-    </div>
+const ImageGallery = () => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
 
-    {/* Alt küçük görseller */}
-    <div className="grid grid-cols-4 gap-2 w-full">
-  {thumbnails.map((thumb, idx) => (
-    <div
-      key={idx}
-      className="relative w-full h-[210px] rounded-xl overflow-hidden cursor-pointer group"
-    >
-      <Image
-        src={thumb.src}
-        alt={thumb.alt}
-        fill
-        className={`object-cover ${thumb.overlay ? "opacity-60" : ""}`}
-      />
-      {thumb.overlay && (
-        <span className="absolute inset-0 flex items-center justify-center z-10 text-white text-lg font-bold drop-shadow-lg">
-          {thumb.overlay}
-        </span>
-      )}
-    </div>
-  ))}
-</div>
+  const scrollTo = useCallback(
+    (index: number) => {
+      emblaApi?.scrollTo(index);
+    },
+    [emblaApi]
+  );
 
-  </div>
-);
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    emblaApi.on("select", onSelect);
+    onSelect();
+  }, [emblaApi, onSelect]);
+
+  const scrollPrev = () => emblaApi?.scrollPrev();
+  const scrollNext = () => emblaApi?.scrollNext();
+
+  return (
+    <div className="lg:w-[700px]">
+      {/* Ana büyük görsel alanı */}
+      <div className="relative overflow-hidden rounded-2xl mb-4" ref={emblaRef}>
+        <div className="flex">
+          {images.map((image, idx) => (
+            <div key={idx} className="flex-[0_0_100%] relative h-[550px] w-full">
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                className="object-cover"
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Sol-sağ oklar */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={scrollPrev}
+          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/70 rounded-full shadow z-10"
+        >
+          <ChevronLeftIcon className="w-6 h-6" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={scrollNext}
+          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/70 rounded-full shadow z-10"
+        >
+          <ChevronRightIcon className="w-6 h-6" />
+        </Button>
+      </div>
+
+      {/* Thumbnail'lar — eski tasarıma göre */}
+      <div className="grid grid-cols-4 gap-2 w-full">
+        {images.map((image, idx) => (
+          <button
+            key={idx}
+            onClick={() => scrollTo(idx)}
+            className={`relative w-full h-[210px] rounded-xl overflow-hidden group border-2 transition-all ${
+              selectedIndex === idx
+                ? "border-primary"
+                : "border-transparent opacity-70 hover:opacity-100"
+            }`}
+          >
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              className={`object-cover ${image.overlay ? "opacity-60" : ""}`}
+            />
+            {image.overlay && (
+              <span className="absolute inset-0 flex items-center justify-center z-10 text-white text-lg font-bold drop-shadow-lg">
+                {image.overlay}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default ImageGallery;

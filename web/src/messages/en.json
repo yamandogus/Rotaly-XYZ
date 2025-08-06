@@ -309,6 +309,13 @@
       "occupancy": "Occupancy",
       "totalRevenue": "Total Revenue"
     }
+  },
+    "Favorites": {
+    "title": "Favorites",
+    "description": "Find the hotels you saved and get ready to book.",
+    "searchPlaceholder": "search favorites...",
+    "noFavorites": "No favorites found.",
+    "noResults": "No favorites matched your search."
   }
 
 

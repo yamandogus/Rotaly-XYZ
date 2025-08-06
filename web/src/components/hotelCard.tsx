@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
 import Image from "next/image";
 import { Sparkles, HeartIcon, LocateIcon, CarIcon } from "lucide-react";
@@ -19,9 +21,37 @@ interface HotelCardProps {
     parkingText?: string;
     nights?: number;
   };
+  onToggleFavorite?: () => void; // favoriler sayfasından kaldırınca yeniden render için
 }
 
-const HotelCard = ({ item }: HotelCardProps) => {
+const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("favorites") || "[]");
+    const exists = stored.some((fav: any) => fav.id === item.id);
+    setIsFavorite(exists);
+  }, [item.id]);
+
+  const toggleFavorite = () => {
+    const stored = JSON.parse(localStorage.getItem("favorites") || "[]");
+    let updated;
+
+    if (isFavorite) {
+      updated = stored.filter((fav: any) => fav.id !== item.id);
+    } else {
+      updated = [...stored, item];
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(updated));
+    setIsFavorite(!isFavorite);
+
+    // Favoriler sayfasındaysan kartı hemen sil
+    if (isFavorite && onToggleFavorite) {
+      onToggleFavorite();
+    }
+  };
+
   return (
     <Card
       key={item.id}
@@ -43,9 +73,19 @@ const HotelCard = ({ item }: HotelCardProps) => {
             </div>
           </div>
           <div className="absolute top-3 right-3">
-            <div className="bg-white p-1.5 rounded-full">
-              <HeartIcon className="w-4 h-4 text-orange-500" />
-            </div>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                toggleFavorite();
+              }}
+              className="bg-white p-1.5 rounded-full"
+            >
+              <HeartIcon
+                className={`w-4 h-4 transition-all ${
+                  isFavorite ? "text-red-500 fill-red-500" : "text-gray-400"
+                }`}
+              />
+            </button>
           </div>
         </div>
       </CardHeader>
@@ -61,11 +101,9 @@ const HotelCard = ({ item }: HotelCardProps) => {
             <span className="text-sm">{item.location}</span>
           </div>
           <div className="flex items-center gap-1">
-            {/* Dinamik puan */}
             <span className="text-sm font-semibold text-foreground">
               {item.rating.toFixed(1)}
             </span>
-            {/* Sarı ve daha büyük yıldızlar */}
             <Rating defaultValue={item.rating} readOnly>
               {Array.from({ length: 5 }).map((_, index) => (
                 <RatingButton
