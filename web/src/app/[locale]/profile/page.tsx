@@ -21,6 +21,7 @@ import { DatePicker } from "@/components/date-picker";
 export default function ProfilePage() {
   const t = useTranslations("Profile");
 
+
   const [personalInfo, setPersonalInfo] = useState([
     { id: "firstName", label: t("firstName"), value: "Ahmet" },
     { id: "lastName", label: t("lastName"), value: "Yıldız" },
@@ -37,6 +38,7 @@ export default function ProfilePage() {
   ]);
 
   const [notifications, setNotifications] = useState([
+
     {
       id: 1,
       message: "Yeni rezervasyonunuz onaylandı.",
@@ -57,10 +59,14 @@ export default function ProfilePage() {
     },
   ]);
 
+
+
+
   const [editSection, setEditSection] = useState<"personal" | "address" | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [tempData, setTempData] = useState<typeof personalInfo>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  
 
   const [openPasswordDialog, setOpenPasswordDialog] = useState(false);
   const [passwords, setPasswords] = useState({
@@ -286,6 +292,7 @@ export default function ProfilePage() {
             </div>
           </TabsContent>
 
+
           <TabsContent value="notifications">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
               <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
@@ -324,6 +331,7 @@ export default function ProfilePage() {
               </div>
             </div>
           </TabsContent>
+
         </div>
       </Tabs>
 

@@ -104,7 +104,8 @@
     "statistics-reports": "İstatistikler & Raporlar",
     "company-settings": "Şirket Ayarları",
     "security-audit": "Güvenlik & Denetim",
-    "system-settings": "Sistem Ayarları"
+    "system-settings": "Sistem Ayarları",
+    "live-support": "Canlı Destek"
   },
   "Company": {
     "title": "Şirket Bilgileri",
@@ -169,6 +170,7 @@
     "reservationsDescription": "Aktif rezervasyonlarınız burada listelenecek.",
     "pastReservationsDescription": "Geçmiş rezervasyonlarınız burada listelenecek.",
     "notifications": "Bildirimler",
+
     "notificationsDescription": "Güncel bildirimlerinizi buradan görüntüleyebilirsiniz.",
       "passwordOperations": "Şifre İşlemleri",
     "changePassword": "Şifre Değiştir",
@@ -180,6 +182,8 @@
  
    
  
+
+
 
   },
   "Footer": {
