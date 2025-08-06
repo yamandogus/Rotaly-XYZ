@@ -146,6 +146,39 @@ export class AuthService {
       updatedUser: updateUser,
     };
   }
+  async forgotPassword(email: string) {
+    const user = await this.userService.getByEmail(email);
+    const resetToken = this.jwtService.generateAccessToken({
+      userId: user.id,
+      role: user.role,
+    });
+    await this.emailService.sendPasswordResetEmail(user.email, resetToken);
+    return {
+      message: "Reset password email sent",
+    };
+  }
+
+  async changePassword(userId: string, data: ChangePasswordSchemaType) {
+    const user = await this.userService.getById(userId);
+    const isPasswordValid = await bcrypt.compare(
+      data.currentPassword,
+      user.hashedPassword
+    );
+    if (!isPasswordValid) {
+      throw new AppError("Invalid current password", 401);
+    }
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(data.newPassword, saltRounds);
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        hashedPassword,
+      },
+    });
+    return {
+      message: "Password changed successfully",
+    };
+  }
 
   async deleteAccount(userId: string) {
     const user = await this.userService.getById(userId);
