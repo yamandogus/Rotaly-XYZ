@@ -1,9 +1,5 @@
 import { UserRepository } from "./repository";
-import {
-  RegisterSchemaType,
-  UpdateUserSchemaType,
-  ChangePasswordSchemaType,
-} from "../../dto/auth";
+import { RegisterSchemaType, UpdateUserSchemaType } from "../../dto/auth";
 import bcrypt from "bcrypt";
 import { AppError } from "../../utils/appError";
 
@@ -69,25 +65,6 @@ export class UserService {
       await this.checkEmailUnique(data.email, id);
     }
     return userRepository.update(id, data);
-  }
-
-  async changePassword(id: string, data: ChangePasswordSchemaType) {
-    const user = await this.getById(id);
-    if (!user) {
-      throw new AppError("User not found", 404);
-    }
-    const isPasswordValid = await bcrypt.compare(
-      data.currentPassword,
-      user.hashedPassword
-    );
-    if (!isPasswordValid) {
-      throw new AppError("Current password is incorrect", 401);
-    }
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(data.newPassword, saltRounds);
-
-    await userRepository.updatePassword(id, hashedPassword);
-    return { message: "Password changed successfully" };
   }
 
   async delete(id: string) {
