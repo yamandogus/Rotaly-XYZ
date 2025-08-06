@@ -1,66 +1,144 @@
 "use client";
 
 import { useState } from "react";
-import { MessageCircle, X } from "lucide-react";
+import { MessageCircleIcon, SendIcon, UserIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Input } from "../ui/input";
+import { Avatar, AvatarImage } from "../ui/avatar";
+
+const questions = [
+  {
+    id: 1,
+    question: "Rezervasyonum hakkında bilgi verir misin?",
+  },
+  {
+    id: 2,
+    question: "İptal veya değişiklik yapmak istiyorum",
+  },
+  {
+    id: 3,
+    question: "Canlı destek için nasıl ulaşabilirim?",
+  },
+];
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<{ id: number; message: string; sender: 'user' | 'bot' }[]>([
+    { id: 1, message: "Merhaba, nasıl yardımcı olabilirim?", sender: 'bot' }
+  ]);
+  
+  const handleLiveSupport = () => {
+    setIsOpen(false);
+    router.push("/live-support");
+  };
 
-  const toggleChat = () => {
-    setIsOpen(!isOpen);
+  const handleSendMessage = () => {
+    if (message.trim()) {
+      const userMessage = { id: Date.now(), message: message, sender: 'user' as const };
+      const botResponse = { id: Date.now() + 1, message: "Teşekkür ederim. Size nasıl yardımcı olabilirim? Daha detaylı bilgi için canlı destek ile iletişime geçebilirsiniz.", sender: 'bot' as const };
+      
+      setMessages(prev => [...prev, userMessage, botResponse]);
+      setMessage("");
+    }
   };
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      {/* Chat Widget Container */}
-      {isOpen && (
-        <div className="mb-4 w-80 h-96 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 className="font-semibold text-gray-900 dark:text-white">
-              Rotaly Destek
-            </h3>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleChat}
-              className="h-8 w-8 p-0"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          {/* Chat Messages Area */}
-          <div className="flex-1 p-4 h-64 overflow-y-auto">
-            <div className="text-center text-gray-500 dark:text-gray-400 text-sm">
-              Merhaba! Size nasıl yardımcı olabilirim?
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className="flex items-center gap-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-600 shadow-lg p-2 cursor-pointer"
+            size="lg"
+          >
+            <MessageCircleIcon className="w-10 h-10 text-white" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent
+          className="w-80 h-[500px] p-0 flex flex-col"
+          align="end"
+        >
+          {/* Header - Sabit */}
+          <div className="border-b px-4 py-2 flex-shrink-0">
+            <div className="flex items-center gap-2 mb-3">
+              <Image
+                src="/images/logo3.png"
+                alt="Rotaly Logo"
+                width={20}
+                height={20}
+              />
+              <h4 className="font-medium">Rotaly AI Asistan</h4>
             </div>
           </div>
-          
-          {/* Input Area */}
-          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex gap-2">
-              <input
+          {/* Body - Scrollable */}
+          <div className="flex-1 overflow-y-auto p-3">
+            <div className="flex flex-col gap-3">
+              {messages.map((msg) => (
+                <div key={msg.id} className={`flex gap-2 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  {msg.sender === 'bot' && (
+                    <Avatar className="w-6 h-6 flex-shrink-0">
+                      <AvatarImage src="/images/logo3.png" alt="Rotaly Logo" />
+                    </Avatar>
+                  )}
+                  <div className={`max-w-[75%] p-2 rounded-lg text-sm ${
+                    msg.sender === 'user' 
+                      ? 'bg-blue-500 text-white rounded-br-sm' 
+                      : 'bg-gray-100 text-gray-800 rounded-bl-sm'
+                  }`}>
+                    {msg.message}
+                  </div>
+                  {msg.sender === 'user' && (
+                    <Avatar className="w-6 h-6 flex-shrink-0">
+                      <div className="w-full h-full bg-blue-500 rounded-full flex items-center justify-center">
+                        <UserIcon className="w-3 h-3 text-white" />
+                      </div>
+                    </Avatar>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Footer - Sabit */}
+          <div className="border-t p-3 flex-shrink-0">
+            <div className="flex items-center gap-2 mb-2">
+              <Input
                 type="text"
-                placeholder="Mesajınızı yazın..."
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Mesajınızı giriniz..."
+                className="flex-1 h-8 text-sm"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               />
-              <Button size="sm" className="px-4">
-                Gönder
+              <Button
+                size="sm"
+                className="h-8 px-3 bg-blue-500 hover:bg-blue-600"
+                onClick={handleSendMessage}
+                disabled={!message.trim()}
+              >
+                <SendIcon className="w-3 h-3" />
               </Button>
             </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full h-8 text-xs bg-gray-50 hover:bg-gray-100 text-gray-700"
+              onClick={handleLiveSupport}
+            >
+              <MessageCircleIcon className="w-3 h-3 mr-1" />
+              Canlı Destek
+            </Button>
           </div>
-        </div>
-      )}
-      
-      {/* Chat Toggle Button */}
-      <Button
-        onClick={toggleChat}
-        className="h-12 w-12 rounded-full shadow-lg bg-blue-600 hover:bg-blue-700 text-white"
-      >
-        <MessageCircle className="h-6 w-6" />
-      </Button>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }

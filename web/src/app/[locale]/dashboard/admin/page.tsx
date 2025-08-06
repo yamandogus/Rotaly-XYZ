@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2Icon, HotelIcon, UsersIcon, BarChart3Icon, SettingsIcon, ShieldCheckIcon } from "lucide-react";
+import { Building2Icon, HotelIcon, UsersIcon, BarChart3Icon, ShieldCheckIcon, MessageCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const adminMenu = [
@@ -39,10 +39,10 @@ const adminMenu = [
     color: "text-red-500",
   },
   {
-    title: "Sistem Ayarları",
-    icon: SettingsIcon,
-    description: "Uygulama ayarları, entegrasyonlar ve yapılandırmaları yönetebilirsiniz.",
-    link: "#",
+    title: "Canlı Destek",
+    icon: MessageCircleIcon,
+    description: "Canlı destek ile müşteri desteği sağlayabilirsiniz.",
+    link: "/dashboard/admin/live-support",
     color: "text-gray-500",
   },
 ];
