@@ -316,6 +316,13 @@
       "occupancy": "Doluluk",
       "totalRevenue": "Toplam Gelir"
     }
+  },
+    "Favorites": {
+    "title": "Favoriler",
+    "description": "Kaydettiğiniz otelleri bulun ve rezervasyon vermeye hazırlanın.",
+    "searchPlaceholder": "favorilerde ara...",
+    "noFavorites": "Favori bulunamadı.",
+    "noResults": "Aramanıza uygun favori bulunamadı."
   }
 
 
