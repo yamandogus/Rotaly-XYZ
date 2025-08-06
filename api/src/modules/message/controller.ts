@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { MessageService } from "./service";
 import {
   SendMessageSchemaType,
-  GetMessagesQuerySchemaType,
+  GetSupportMessagesQuerySchemaType,
   MarkAsReadSchemaType,
 } from "../../dto/message";
 import { AppError } from "../../utils/appError";
@@ -39,41 +39,6 @@ export class MessageController {
         res.status(500).json({
           success: false,
           message: "An error occurred while sending message",
-        });
-      }
-    }
-  }
-
-  async getMessages(req: Request, res: Response): Promise<void> {
-    try {
-      const userId = req.user?.userId;
-      if (!userId) {
-        res.status(401).json({
-          success: false,
-          message: "Unauthorized",
-        });
-        return;
-      }
-
-      const query: GetMessagesQuerySchemaType = req.query as any;
-
-      const result = await messageService.getMessages(userId, query);
-
-      res.status(200).json({
-        success: true,
-        data: result.messages,
-        pagination: result.pagination,
-      });
-    } catch (error) {
-      if (error instanceof AppError) {
-        res.status(error.statusCode).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "An error occurred while fetching messages",
         });
       }
     }
@@ -256,14 +221,18 @@ export class MessageController {
       }
 
       const { supportId } = req.params;
-      const messages = await messageService.getSupportMessages(
+      const query: GetSupportMessagesQuerySchemaType = req.query as any;
+
+      const result = await messageService.getSupportMessages(
         supportId,
-        userId
+        userId,
+        query
       );
 
       res.status(200).json({
         success: true,
-        data: messages,
+        data: result.messages,
+        pagination: result.pagination,
       });
     } catch (error) {
       if (error instanceof AppError) {
@@ -292,20 +261,22 @@ export class MessageController {
       }
 
       const { partnerId } = req.params;
-      const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 20;
+      const beforeMessageId = req.query.beforeMessageId as string;
 
       const result = await messageService.getConversationWith(
         userId,
         partnerId,
-        page,
-        limit
+        limit,
+        beforeMessageId
       );
 
       res.status(200).json({
         success: true,
         data: result.messages,
-        pagination: result.pagination,
+        hasMore: result.hasMore,
+        oldestMessageId: result.oldestMessageId,
+        newestMessageId: result.newestMessageId,
       });
     } catch (error) {
       if (error instanceof AppError) {

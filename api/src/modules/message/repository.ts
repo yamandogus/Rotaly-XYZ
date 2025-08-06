@@ -1,8 +1,5 @@
 import Prisma from "../../config/db";
-import {
-  SendMessageSchemaType,
-  GetMessagesQuerySchemaType,
-} from "../../dto/message";
+import { SendMessageSchemaType } from "../../dto/message";
 
 export class MessageRepository {
   async create(data: SendMessageSchemaType & { senderId: string }) {
@@ -79,75 +76,77 @@ export class MessageRepository {
     });
   }
 
-  async findUserMessages(userId: string, query: GetMessagesQuerySchemaType) {
-    const { page, limit, supportId, conversationWith } = query;
-    const skip = (page - 1) * limit;
-
+  // Chat pagination method : cursor-based pagination
+  // Returns messages in chronological order (oldest first)
+  async findConversationMessages(
+    userId: string,
+    partnerId: string,
+    limit: number = 20,
+    beforeMessageId?: string
+  ) {
     const whereCondition: any = {
       deletedAt: null,
-      OR: [{ senderId: userId }, { receiverId: userId }],
+      OR: [
+        { senderId: userId, receiverId: partnerId },
+        { senderId: partnerId, receiverId: userId },
+      ],
     };
 
-    if (supportId) {
-      whereCondition.supportId = supportId;
+    // if beforeMessageId is provided, get messages older than that message
+    // without it, get the latest 20 messages
+    // when beforeMessageId is provided, we filter messages created before that message's createdAt
+    // and get the next 20 messages
+    if (beforeMessageId) {
+      const beforeMessage = await Prisma.message.findUnique({
+        where: { id: beforeMessageId },
+        select: { createdAt: true },
+      });
+
+      if (beforeMessage) {
+        whereCondition.createdAt = {
+          lt: beforeMessage.createdAt,
+        };
+      }
     }
 
-    if (conversationWith) {
-      whereCondition.OR = [
-        { senderId: userId, receiverId: conversationWith },
-        { senderId: conversationWith, receiverId: userId },
-      ];
-    }
+    const messages = await Prisma.message.findMany({
+      where: whereCondition,
+      include: {
+        sender: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+            role: true,
+          },
+        },
+        receiver: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
+            role: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "asc", // oldest first
+      },
+      take: limit,
+    });
 
-    const [messages, total] = await Promise.all([
-      Prisma.message.findMany({
-        where: whereCondition,
-        include: {
-          sender: {
-            select: {
-              id: true,
-              name: true,
-              surname: true,
-              email: true,
-              role: true,
-            },
-          },
-          receiver: {
-            select: {
-              id: true,
-              name: true,
-              surname: true,
-              email: true,
-              role: true,
-            },
-          },
-          support: {
-            select: {
-              id: true,
-              subject: true,
-              status: true,
-            },
-          },
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-        skip,
-        take: limit,
-      }),
-      Prisma.message.count({
-        where: whereCondition,
-      }),
-    ]);
+    const hasMore = messages.length === limit;
+    const oldestMessageId = messages.length > 0 ? messages[0].id : null;
+    const newestMessageId =
+      messages.length > 0 ? messages[messages.length - 1].id : null;
 
     return {
       messages,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit),
-      },
+      hasMore,
+      oldestMessageId,
+      newestMessageId,
     };
   }
 
@@ -259,36 +258,62 @@ export class MessageRepository {
     });
   }
 
-  async findSupportMessages(supportId: string, userId: string) {
-    return Prisma.message.findMany({
-      where: {
-        supportId,
-        deletedAt: null,
-        OR: [{ senderId: userId }, { receiverId: userId }],
-      },
-      include: {
-        sender: {
-          select: {
-            id: true,
-            name: true,
-            surname: true,
-            email: true,
-            role: true,
+  async findSupportMessages(
+    supportId: string,
+    userId: string,
+    page: number = 1,
+    limit: number = 20
+  ) {
+    const skip = (page - 1) * limit;
+
+    const whereCondition = {
+      supportId,
+      deletedAt: null,
+      OR: [{ senderId: userId }, { receiverId: userId }],
+    };
+
+    const [messages, total] = await Promise.all([
+      Prisma.message.findMany({
+        where: whereCondition,
+        include: {
+          sender: {
+            select: {
+              id: true,
+              name: true,
+              surname: true,
+              email: true,
+              role: true,
+            },
+          },
+          receiver: {
+            select: {
+              id: true,
+              name: true,
+              surname: true,
+              email: true,
+              role: true,
+            },
           },
         },
-        receiver: {
-          select: {
-            id: true,
-            name: true,
-            surname: true,
-            email: true,
-            role: true,
-          },
+        orderBy: {
+          createdAt: "asc",
         },
+        skip,
+        take: limit,
+      }),
+      Prisma.message.count({
+        where: whereCondition,
+      }),
+    ]);
+
+    return {
+      messages,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
       },
-      orderBy: {
-        createdAt: "asc",
-      },
-    });
+    };
   }
 }
