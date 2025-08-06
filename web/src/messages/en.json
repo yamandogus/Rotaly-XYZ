@@ -104,7 +104,8 @@
     "statistics-reports": "Statistics & Reports",
     "company-settings": "Company Settings",
     "security-audit": "Security & Audit",
-    "system-settings": "System Settings"
+    "system-settings": "System Settings",
+    "live-support": "Live Support"
   },
   "Admin": {
     "title": "Admin Panel",

@@ -11,6 +11,7 @@ import {
   IconFileDescription,
   IconBuilding,
   IconUser,
+  IconMessageCircle,
 } from "@tabler/icons-react";
 
 import {
@@ -68,6 +69,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             title: t("profile"),
             url: "/dashboard/admin/profile",
             icon: <IconUser />,
+          },
+          {
+            title: t("live-support"),
+            url: "/dashboard/admin/live-support",
+            icon: <IconMessageCircle />,
           },
         ];
       case "hotel":

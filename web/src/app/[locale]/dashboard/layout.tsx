@@ -9,7 +9,7 @@ import {
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import { SiteHeader } from "@/components/dashboard/site-header";
 import Image from "next/image";
-import ChatWidget from "@/components/chat/chat-widget";
+// import ChatWidget from "@/components/chat/chat-widget";
 
 type Props = {
   children: ReactNode;
@@ -59,7 +59,7 @@ export default function DashboardLayout({ children }: Props) {
       <SidebarInset>
         <SiteHeader />
         {children}
-        <ChatWidget />
+        {/* <ChatWidget /> */}
       </SidebarInset>
     </SidebarProvider>
   );
