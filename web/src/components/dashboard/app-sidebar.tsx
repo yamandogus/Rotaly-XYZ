@@ -27,7 +27,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
-type UserRole = "admin" | "hotel" | "user" | null;
+type UserRole = "admin" | "hotel" | "user" | "support" | null;
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -104,7 +104,30 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: <IconMessageCircle />,
           },
         ];
-      default:
+      case "support":
+        return [
+          {
+            title: t("home"),
+            url: "/dashboard/support",
+            icon: <IconDashboard />,
+          },
+          {
+            title: t("live-support"),
+            url: "/dashboard/support/live-support",
+            icon: <IconMessageCircle />,
+          },
+          {
+            title: t("statistics"),
+            url: "/dashboard/support/statistic",
+            icon: <IconChartBar />,
+          },
+          {
+            title: t("information"),
+            url: "/dashboard/support/information",
+            icon: <IconFileDescription />,
+          },
+        ];
+      default:  
         return [];
     }
   };
