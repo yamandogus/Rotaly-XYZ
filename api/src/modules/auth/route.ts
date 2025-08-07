@@ -29,7 +29,6 @@ router.post(
 );
 
 // private routerlar
-<<<<<<< HEAD
 router.post(
   "/logout",
   authenticateToken,
@@ -40,10 +39,6 @@ router.post(
   authenticateToken,
   authController.verifyEmail.bind(authController)
 );
-=======
-router.post("/logout", authenticateToken, AuthController.prototype.logOut);
-
->>>>>>> 7c484b21d7b1ef8f204aa8ba110ecd14efc34134
 router.get(
   "/get-profile",
   authenticateToken,
