@@ -101,6 +101,30 @@ export class AuthController {
     }
   }
 
+  async verifyEmail(req: Request, res: Response): Promise<void> {
+    try {
+      const verificationOTP = req.body;
+      const userId = req.user?.userId;
+      await this.authService.verifyEmail(userId, verificationOTP);
+      res.status(200).json({
+        success: true,
+        message: "E-posta başarıyla doğrulandı",
+      });
+    } catch (error) {
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Bir hata oluştu",
+        });
+      }
+    }
+  }
+
   async forgotPassword(req: Request, res: Response): Promise<void> {
     try {
       const { email } = req.body;

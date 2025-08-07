@@ -33,6 +33,7 @@ router.post(
 
 // GET /api/messages/conversations
 // get all conversations for the user
+// NOTE: I might get rid of this
 router.get(
   "/conversations",
   authenticateToken,
@@ -63,6 +64,8 @@ router.patch(
 // get messages for a specific support ticket with pagination (traditional pagination)
 // examples:
 // /api/messages/support/uuid?page=1&limit=10
+// TODO: CHANGE THIS TO MESSAGE A SUPPORT PERSONNEL NOT A TICKET
+// NOTE: /
 router.get(
   "/support/:supportId",
   authenticateToken,
@@ -76,6 +79,8 @@ router.get(
 // examples:
 // /api/messages/conversation/uuid?limit=20
 // /api/messages/conversation/uuid?limit=20&beforeMessageId=messageId
+// TODO: conversation with Rotaly XYZ chatbot
+// NOTE: /ai-assistant/:conversationId
 router.get(
   "/conversation/:partnerId",
   authenticateToken,
@@ -102,5 +107,7 @@ router.delete(
   validateId,
   messageController.deleteMessage
 );
+
+// message edit route
 
 export default router;

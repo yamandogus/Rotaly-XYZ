@@ -1,21 +1,21 @@
 import { transporter } from "../../config/email";
-import { generateOTP } from "../../utils/otp";
 
 export class EmailService {
   /**
    * Send verification email
    * @param email - receiver email address
    * @param name - receiver name
+   * @param otp - one-time password for verification
    * @param locale - language locale (en, tr)
    * @returns Promise<boolean>
    */
   async sendVerificationEmail(
     email: string,
     name: string,
+    otp: string,
     locale: string = "en"
   ): Promise<boolean> {
     try {
-      const otp = generateOTP();
       const templateName =
         locale === "tr" ? "tr/verification" : "en/verification";
       const subject =
@@ -51,16 +51,17 @@ export class EmailService {
    * Send password reset email
    * @param email - receiver email address
    * @param name - receiver name
+   * @param otp - one-time password for verification
    * @param locale - language locale (en, tr)
    * @returns Promise<boolean>
    */
   async sendPasswordResetEmail(
     email: string,
     name: string,
+    otp: string,
     locale: string = "en"
   ): Promise<boolean> {
     try {
-      const otp = generateOTP();
       const templateName =
         locale === "tr" ? "tr/password-reset" : "en/password-reset";
       const subject =
