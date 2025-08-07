@@ -103,7 +103,7 @@ export class AuthController {
 
   async verifyEmail(req: Request, res: Response): Promise<void> {
     try {
-      const verificationOTP = req.body;
+      const { verificationOTP } = req.body;
       const userId = req.user?.userId;
       await this.authService.verifyEmail(userId, verificationOTP);
       res.status(200).json({

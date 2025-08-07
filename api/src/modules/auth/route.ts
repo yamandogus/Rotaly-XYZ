@@ -12,3 +12,5 @@ router.post(
   authenticateToken,
   AuthController.prototype.verifyEmail.bind(AuthController.prototype)
 );
+
+export default router;
