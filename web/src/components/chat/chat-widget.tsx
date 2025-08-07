@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MessageCircleIcon, SendIcon, UserIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,40 +13,44 @@ import { useRouter } from "next/navigation";
 import { Input } from "../ui/input";
 import { Avatar, AvatarImage } from "../ui/avatar";
 
-const questions = [
-  {
-    id: 1,
-    question: "Rezervasyonum hakkında bilgi verir misin?",
-  },
-  {
-    id: 2,
-    question: "İptal veya değişiklik yapmak istiyorum",
-  },
-  {
-    id: 3,
-    question: "Canlı destek için nasıl ulaşabilirim?",
-  },
-];
-
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<{ id: number; message: string; sender: 'user' | 'bot' }[]>([
-    { id: 1, message: "Merhaba, nasıl yardımcı olabilirim?", sender: 'bot' }
-  ]);
-  
+  const [messages, setMessages] = useState<
+    { id: number; message: string; sender: "user" | "bot" }[]
+  >([{ id: 1, message: "Merhaba, nasıl yardımcı olabilirim?", sender: "bot" }]);
+ 
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () =>{
+    messagesEndRef.current?.scrollIntoView({behavior: "smooth"})
+  }
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const handleLiveSupport = () => {
     setIsOpen(false);
-    router.push("/live-support");
+    router.push("/support/live-chat");
   };
 
   const handleSendMessage = () => {
     if (message.trim()) {
-      const userMessage = { id: Date.now(), message: message, sender: 'user' as const };
-      const botResponse = { id: Date.now() + 1, message: "Teşekkür ederim. Size nasıl yardımcı olabilirim? Daha detaylı bilgi için canlı destek ile iletişime geçebilirsiniz.", sender: 'bot' as const };
-      
-      setMessages(prev => [...prev, userMessage, botResponse]);
+      const userMessage = {
+        id: Date.now(),
+        message: message,
+        sender: "user" as const,
+      };
+      const botResponse = {
+        id: Date.now() + 1,
+        message:
+          "Teşekkür ederim. Size nasıl yardımcı olabilirim? Daha detaylı bilgi için canlı destek ile iletişime geçebilirsiniz.",
+        sender: "bot" as const,
+      };
+
+      setMessages((prev) => [...prev, userMessage, botResponse]);
       setMessage("");
     }
   };
@@ -64,7 +68,7 @@ export default function ChatWidget() {
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-80 h-[500px] p-0 flex flex-col"
+          className="w-80 h-[500px] p-0 flex flex-col "
           align="end"
         >
           {/* Header - Sabit */}
@@ -80,23 +84,30 @@ export default function ChatWidget() {
             </div>
           </div>
           {/* Body - Scrollable */}
-          <div className="flex-1 overflow-y-auto p-3">
+          <div className="flex-1 overflow-y-auto p-3 scrollbar-hide">
             <div className="flex flex-col gap-3">
               {messages.map((msg) => (
-                <div key={msg.id} className={`flex gap-2 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  {msg.sender === 'bot' && (
+                <div
+                  key={msg.id}
+                  className={`flex gap-2 ${
+                    msg.sender === "user" ? "justify-end" : "justify-start"
+                  }`}
+                >
+                  {msg.sender === "bot" && (
                     <Avatar className="w-6 h-6 flex-shrink-0">
                       <AvatarImage src="/images/logo3.png" alt="Rotaly Logo" />
                     </Avatar>
                   )}
-                  <div className={`max-w-[75%] p-2 rounded-lg text-sm ${
-                    msg.sender === 'user' 
-                      ? 'bg-blue-500 text-white rounded-br-sm' 
-                      : 'bg-gray-100 text-gray-800 rounded-bl-sm'
-                  }`}>
+                  <div
+                    className={`max-w-[75%] p-2 rounded-lg text-sm ${
+                      msg.sender === "user"
+                        ? "bg-blue-500 text-white rounded-br-sm"
+                        : "bg-gray-100 text-gray-800 rounded-bl-sm"
+                    }`}
+                  >
                     {msg.message}
                   </div>
-                  {msg.sender === 'user' && (
+                  {msg.sender === "user" && (
                     <Avatar className="w-6 h-6 flex-shrink-0">
                       <div className="w-full h-full bg-blue-500 rounded-full flex items-center justify-center">
                         <UserIcon className="w-3 h-3 text-white" />
@@ -105,6 +116,7 @@ export default function ChatWidget() {
                   )}
                 </div>
               ))}
+              <div ref={messagesEndRef} />
             </div>
           </div>
           {/* Footer - Sabit */}
@@ -116,7 +128,7 @@ export default function ChatWidget() {
                 className="flex-1 h-8 text-sm"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
               />
               <Button
                 size="sm"
