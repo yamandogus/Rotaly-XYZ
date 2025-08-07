@@ -6,7 +6,6 @@ import {
   passwordResetLimiter,
   otpLimiter,
 } from "../../middleware/rateLimit";
-import { authorizeRoles, verifiedUser } from "../../middleware/auth.middleware";
 
 const router = Router();
 const authController = new AuthController();
@@ -27,11 +26,7 @@ router.post(
 
 // private routerlar
 router.post("/logout", authenticateToken, AuthController.prototype.logOut);
-router.post(
-  "/verify-email",
-  authenticateToken,
-  AuthController.prototype.verifyEmail
-);
+
 router.get(
   "/get-profile",
   authenticateToken,
@@ -52,9 +47,7 @@ router.delete(
   authenticateToken,
   AuthController.prototype.deleteAccount
 );
-/**
- * must be authenticated user to verify email
- */
+
 router.post(
   "/verify-email",
   authenticateToken,
