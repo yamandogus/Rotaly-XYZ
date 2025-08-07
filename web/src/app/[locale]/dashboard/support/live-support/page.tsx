@@ -1,12 +1,9 @@
 "use client";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SendIcon, UserIcon } from "lucide-react";
 import React, { useState } from "react";
 
@@ -60,68 +57,81 @@ const LiveSupportPage = () => {
 
   const handleSendMessage = () => {
     if (message.trim() === "") return;
-    setMessages([...messages, { id: messages.length + 1, message: message, sender: "user" }]);
+    setMessages([
+      ...messages,
+      { id: messages.length + 1, message: message, sender: "user" },
+    ]);
     setMessage("");
   };
-
 
   return (
     <div className="min-h-screen p-2 md:p-4">
       <div className="grid grid-cols-1 lg:grid-cols-12 min-h-screen gap-4">
         <div className="lg:col-span-3">
-          <div className="flex flex-col gap-2 bg-card rounded-lg p-2">
-            {users.map((user) => (
-              <Button
-                key={user.id}
-                variant={selectedUser === user.id ? "default" : "ghost"}
-                className={`w-full h-auto p-3 justify-start text-left hover:bg-blue-50 ${
-                  selectedUser === user.id
-                    ? "bg-blue-500 hover:bg-blue-600"
-                    : ""
-                }`}
-                onClick={() => setSelectedUser(user.id)}
-              >
-                <div className="flex items-center gap-3 w-full">
-                  <div className="relative flex-shrink-0">
-                    <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${
-                        selectedUser === user.id
-                          ? "bg-white text-blue-500"
-                          : "bg-gray-200 text-gray-700"
-                      }`}
-                    >
-                      {user.avatar}
+          <Tabs defaultValue="account" className="w-full">
+            <TabsList className="w-full">
+              <TabsTrigger value="account">Bekleyenler</TabsTrigger>
+              <TabsTrigger value="online">Çevrimiçi</TabsTrigger>
+              <TabsTrigger value="offline">Çevrimdışı</TabsTrigger>
+            </TabsList>
+            <TabsContent value="account">
+              <div className="flex flex-col gap-2 bg-card rounded-lg p-2">
+                {users.map((user) => (
+                  <Button
+                    key={user.id}
+                    variant={selectedUser === user.id ? "default" : "ghost"}
+                    className={`w-full h-auto p-3 justify-start text-left hover:bg-blue-50 ${
+                      selectedUser === user.id
+                        ? "bg-blue-500 hover:bg-blue-600"
+                        : ""
+                    }`}
+                    onClick={() => setSelectedUser(user.id)}
+                  >
+                    <div className="flex items-center gap-3 w-full">
+                      <div className="relative flex-shrink-0">
+                        <div
+                          className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${
+                            selectedUser === user.id
+                              ? "bg-white text-blue-500"
+                              : "bg-gray-200 text-gray-700"
+                          }`}
+                        >
+                          {user.avatar}
+                        </div>
+                        <div
+                          className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white ${
+                            user.status === "online"
+                              ? "bg-green-500"
+                              : user.status === "away"
+                              ? "bg-yellow-500"
+                              : "bg-red-500"
+                          }`}
+                        ></div>
+                      </div>
+                      <div className="flex-1 min-w-0 text-left">
+                        <p className="font-medium text-sm truncate">
+                          {user.name}
+                        </p>
+                        <p
+                          className={`text-xs truncate ${
+                            selectedUser === user.id
+                              ? "text-blue-100"
+                              : "text-muted-foreground"
+                          }`}
+                        >
+                          {user.status === "online"
+                            ? "Çevrimiçi"
+                            : user.status === "away"
+                            ? "Uzakta"
+                            : "Çevrimdışı"}
+                        </p>
+                      </div>
                     </div>
-                    <div
-                      className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white ${
-                        user.status === "online"
-                          ? "bg-green-500"
-                          : user.status === "away"
-                          ? "bg-yellow-500"
-                          : "bg-red-500"
-                      }`}
-                    ></div>
-                  </div>
-                  <div className="flex-1 min-w-0 text-left">
-                    <p className="font-medium text-sm truncate">{user.name}</p>
-                    <p
-                      className={`text-xs truncate ${
-                        selectedUser === user.id
-                          ? "text-blue-100"
-                          : "text-muted-foreground"
-                      }`}
-                    >
-                      {user.status === "online"
-                        ? "Çevrimiçi"
-                        : user.status === "away"
-                        ? "Uzakta"
-                        : "Çevrimdışı"}
-                    </p>
-                  </div>
-                </div>
-              </Button>
-            ))}
-          </div>
+                  </Button>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
         <div className="lg:col-span-9">
           <Card className="h-auto w-[90%] min-h-[550px] flex flex-col">
