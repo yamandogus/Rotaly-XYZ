@@ -11,47 +11,59 @@ const router = Router();
 const authController = new AuthController();
 
 // public routerlar
-router.post("/register", authLimiter, AuthController.prototype.register);
-router.post("/login", authLimiter, AuthController.prototype.login);
+router.post(
+  "/register",
+  authLimiter,
+  authController.register.bind(authController)
+);
+router.post("/login", authLimiter, authController.login.bind(authController));
 router.post(
   "/resend-verification-email",
   otpLimiter,
-  AuthController.prototype.resendVerificationEmail
+  authController.resendVerificationEmail.bind(authController)
 );
 router.post(
   "/forgot-password",
   passwordResetLimiter,
-  AuthController.prototype.forgotPassword
+  authController.forgotPassword.bind(authController)
 );
 
 // private routerlar
-router.post("/logout", authenticateToken, AuthController.prototype.logOut);
-
+router.post(
+  "/logout",
+  authenticateToken,
+  authController.logOut.bind(authController)
+);
+router.post(
+  "/verify-email",
+  authenticateToken,
+  authController.verifyEmail.bind(authController)
+);
 router.get(
   "/get-profile",
   authenticateToken,
-  AuthController.prototype.getProfile
+  authController.getProfile.bind(authController)
 );
 router.put(
   "/update-profile",
   authenticateToken,
-  AuthController.prototype.updateProfile
+  authController.updateProfile.bind(authController)
 );
 router.put(
   "/change-password",
   authenticateToken,
-  AuthController.prototype.changePassword
+  authController.changePassword.bind(authController)
 );
 router.delete(
   "/delete-account",
   authenticateToken,
-  AuthController.prototype.deleteAccount
+  authController.deleteAccount.bind(authController)
 );
 
 router.post(
   "/verify-email",
   authenticateToken,
-  AuthController.prototype.verifyEmail.bind(AuthController.prototype)
+  authController.verifyEmail.bind(authController)
 );
 
 export default router;
