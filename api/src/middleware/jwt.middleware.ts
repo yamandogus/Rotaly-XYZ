@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import jwtService from "../jwt/jwt.service";
-import Prisma from "../config/db";
+import { JwtService } from "../jwt/jwt.service";
 
+const jwtService = new JwtService();
 // Token doğrulama middleware'i
 export const authenticateToken = (
   req: Request,
