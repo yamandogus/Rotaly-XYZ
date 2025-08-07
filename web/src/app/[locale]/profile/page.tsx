@@ -407,7 +407,7 @@ export default function ProfilePage() {
 
             {/* Fiyat, Puan ve Butonlar */}
             <div className="mt-6 flex items-center justify-between">
-              <div className="text-blue-600 dark:text-blue-400 text-xl font-bold">
+              <div className="text-blue-600 dark:text-blue-400 text-l font-bold">
                 {res.price}
               </div>
 
@@ -425,23 +425,23 @@ export default function ProfilePage() {
               {/* Butonlar */}
               <div className="flex gap-3">
 <button
-  className="bg-red-600 hover:bg-red-800 text-white px-3 py-1 rounded-xl font-semibold text-xs shadow-sm hover:shadow-md transition flex items-center justify-center gap-2"
+  className="bg-red-600 hover:bg-red-800 text-white px-3 py-2 rounded-xl font-semibold text-xs shadow-sm hover:shadow-md transition flex items-center justify-center gap-2"
   onClick={() => {
     console.log("Rezervasyon iptal edildi:", res.id);
   }}
 >
-  <XIcon className="w-4 h-4" />
+  <XIcon className="w-5 h-5" />
   Rezervasyon İptal
 </button>
 
 <button
-  className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-xl font-semibold text-xs shadow-sm hover:shadow-md transition flex items-center justify-center gap-2"
+  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-semibold text-xs shadow-sm hover:shadow-md transition flex items-center justify-center gap-2"
   onClick={() => {
     console.log("Otele soruldu:", res.hotelName);
     window.dispatchEvent(new Event("open-chat-widget")); 
   }}
 >
-  <MessageSquareIcon className="w-4 h-4" />
+  <MessageSquareIcon className="w-5 h-5" />
   Otele Sor
 </button>
 
