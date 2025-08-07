@@ -50,6 +50,7 @@ export class AuthController {
   async login(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
+      const userData: LoginSchemaType = { email, password };
       const tokens = await this.authService.login({ email, password });
       res.status(200).json({
         success: true,
@@ -57,6 +58,7 @@ export class AuthController {
         data: {
           accessToken: tokens.accessToken,
           refreshToken: tokens.refreshToken,
+          userData,
         },
       });
     } catch (error) {
