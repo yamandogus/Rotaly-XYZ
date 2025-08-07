@@ -28,7 +28,7 @@ export class EmailController {
         return;
       }
 
-      const { email, name } = validation.data;
+      const { email, name, otp } = validation.data;
 
       // extracting locale from URL path param :locale, default to 'en'
       const locale = req.params.locale || "en";
@@ -36,6 +36,7 @@ export class EmailController {
       const isEmailSent = await emailService.sendVerificationEmail(
         email,
         name,
+        otp,
         locale
       );
 
@@ -82,13 +83,14 @@ export class EmailController {
         return;
       }
 
-      const { email, name } = validation.data;
+      const { email, name, otp } = validation.data;
 
       const locale = req.params.locale || "en";
 
       const isEmailSent = await emailService.sendPasswordResetEmail(
         email,
         name,
+        otp,
         locale
       );
 
