@@ -98,6 +98,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             url: "/dashboard/hotel/company",
             icon: <IconFileDescription />,
           },
+            {
+            title: t("live-support"),
+            url: "/dashboard/hotel/live-support",
+            icon: <IconMessageCircle />,
+          },
         ];
       default:
         return [];

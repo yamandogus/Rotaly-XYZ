@@ -20,16 +20,23 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<
     { id: number; message: string; sender: "user" | "bot" }[]
   >([{ id: 1, message: "Merhaba, nasıl yardımcı olabilirim?", sender: "bot" }]);
- 
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () =>{
-    messagesEndRef.current?.scrollIntoView({behavior: "smooth"})
-  }
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Buraya ekleme yapıldı:
+  useEffect(() => {
+    const openChat = () => setIsOpen(true);
+    window.addEventListener("open-chat-widget", openChat);
+    return () => window.removeEventListener("open-chat-widget", openChat);
+  }, []);
 
   const handleLiveSupport = () => {
     setIsOpen(false);
@@ -67,19 +74,11 @@ export default function ChatWidget() {
             <MessageCircleIcon className="w-10 h-10 text-white" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent
-          className="w-80 h-[500px] p-0 flex flex-col "
-          align="end"
-        >
+        <PopoverContent className="w-80 h-[500px] p-0 flex flex-col " align="end">
           {/* Header - Sabit */}
           <div className="border-b px-4 py-2 flex-shrink-0">
             <div className="flex items-center gap-2 mb-3">
-              <Image
-                src="/images/logo3.png"
-                alt="Rotaly Logo"
-                width={20}
-                height={20}
-              />
+              <Image src="/images/logo3.png" alt="Rotaly Logo" width={20} height={20} />
               <h4 className="font-medium">Rotaly AI Asistan</h4>
             </div>
           </div>
