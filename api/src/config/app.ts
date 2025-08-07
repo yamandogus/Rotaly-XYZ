@@ -1,7 +1,10 @@
 import express from "express";
 import cors from "cors";
+import { globalLimiter } from "../middleware/rateLimit";
 
 const app = express();
+
+app.use(globalLimiter);
 
 // Middleware
 app.use(express.json());
