@@ -44,3 +44,23 @@ export const otpLimiter = rateLimit({
     message: "Too many OTP requests. Please wait before requesting a new code.",
   },
 });
+
+// Admin işlemleri için limit
+export const adminActionLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 dakika
+  max: 50, // 15 dakikada maksimum 50 istek
+  message: {
+    status: "error",
+    message: "Too many admin requests. Please try again later.",
+  },
+});
+
+// Kullanıcı arama işlemleri için limit
+export const userSearchLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 dakika
+  max: 30, // 5 dakikada maksimum 30 arama
+  message: {
+    status: "error",
+    message: "Too many search requests. Please try again later.",
+  },
+});

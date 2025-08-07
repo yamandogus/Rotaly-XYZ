@@ -50,14 +50,13 @@ export class AuthController {
   async login(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
-      const token = await this.authService.login({ email, password });
+      const tokens = await this.authService.login({ email, password });
       res.status(200).json({
         success: true,
         message: "Giriş başarılı",
         data: {
-          accessToken: token,
-          refreshToken: token,
-          user: token,
+          accessToken: tokens.accessToken,
+          refreshToken: tokens.refreshToken,
         },
       });
     } catch (error) {
@@ -125,6 +124,94 @@ export class AuthController {
     }
   }
 
+  async resendVerificationEmail(req: Request, res: Response) {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        throw new AppError("Email is required", 400);
+      }
+      await this.authService.resendVerificationEmail(email);
+      res.status(200).json({
+        success: true,
+        message: "e-posta gönderildi",
+      });
+    } catch (error) {
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Bir hata oluştu",
+        });
+      }
+    }
+  }
+
+  async getProfile(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = req.user?.userId;
+      if (!userId) {
+        throw new AppError("Unauthorized", 401);
+      }
+
+      const profile = await this.authService.getProfile(userId);
+
+      res.status(200).json({
+        success: true,
+        data: profile,
+      });
+    } catch (error) {
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Profil bilgileri getirilirken bir hata oluştu",
+        });
+      }
+    }
+  }
+  async updateProfile(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = req.user?.userId;
+      if (!userId) {
+        throw new AppError("Unauthorized", 401);
+      }
+
+      const updateData: UpdateUserSchemaType = {
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
+        phone: req.body.phone,
+      };
+
+      const result = await this.authService.updateProfile(userId, updateData);
+
+      res.status(200).json({
+        success: true,
+        message: result.message,
+        data: result.updatedUser,
+      });
+    } catch (error) {
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Profil güncelleme sırasında bir hata oluştu",
+        });
+      }
+    }
+  }
   async forgotPassword(req: Request, res: Response): Promise<void> {
     try {
       const { email } = req.body;
@@ -178,32 +265,13 @@ export class AuthController {
       }
     }
   }
-  async resendVerificationEmail(req: Request, res: Response) {
-    try {
-      const { email } = req.body;
-      await this.authService.resendVerificationEmail(email);
-      res.status(200).json({
-        success: true,
-        message: "e-posta gönderildi",
-      });
-    } catch (error) {
-      if (error instanceof AppError) {
-        res.status(error.statusCode).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Bir hata oluştu",
-        });
-      }
-    }
-  }
 
   async deleteAccount(req: Request, res: Response) {
     try {
-      const { userId } = req.body;
+      const userId = req.user?.userId;
+      if (!userId) {
+        throw new AppError("Unauthorized", 401);
+      }
       await this.authService.deleteAccount(userId);
       res.status(200).json({ success: true, message: "kullanıcı silindi" });
     } catch (error) {
@@ -216,42 +284,6 @@ export class AuthController {
         res.status(500).json({
           success: false,
           message: "Bir hata oluştu",
-        });
-      }
-    }
-  }
-
-  async updateProfile(req: Request, res: Response): Promise<void> {
-    try {
-      const userId = req.user?.userId;
-      if (!userId) {
-        throw new AppError("Unauthorized", 401);
-      }
-
-      const updateData: UpdateUserSchemaType = {
-        name: req.body.name,
-        surname: req.body.surname,
-        email: req.body.email,
-        phone: req.body.phone,
-      };
-
-      const result = await this.authService.updateProfile(userId, updateData);
-
-      res.status(200).json({
-        success: true,
-        message: result.message,
-        data: result.updatedUser,
-      });
-    } catch (error) {
-      if (error instanceof AppError) {
-        res.status(error.statusCode).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Profil güncelleme sırasında bir hata oluştu",
         });
       }
     }

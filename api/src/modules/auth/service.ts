@@ -1,5 +1,4 @@
-import Prisma from "../../config/db";
-import { PrismaClient, Role } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { JwtService } from "../../jwt/jwt.service";
 import { AppError } from "../../utils/appError";
 import { generateOTP } from "../../utils/otp";
@@ -9,12 +8,10 @@ import {
   RegisterSchemaType,
   UpdateUserSchemaType,
   ChangePasswordSchemaType,
-  ResetPasswordSchemaType,
   ProfileSchemaType,
 } from "../../dto/auth";
 import { EmailService } from "../email/service";
 import { UserService } from "../user/service";
-import { TokenPayload } from "../../types/express";
 
 export class AuthService {
   private prisma: PrismaClient;
@@ -123,16 +120,33 @@ export class AuthService {
     if (user.isVerified) {
       throw new AppError("user already verified", 400);
     }
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        verificationOTP: otp,
+        verificationOTPExpires: new Date(Date.now() + 10 * 60 * 1000), // 10 dakika
+      },
+    });
 
     await this.emailService.sendVerificationEmail(user.email, user.name, otp);
     return {
       message: "Verification email sent",
     };
   }
-  //TODO
-  //   async getProfile(userId: string): Promise<ProfileSchemaType> {
-  //     const user = await this.userService.getById(userId);
-  //   }
+
+  async getProfile(userId: string): Promise<ProfileSchemaType> {
+    const user = await this.userService.getById(userId);
+
+    const profile: ProfileSchemaType = {
+      id: user.id,
+      name: user.name,
+      surname: user.surname,
+      email: user.email,
+      phone: user.phone,
+    };
+
+    return profile;
+  }
 
   async updateProfile(userId: string, data: UpdateUserSchemaType) {
     const otp = generateOTP();
@@ -159,6 +173,14 @@ export class AuthService {
   async forgotPassword(email: string) {
     const otp = generateOTP();
     const user = await this.userService.getByEmail(email);
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        verificationOTP: otp,
+        verificationOTPExpires: new Date(Date.now() + 10 * 60 * 1000), // 10 dakika
+      },
+    });
     await this.emailService.sendPasswordResetEmail(user.email, user.name, otp);
     return {
       message: "Reset password email sent",
@@ -189,7 +211,7 @@ export class AuthService {
 
   async deleteAccount(userId: string) {
     const user = await this.userService.getById(userId);
-    this.jwtService.logoutAll(`Bearer ${user.id}`);
+    this.jwtService.logoutAll(user.id);
     await this.userService.delete(userId);
     return {
       message: "Account deleted successfully",
