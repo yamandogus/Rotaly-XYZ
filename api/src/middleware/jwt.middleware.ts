@@ -24,7 +24,7 @@ export const authenticateToken = (
     );
 
     req.user = decoded;
-    next();
+    return next();
   } catch (error) {
     if (error instanceof Error && (error as any).name === "UnauthorizedError") {
       return res.status(401).json({
@@ -32,11 +32,11 @@ export const authenticateToken = (
         message: (error as any).message,
       });
     }
+    return res.status(500).json({
+      status: "error",
+      message: "Internal server error",
+    });
   }
-  return res.status(500).json({
-    status: "error",
-    message: "Internal server error",
-  });
 };
 
 // İsteğe bağlı token doğrulama
