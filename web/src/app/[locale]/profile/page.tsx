@@ -1,28 +1,79 @@
 "use client";
 import Image from "next/image";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
-import { Edit, Camera, BadgeCheck, CarIcon, LocateIcon, MessageSquareIcon, XIcon } from "lucide-react";
+import { Edit, Camera, BadgeCheck, CarIcon, LocateIcon, MessageSquareIcon, XIcon, ArrowLeftIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useTranslations } from "next-intl";
 import { format } from "date-fns";
 import { DatePicker } from "@/components/date-picker";
 import { Rating, RatingButton } from "@/components/ui/shadcn-io/rating";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function ProfilePage() {
   const t = useTranslations("Profile");
+    // Modal ve Chat State'leri
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [currentHotel, setCurrentHotel] = useState({
+    name: "",
+    location: "",
+    image: "",
+  });
+
+const defaultMessage = (hotelName: string) => [
+  { id: 1, message: `${hotelName} rezervasyonlarınızda nasıl yardımcı olabilirim?`, sender: "bot" }
+];
+
+const [messages, setMessages] = useState(defaultMessage(currentHotel.name));
+
+// isChatOpen değiştiğinde mesajları resetle
+useEffect(() => {
+  if (isChatOpen) {
+    setMessages(defaultMessage(currentHotel.name || "Otelimize"));
+  }
+}, [isChatOpen, currentHotel.name]);
+
+
+  const [message, setMessage] = useState("");
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to bottom on new messages
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleSendMessage = () => {
+    if (!message.trim()) return;
+
+    const userMessage = {
+      id: Date.now(),
+      message,
+      sender: "user",
+    };
+    const botResponse = {
+      id: Date.now() + 1,
+      message:
+        "Teşekkür ederim. Size nasıl yardımcı olabilirim? Daha detaylı bilgi için canlı destek ile iletişime geçebilirsiniz.",
+      sender: "bot",
+    };
+
+    setMessages((prev) => [...prev, userMessage, botResponse]);
+    setMessage("");
+  };
 
 
   const [personalInfo, setPersonalInfo] = useState([
@@ -329,7 +380,6 @@ export default function ProfilePage() {
             </section>
           </TabsContent>
 
-
 <TabsContent value="reservations">
   <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-lg">
     <h2 className="text-3xl font-semibold mb-6 -mt-6 text-gray-900 dark:text-white">
@@ -436,11 +486,19 @@ export default function ProfilePage() {
 
 <button
   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-semibold text-xs shadow-sm hover:shadow-md transition flex items-center justify-center gap-2"
-  onClick={() => {
-    console.log("Otele soruldu:", res.hotelName);
-    window.dispatchEvent(new Event("open-chat-widget")); 
-  }}
->
+ onClick={() => {
+                            setCurrentHotel({
+                              name: res.hotelName,
+                              location: res.location,
+                              image: res.image || "/images/opportunity1.jpg",
+                            });
+                            setIsChatOpen(true);
+                            setMessages([
+                              { id: 1, message: "Merhaba, nasıl yardımcı olabilirim?", sender: "bot" },
+                            ]);
+                            setMessage("");
+                          }}
+                        >
   <MessageSquareIcon className="w-5 h-5" />
   Otele Sor
 </button>
@@ -452,7 +510,90 @@ export default function ProfilePage() {
       ))}
     </div>
   </div>
-</TabsContent>
+
+           {/* Modal Chat */}
+      <Dialog open={isChatOpen} onOpenChange={setIsChatOpen}>
+        <DialogContent  className="sm:max-w-[450px] h-[500px] flex flex-col p-0 ">
+          <DialogHeader className="p-4 border-b flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 relative rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800">
+                <Image
+                  src={currentHotel.image}
+                  alt={currentHotel.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div>
+                <DialogTitle className="text-lg font-semibold">
+                  {currentHotel.name}
+                </DialogTitle>
+                <DialogDescription className="text-sm text-muted-foreground">
+                  {currentHotel.location}
+                </DialogDescription>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsChatOpen(false)}
+              className="text-muted-foreground hover:text-foreground transition"
+            >
+            </button>
+          </DialogHeader>
+
+          {/* Chat messages */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 dark:bg-gray-800 scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
+            {messages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex ${
+                  msg.sender === "user" ? "justify-end" : "justify-start"
+                }`}
+              >
+                {msg.sender === "bot" && (
+                  <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-300 dark:border-gray-700 mr-2">
+                    <Image
+                    src={currentHotel.image}
+                      alt="Rotaly Logo"
+                      width={35}
+                      height={35}
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+                <div
+                  className={`max-w-[75%] p-2 rounded-lg text-sm ${
+                    msg.sender === "user"
+                      ? "bg-blue-600 text-white rounded-br-sm"
+                      : "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-sm"
+                  }`}
+                >
+                  {msg.message}
+                </div>
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input area */}
+          <div className="p-4 border-t flex gap-2 items-center bg-white dark:bg-gray-900">
+            <Input
+              placeholder="Mesajınızı yazın..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+              className="flex-1"
+            />
+            <Button
+              onClick={handleSendMessage}
+              disabled={!message.trim()}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              Gönder
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+        </TabsContent>
 
 
 
