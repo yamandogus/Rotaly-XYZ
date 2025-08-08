@@ -264,6 +264,8 @@ const reservations = {
 
 
 
+
+
 type Reservation = {
   guestName: string;
   avatar: string;
@@ -287,7 +289,8 @@ function ReservationCard({ reservation }: { reservation: Reservation }) {
     status === "active" ? t("active") : t("completed");
 
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+  <Card className="hover:shadow-lg transition-shadow duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 w-full max-w-xl mx-auto">
+
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -341,65 +344,6 @@ function ReservationCard({ reservation }: { reservation: Reservation }) {
   );
 }
 
-function RoomSelector({
-  rooms,
-  selectedRoom,
-  onRoomSelect,
-  searchQuery,
-  onSearchChange,
-}: {
-  rooms: number[];
-  selectedRoom: number | null;
-  onRoomSelect: (room: number | null) => void;
-  searchQuery: string;
-  onSearchChange: (value: string) => void;
-}) {
-  const t = useTranslations("Reservations");
-
-  return (
-   <div className="mb-8 w-full max-w-3xl mx-auto flex gap-4">
-  <div className="flex-1 relative">
-  <Input
-  type="text"
-  placeholder={t("searchPlaceholder")}
-  value={searchQuery}
-  onChange={(e) => onSearchChange(e.target.value)}
-  className="pl-10 mt-7.5 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
-/>
-    <Search className="absolute left-3 top-9.5 w-5 h-5 text-gray-400 dark:text-gray-500" />
-  </div>
-
-  <div className="flex-1 flex flex-col">
-    <label
-      htmlFor="room-select"
-      className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1"
-    >
-      <Hotel className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-      {t("selectRoom")}
-    </label>
- <select
-  id="room-select"
-  value={selectedRoom === null ? "" : selectedRoom}
-  onChange={(e) => {
-    const val = e.target.value;
-    onRoomSelect(val === "" ? null : Number(val));
-  }}
-  className="w-full rounded border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 p-1.5 text-sm"
->
-  <option value="">{t("allRooms")}</option>
-  {rooms.map((room) => (
-    <option key={room} value={room}>
-      {t("room")} {room}
-    </option>
-  ))}
-</select>
-
-  </div>
-</div>
-
-  );
-}
-
 function RoomDateSelector({
   reservations,
   selectedDate,
@@ -415,10 +359,12 @@ function RoomDateSelector({
   if (dates.length === 0) return null;
 
   return (
-    <div className="mb-6  flex flex-col items-center">
-      <label className="mb-2 font-medium text-gray-900 dark:text-gray-100">{t("selectDate")}</label>
+    <div className="mb-1 flex flex-col items-center -mt-2 mr-40">
+      <label className="mb-2 font-medium text-gray-900 dark:text-gray-100">
+        {t("selectDate")}
+      </label>
       <select
-        className="border rounded px-3 py-2 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
+        className="border rounded px-4 py-2 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
         value={selectedDate ?? ""}
         onChange={(e) => onDateSelect(e.target.value || null)}
       >
@@ -477,7 +423,7 @@ function renderReservations(
     <div className="space-y-8 w-full mt-10">
       {Object.entries(grouped).map(([roomNumber, entries]) => (
         <section key={roomNumber} className="w-full">
-          <div className="flex items-center gap-3 mb-6 justify-center">
+          <div className="flex items-center gap-3 mb-6 -mt-5 justify-center">
             <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center dark:bg-blue-900">
               <Hotel className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
@@ -488,9 +434,8 @@ function renderReservations(
               <p className="text-gray-600 dark:text-gray-400">{entries.length} {t("reservations")}</p>
             </div>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center max-w-full">
-            {entries.map((reservation: Reservation, index: number) => (
+            {entries.map((reservation, index) => (
               <div key={index} className="w-full max-w-sm">
                 <ReservationCard reservation={reservation} />
               </div>
@@ -505,101 +450,125 @@ function renderReservations(
 export default function ReservationTabs() {
   const t = useTranslations("Reservations");
 
-
-
+  const [activeTab, setActiveTab] = useState<"active" | "past">("active");
   const [selectedRoom, setSelectedRoom] = useState<number | null>(null);
-  const [activeTab, setActiveTab] = useState("active");
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const allRooms = [
-    ...new Set(
-      [...reservations.active, ...reservations.past].map((r) => r.roomNumber)
-    ),
-  ];
+  const currentReservations =
+    activeTab === "active" ? reservations.active : reservations.past;
 
-  const data = activeTab === "active" ? reservations.active : reservations.past;
+  const roomsInTab = [...new Set(currentReservations.map((r) => r.roomNumber))];
+
   const filteredByRoom = selectedRoom
-    ? data.filter((r) => r.roomNumber === selectedRoom)
-    : data;
+    ? currentReservations.filter((r) => r.roomNumber === selectedRoom)
+    : currentReservations;
+
   const filteredByDate = selectedDate
     ? filteredByRoom.filter((r) => r.dates === selectedDate)
     : filteredByRoom;
 
   return (
- <div className="max-w-7xl mx-auto p-6 w-full min-h-screen bg-white text-gray-900 dark:bg-card dark:text-gray-100">
+    <div className="max-w-7xl mx-auto p-6 w-full min-h-screen bg-white text-gray-900 dark:bg-card dark:text-gray-100">
 
-
-
+      {/* === ÜST: Aktif / Geçmiş Sekmeleri === */}
       <Tabs
         value={activeTab}
         onValueChange={(tab) => {
-          setActiveTab(tab);
+          setActiveTab(tab as "active" | "past");
           setSelectedRoom(null);
           setSelectedDate(null);
           setSearchQuery("");
         }}
         className="w-full"
       >
-       <TabsList className="grid grid-cols-2 w-full max-w-3xl mx-auto mb-8 gap-4 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+        <TabsList className="grid grid-cols-2 w-full max-w-3xl mx-auto mb-10 gap-4 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+          <TabsTrigger value="active" className="flex items-center justify-center gap-2 px-4 py-2 rounded-md text-gray-800 dark:text-gray-100 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900">
+            <span className="w-2.5 h-2.5 bg-green-500 rounded-full" />
+            {t("activeReservations")}
+          </TabsTrigger>
+          <TabsTrigger value="past" className="flex items-center justify-center gap-2 px-4 py-2 rounded-md text-gray-800 dark:text-gray-100 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900">
+            <span className="w-2.5 h-2.5 bg-red-500 rounded-full" />
+            {t("pastReservations")}
+          </TabsTrigger>
+        </TabsList>
+
+        {/* === ALT: İçerik (Oda Tabs + Arama + Filtre + Liste) === */}
+        <TabsContent value={activeTab}>
+          <Tabs
+            value={selectedRoom === null ? "all" : selectedRoom.toString()}
+            onValueChange={(val) => {
+              setSelectedRoom(val === "all" ? null : Number(val));
+              setSelectedDate(null);
+            }}
+            className="w-full"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-2 mt-8">
+              {/* === Sol: Oda Sekmeleri === */}
+            <TabsList className="flex flex-col gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-md h-fit">
+
+  {/* === Başlık: Oda Seçin === */}
+  <div className="flex items-center gap-2 mb-2 px-1">
+    <Hotel className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+    <h3 className="text-base font-semibold text-gray-700 dark:text-gray-100">
+      {t("selectRoom")}
+    </h3>
+  </div>
+
+  {/* === Tüm Odalar Butonu === */}
   <TabsTrigger
-    value="active"
-    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-gray-800 dark:text-gray-100 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900"
+    value="all"
+    className="w-full px-4 py-2 rounded-lg text-sm text-left data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition"
   >
-    <span className="w-2.5 h-2.5 bg-green-500 rounded-full" />
-    {t("activeReservations")}
+    {t("allRooms")}
   </TabsTrigger>
 
-  <TabsTrigger
-    value="past"
-    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-gray-800 dark:text-gray-100 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900"
-  >
-    <span className="w-2.5 h-2.5 bg-red-500 rounded-full" />
-    {t("pastReservations")}
-  </TabsTrigger>
+  {/* === Oda Listesi === */}
+  {roomsInTab.map((room) => (
+    <TabsTrigger
+      key={room}
+      value={room.toString()}
+      className="w-full px-4 py-2 rounded-lg text-sm text-left data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+    >
+      {t("room")} {room}
+    </TabsTrigger>
+  ))}
+
 </TabsList>
 
 
-        <TabsContent value="active" className="mt-0 w-full">
-          <RoomSelector
-            rooms={allRooms}
-            selectedRoom={selectedRoom}
-            onRoomSelect={(room) => {
-              setSelectedRoom(room);
-              setSelectedDate(null);
-            }}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-          />
-          {selectedRoom && (
-            <RoomDateSelector
-              reservations={filteredByRoom}
-              selectedDate={selectedDate}
-              onDateSelect={setSelectedDate}
-            />
-          )}
-          {renderReservations(filteredByDate, selectedRoom, searchQuery)}
-        </TabsContent>
 
-        <TabsContent value="past" className="mt-0 w-full">
-          <RoomSelector
-            rooms={allRooms}
-            selectedRoom={selectedRoom}
-            onRoomSelect={(room) => {
-              setSelectedRoom(room);
-              setSelectedDate(null);
-            }}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-          />
-          {selectedRoom && (
-            <RoomDateSelector
-              reservations={filteredByRoom}
-              selectedDate={selectedDate}
-              onDateSelect={setSelectedDate}
-            />
-          )}
-          {renderReservations(filteredByDate, selectedRoom, searchQuery)}
+              {/* === Sağ: Arama + Tarih + Rezervasyonlar === */}
+     <div className="flex flex-col gap-6 -mt-4 w-full">
+  {/* Arama Çubuğu */}
+<div className="relative w-full max-w-md ml-40 -mt-5">
+    <Input
+      type="text"
+      placeholder={t("searchPlaceholder")}
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+      className="pl-10 pr-4 h-11 text-base rounded-xl shadow-sm border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+    />
+    <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400 dark:text-gray-500" />
+  </div>
+
+  {/* Tarih Seçici */}
+  {selectedRoom !== null && (
+    <RoomDateSelector
+      reservations={filteredByRoom}
+      selectedDate={selectedDate}
+      onDateSelect={setSelectedDate}
+    />
+  )}
+
+  {/* Rezervasyon Listesi */}
+  <TabsContent value={selectedRoom === null ? "all" : selectedRoom.toString()} className="w-full">
+    {renderReservations(filteredByDate, selectedRoom, searchQuery)}
+  </TabsContent>
+</div>
+
+            </div>
+          </Tabs>
         </TabsContent>
       </Tabs>
     </div>

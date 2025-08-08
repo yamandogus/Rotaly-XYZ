@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { SendIcon, UserIcon } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 const users = [
   {
@@ -63,16 +63,6 @@ const LiveSupportPage = () => {
     setMessages([...messages, { id: messages.length + 1, message: message, sender: "user" }]);
     setMessage("");
   };
-
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-  
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
 
 
   return (
@@ -174,7 +164,6 @@ const LiveSupportPage = () => {
                         )}
                       </div>
                     ))}
-                    <div ref={messagesEndRef} />
                   </div>
                 </div>
               </div>
