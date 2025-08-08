@@ -32,6 +32,12 @@ export default function LoginPage() {
     role: "admin",
   };
 
+  const testSupport = {
+    email: "support@support.com",
+    password: "123456",
+    role: "support",
+  };
+
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -55,6 +61,12 @@ export default function LoginPage() {
       localStorage.setItem("userRole", "admin");
       toast.success("Admin girişi başarılı");
       router.push("/dashboard");
+    }
+    // Support girişi
+    else if (email === testSupport.email && password === testSupport.password) {
+      localStorage.setItem("userRole", "support");
+      toast.success("Support girişi başarılı");
+      router.push("/dashboard/support");
     }
     // Hatalı giriş
     else {

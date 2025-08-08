@@ -10,6 +10,8 @@ export default function RegisterPage() {
     e.preventDefault();
     console.log("Form submitted");
   };
+
+
   
   return (
     <div className="min-h-screen flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
