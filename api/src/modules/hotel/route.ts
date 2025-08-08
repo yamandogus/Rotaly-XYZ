@@ -2,7 +2,7 @@ import { Router } from "express";
 import { Request, Response } from "express";
 
 const router = Router();
-
+// TODO: Bu route'ların hepsi admin ve owner için olacak.
 // Admin Dashboard Routes
 router.get("/dashboard", (req: Request, res: Response) => {
   res.json({ message: "Admin Dashboard" });
@@ -90,6 +90,8 @@ router.delete("/admin/hotels/:id", (req: Request, res: Response) => {
   res.json({ message: "Hotel Deleted", id: req.params.id });
 });
 
+// TODO: Bu route'ların hepsi owner için olacak.
+
 // Owner API Routes
 router.get("/owner/dashboard", (req: Request, res: Response) => {
   res.json({ message: "Owner Dashboard Data" });
@@ -108,12 +110,23 @@ router.post("/owner/hotels/:id/rooms", (req: Request, res: Response) => {
 });
 
 router.put("/owner/hotels/:id/rooms/:roomId", (req: Request, res: Response) => {
-  res.json({ message: "Room Updated", hotelId: req.params.id, roomId: req.params.roomId });
+  res.json({
+    message: "Room Updated",
+    hotelId: req.params.id,
+    roomId: req.params.roomId,
+  });
 });
 
-router.delete("/owner/hotels/:id/rooms/:roomId", (req: Request, res: Response) => {
-  res.json({ message: "Room Deleted", hotelId: req.params.id, roomId: req.params.roomId });
-});
+router.delete(
+  "/owner/hotels/:id/rooms/:roomId",
+  (req: Request, res: Response) => {
+    res.json({
+      message: "Room Deleted",
+      hotelId: req.params.id,
+      roomId: req.params.roomId,
+    });
+  }
+);
 
 router.get("/owner/reservations", (req: Request, res: Response) => {
   res.json({ message: "All Reservations" });
@@ -123,9 +136,12 @@ router.get("/owner/reservations/:id", (req: Request, res: Response) => {
   res.json({ message: "Reservation Details", id: req.params.id });
 });
 
-router.post("/owner/reservations/:id/approve", (req: Request, res: Response) => {
-  res.json({ message: "Reservation Approved", id: req.params.id });
-});
+router.post(
+  "/owner/reservations/:id/approve",
+  (req: Request, res: Response) => {
+    res.json({ message: "Reservation Approved", id: req.params.id });
+  }
+);
 
 router.post("/owner/reservations/:id/reject", (req: Request, res: Response) => {
   res.json({ message: "Reservation Rejected", id: req.params.id });
