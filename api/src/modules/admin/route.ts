@@ -1,42 +1,142 @@
-Dashboard (Admin)
-GET /dashboard - Dashboard ana sayfa
-GET /dashboard/admin - Admin dashboard
-GET /dashboard/admin/admins - Admin yönetimi
-GET /dashboard/admin/company - Şirket yönetimi
-GET /dashboard/admin/customers - Müşteri yönetimi
-GET /dashboard/admin/hotels - Otel yönetimi
-GET /dashboard/admin/profile - Admin profili
-Dashboard (Hotel)
-GET /dashboard/hotel - Otel dashboard
-GET /dashboard/hotel/company - Şirket bilgileri
-GET /dashboard/hotel/hotel-info - Otel bilgileri
-GET /dashboard/hotel/profile - Otel profili
-GET /dashboard/hotel/reservations - Rezervasyonlar
+import { Router } from "express";
+import { Request, Response } from "express";
 
+const router = Router();
 
+// Admin Dashboard Routes
+router.get("/dashboard", (req: Request, res: Response) => {
+  res.json({ message: "Admin Dashboard" });
+});
 
+router.get("/dashboard/admin", (req: Request, res: Response) => {
+  res.json({ message: "Admin Dashboard" });
+});
 
-Backend (API) Endpoint'leri:
-Admin Modülü:
-GET /admin/dashboard: Admin dashboard verilerini getirir (örneğin, toplam kullanıcı sayısı, toplam otel sayısı, son rezervasyonlar).
-GET /admin/users: Tüm kullanıcıları listeler.
-GET /admin/users/:id: Belirli bir kullanıcıyı getirir.
-PUT /admin/users/:id: Bir kullanıcıyı günceller (örneğin, rolünü değiştirme).
-DELETE /admin/users/:id: Bir kullanıcıyı siler.
-GET /admin/hotels: Tüm otelleri listeler.
-GET /admin/hotels/:id: Belirli bir oteli getirir.
-PUT /admin/hotels/:id: Bir oteli günceller.
-DELETE /admin/hotels/:id: Bir oteli siler.
-Otel Sahibi (Owner) Modülü:
-GET /owner/dashboard: Otel sahibi dashboard verilerini getirir (örneğin, toplam rezervasyon sayısı, aylık gelir, bekleyen rezervasyonlar).
-GET /owner/hotels/:id: Otel bilgilerini getirir (sadece kendi oteli).
-PUT /owner/hotels/:id: Otel bilgilerini günceller (sadece kendi oteli).
-POST /owner/hotels/:id/rooms: Yeni bir oda oluşturur (sadece kendi oteli).
-PUT /owner/hotels/:id/rooms/:roomId: Bir odayı günceller (sadece kendi oteli).
-DELETE /owner/hotels/:id/rooms/:roomId: Bir odayı siler (sadece kendi oteli).
-GET /owner/reservations: Tüm rezervasyonları listeler (sadece kendi oteli).
-GET /owner/reservations/:id: Belirli bir rezervasyonu getirir (sadece kendi oteli).
-POST /owner/reservations/:id/approve: Bir rezervasyonu onaylar (sadece kendi oteli).
-POST /owner/reservations/:id/reject: Bir rezervasyonu reddeder (sadece kendi oteli).
-GET /owner/reports/revenue: Gelir raporunu getirir (sadece kendi oteli).
-GET /owner/reports/reservations: Rezervasyon raporunu getirir (sadece kendi oteli).
+router.get("/dashboard/admin/admins", (req: Request, res: Response) => {
+  res.json({ message: "Admin Management" });
+});
+
+router.get("/dashboard/admin/company", (req: Request, res: Response) => {
+  res.json({ message: "Company Management" });
+});
+
+router.get("/dashboard/admin/customers", (req: Request, res: Response) => {
+  res.json({ message: "Customer Management" });
+});
+
+router.get("/dashboard/admin/hotels", (req: Request, res: Response) => {
+  res.json({ message: "Hotel Management" });
+});
+
+router.get("/dashboard/admin/profile", (req: Request, res: Response) => {
+  res.json({ message: "Admin Profile" });
+});
+
+// Hotel Dashboard Routes
+router.get("/dashboard/hotel", (req: Request, res: Response) => {
+  res.json({ message: "Hotel Dashboard" });
+});
+
+router.get("/dashboard/hotel/company", (req: Request, res: Response) => {
+  res.json({ message: "Company Information" });
+});
+
+router.get("/dashboard/hotel/hotel-info", (req: Request, res: Response) => {
+  res.json({ message: "Hotel Information" });
+});
+
+router.get("/dashboard/hotel/profile", (req: Request, res: Response) => {
+  res.json({ message: "Hotel Profile" });
+});
+
+router.get("/dashboard/hotel/reservations", (req: Request, res: Response) => {
+  res.json({ message: "Reservations" });
+});
+
+// Admin API Routes
+router.get("/admin/dashboard", (req: Request, res: Response) => {
+  res.json({ message: "Admin Dashboard Data" });
+});
+
+router.get("/admin/users", (req: Request, res: Response) => {
+  res.json({ message: "All Users" });
+});
+
+router.get("/admin/users/:id", (req: Request, res: Response) => {
+  res.json({ message: "User Details", id: req.params.id });
+});
+
+router.put("/admin/users/:id", (req: Request, res: Response) => {
+  res.json({ message: "User Updated", id: req.params.id });
+});
+
+router.delete("/admin/users/:id", (req: Request, res: Response) => {
+  res.json({ message: "User Deleted", id: req.params.id });
+});
+
+router.get("/admin/hotels", (req: Request, res: Response) => {
+  res.json({ message: "All Hotels" });
+});
+
+router.get("/admin/hotels/:id", (req: Request, res: Response) => {
+  res.json({ message: "Hotel Details", id: req.params.id });
+});
+
+router.put("/admin/hotels/:id", (req: Request, res: Response) => {
+  res.json({ message: "Hotel Updated", id: req.params.id });
+});
+
+router.delete("/admin/hotels/:id", (req: Request, res: Response) => {
+  res.json({ message: "Hotel Deleted", id: req.params.id });
+});
+
+// Owner API Routes
+router.get("/owner/dashboard", (req: Request, res: Response) => {
+  res.json({ message: "Owner Dashboard Data" });
+});
+
+router.get("/owner/hotels/:id", (req: Request, res: Response) => {
+  res.json({ message: "Hotel Information", id: req.params.id });
+});
+
+router.put("/owner/hotels/:id", (req: Request, res: Response) => {
+  res.json({ message: "Hotel Updated", id: req.params.id });
+});
+
+router.post("/owner/hotels/:id/rooms", (req: Request, res: Response) => {
+  res.json({ message: "Room Created", hotelId: req.params.id });
+});
+
+router.put("/owner/hotels/:id/rooms/:roomId", (req: Request, res: Response) => {
+  res.json({ message: "Room Updated", hotelId: req.params.id, roomId: req.params.roomId });
+});
+
+router.delete("/owner/hotels/:id/rooms/:roomId", (req: Request, res: Response) => {
+  res.json({ message: "Room Deleted", hotelId: req.params.id, roomId: req.params.roomId });
+});
+
+router.get("/owner/reservations", (req: Request, res: Response) => {
+  res.json({ message: "All Reservations" });
+});
+
+router.get("/owner/reservations/:id", (req: Request, res: Response) => {
+  res.json({ message: "Reservation Details", id: req.params.id });
+});
+
+router.post("/owner/reservations/:id/approve", (req: Request, res: Response) => {
+  res.json({ message: "Reservation Approved", id: req.params.id });
+});
+
+router.post("/owner/reservations/:id/reject", (req: Request, res: Response) => {
+  res.json({ message: "Reservation Rejected", id: req.params.id });
+});
+
+router.get("/owner/reports/revenue", (req: Request, res: Response) => {
+  res.json({ message: "Revenue Report" });
+});
+
+router.get("/owner/reports/reservations", (req: Request, res: Response) => {
+  res.json({ message: "Reservation Report" });
+});
+
+export default router;
