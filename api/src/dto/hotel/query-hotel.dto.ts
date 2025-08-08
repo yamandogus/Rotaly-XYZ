@@ -20,7 +20,7 @@ export const QueryHotelSchema = z.object({
   isActive: z.boolean().optional(),
   
   // Arama
-  search: z.string().optional(), // name, description, city, country içinde arama
+  search: z.string().optional(), // isim, açıklama, şehir, ülke içinde arama
   
   // Sıralama
   sortBy: z.enum([
