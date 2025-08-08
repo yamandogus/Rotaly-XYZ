@@ -104,8 +104,16 @@ export class AuthController {
 
   async verifyEmail(req: Request, res: Response): Promise<void> {
     try {
+      if (!req.body || !req.body.verificationOTP) {
+        throw new AppError("Verification OTP is required", 400);
+      }
       const { verificationOTP } = req.body;
       const userId = req.user?.userId;
+
+      if (!userId) {
+        throw new AppError("User ID not found", 401);
+      }
+
       await this.authService.verifyEmail(userId, verificationOTP);
       res.status(200).json({
         success: true,
@@ -118,6 +126,7 @@ export class AuthController {
           message: error.message,
         });
       } else {
+        console.error("Error in verifyEmail:", error);
         res.status(500).json({
           success: false,
           message: "Bir hata oluştu",

@@ -60,10 +60,4 @@ router.delete(
   authController.deleteAccount.bind(authController)
 );
 
-router.post(
-  "/verify-email",
-  authenticateToken,
-  authController.verifyEmail.bind(authController)
-);
-
 export default router;

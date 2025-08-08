@@ -6,6 +6,7 @@ import {
   passwordResetEmailSchema,
   welcomeEmailSchema,
 } from "../../dto/email";
+import { LocaleParams } from "../../dto/common";
 
 import { AppError } from "../../utils/appError";
 
@@ -15,7 +16,10 @@ export class EmailController {
    * @param req - Express req object
    * @param res - Express res object
    */
-  async sendVerificationEmail(req: Request, res: Response): Promise<void> {
+  async sendVerificationEmail(
+    req: Request<LocaleParams>,
+    res: Response
+  ): Promise<void> {
     try {
       const validation = verificationEmailSchema.safeParse(req.body);
 
@@ -30,8 +34,8 @@ export class EmailController {
 
       const { email, name, otp } = validation.data;
 
-      // extracting locale from URL path param :locale, default to 'en'
-      const locale = req.params.locale || "en";
+      // locale is now validated by middleware and guaranteed to be valid
+      const locale = req.params.locale;
 
       const isEmailSent = await emailService.sendVerificationEmail(
         email,
@@ -70,7 +74,10 @@ export class EmailController {
    * @param req - Express req object
    * @param res - Express res object
    */
-  async sendPasswordResetEmail(req: Request, res: Response): Promise<void> {
+  async sendPasswordResetEmail(
+    req: Request<LocaleParams>,
+    res: Response
+  ): Promise<void> {
     try {
       const validation = passwordResetEmailSchema.safeParse(req.body);
 
@@ -85,7 +92,7 @@ export class EmailController {
 
       const { email, name, otp } = validation.data;
 
-      const locale = req.params.locale || "en";
+      const locale = req.params.locale;
 
       const isEmailSent = await emailService.sendPasswordResetEmail(
         email,
@@ -124,7 +131,10 @@ export class EmailController {
    * @param req - Express req object
    * @param res - Express res object
    */
-  async sendWelcomeEmail(req: Request, res: Response): Promise<void> {
+  async sendWelcomeEmail(
+    req: Request<LocaleParams>,
+    res: Response
+  ): Promise<void> {
     try {
       const validation = welcomeEmailSchema.safeParse(req.body);
 
@@ -139,7 +149,7 @@ export class EmailController {
 
       const { email, name } = validation.data;
 
-      const locale = req.params.locale || "en";
+      const locale = req.params.locale;
 
       const isEmailSent = await emailService.sendWelcomeEmail(
         email,
@@ -177,7 +187,10 @@ export class EmailController {
    * @param req - Express req object
    * @param res - Express res object
    */
-  async forwardContactEmail(req: Request, res: Response): Promise<void> {
+  async forwardContactEmail(
+    req: Request<LocaleParams>,
+    res: Response
+  ): Promise<void> {
     try {
       const validation = contactUsEmailSchema.safeParse(req.body);
 
@@ -192,7 +205,7 @@ export class EmailController {
 
       const { fromEmail, fromName, subject, message } = validation.data;
 
-      const locale = req.params.locale || "en";
+      const locale = req.params.locale;
 
       const isEmailSent = await emailService.sendContactEmail(
         fromEmail,

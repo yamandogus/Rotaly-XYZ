@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { emailController } from "./controller";
+import { validateParams } from "../../middleware/validate.middleware";
+import { localeParamsSchema } from "../../dto/common";
 
 const router = Router();
 
@@ -9,6 +11,7 @@ const router = Router();
  */
 router.post(
   "/:locale/verification",
+  validateParams(localeParamsSchema),
   emailController.sendVerificationEmail.bind(emailController)
 );
 
@@ -18,6 +21,7 @@ router.post(
  */
 router.post(
   "/:locale/password-reset",
+  validateParams(localeParamsSchema),
   emailController.sendPasswordResetEmail.bind(emailController)
 );
 
@@ -27,6 +31,7 @@ router.post(
  */
 router.post(
   "/:locale/welcome",
+  validateParams(localeParamsSchema),
   emailController.sendWelcomeEmail.bind(emailController)
 );
 
@@ -36,6 +41,7 @@ router.post(
  */
 router.post(
   "/:locale/contact-us",
+  validateParams(localeParamsSchema),
   emailController.forwardContactEmail.bind(emailController)
 );
 

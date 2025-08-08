@@ -1,25 +1,62 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { MessageCircleIcon, SendIcon, UserIcon } from "lucide-react";
+import { MessageCircleIcon, SendIcon, UserIcon, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Input } from "../ui/input";
 import { Avatar, AvatarImage } from "../ui/avatar";
 
+const welcomeMessages  = () => {
+  return (
+  <div>
+  <div className="max-w-sm w-full bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
+  <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-4 text-white">
+    <h2 className="text-lg font-semibold">🏨 Hoşgeldiniz!</h2>
+    <p className="text-sm opacity-90">Rotaly Hotel Asistanınız size yardımcı olmak için burada.</p>
+  </div>
+
+
+  <div className="flex flex-col items-center p-6">
+    <p className="text-center text-gray-700 text-sm">
+      Size rezervasyon, oda bilgisi ve kampanyalar hakkında yardımcı olabilirim. Başlamak için bir seçenek seçin:
+    </p>
+  </div>
+
+  <div className="grid grid-cols-1 gap-3 px-6 pb-6">
+    <button className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+      🛏 Oda Rezervasyonu Yap
+    </button>
+    <button className="w-full px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition">
+      📅 Mevcut Rezervasyonumu Gör
+    </button>
+    <button className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+      💬 Canlı Destek ile Konuş
+    </button>
+  </div>
+</div>
+</div>
+  )
+}
+
+
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<string>("");
   const [messages, setMessages] = useState<
-    { id: number; message: string; sender: "user" | "bot" }[]
-  >([{ id: 1, message: "Merhaba, nasıl yardımcı olabilirim?", sender: "bot" }]);
+    {
+      id: number;
+      message: string | React.ReactNode;
+      sender: "user" | "bot" | "system";
+      type?: "live-support";
+    }[]
+  >([{ id: 1, message: welcomeMessages(), sender: "bot" }]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -43,6 +80,7 @@ export default function ChatWidget() {
     router.push("/support/live-chat");
   };
 
+
   const handleSendMessage = () => {
     if (message.trim()) {
       const userMessage = {
@@ -50,15 +88,38 @@ export default function ChatWidget() {
         message: message,
         sender: "user" as const,
       };
-      const botResponse = {
-        id: Date.now() + 1,
-        message:
-          "Teşekkür ederim. Size nasıl yardımcı olabilirim? Daha detaylı bilgi için canlı destek ile iletişime geçebilirsiniz.",
-        sender: "bot" as const,
-      };
 
-      setMessages((prev) => [...prev, userMessage, botResponse]);
+      setMessages((prev) => [...prev, userMessage]);
       setMessage("");
+
+      // Canlı destek mesajı kontrolü
+      if (message.toLowerCase().includes("canlı destek")) {
+        const liveSupportMessage = {
+          id: Date.now() + 1,
+          message:
+            "Canlı destek ile bağlanmak istiyorsunuz. Aşağıdaki butona tıklayarak canlı destek ekibimizle iletişime geçebilirsiniz.",
+          sender: "system" as const,
+          type: "live-support" as const,
+        };
+        setMessages((prev) => [...prev, liveSupportMessage]);
+      } 
+      else if (message.toLowerCase().includes("anamenu")) {
+        const reservationMessage = {
+          id: Date.now() + 1,
+          message: welcomeMessages(),
+          sender: "bot" as const,
+        };
+        setMessages((prev) => [...prev, reservationMessage]);
+      }
+      else {
+        const botResponse = {
+          id: Date.now() + 1,
+          message:
+            "Teşekkür ederim. Size nasıl yardımcı olabilirim? Daha detaylı bilgi için canlı destek ile iletişime geçebilirsiniz.",
+          sender: "bot" as const,
+        };
+        setMessages((prev) => [...prev, botResponse]);
+      }
     }
   };
 
@@ -74,17 +135,45 @@ export default function ChatWidget() {
             <MessageCircleIcon className="w-10 h-10 text-white" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-80 h-[500px] p-0 flex flex-col " align="end">
+        <PopoverContent
+          className="w-80 h-[550px] p-0 flex flex-col transition-all duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in data-[state=closed]:fade-out"
+          align="end"
+        >
           {/* Header - Sabit */}
-          <div className="border-b px-4 py-2 flex-shrink-0">
-            <div className="flex items-center gap-2 mb-3">
-              <Image src="/images/logo3.png" alt="Rotaly Logo" width={20} height={20} />
-              <h4 className="font-medium">Rotaly AI Asistan</h4>
+          <div className=" px-4 py-2 flex-shrink-0 relative">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <h4 className="font-medium dark:text-white">AI Asistan</h4>
+              </div>
+              <div className="flex items-center gap-2 ">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <XIcon className="w-3 h-3" />
+                </Button>
+              </div>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 h-2">
+              <svg
+                width="100%"
+                height="8"
+                viewBox="0 0 320 8"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M0,4 Q40,0 80,4 T160,4 T240,4 T320,4"
+                  fill="none"
+                  stroke="rgb(209 213 219)"
+                  strokeWidth="1"
+                />
+              </svg>
             </div>
           </div>
           {/* Body - Scrollable */}
           <div className="flex-1 overflow-y-auto p-3 scrollbar-hide">
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 scrollbar-hide">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
@@ -92,19 +181,38 @@ export default function ChatWidget() {
                     msg.sender === "user" ? "justify-end" : "justify-start"
                   }`}
                 >
-                  {msg.sender === "bot" && (
+                  {msg.sender === "bot" || (msg.sender === "system" && msg.type === "live-support") ? (
                     <Avatar className="w-6 h-6 flex-shrink-0">
                       <AvatarImage src="/images/logo3.png" alt="Rotaly Logo" />
                     </Avatar>
-                  )}
-                  <div
-                    className={`max-w-[75%] p-2 rounded-lg text-sm ${
-                      msg.sender === "user"
-                        ? "bg-blue-500 text-white rounded-br-sm"
-                        : "bg-gray-100 text-gray-800 rounded-bl-sm"
-                    }`}
-                  >
-                    {msg.message}
+                  ) : null}
+                  <div className="flex flex-col">
+                    <div
+                      className={`max-w-[100%] p-2 rounded-lg text-[12px] ${
+                        msg.sender === "user"
+                          ? "bg-blue-500 text-white rounded-br-sm"
+                          : msg.sender === "system"
+                          ? "bg-yellow-50 text-gray-800 rounded-bl-sm border border-yellow-200"
+                          : "bg-gray-100 text-gray-800 rounded-bl-sm"
+                      }`}
+                    >
+                      {msg.message}
+                      {/* Canlı destek butonu */}
+                      {msg.sender === "system" &&
+                        msg.type === "live-support" && (
+                          <div className="mt-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="w-full h-8 text-xs bg-blue-50 hover:bg-blue-800 text-black hover:text-black border-blue-200 transition-all duration-300 cursor-pointer"
+                              onClick={handleLiveSupport}
+                            >
+                              <MessageCircleIcon className="w-3 h-3 mr-1" />
+                              Canlı Destek
+                            </Button>
+                          </div>
+                        )}
+                    </div>
                   </div>
                   {msg.sender === "user" && (
                     <Avatar className="w-6 h-6 flex-shrink-0">
@@ -138,15 +246,6 @@ export default function ChatWidget() {
                 <SendIcon className="w-3 h-3" />
               </Button>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full h-8 text-xs bg-gray-50 hover:bg-gray-100 text-gray-700"
-              onClick={handleLiveSupport}
-            >
-              <MessageCircleIcon className="w-3 h-3 mr-1" />
-              Canlı Destek
-            </Button>
           </div>
         </PopoverContent>
       </Popover>
