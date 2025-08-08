@@ -21,7 +21,7 @@ import { useTranslations } from "next-intl";
 import { format } from "date-fns";
 import { DatePicker } from "@/components/date-picker";
 import { Rating, RatingButton } from "@/components/ui/shadcn-io/rating";
-import { Textarea } from "@/components/ui/textarea";
+
 
 export default function ProfilePage() {
   const t = useTranslations("Profile");
