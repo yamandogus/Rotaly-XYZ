@@ -9,7 +9,7 @@ import {
 } from "../../middleware/validate.middleware";
 import {
   sendMessageSchema,
-  getMessagesQuerySchema,
+  getSupportMessagesQuerySchema,
   markAsReadSchema,
 } from "../../dto/message";
 
@@ -27,17 +27,13 @@ router.post(
 );
 
 // GET /api/messages
-// get user's messages with pagination and filters
-router.get(
-  "",
-  authenticateToken,
-  verifiedUser,
-  validateQuery(getMessagesQuerySchema),
-  messageController.getMessages
-);
+// I've removed this generic endpoint and implemented these endpoints instead:
+// - For chat messages: /api/messages/conversation/:partnerId - get conversation messages with a specific user
+// - For support messages: /api/messages/support/:supportId - get messages for a specific support ticket
 
 // GET /api/messages/conversations
 // get all conversations for the user
+// NOTE: I might get rid of this
 router.get(
   "/conversations",
   authenticateToken,
@@ -65,16 +61,26 @@ router.patch(
 );
 
 // GET /api/messages/support/:supportId
-// get messages for a specific support ticket
+// get messages for a specific support ticket with pagination (traditional pagination)
+// examples:
+// /api/messages/support/uuid?page=1&limit=10
+// TODO: CHANGE THIS TO MESSAGE A SUPPORT PERSONNEL NOT A TICKET
+// NOTE: /
 router.get(
   "/support/:supportId",
   authenticateToken,
   verifiedUser,
+  validateQuery(getSupportMessagesQuerySchema),
   messageController.getSupportMessages
 );
 
 // GET /api/messages/conversation/:partnerId
-// get conversation with a specific user
+// get conversation with a specific user (cursor-based pagination)
+// examples:
+// /api/messages/conversation/uuid?limit=20
+// /api/messages/conversation/uuid?limit=20&beforeMessageId=messageId
+// TODO: conversation with Rotaly XYZ chatbot
+// NOTE: /ai-assistant/:conversationId
 router.get(
   "/conversation/:partnerId",
   authenticateToken,
@@ -101,5 +107,7 @@ router.delete(
   validateId,
   messageController.deleteMessage
 );
+
+// message edit route
 
 export default router;

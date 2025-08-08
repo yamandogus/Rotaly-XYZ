@@ -105,7 +105,8 @@
     "company-settings": "Company Settings",
     "security-audit": "Security & Audit",
     "system-settings": "System Settings",
-    "live-support": "Live Support"
+    "live-support": "Live Support",
+    "information": "Information"
   },
   "Admin": {
     "title": "Admin Panel",

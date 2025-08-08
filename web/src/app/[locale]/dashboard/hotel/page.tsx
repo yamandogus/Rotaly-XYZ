@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CalendarDaysIcon, BedDoubleIcon, SettingsIcon, BarChart3Icon, UsersIcon, StarIcon } from "lucide-react";
+import { CalendarDaysIcon, BedDoubleIcon, SettingsIcon, BarChart3Icon, UsersIcon, StarIcon, MessageCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const hotelMenu = [
@@ -44,6 +44,13 @@ const hotelMenu = [
     description: "Misafir yorumlarını ve değerlendirmelerini görüntüleyebilir ve yanıtlayabilirsiniz.",
     link: "/dashboard/hotel/reviews",
     color: "text-yellow-500",
+  },
+    {
+    title: "Canlı Destek",
+    icon: MessageCircleIcon,
+    description: "Canlı destek ile müşteri desteği sağlayabilirsiniz.",
+    link: "/dashboard/hotel/live-support",
+    color: "text-gray-500",
   },
 ];
 

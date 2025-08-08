@@ -1,7 +1,7 @@
 import { MessageRepository } from "./repository";
 import {
   SendMessageSchemaType,
-  GetMessagesQuerySchemaType,
+  GetSupportMessagesQuerySchemaType,
   MarkAsReadSchemaType,
 } from "../../dto/message";
 import { AppError } from "../../utils/appError";
@@ -11,6 +11,9 @@ const messageRepository = new MessageRepository();
 const userRepository = new UserRepository();
 
 export class MessageService {
+  // senderId comes from the auth token because its not safe to trust the client
+  // we don't want user/client to be able to specify who they are sending as
+  // this would allow impersonation
   async sendMessage(data: SendMessageSchemaType, senderId: string) {
     // checking if receiver exists and is not deleted
     const receiver = await userRepository.findById(data.receiverId);
@@ -35,19 +38,6 @@ export class MessageService {
     });
 
     return message;
-  }
-
-  async getMessages(userId: string, query: GetMessagesQuerySchemaType) {
-    const result = await messageRepository.findUserMessages(userId, query);
-
-    if (!result.messages || result.messages.length === 0) {
-      return {
-        messages: [],
-        pagination: result.pagination,
-      };
-    }
-
-    return result;
   }
 
   async getConversations(userId: string) {
@@ -108,20 +98,26 @@ export class MessageService {
     return { success: true };
   }
 
-  async getSupportMessages(supportId: string, userId: string) {
+  async getSupportMessages(
+    supportId: string,
+    userId: string,
+    query: GetSupportMessagesQuerySchemaType
+  ) {
     // TODO: Validate support access
-    const messages = await messageRepository.findSupportMessages(
+    const result = await messageRepository.findSupportMessages(
       supportId,
-      userId
+      userId,
+      query.page,
+      query.limit
     );
-    return messages;
+    return result;
   }
 
   async getConversationWith(
     userId: string,
     partnerId: string,
-    page: number = 1,
-    limit: number = 20
+    limit: number = 20,
+    beforeMessageId?: string
   ) {
     // validate that partner exists
     const partner = await userRepository.findById(partnerId);
@@ -129,13 +125,13 @@ export class MessageService {
       throw new AppError("User not found", 404);
     }
 
-    const query: GetMessagesQuerySchemaType = {
-      page,
+    const result = await messageRepository.findConversationMessages(
+      userId,
+      partnerId,
       limit,
-      conversationWith: partnerId,
-    };
+      beforeMessageId
+    );
 
-    const result = await messageRepository.findUserMessages(userId, query);
     return result;
   }
 }

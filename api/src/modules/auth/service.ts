@@ -1,20 +1,17 @@
-import Prisma from "../../config/db";
-import { PrismaClient, Role } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { JwtService } from "../../jwt/jwt.service";
 import { AppError } from "../../utils/appError";
+import { generateOTP } from "../../utils/otp";
 import bcrypt from "bcrypt";
 import {
   LoginSchemaType,
   RegisterSchemaType,
   UpdateUserSchemaType,
   ChangePasswordSchemaType,
-  ResetPasswordSchemaType,
-  VerifyEmailSchemaType,
   ProfileSchemaType,
 } from "../../dto/auth";
 import { EmailService } from "../email/service";
 import { UserService } from "../user/service";
-import { TokenPayload } from "../../types/express";
 
 export class AuthService {
   private prisma: PrismaClient;
@@ -31,17 +28,25 @@ export class AuthService {
 
   async register(data: RegisterSchemaType) {
     const user = await this.userService.add(data);
-    const verifyToken = this.jwtService.generateAccessToken({
-      userId: user.id,
-      role: user.role,
+    const otp = generateOTP();
+
+    await this.emailService.sendWelcomeEmail(user.email, user.name);
+    await this.emailService.sendVerificationEmail(user.email, user.name, otp);
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        verificationOTP: otp,
+        verificationOTPExpires: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+      },
     });
-    await this.emailService.sendVerificationEmail(user.email, verifyToken);
 
     return {
       message:
         "Registration successful. Please check your email for verification.",
     };
   }
+
   async login(data: LoginSchemaType) {
     const user = await this.userService.getByEmail(data.email);
     const isPasswordValid = await bcrypt.compare(
@@ -74,55 +79,77 @@ export class AuthService {
       message: "Logged out successfully",
     };
   }
-  //TODO
-  //   async verifyEmail(data: VerifyEmailSchemaType) {
-  //     const decoded = this.jwtService.verifyToken(
-  //       data.token,
-  //       process.env.JWT_ACCESS_SECRET || "secret_access_token"
-  //     );
-  //     if (!decoded) {
-  //       throw new AppError("Invalid token", 401);
-  //     }
-  //     const user = await this.userService.getById(decoded.userId);
-  //     if (user.isVerified) {
-  //       throw new AppError("User already verified", 400);
-  //     }
-  //     await this.userService.update({
-  //       where: { id: user.id },
-  //       data: {
-  //         isVerified: true,
-  //       },
-  //     });
 
-  //     return {
-  //       message: "Email verified successfully",
-  //     };
-  //   }
+  async verifyEmail(userId: string | undefined, verificationOTP: string) {
+    if (!userId) {
+      throw new AppError("Login first", 401);
+    }
+
+    const user = await this.userService.getById(userId);
+
+    if (user.isVerified) {
+      throw new AppError("User already verified", 400);
+    }
+
+    if (!user.verificationOTP || user.verificationOTP !== verificationOTP) {
+      throw new AppError("Invalid or expired verification OTP", 400);
+    }
+
+    // will add a cron job to clear expired OTPs or smt else ???
+    /*     if (new Date() > user.verificationOTPExpires) {
+      throw new AppError("Verification OTP has expired", 400);
+    } */
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        isVerified: true,
+        verificationOTP: null,
+        verificationOTPExpires: null,
+      },
+    });
+
+    return {
+      message: "Email verified successfully",
+    };
+  }
 
   async resendVerificationEmail(email: string) {
     const user = await this.userService.getByEmail(email);
+    const otp = generateOTP();
     if (user.isVerified) {
       throw new AppError("user already verified", 400);
     }
-
-    const verificationToken = this.jwtService.generateAccessToken({
-      userId: user.id,
-      role: user.role,
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        verificationOTP: otp,
+        verificationOTPExpires: new Date(Date.now() + 10 * 60 * 1000), // 10 dakika
+      },
     });
-    await this.emailService.sendVerificationEmail(
-      user.email,
-      verificationToken
-    );
+
+    await this.emailService.sendVerificationEmail(user.email, user.name, otp);
     return {
       message: "Verification email sent",
     };
   }
-  //TODO
-  //   async getProfile(userId: string): Promise<ProfileSchemaType> {
-  //     const user = await this.userService.getById(userId);
-  //   }
+
+  async getProfile(userId: string): Promise<ProfileSchemaType> {
+    const user = await this.userService.getById(userId);
+
+    const profile: ProfileSchemaType = {
+      id: user.id,
+      name: user.name,
+      surname: user.surname,
+      email: user.email,
+      phone: user.phone,
+    };
+
+    return profile;
+  }
 
   async updateProfile(userId: string, data: UpdateUserSchemaType) {
+    const otp = generateOTP();
     const user = await this.userService.getById(userId);
     if (data.email && data.email !== user.email) {
       await this.userService.checkEmailUnique(data.email, userId);
@@ -132,10 +159,7 @@ export class AuthService {
         userId: user.id,
         role: user.role,
       });
-      await this.emailService.sendVerificationEmail(
-        data.email,
-        verificationToken
-      );
+      await this.emailService.sendVerificationEmail(data.email, user.name, otp);
     }
     const updateUser = await this.userService.update(user.id, data);
     return {
@@ -147,12 +171,17 @@ export class AuthService {
     };
   }
   async forgotPassword(email: string) {
+    const otp = generateOTP();
     const user = await this.userService.getByEmail(email);
-    const resetToken = this.jwtService.generateAccessToken({
-      userId: user.id,
-      role: user.role,
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        verificationOTP: otp,
+        verificationOTPExpires: new Date(Date.now() + 10 * 60 * 1000), // 10 dakika
+      },
     });
-    await this.emailService.sendPasswordResetEmail(user.email, resetToken);
+    await this.emailService.sendPasswordResetEmail(user.email, user.name, otp);
     return {
       message: "Reset password email sent",
     };
@@ -182,7 +211,7 @@ export class AuthService {
 
   async deleteAccount(userId: string) {
     const user = await this.userService.getById(userId);
-    this.jwtService.logoutAll(`Bearer ${user.id}`);
+    this.jwtService.logoutAll(user.id);
     await this.userService.delete(userId);
     return {
       message: "Account deleted successfully",

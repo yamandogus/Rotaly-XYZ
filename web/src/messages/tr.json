@@ -105,7 +105,8 @@
     "company-settings": "Şirket Ayarları",
     "security-audit": "Güvenlik & Denetim",
     "system-settings": "Sistem Ayarları",
-    "live-support": "Canlı Destek"
+    "live-support": "Canlı Destek",
+    "information": "Bilgiler"
   },
   "Company": {
     "title": "Şirket Bilgileri",

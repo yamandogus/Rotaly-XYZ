@@ -2,10 +2,12 @@ import app from "./src/config/app";
 import emailRoutes from "./src/modules/email/route";
 import userRoutes from "./src/modules/user/route";
 import messageRoutes from "./src/modules/message/route";
+import authRoutes from "./src/modules/auth/route";
+import { authLimiter, otpLimiter } from "./src/middleware/rateLimit";
 
-// Routes
-app.use("/api/email", emailRoutes);
+app.use("/api/email", otpLimiter, emailRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/messages", messageRoutes);
 
 app.get("/", (req, res) => {

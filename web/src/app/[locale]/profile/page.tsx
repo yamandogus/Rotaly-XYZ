@@ -1,11 +1,13 @@
 "use client";
+import Image from "next/image";
 
 import React, { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Edit, Camera, BadgeCheck } from "lucide-react";
+
+import { Edit, Camera, BadgeCheck, CarIcon, LocateIcon, MessageSquareIcon, XIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -17,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { useTranslations } from "next-intl";
 import { format } from "date-fns";
 import { DatePicker } from "@/components/date-picker";
+import { Rating, RatingButton } from "@/components/ui/shadcn-io/rating";
 
 export default function ProfilePage() {
   const t = useTranslations("Profile");
@@ -58,6 +61,58 @@ export default function ProfilePage() {
       read: false,
     },
   ]);
+
+  const reservationsData = [
+  {
+    id: 1,
+    hotelName: "Kiad Deluxe Hotel",
+    location: "Marmaris",
+    image: "/images/opportunity8.jpg",
+    rating: 4.5,
+    price: "40.290 TL",
+    nights: 4,
+    roomNumber: 302,
+    guests: 2,
+    checkIn: "12 Ağustos 2025",
+    checkOut: "16 Ağustos 2025",
+    breakfast: true,
+    parking: true,
+    cancel: true,
+  },
+  {
+    id: 2,
+    hotelName: "Riad Resort",
+    location: "Antalya",
+    image: "/images/opportunity6.jpg",
+    rating: 4.8,
+    price: "35.000 TL",
+    nights: 3,
+    roomNumber: 215,
+    guests: 3,
+    checkIn: "20 Ağustos 2025",
+    checkOut: "23 Ağustos 2025",
+    breakfast: true,
+    parking: true,
+    cancel: false,
+  },
+  {
+      id: 3,
+    hotelName: "Sunset Deluxe Otel",
+    location: "Antalya",
+    image: "/images/opportunity5.jpg",
+    rating: 4.8,
+    price: "35.000 TL",
+    nights: 3,
+    roomNumber: 215,
+    guests: 3,
+    checkIn: "20 Ağustos 2025",
+    checkOut: "23 Ağustos 2025",
+    breakfast: false,
+    parking: true,
+    cancel: true,
+  }
+];
+
 
 
 
@@ -159,7 +214,7 @@ export default function ProfilePage() {
     <div className="min-h-screen p-6 md:p-10 max-w-7xl mx-auto">
       <Tabs defaultValue="profile" className="flex flex-col md:flex-row gap-8">
         <div className="w-full md:w-80">
-          <TabsList className="flex flex-col gap-3 self-start mt-8 ml-4 w-full bg-transparent p-6">
+          <TabsList className="flex flex-col gap-3 self-start mt-18 ml-4 w-full bg-transparent p-6">
             {[
               { value: "profile", label: t("title"), icon: "👤" },
               { value: "reservations", label: t("reservations"), icon: "📅" },
@@ -274,14 +329,135 @@ export default function ProfilePage() {
             </section>
           </TabsContent>
 
-          <TabsContent value="reservations">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
-                {t("reservations")}
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400">{t("reservationsDescription")}</p>
+
+<TabsContent value="reservations">
+  <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-lg">
+    <h2 className="text-3xl font-semibold mb-6 -mt-6 text-gray-900 dark:text-white">
+      {t("reservations")}
+    </h2>
+
+    <div className="space-y-6">
+      {reservationsData.map((res) => (
+        <div
+          key={res.id}
+          className="bg-card border border-border rounded-2xl overflow-hidden shadow-[0_0_10px_rgba(0,0,0,0.1)] dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] flex flex-col md:flex-row cursor-pointer group hover:shadow-[0_0_15px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+          style={{ minHeight: "200px" }}
+        >
+          {/* Görsel */}
+          <div className="relative h-52 md:h-auto md:w-64 w-full">
+            <Image
+              src={res.image || "/images/opportunity1.jpg"}
+              alt={res.hotelName}
+              fill
+              className="object-cover rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none p-1"
+              priority
+            />
+          </div>
+
+          {/* Bilgiler */}
+          <div className="flex flex-col justify-between p-5 flex-1">
+            {/* Otel Adı & Konum */}
+            <div>
+              <h3 className="text-xl font-semibold text-foreground mb-1">
+                {res.hotelName}
+              </h3>
+              <p className="text-muted-foreground text-sm mb-3 ml-1">
+                {res.location}
+              </p>
+              <p className="text-muted-foreground text-sm mb-1">
+                Oda No: {res.roomNumber} • {res.guests} Kişilik • {res.nights} Gece
+              </p>
+              <p className="text-muted-foreground text-sm mb-3">
+                Giriş: {res.checkIn} • Çıkış: {res.checkOut}
+              </p>
+
+              {/* Özellikler */}
+              <div className="flex flex-wrap gap-2 text-sm">
+                <span
+                  className={`px-3 py-1 rounded-lg ${
+                    res.breakfast
+                      ? "bg-green-50 text-green-600 border border-green-100"
+                      : "bg-gray-100 text-gray-400 border border-gray-200"
+                  }`}
+                >
+                  Kahvaltı: {res.breakfast ? "Dahil" : "Dahil Değil"}
+                </span>
+
+                <span
+                  className={`px-3 py-1 rounded-lg ${
+                    res.parking
+                      ? "bg-blue-50 text-blue-600 border border-blue-100"
+                      : "bg-gray-100 text-gray-400 border border-gray-200"
+                  }`}
+                >
+                  Otopark: {res.parking ? "Mevcut" : "Mevcut Değil"}
+                </span>
+
+                <span
+                  className={`px-3 py-1 rounded-lg ${
+                    res.cancel
+                      ? "bg-red-50 text-red-600 border border-red-100"
+                      : "bg-gray-100 text-gray-400 border border-gray-200"
+                  }`}
+                >
+                  Ücretsiz İptal: {res.cancel ? "Var" : "Yok"}
+                </span>
+              </div>
             </div>
-          </TabsContent>
+
+            {/* Fiyat, Puan ve Butonlar */}
+            <div className="mt-6 flex items-center justify-between">
+              <div className="text-blue-600 dark:text-blue-400 text-l font-bold">
+                {res.price}
+              </div>
+
+              <div className="flex items-center gap-1 mr-4">
+                <Rating defaultValue={res.rating} readOnly>
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <RatingButton key={index} size={16} className="text-yellow-500" />
+                  ))}
+                </Rating>
+                <span className="text-sm text-muted-foreground ml-1">
+                  ({res.rating.toFixed(1)})
+                </span>
+              </div>
+
+              {/* Butonlar */}
+              <div className="flex gap-3">
+<button
+  className="bg-red-600 hover:bg-red-800 text-white px-3 py-2 rounded-xl font-semibold text-xs shadow-sm hover:shadow-md transition flex items-center justify-center gap-2"
+  onClick={() => {
+    console.log("Rezervasyon iptal edildi:", res.id);
+  }}
+>
+  <XIcon className="w-5 h-5" />
+  Rezervasyon İptal
+</button>
+
+<button
+  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-semibold text-xs shadow-sm hover:shadow-md transition flex items-center justify-center gap-2"
+  onClick={() => {
+    console.log("Otele soruldu:", res.hotelName);
+    window.dispatchEvent(new Event("open-chat-widget")); 
+  }}
+>
+  <MessageSquareIcon className="w-5 h-5" />
+  Otele Sor
+</button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</TabsContent>
+
+
+
+
+
 
           <TabsContent value="past">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">

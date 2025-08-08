@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { SendIcon, UserIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const users = [
   {
@@ -56,13 +56,23 @@ const LiveSupportPage = () => {
       message: string;
       sender: "user" | "bot";
     }[]
-  >([{ id: 1, message: "Merhaba, nasıl yardımcı olabilirim?", sender: "bot" }]);
+  >([{ id: 1, message: "Merhaba, rezervasyonunuzla ilgili nasıl yardımcı olabilirim?", sender: "bot" }]);
 
   const handleSendMessage = () => {
     if (message.trim() === "") return;
     setMessages([...messages, { id: messages.length + 1, message: message, sender: "user" }]);
     setMessage("");
   };
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
 
   return (
@@ -141,7 +151,7 @@ const LiveSupportPage = () => {
                         {msg.sender === "bot" && (
                           <Avatar className="w-6 h-6 flex-shrink-0">
                             <AvatarImage
-                              src="/images/logo3.png"
+                              src="/images/opportunity5.jpg"
                               alt="Rotaly Logo"
                             />
                           </Avatar>
@@ -164,6 +174,7 @@ const LiveSupportPage = () => {
                         )}
                       </div>
                     ))}
+                    <div ref={messagesEndRef} />
                   </div>
                 </div>
               </div>

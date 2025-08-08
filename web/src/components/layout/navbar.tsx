@@ -178,12 +178,7 @@ export function Navbar() {
                     {t("profile")}
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/contact">
-                    <User className="mr-2 h-4 w-4" />
-                    {t("contact")}
-                  </Link>
-                </DropdownMenuItem>
+             
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

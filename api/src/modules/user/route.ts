@@ -3,6 +3,10 @@ import { UserController } from "./controller";
 import { authenticateToken } from "../../middleware/jwt.middleware";
 import { authorizeRoles, verifiedUser } from "../../middleware/auth.middleware";
 import { Role } from "@prisma/client";
+import {
+  adminActionLimiter,
+  userSearchLimiter,
+} from "../../middleware/rateLimit";
 
 const router = Router();
 const userController = new UserController();
@@ -17,6 +21,7 @@ router.get(
   authenticateToken,
   verifiedUser,
   authorizeRoles(Role.ADMIN),
+  adminActionLimiter,
   userController.ById
 );
 // GET /api/users/:email
@@ -25,6 +30,7 @@ router.get(
   authenticateToken,
   verifiedUser,
   authorizeRoles(Role.ADMIN),
+  userSearchLimiter,
   userController.ByEmail
 );
 // GET /api/users/:phone
@@ -33,6 +39,7 @@ router.get(
   authenticateToken,
   verifiedUser,
   authorizeRoles(Role.ADMIN),
+  userSearchLimiter,
   userController.ByPhone
 );
 // PUT /api/users/:id
@@ -41,6 +48,7 @@ router.put(
   authenticateToken,
   verifiedUser,
   authorizeRoles(Role.ADMIN),
+  adminActionLimiter,
   userController.update
 );
 // DELETE /api/users/:id
@@ -49,6 +57,7 @@ router.delete(
   authenticateToken,
   verifiedUser,
   authorizeRoles(Role.ADMIN),
+  adminActionLimiter,
   userController.delete
 );
 
