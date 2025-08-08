@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 
 export default function FavoritesPage() {
   const t = useTranslations("Favorites");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [favorites, setFavorites] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -29,7 +30,7 @@ export default function FavoritesPage() {
   );
 
   return (
-    <div className="container mx-auto p-6 bg-white dark:bg-black min-h-screen">
+    <div className="container mx-auto p-6  min-h-screen">
       {/* Başlık, Alt Başlık ve Arama */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
