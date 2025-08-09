@@ -68,6 +68,62 @@ export class UserService {
     return UserRepository.update(id, data);
   }
 
+  // google ile girmeye çalışan kişi kayıtlı mı değil mi
+  static async getByGoogleId(googleId: string) {
+    const user = await UserRepository.findByGoogleId(googleId);
+    if (!user || user.deletedAt) {
+      throw new AppError("User not found", 404);
+    }
+    return user;
+  }
+  // önce google ile giriyosa önce var mı yok mu kontrol et sonra kaydet
+  static async createWithGoogle(profile: any) {
+    try {
+      const existUser = await UserRepository.findByGoogleId(profile.id);
+      if (existUser) {
+        return existUser;
+      }
+      const newUser = await UserRepository.create({
+        email: profile.email,
+        name: profile.name,
+        password: null,
+        googleId: profile.id,
+      });
+    } catch (error) {
+      throw new AppError("Failed to create user", 500);
+    }
+  }
+
+  static async handleGoogleLogin(profile: any) {
+    try {
+      let user = await UserRepository.findByEmail(profile.emails[0].value);
+
+      if (user) {
+        // 2. Kullanıcı varsa, Google ID'sini kontrol et
+        if (!user.googleId) {
+          // 3. Google ID'si yoksa, ekle
+          user = await UserRepository.updateGoogleId(user.id, profile.id);
+        } else if (user.googleId !== profile.id) {
+          // 4. Google ID'si varsa ve farklıysa, hata ver (isteğe bağlı)
+          throw new Error(
+            "Bu email adresi farklı bir Google hesabı ile ilişkilendirilmiş."
+          );
+        }
+      } else {
+        // 5. Kullanıcı yoksa, yeni bir Google kullanıcısı oluştur
+        const createdUser = await this.createWithGoogle(profile);
+        if (!createdUser) {
+          throw new AppError("Kullanıcı oluşturulamadı", 500);
+        }
+        user = createdUser;
+      }
+
+      return user;
+    } catch (error) {
+      throw new AppError("google login işlemi sırasında hata oluştu", 400);
+    }
+  }
+
   static async delete(id: string) {
     const user = await this.getById(id);
     if (!user) {
