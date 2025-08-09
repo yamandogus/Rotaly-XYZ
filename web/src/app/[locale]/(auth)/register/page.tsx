@@ -2,12 +2,14 @@
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Link } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { api } from "@/services/api";
+import { useToastMessages } from "@/hooks/toast-messages";
 
 const registerSchema = z
 .object({
@@ -26,6 +28,8 @@ const registerSchema = z
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
+  const { showError, showSuccess } = useToastMessages();
+  const router = useRouter();
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -37,8 +41,25 @@ export default function RegisterPage() {
       confirmPassword: "",
     }
   })
-  const handleSubmit = (data: RegisterFormData) => { 
-    console.log("Form submitted", data);
+  const handleSubmit =  async (data: RegisterFormData) => { 
+    try {
+      const response = await api.register({
+        name: data.firstname,
+        surname: data.lastname,
+        email: data.email,
+        phone: data.phone,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+      });
+      console.log("response", response);
+      if (response.success) {
+        showSuccess("Kayıt işlemi başarılı", 3000);
+        router.push("/login");
+      }
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Kayıt işlemi başarısız oldu";
+      showError(errorMessage);
+    }
   };
 
 
