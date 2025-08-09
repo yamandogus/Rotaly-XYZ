@@ -1,14 +1,44 @@
 "use client";
 import React from "react";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/routing";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Form } from "@/components/ui/form";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+
+const registerSchema = z
+.object({
+  firstname: z.string().min(1, { message: "Ad alanı boş bırakılamaz" }),
+  lastname: z.string().min(1, { message: "Soyad alanı boş bırakılamaz" }),
+  email: z.string().email({ message: "Geçersiz e-posta adresi" }),
+  phone: z.string().min(1, { message: "Telefon numarası alanı boş bırakılamaz" }),
+  password: z.string().min(8, { message: "Şifre en az 8 karakter olmalıdır" }),
+  confirmPassword: z.string().min(8, { message: "Şifre en az 8 karakter olmalıdır" }),
+})
+.refine((data) => data.password === data.confirmPassword, {
+  path: ["confirmPassword"],
+  message: "Şifreler eşleşmiyor"
+});
+
+type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form submitted");
+  const form = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      firstname: "",
+      lastname: "",
+      email: "",
+      phone: "",
+      password: "",
+      confirmPassword: "",
+    }
+  })
+  const handleSubmit = (data: RegisterFormData) => { 
+    console.log("Form submitted", data);
   };
 
 
@@ -22,36 +52,98 @@ export default function RegisterPage() {
         <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
           Hesabınızı oluşturun ve otel rezervasyonlarınızı yönetin
         </p>
-
-        <form className="my-8" onSubmit={handleSubmit}>
+        <Form {...form}>
+        <form className="my-8" onSubmit={form.handleSubmit(handleSubmit)}>
           <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
             <LabelInputContainer>
-              <Label htmlFor="firstname">Ad</Label>
-              <Input id="firstname" placeholder="Adınız" type="text" />
+              <FormField
+                control={form.control}
+                name="firstname"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Ad</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Adınız" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </LabelInputContainer>
             <LabelInputContainer>
-              <Label htmlFor="lastname">Soyad</Label>
-              <Input id="lastname" placeholder="Soyadınız" type="text" />
+              <FormField
+                control={form.control}
+                name="lastname"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Soyad</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Soyadınız" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </LabelInputContainer>
           </div>
           <LabelInputContainer className="mb-4">
-            <Label htmlFor="email">E-posta Adresi</Label>
-            <Input id="email" placeholder="ornek@email.com" type="email" />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>E-posta Adresi</FormLabel>
+                  <FormControl>
+                    <Input placeholder="ornek@email.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </LabelInputContainer>
           <LabelInputContainer className="mb-4">
-            <Label htmlFor="phone">Telefon Numarası</Label>
-            <Input id="phone" placeholder="+90 5XX XXX XX XX" type="tel" />
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Telefon Numarası</FormLabel>
+                  <FormControl>
+                    <Input placeholder="+90 5XX XXX XX XX" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </LabelInputContainer>
           <LabelInputContainer className="mb-4">
-            <Label htmlFor="password">Şifre</Label>
-            <Input id="password" placeholder="••••••••" type="password" />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Şifre</FormLabel>
+                  <FormControl>
+                    <Input placeholder="••••••••" type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </LabelInputContainer>
           <LabelInputContainer className="mb-8">
-            <Label htmlFor="confirmPassword">Şifre Tekrar</Label>
-            <Input
-              id="confirmPassword"
-              placeholder="••••••••"
-              type="password"
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Şifre Tekrar</FormLabel>
+                  <FormControl>
+                    <Input placeholder="••••••••" type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </LabelInputContainer>
 
@@ -84,6 +176,7 @@ export default function RegisterPage() {
             </Link>
           </div>
         </form>
+        </Form>
       </div>
     </div>
   );

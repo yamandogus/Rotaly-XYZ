@@ -62,7 +62,13 @@
     "view": "Görüntüle",
     "loading": "Yükleniyor...",
     "error": "Bir hata oluştu",
-    "success": "İşlem başarılı"
+    "success": "İşlem başarılı",
+    "user": "Kullanıcı",
+    "hotel": "Otel",
+    "admin": "Admin",
+    "support": "Destek",
+    "invalidCredentials": "Hatalı e-posta veya şifre!",
+    "close": "Kapat"
   },
   "Dashboard": {
     "title": "Panel",
