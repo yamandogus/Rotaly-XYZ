@@ -3,12 +3,10 @@ import { UserService } from "./service";
 import { RegisterSchemaType, UpdateUserSchemaType } from "../../dto/auth";
 import { AppError } from "../../utils/appError";
 
-const userService = new UserService();
-
 export class UserController {
-  async index(req: Request, res: Response): Promise<void> {
+  static async index(req: Request, res: Response): Promise<void> {
     try {
-      const users = await userService.getAll();
+      const users = await UserService.getAll();
       res.status(200).json({
         success: true,
         data: users,
@@ -38,10 +36,10 @@ export class UserController {
     }
   }
 
-  async ById(req: Request, res: Response): Promise<void> {
+  static async ById(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const user = await userService.getById(id);
+      const user = await UserService.getById(id);
       res.status(200).json({
         success: true,
         data: user,
@@ -60,10 +58,10 @@ export class UserController {
       }
     }
   }
-  async ByEmail(req: Request, res: Response): Promise<void> {
+  static async ByEmail(req: Request, res: Response): Promise<void> {
     try {
       const { email } = req.params;
-      const user = await userService.getByEmail(email);
+      const user = await UserService.getByEmail(email);
       res.status(200).json({
         success: true,
         data: user,
@@ -83,10 +81,10 @@ export class UserController {
     }
   }
 
-  async ByPhone(req: Request, res: Response): Promise<void> {
+  static async ByPhone(req: Request, res: Response): Promise<void> {
     try {
       const { phone } = req.params;
-      const user = await userService.getByPhone(phone);
+      const user = await UserService.getByPhone(phone);
       res.status(200).json({
         success: true,
         data: user,
@@ -105,10 +103,10 @@ export class UserController {
       }
     }
   }
-  async add(req: Request, res: Response): Promise<void> {
+  static async add(req: Request, res: Response): Promise<void> {
     try {
       const userData = req.body as RegisterSchemaType;
-      const user = await userService.add(userData);
+      const user = await UserService.add(userData);
       res.status(201).json({
         success: true,
         data: user,
@@ -128,11 +126,11 @@ export class UserController {
       }
     }
   }
-  async update(req: Request, res: Response): Promise<void> {
+  static async update(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
       const updateData = req.body as UpdateUserSchemaType;
-      const user = await userService.update(id, updateData);
+      const user = await UserService.update(id, updateData);
       res.status(200).json({
         success: true,
         data: user,
@@ -153,10 +151,10 @@ export class UserController {
     }
   }
 
-  async delete(req: Request, res: Response): Promise<void> {
+  static async delete(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      await userService.delete(id);
+      await UserService.delete(id);
       res.status(200).json({
         success: true,
         message: "User deleted successfully",

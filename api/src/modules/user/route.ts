@@ -9,11 +9,10 @@ import {
 } from "../../middleware/rateLimit";
 
 const router = Router();
-const userController = new UserController();
 
 // POST /api/users
 // Register a new user
-router.post("", userController.add);
+router.post("", UserController.add);
 
 // GET /api/users/:id
 router.get(
@@ -22,7 +21,7 @@ router.get(
   verifiedUser,
   authorizeRoles(Role.ADMIN),
   adminActionLimiter,
-  userController.ById
+  UserController.ById
 );
 // GET /api/users/:email
 router.get(
@@ -31,7 +30,7 @@ router.get(
   verifiedUser,
   authorizeRoles(Role.ADMIN),
   userSearchLimiter,
-  userController.ByEmail
+  UserController.ByEmail
 );
 // GET /api/users/:phone
 router.get(
@@ -40,7 +39,7 @@ router.get(
   verifiedUser,
   authorizeRoles(Role.ADMIN),
   userSearchLimiter,
-  userController.ByPhone
+  UserController.ByPhone
 );
 // PUT /api/users/:id
 router.put(
@@ -49,7 +48,7 @@ router.put(
   verifiedUser,
   authorizeRoles(Role.ADMIN),
   adminActionLimiter,
-  userController.update
+  UserController.update
 );
 // DELETE /api/users/:id
 router.delete(
@@ -58,7 +57,7 @@ router.delete(
   verifiedUser,
   authorizeRoles(Role.ADMIN),
   adminActionLimiter,
-  userController.delete
+  UserController.delete
 );
 
 export default router;
