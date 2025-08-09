@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { JwtService } from "../jwt/jwt.service";
 
+
 const jwtService = new JwtService();
 // Token doğrulama middleware'i
 export const authenticateToken = (

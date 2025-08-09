@@ -289,11 +289,16 @@ function ReservationCard({ reservation }: { reservation: Reservation }) {
     status === "active" ? t("active") : t("completed");
 
   return (
-  <Card className="hover:shadow-lg transition-shadow duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 w-full max-w-xl mx-auto">
-
+  <Card  className="bg-card border border-border rounded-2xl overflow-hidden transition-shadow duration-300
+  shadow-[0_0_10px_rgba(0,0,0,0.2)] hover:shadow-[0_0_15px_rgba(0,0,0,0.25)]
+  dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.4)]
+  gap-0 pt-1 pb-2 cursor-pointer group flex flex-col
+  w-full sm:w-72 md:w-80 lg:w-96 xl:w-[320px]
+  h-35 sm:h-72 md:h-80 lg:h-96 xl:h-[200px]"
+>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center mt-5 gap-3" >
             <Avatar className="w-12 h-12">
               <AvatarImage src={reservation.avatar} alt={reservation.guestName} />
               <AvatarFallback>
@@ -322,8 +327,8 @@ function ReservationCard({ reservation }: { reservation: Reservation }) {
             <Mail className="w-4 h-4 text-gray-500 dark:text-gray-400" />
             <span className="text-sm text-gray-600 dark:text-gray-400">{reservation.email}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+          <div className="flex items-center gap-4">
+            <Users className="w-4 h-4  text-gray-500 dark:text-gray-400" />
             <span className="text-sm text-gray-600 dark:text-gray-400">
               {reservation.capacity} {t("persons")}
             </span>
@@ -482,7 +487,7 @@ export default function ReservationTabs() {
         }}
         className="w-full"
       >
-        <TabsList className="grid grid-cols-2 w-full max-w-3xl mx-auto mb-10 gap-4 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+        <TabsList className="grid grid-cols-2  w-full max-w-3xl mx-auto mb-10 gap-4 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
           <TabsTrigger value="active" className="flex items-center justify-center gap-2 px-4 py-2 rounded-md text-gray-800 dark:text-gray-100 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900">
             <span className="w-2.5 h-2.5 bg-green-500 rounded-full" />
             {t("activeReservations")}
@@ -505,7 +510,7 @@ export default function ReservationTabs() {
           >
             <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-2 mt-8">
               {/* === Sol: Oda Sekmeleri === */}
-            <TabsList className="flex flex-col gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-md h-fit">
+            <TabsList className="flex flex-col gap-3 -mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-md h-fit">
 
   {/* === Başlık: Oda Seçin === */}
   <div className="flex items-center gap-2 mb-2 px-1">
