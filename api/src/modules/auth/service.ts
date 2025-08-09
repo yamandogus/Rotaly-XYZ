@@ -16,18 +16,16 @@ import { UserService } from "../user/service";
 export class AuthService {
   private prisma: PrismaClient;
   private emailService: EmailService;
-  private userService: UserService;
   private jwtService: JwtService;
 
   constructor() {
     this.prisma = new PrismaClient();
     this.emailService = new EmailService();
-    this.userService = new UserService();
     this.jwtService = new JwtService();
   }
 
   async register(data: RegisterSchemaType) {
-    const user = await this.userService.add(data);
+    const user = await UserService.add(data);
     const otp = generateOTP();
 
     await this.emailService.sendWelcomeEmail(user.email, user.name);
@@ -48,7 +46,7 @@ export class AuthService {
   }
 
   async login(data: LoginSchemaType) {
-    const user = await this.userService.getByEmail(data.email);
+    const user = await UserService.getByEmail(data.email);
     const isPasswordValid = await bcrypt.compare(
       data.password,
       user.hashedPassword
@@ -85,7 +83,7 @@ export class AuthService {
       throw new AppError("Login first", 401);
     }
 
-    const user = await this.userService.getById(userId);
+    const user = await UserService.getById(userId);
 
     if (user.isVerified) {
       throw new AppError("User already verified", 400);
@@ -115,7 +113,7 @@ export class AuthService {
   }
 
   async resendVerificationEmail(email: string) {
-    const user = await this.userService.getByEmail(email);
+    const user = await UserService.getByEmail(email);
     const otp = generateOTP();
     if (user.isVerified) {
       throw new AppError("user already verified", 400);
@@ -135,7 +133,7 @@ export class AuthService {
   }
 
   async getProfile(userId: string): Promise<ProfileSchemaType> {
-    const user = await this.userService.getById(userId);
+    const user = await UserService.getById(userId);
 
     const profile: ProfileSchemaType = {
       id: user.id,
@@ -150,9 +148,9 @@ export class AuthService {
 
   async updateProfile(userId: string, data: UpdateUserSchemaType) {
     const otp = generateOTP();
-    const user = await this.userService.getById(userId);
+    const user = await UserService.getById(userId);
     if (data.email && data.email !== user.email) {
-      await this.userService.checkEmailUnique(data.email, userId);
+      await UserService.checkEmailUnique(data.email, userId);
 
       user.isVerified = false;
       const verificationToken = this.jwtService.generateAccessToken({
@@ -161,7 +159,7 @@ export class AuthService {
       });
       await this.emailService.sendVerificationEmail(data.email, user.name, otp);
     }
-    const updateUser = await this.userService.update(user.id, data);
+    const updateUser = await UserService.update(user.id, data);
     return {
       message:
         data.email !== user.email
@@ -172,7 +170,7 @@ export class AuthService {
   }
   async forgotPassword(email: string) {
     const otp = generateOTP();
-    const user = await this.userService.getByEmail(email);
+    const user = await UserService.getByEmail(email);
 
     await this.prisma.user.update({
       where: { id: user.id },
@@ -188,7 +186,7 @@ export class AuthService {
   }
 
   async changePassword(userId: string, data: ChangePasswordSchemaType) {
-    const user = await this.userService.getById(userId);
+    const user = await UserService.getById(userId);
     const isPasswordValid = await bcrypt.compare(
       data.currentPassword,
       user.hashedPassword
@@ -210,9 +208,9 @@ export class AuthService {
   }
 
   async deleteAccount(userId: string) {
-    const user = await this.userService.getById(userId);
+    const user = await UserService.getById(userId);
     this.jwtService.logoutAll(user.id);
-    await this.userService.delete(userId);
+    await UserService.delete(userId);
     return {
       message: "Account deleted successfully",
     };
