@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Link, useRouter } from "@/i18n/routing";
@@ -10,26 +10,30 @@ import { Form } from "@/components/ui/form";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { api } from "@/services/api";
 import { useToastMessages } from "@/hooks/toast-messages";
-
-const registerSchema = z
-.object({
-  firstname: z.string().min(1, { message: "Ad alanı boş bırakılamaz" }),
-  lastname: z.string().min(1, { message: "Soyad alanı boş bırakılamaz" }),
-  email: z.string().email({ message: "Geçersiz e-posta adresi" }),
-  phone: z.string().min(1, { message: "Telefon numarası alanı boş bırakılamaz" }),
-  password: z.string().min(8, { message: "Şifre en az 8 karakter olmalıdır" }),
-  confirmPassword: z.string().min(8, { message: "Şifre en az 8 karakter olmalıdır" }),
-})
-.refine((data) => data.password === data.confirmPassword, {
-  path: ["confirmPassword"],
-  message: "Şifreler eşleşmiyor"
-});
-
-type RegisterFormData = z.infer<typeof registerSchema>;
+import { useTranslations } from "next-intl";
 
 export default function RegisterPage() {
+  const t = useTranslations("Register");
   const { showError, showSuccess } = useToastMessages();
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  const registerSchema = z
+  .object({
+    firstname: z.string().min(1, { message: t("validationErrors.firstNameRequired") }),
+    lastname: z.string().min(1, { message: t("validationErrors.lastNameRequired") }),
+    email: z.string().email({ message: t("validationErrors.invalidEmail") }),
+    phone: z.string().min(1, { message: t("validationErrors.phoneRequired") }),
+    password: z.string().min(8, { message: t("validationErrors.passwordMinLength") }),
+    confirmPassword: z.string().min(8, { message: t("validationErrors.passwordMinLength") }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: t("validationErrors.passwordsDoNotMatch")
+  });
+
+  type RegisterFormData = z.infer<typeof registerSchema>;
+
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -41,7 +45,9 @@ export default function RegisterPage() {
       confirmPassword: "",
     }
   })
+
   const handleSubmit =  async (data: RegisterFormData) => { 
+    setIsLoading(true);
     try {
       const response = await api.register({
         name: data.firstname,
@@ -53,25 +59,25 @@ export default function RegisterPage() {
       });
       console.log("response", response);
       if (response.success) {
-        showSuccess("Kayıt işlemi başarılı", 3000);
+        showSuccess(t("registrationSuccess"), 3000);
         router.push("/login");
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Kayıt işlemi başarısız oldu";
+      const errorMessage = error instanceof Error ? error.message : t("registrationFailed");
       showError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-
-  
   return (
     <div className="min-h-screen flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
       <div className="bg-card border border-border rounded-2xl shadow-input mx-auto w-full max-w-md p-4 md:rounded-2xl md:p-8 ">
         <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
-          Rotaly&apos;ye Hoş Geldiniz
+          {t("title")}
         </h2>
         <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
-          Hesabınızı oluşturun ve otel rezervasyonlarınızı yönetin
+          {t("subtitle")}
         </p>
         <Form {...form}>
         <form className="my-8" onSubmit={form.handleSubmit(handleSubmit)}>
@@ -82,9 +88,9 @@ export default function RegisterPage() {
                 name="firstname"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Ad</FormLabel>
+                    <FormLabel>{t("firstName")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Adınız" {...field} />
+                      <Input placeholder={t("firstNamePlaceholder")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -97,9 +103,9 @@ export default function RegisterPage() {
                 name="lastname"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Soyad</FormLabel>
+                    <FormLabel>{t("lastName")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Soyadınız" {...field} />
+                      <Input placeholder={t("lastNamePlaceholder")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -113,9 +119,9 @@ export default function RegisterPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>E-posta Adresi</FormLabel>
+                  <FormLabel>{t("email")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="ornek@email.com" {...field} />
+                    <Input placeholder={t("emailPlaceholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -128,9 +134,13 @@ export default function RegisterPage() {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Telefon Numarası</FormLabel>
+                  <FormLabel>{t("phone")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="+90 5XX XXX XX XX" {...field} />
+                    <Input placeholder={t("phonePlaceholder")} {...field} 
+                    type="tel"
+                    pattern="^\+90\s?5\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$"
+                    title="Telefon numarası formatı: +90 5XX XXX XX XX"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -143,9 +153,9 @@ export default function RegisterPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Şifre</FormLabel>
+                  <FormLabel>{t("password")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="••••••••" type="password" {...field} />
+                    <Input placeholder={t("passwordPlaceholder")} type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -158,9 +168,9 @@ export default function RegisterPage() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Şifre Tekrar</FormLabel>
+                  <FormLabel>{t("confirmPassword")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="••••••••" type="password" {...field} />
+                    <Input placeholder={t("confirmPasswordPlaceholder")} type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -172,7 +182,7 @@ export default function RegisterPage() {
             className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset]"
             type="submit"
           >
-            Kayıt Ol &rarr;
+            {isLoading ? t("registerButtonLoading") : t("registerButton")}
             <BottomGradient />
           </button>
 
@@ -185,15 +195,15 @@ export default function RegisterPage() {
             >
               <GoogleIcon />
               <span className="text-sm text-neutral-700 dark:text-neutral-300">
-                Google ile Kayıt Ol
+                {t("googleRegister")}
               </span>
               <BottomGradient />
             </button>
           </div>
           <div className="flex items-center justify-center gap-2 mt-4">
-            <p className="text-sm text-neutral-700 dark:text-neutral-300">Hesabınız var mı?</p>
+            <p className="text-sm text-neutral-700 dark:text-neutral-300">{t("haveAccount")}</p>
             <Link href="/login" className="text-sm text-primary hover:underline">
-              Giriş Yap
+              {t("loginLink")}
             </Link>
           </div>
         </form>

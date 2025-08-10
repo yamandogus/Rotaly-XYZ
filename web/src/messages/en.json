@@ -70,6 +70,37 @@
     "invalidCredentials": "Invalid email or password!",
     "close": "Close"
   },
+  "Register": {
+    "title": "Welcome to Rotaly",
+    "subtitle": "Create your account and manage your hotel reservations",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "firstNamePlaceholder": "Your first name",
+    "lastNamePlaceholder": "Your last name",
+    "email": "Email Address",
+    "emailPlaceholder": "example@email.com",
+    "phone": "Phone Number",
+    "phonePlaceholder": "+90 5XX XXX XX XX",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "••••••••",
+    "registerButton": "Register",
+    "registerButtonLoading": "Registering...",
+    "googleRegister": "Register with Google",
+    "haveAccount": "Already have an account?",
+    "loginLink": "Login",
+    "registrationSuccess": "Registration successful",
+    "registrationFailed": "Registration failed",
+    "validationErrors": {
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required",
+      "invalidEmail": "Invalid email address",
+      "phoneRequired": "Phone number is required",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "passwordsDoNotMatch": "Passwords do not match"
+    }
+  },
   "Dashboard": {
     "title": "Dashboard",
     "bookings": "Bookings",
