@@ -1,14 +1,13 @@
 'use client'
 
 import React, { useState, useEffect, Suspense } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import BookingInformationPage from './information/page'
 import BookingPaymentPage from './payment/page'
 import { Check } from 'lucide-react'
 import BookingSuccessPage from './success/page'
 
 function BookingContent() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   
   // URL'den step parametresini oku, yoksa 1 kullan
@@ -20,11 +19,7 @@ function BookingContent() {
     return 1
   })
 
-  // Step değiştiğinde URL'i güncelle
-  const updateStep = (newStep: number) => {
-    setCurrentStep(newStep)
-    router.push(`?step=${newStep}`, { scroll: false })
-  }
+
 
   // URL parametresi değiştiğinde state'i güncelle
   useEffect(() => {
@@ -103,8 +98,8 @@ function BookingContent() {
 
       {/* Sayfa İçeriği */}
       <div className='max-w-6xl mx-auto px-4 pb-8'>
-        {currentStep === 1 && <BookingInformationPage setCurrentStep={updateStep} />}
-        {currentStep === 2 && <BookingPaymentPage setCurrentStep={updateStep} />}
+        {currentStep === 1 && <BookingInformationPage />}
+        {currentStep === 2 && <BookingPaymentPage />}
         {currentStep === 3 && <BookingSuccessPage />}
       </div>
     </div>

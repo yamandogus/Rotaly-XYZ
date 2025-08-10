@@ -335,4 +335,4 @@ const HotelPage = () => {
   );
 };
 
-
+export default HotelPage;

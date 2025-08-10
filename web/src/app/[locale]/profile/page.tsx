@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
-import { Edit, Camera, BadgeCheck, CarIcon, LocateIcon, MessageSquareIcon, XIcon, ArrowLeftIcon } from "lucide-react";
+import { Edit, Camera, BadgeCheck, MessageSquareIcon, XIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -21,7 +21,6 @@ import { useTranslations } from "next-intl";
 import { format } from "date-fns";
 import { DatePicker } from "@/components/date-picker";
 import { Rating, RatingButton } from "@/components/ui/shadcn-io/rating";
-import { Textarea } from "@/components/ui/textarea";
 
 export default function ProfilePage() {
   const t = useTranslations("Profile");
@@ -91,7 +90,7 @@ useEffect(() => {
     { id: "postalCode", label: t("postalCode"), value: "ERT 1254" },
   ]);
 
-  const [notifications, setNotifications] = useState([
+  const notifications= [
 
     {
       id: 1,
@@ -111,7 +110,7 @@ useEffect(() => {
       date: "2025-07-28T08:15:00Z",
       read: false,
     },
-  ]);
+  ];
 
   const reservationsData = [
   {

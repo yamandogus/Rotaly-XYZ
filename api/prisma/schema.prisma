@@ -64,6 +64,8 @@ model User {
   surname                 String
   email                   String    @unique
   phone                   String    @unique
+  googleId                String?   @unique
+  googleEmail             String?   @unique
   hashedPassword          String?
   role                    Role      @default(CUSTOMER)
   isVerified              Boolean   @default(false)

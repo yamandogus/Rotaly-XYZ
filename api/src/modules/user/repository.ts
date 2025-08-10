@@ -2,35 +2,35 @@ import Prisma from "../../config/db";
 import { RegisterSchemaType, UpdateUserSchemaType } from "../../dto/auth";
 
 export class UserRepository {
-  async findAll() {
+  static async findAll() {
     return Prisma.user.findMany({
       where: {
         deletedAt: null,
       },
     });
   }
-  async findByEmail(email: string) {
+  static async findByEmail(email: string) {
     return Prisma.user.findUnique({
       where: {
         email,
       },
     });
   }
-  async findById(id: string) {
+  static async findById(id: string) {
     return Prisma.user.findUnique({
       where: {
         id,
       },
     });
   }
-  async findByPhone(phone: string) {
+  static async findByPhone(phone: string) {
     return Prisma.user.findUnique({
       where: {
         phone,
       },
     });
   }
-  async create(data: RegisterSchemaType) {
+  static async create(data: RegisterSchemaType & { googleId?: string }) {
     // confirmPassword alanını ve hashlenmemiş password'u kaydetmemeliyiz
     const { name, surname, email, phone, password } = data;
     // Burada password'ü hashlemeniz gerekir, örneğin bcrypt ile hashleyebilirsiniz.
@@ -42,10 +42,11 @@ export class UserRepository {
         email,
         phone,
         hashedPassword: password,
+        googleId: data.googleId || undefined,
       },
     });
   }
-  async update(id: string, data: UpdateUserSchemaType) {
+  static async update(id: string, data: UpdateUserSchemaType) {
     return Prisma.user.update({
       where: {
         id,
@@ -53,8 +54,28 @@ export class UserRepository {
       data,
     });
   }
+  // google ile girmeye çalışan kişi kayıtlı mı değil mi
+  static async findByGoogleId(googleId: string) {
+    return Prisma.user.findFirst({
+      where: {
+        googleId,
+      },
+    });
+  }
 
-  async delete(id: string) {
+  // eğer kullanıcı normal kayıt olmuş sonra google ile girmeye çalışırsa googleId'yi güncelle
+  static async updateGoogleId(userId: string, googleId: string) {
+    return Prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        googleId,
+      },
+    });
+  }
+
+  static async delete(id: string) {
     return Prisma.user.update({
       where: {
         id,

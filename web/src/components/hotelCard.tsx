@@ -29,7 +29,7 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("favorites") || "[]");
-    const exists = stored.some((fav: any) => fav.id === item.id);
+    const exists = stored.some((fav: { id: number | string }) => fav.id === item.id);
     setIsFavorite(exists);
   }, [item.id]);
 
@@ -38,7 +38,7 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
     let updated;
 
     if (isFavorite) {
-      updated = stored.filter((fav: any) => fav.id !== item.id);
+      updated = stored.filter((fav: { id: number | string }) => fav.id !== item.id);
     } else {
       updated = [...stored, item];
     }

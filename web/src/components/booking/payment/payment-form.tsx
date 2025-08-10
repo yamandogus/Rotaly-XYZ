@@ -23,7 +23,7 @@ export interface PaymentFormData {
 
 interface PaymentFormProps {
   onSubmit: (data: PaymentFormData) => void;
-  setCurrentStep: (step: number) => void;
+  setCurrentStep?: (step: number) => void;
 }
 
 const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
@@ -187,7 +187,10 @@ const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
           <div className="flex flex-row gap-2  mt-4 justify-end">
             <Button
               variant="outline"
-              onClick={() => setCurrentStep(1)}
+              onClick={() => {
+                // Bir önceki adıma dön
+                setCurrentStep?.(1)
+              }}
               type="button"
             >
               <p className="text-sm">Geri</p>

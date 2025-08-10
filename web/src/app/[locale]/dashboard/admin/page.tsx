@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building2Icon, HotelIcon, UsersIcon, BarChart3Icon, ShieldCheckIcon, MessageCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
