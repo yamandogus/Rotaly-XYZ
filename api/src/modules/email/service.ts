@@ -185,6 +185,50 @@ export class EmailService {
   }
 
   /**
+   * Send support confirmation email to the user
+   * @param email - receiver email address
+   * @param name - receiver name
+   * @param locale - language locale (en, tr)
+   * @returns Promise<boolean>
+   */
+  async sendSupportConfirmationEmail(
+    email: string,
+    name: string,
+    locale: string = "en"
+  ): Promise<boolean> {
+    try {
+      const templateName =
+        locale === "tr" ? "tr/support-confirmation" : "en/support-confirmation";
+      const subject =
+        locale === "tr"
+          ? "Mesajınız Alındı - Rotaly XYZ"
+          : "Message Received - Rotaly XYZ";
+
+      const mailOptions = {
+        from: {
+          name: String(process.env.EMAIL_FROM_NAME),
+          address: "support@rotaly-xyz.com",
+        },
+        to: email,
+        subject: subject,
+        template: templateName,
+        context: {
+          name: name,
+          year: new Date().getFullYear(),
+          date: new Date().toLocaleString(),
+        },
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log("Support confirmation email sent successfully");
+      return true;
+    } catch (error) {
+      console.error("Error sending support confirmation email:", error);
+      return false;
+    }
+  }
+
+  /**
    * TODO: CREATE SEND BOOKING CONFIRMATION EMAIL METHOD
    */
 }

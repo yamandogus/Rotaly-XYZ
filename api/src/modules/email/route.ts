@@ -45,4 +45,14 @@ router.post(
   emailController.forwardContactEmail.bind(emailController)
 );
 
+/**
+ * POST /api/email/:locale/support-confirmation
+ * Send confirmation email to user after contact form submission
+ */
+router.post(
+  "/:locale/support-confirmation",
+  validateParams(localeParamsSchema),
+  emailController.sendSupportConfirmationEmail.bind(emailController)
+);
+
 export default router;
