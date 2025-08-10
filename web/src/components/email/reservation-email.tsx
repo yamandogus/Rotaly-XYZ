@@ -83,6 +83,8 @@ export const ReservationEmail: React.FC<ReservationEmailProps> = ({
     const handleSendEmail = async () => {
         try {
             const result = await sendReservationEmail(reservationDetails)
+            console.log(result);
+            
             toast.success('Rezervasyon onay emaili başarıyla gönderildi!')
             onSuccess?.()
         } catch (error) {

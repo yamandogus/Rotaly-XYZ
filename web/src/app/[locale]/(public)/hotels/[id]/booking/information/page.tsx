@@ -1,3 +1,5 @@
+"use client";
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -5,16 +7,13 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import HotelSummary from "@/components/booking/hotel-summary";
 import { bookingData, hotelData } from "@/data/dumy";
+import { useRouter } from "next/navigation";
 
-interface BookingInformationPageProps {
-  setCurrentStep: (step: number) => void;
-}
-
-const BookingInformationPage = ({
-  setCurrentStep,
-}: BookingInformationPageProps) => {
-  // Sample data - bu gerçek uygulamada props veya API'dan gelecek
-
+export default function BookingInformationPage() {
+  const router = useRouter();
+  const handleNextStep = () => {
+    router.push(`?step=2`, { scroll: false });
+  };
 
   return (
     <div>
@@ -72,7 +71,7 @@ const BookingInformationPage = ({
             </div>
             <div className="flex justify-end">
               <Button
-                onClick={() => setCurrentStep(2)}
+                onClick={handleNextStep}
                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
               >
                 Ödeme ile devam et
@@ -81,7 +80,6 @@ const BookingInformationPage = ({
           </form>
         </div>
         
-        {/* Hotel Summary Component kullanımı */}
         <HotelSummary 
           hotel={{
             id: hotelData[0].id.toString(),
@@ -89,7 +87,7 @@ const BookingInformationPage = ({
             location: hotelData[0].location,
             image: hotelData[0].image,
             rating: hotelData[0].rating,
-            ratingCount: 120, // Default rating count
+            ratingCount: 120,
             features: {
               cancelFree: hotelData[0].cancel,
               breakfast: hotelData[0].breakfast,
@@ -101,6 +99,4 @@ const BookingInformationPage = ({
       </div>
     </div>
   );
-};
-
-export default BookingInformationPage;
+}

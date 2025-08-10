@@ -1,16 +1,16 @@
+"use client";
+
 import { bookingData, hotelData } from "@/data/dumy";
 import HotelSummary from "@/components/booking/hotel-summary";
 import React, { useState } from "react";
 import PaymentMethodSelector from "@/components/booking/payment/payment-method-selector";
 import PaymentForm, { PaymentFormData } from "@/components/booking/payment/payment-form";
 import PaymentProcessing from "@/components/booking/payment/payment-processing";
+import { useRouter } from "next/navigation";
 
-interface BookingPaymentPageProps {
-  setCurrentStep: (step: number) => void;
-}
-
-const BookingPaymentPage = ({ setCurrentStep }: BookingPaymentPageProps) => {
+export default function BookingPaymentPage() {
   const [isPaymentControl, setIsPaymentControl] = useState(true);
+  const router = useRouter();
 
   const onSubmit = (data: PaymentFormData) => {
     console.log("Payment form data:", data);
@@ -25,7 +25,7 @@ const BookingPaymentPage = ({ setCurrentStep }: BookingPaymentPageProps) => {
         data.phoneNumber &&
         data.specialRequest
       ) {
-        setCurrentStep(3);
+        router.push(`?step=3`, { scroll: false });
       }
     }, 6000);
   };
@@ -35,12 +35,14 @@ const BookingPaymentPage = ({ setCurrentStep }: BookingPaymentPageProps) => {
       <div className="flex flex-col gap-4 border border-gray-200 dark:border-gray-700 rounded-md p-4 bg-white dark:bg-card">
         <h1 className="text-2xl font-semibold">Ödeme Seçenekleri</h1>
         
-        {/* Payment Methods */}
         <PaymentMethodSelector />
 
         <div>
           {isPaymentControl ? (
-            <PaymentForm onSubmit={onSubmit} setCurrentStep={setCurrentStep} />
+            <PaymentForm
+              onSubmit={onSubmit}
+              setCurrentStep={(s) => router.push(`?step=${s}`, { scroll: false })}
+            />
           ) : (
             <PaymentProcessing />
           )}
@@ -54,7 +56,7 @@ const BookingPaymentPage = ({ setCurrentStep }: BookingPaymentPageProps) => {
             location: hotelData[0].location,
             image: hotelData[0].image,
             rating: hotelData[0].rating,
-            ratingCount: 120, // Default rating count
+            ratingCount: 120,
             features: {
               cancelFree: hotelData[0].cancel,
               breakfast: hotelData[0].breakfast,
@@ -66,6 +68,4 @@ const BookingPaymentPage = ({ setCurrentStep }: BookingPaymentPageProps) => {
       </div>
     </div>
   );
-};
-
-export default BookingPaymentPage;
+}

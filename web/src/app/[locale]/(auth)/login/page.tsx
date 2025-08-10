@@ -3,11 +3,6 @@
 import { Input } from "@/components/ui/input";
 import { Link, useRouter } from "@/i18n/routing";
 import React from "react";
-import {
-  BottomGradient,
-  GoogleIcon,
-  LabelInputContainer,
-} from "../register/page";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -20,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToastMessages } from "@/hooks/toast-messages";
+import { BottomGradient, GoogleIcon, LabelInputContainer } from "@/components/auth/auth-components";
 
 const loginShema = z.object({
   email: z.string().email({ message: "Geçersiz e-posta adresi" }),
@@ -165,7 +161,7 @@ export default function LoginPage() {
 
               <div className="flex flex-col space-y-4">
                 <button
-                  className="border border-border group/btn shadow-input relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626]"
+                  className="border border-border group/btn shadow-input relative flex h-10 w-full items-center justify-center space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626] hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
                   type="button"
                 >
                   <GoogleIcon />
