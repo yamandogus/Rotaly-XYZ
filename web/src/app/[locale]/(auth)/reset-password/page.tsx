@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useTranslations } from "next-intl";
 import React from "react";
-import { BottomGradient } from "../register/page";
 import Link from "next/link";
+import { BottomGradient } from "@/components/auth/auth-components";
 
 const ResetPassword = () => {
   const t = useTranslations("ResetPassword");
