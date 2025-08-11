@@ -81,7 +81,7 @@ export async function generateMetadata({
       siteName: 'Rotaly',
       images: [
         {
-          url: '/images/logo3.png',
+          url: '/images/logo3.PNG',
           width: 1200,
           height: 630,
           alt: 'Rotaly Logo',

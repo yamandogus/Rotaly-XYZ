@@ -52,7 +52,7 @@ export default function ContactPage() {
                 ROTALY
               </h2>
               <Image
-                src="/images/logo.jpg"
+                src="/images/logo3.jpg"
                 alt="Logo"
                 width={24}
                 height={24}

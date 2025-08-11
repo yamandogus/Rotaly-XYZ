@@ -45,6 +45,7 @@ export function Navbar() {
   const [isListOpen, setIsListOpen] = useState(false);
   const { theme } = useTheme();
   const darkMode = theme === "dark";
+  const [query, setQuery] = useState("");
 
   const handleListOpen = () => {
     setIsListOpen(!isListOpen);
@@ -65,7 +66,7 @@ export function Navbar() {
         <div className="flex-1 flex justify-start">
           <Link href="/" className="flex items-center space-x-3">
             <Image
-              src="/images/logo3.png"
+              src="/images/logo3.PNG"
               alt="logo"
               width={100}
               height={100}
@@ -77,9 +78,11 @@ export function Navbar() {
 
         {/* Search - Orta */}
         <div className="hidden md:flex flex-1 justify-center">
-          <div className="relative w-full">
+          <div className="relative w-full max-w-md">
             <Input
               type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder={t("searchPlaceholder")}
               className="pl-8 rounded-lg border border-gray-300 shadow-sm focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
             />
@@ -90,6 +93,16 @@ export function Navbar() {
               className={`absolute right-2.5 top-2.5 opacity-50 cursor-pointer z-10 `}
               onClick={handleListOpen}
             />
+            
+            {/* Arama sonuçları dropdown'ı */}
+            {query.length > 2 && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-background border border-gray-200 rounded-lg shadow-lg z-50">
+                <div className="p-4">
+                  <p className="text-sm text-muted-foreground mb-2">Arama sonuçları:</p>
+                  <p className="text-sm">&quot;{query}&quot; için sonuçlar burada görünecek</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -178,7 +191,6 @@ export function Navbar() {
                     {t("profile")}
                   </Link>
                 </DropdownMenuItem>
-             
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
