@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import Prisma from "../../config/db";
 import { JwtService } from "../../jwt/jwt.service";
 import { AppError } from "../../utils/appError";
 import { generateOTP } from "../../utils/otp";
@@ -14,12 +14,10 @@ import { EmailService } from "../email/service";
 import { UserService } from "../user/service";
 
 export class AuthService {
-  private prisma: PrismaClient;
   private emailService: EmailService;
   private jwtService: JwtService;
 
   constructor() {
-    this.prisma = new PrismaClient();
     this.emailService = new EmailService();
     this.jwtService = new JwtService();
   }
@@ -31,7 +29,7 @@ export class AuthService {
     await this.emailService.sendWelcomeEmail(user.email, user.name);
     await this.emailService.sendVerificationEmail(user.email, user.name, otp);
 
-    await this.prisma.user.update({
+    await Prisma.user.update({
       where: { id: user.id },
       data: {
         verificationOTP: otp,
@@ -49,7 +47,7 @@ export class AuthService {
     const user = await UserService.getByEmail(data.email);
     const isPasswordValid = await bcrypt.compare(
       data.password,
-      user.hashedPassword
+      user.hashedPassword as string
     );
     if (!isPasswordValid) {
       throw new AppError("Invalid credentials", 401);
@@ -98,7 +96,7 @@ export class AuthService {
       throw new AppError("Verification OTP has expired", 400);
     } */
 
-    await this.prisma.user.update({
+    await Prisma.user.update({
       where: { id: userId },
       data: {
         isVerified: true,
@@ -118,7 +116,7 @@ export class AuthService {
     if (user.isVerified) {
       throw new AppError("user already verified", 400);
     }
-    await this.prisma.user.update({
+    await Prisma.user.update({
       where: { id: user.id },
       data: {
         verificationOTP: otp,
@@ -172,7 +170,7 @@ export class AuthService {
     const otp = generateOTP();
     const user = await UserService.getByEmail(email);
 
-    await this.prisma.user.update({
+    await Prisma.user.update({
       where: { id: user.id },
       data: {
         verificationOTP: otp,
@@ -189,14 +187,14 @@ export class AuthService {
     const user = await UserService.getById(userId);
     const isPasswordValid = await bcrypt.compare(
       data.currentPassword,
-      user.hashedPassword
+      user.hashedPassword as string
     );
     if (!isPasswordValid) {
       throw new AppError("Invalid current password", 401);
     }
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(data.newPassword, saltRounds);
-    await this.prisma.user.update({
+    await Prisma.user.update({
       where: { id: userId },
       data: {
         hashedPassword,

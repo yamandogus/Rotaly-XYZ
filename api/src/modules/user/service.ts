@@ -68,9 +68,6 @@ export class UserService {
     return UserRepository.update(id, data);
   }
 
-
-  
-
   static async delete(id: string) {
     const user = await this.getById(id);
     if (!user) {
