@@ -4,9 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaLinkedinIn,
+  FaTwitter,
+} from "react-icons/fa";
+import Image from "next/image";
 
-export default function  ContactPage() {
+export default function ContactPage() {
   const t = useTranslations("contact");
 
   return (
@@ -31,9 +37,9 @@ export default function  ContactPage() {
         <div className="max-w-7xl mx-auto p-8 rounded-b-lg shadow-md bg-white dark:bg-gray-800 transition-colors duration-300">
           <div className="flex flex-col md:flex-row justify-center items-center gap-8">
             <div className="flex-1 max-w-sm text-left">
-            <h3 className="font-bold text-base mb-2 text-gray-800 dark:text-gray-200 transition-colors duration-300">
-  {t("addressTitle")}
-</h3>
+              <h3 className="font-bold text-base mb-2 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+                {t("addressTitle")}
+              </h3>
 
               <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300 transition-colors duration-300">
                 Bertance Bulvarı, Sevin Apartman No:64 D:11 <br />
@@ -45,14 +51,19 @@ export default function  ContactPage() {
               <h2 className="text-xl font-extrabold mb-2 text-gray-900 dark:text-gray-100 uppercase tracking-wide transition-colors duration-300">
                 ROTALY
               </h2>
-              <img src="/images/logo.jpg" alt="Logo" className="h-24 w-auto object-contain" />
+              <Image
+                src="/images/logo3.jpg"
+                alt="Logo"
+                width={24}
+                height={24}
+                className="h-24 w-auto object-contain"
+              />
             </div>
 
             <div className="flex-1 max-w-sm text-right">
-<h3 className="font-bold text-base mb-2 text-gray-800 dark:text-gray-200 transition-colors duration-300">
-  {t("contactTitle")}
-</h3>
-
+              <h3 className="font-bold text-base mb-2 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+                {t("contactTitle")}
+              </h3>
 
               <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300 transition-colors duration-300">
                 +90 (212) 217 5995 (pbx) <br />
@@ -71,28 +82,54 @@ export default function  ContactPage() {
           </h2>
           <form className="space-y-3">
             <div>
-              <Label htmlFor="name" className="text-sm text-gray-900 dark:text-gray-300">
+              <Label
+                htmlFor="name"
+                className="text-sm text-gray-900 dark:text-gray-300"
+              >
                 {t("nameLabel")}
               </Label>
-              <Input id="name" className="dark:bg-gray-700 dark:text-gray-200" />
+              <Input
+                id="name"
+                className="dark:bg-gray-700 dark:text-gray-200"
+              />
             </div>
             <div>
-              <Label htmlFor="email" className="text-sm text-gray-900 dark:text-gray-300">
+              <Label
+                htmlFor="email"
+                className="text-sm text-gray-900 dark:text-gray-300"
+              >
                 {t("emailLabel")}
               </Label>
-              <Input id="email" type="email" className="dark:bg-gray-700 dark:text-gray-200" />
+              <Input
+                id="email"
+                type="email"
+                className="dark:bg-gray-700 dark:text-gray-200"
+              />
             </div>
             <div>
-              <Label htmlFor="phone" className="text-sm text-gray-900 dark:text-gray-300">
+              <Label
+                htmlFor="phone"
+                className="text-sm text-gray-900 dark:text-gray-300"
+              >
                 {t("phoneLabel")}
               </Label>
-              <Input id="phone" type="tel" className="dark:bg-gray-700 dark:text-gray-200" />
+              <Input
+                id="phone"
+                type="tel"
+                className="dark:bg-gray-700 dark:text-gray-200"
+              />
             </div>
             <div>
-              <Label htmlFor="message" className="text-sm text-gray-900 dark:text-gray-300">
+              <Label
+                htmlFor="message"
+                className="text-sm text-gray-900 dark:text-gray-300"
+              >
                 {t("messageLabel")}
               </Label>
-              <Textarea id="message" className="dark:bg-gray-700 dark:text-gray-200" />
+              <Textarea
+                id="message"
+                className="dark:bg-gray-700 dark:text-gray-200"
+              />
             </div>
             <div className="text-right">
               <Button

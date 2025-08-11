@@ -5,6 +5,7 @@ import {
   verificationEmailSchema,
   passwordResetEmailSchema,
   welcomeEmailSchema,
+  supportConfirmationEmailSchema,
 } from "../../dto/email";
 import { LocaleParams } from "../../dto/common";
 
@@ -225,6 +226,62 @@ export class EmailController {
       });
     } catch (error) {
       console.error("Error in forwardContactEmail:", error);
+
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
+
+  /**
+   * Send confirmation email to user after contact form submission
+   * @param req - Express req object
+   * @param res - Express res object
+   */
+  async sendSupportConfirmationEmail(
+    req: Request<LocaleParams>,
+    res: Response
+  ): Promise<void> {
+    try {
+      const validation = supportConfirmationEmailSchema.safeParse(req.body);
+
+      if (!validation.success) {
+        res.status(400).json({
+          success: false,
+          message: "Validation error",
+          errors: validation.error.issues,
+        });
+        return;
+      }
+
+      const { email, name } = validation.data;
+
+      const locale = req.params.locale;
+
+      const isEmailSent = await emailService.sendSupportConfirmationEmail(
+        email,
+        name,
+        locale
+      );
+
+      if (!isEmailSent) {
+        throw new AppError("Failed to send support confirmation email", 500);
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Support confirmation email sent successfully",
+      });
+    } catch (error) {
+      console.error("Error in sendSupportConfirmationEmail:", error);
 
       if (error instanceof AppError) {
         res.status(error.statusCode).json({

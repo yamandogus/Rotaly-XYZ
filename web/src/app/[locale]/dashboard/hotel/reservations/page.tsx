@@ -3,7 +3,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Calendar, Users, Mail, CreditCard, Hotel, Search } from "lucide-react"
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
@@ -387,9 +386,11 @@ function RoomDateSelector({
 function renderReservations(
   data: Reservation[],
   selectedRoom: number | null,
-  searchQuery: string
+  searchQuery: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  t: any // t parametresini ekleyin
 ) {
-  const t = useTranslations("Reservations");
+
 
   let filteredData = selectedRoom
     ? data.filter((reservation) => reservation.roomNumber === selectedRoom)
@@ -453,7 +454,7 @@ function renderReservations(
 }
 
 export default function ReservationTabs() {
-  const t = useTranslations("Reservations");
+  const t = useTranslations("Reservations"); // Ana bileşende çağırın
 
   const [activeTab, setActiveTab] = useState<"active" | "past">("active");
   const [selectedRoom, setSelectedRoom] = useState<number | null>(null);
@@ -568,7 +569,7 @@ export default function ReservationTabs() {
 
   {/* Rezervasyon Listesi */}
   <TabsContent value={selectedRoom === null ? "all" : selectedRoom.toString()} className="w-full">
-    {renderReservations(filteredByDate, selectedRoom, searchQuery)}
+    {renderReservations(filteredByDate, selectedRoom, searchQuery, t)} {/* t parametresini geçin */}
   </TabsContent>
 </div>
 

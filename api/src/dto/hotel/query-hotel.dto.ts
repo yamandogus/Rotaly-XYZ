@@ -1,40 +1,36 @@
 import { z } from "zod";
 
+// Otel tipi enum'u (mevcut DTO'lardaki değerlerle uyumlu)
+const HotelTypeEnum = z.enum([
+  "APARTMENT",
+  "HOTEL",
+  "VILLA",
+  "BUNGALOW",
+  "ROOM",
+  "RESORT",
+  "HOSTEL",
+  "CAMP",
+]);
+
+// Listeleme ve filtreleme için query DTO'su
 export const QueryHotelSchema = z.object({
-  // Filtreleme
-  city: z.string().optional(),
-  country: z.string().optional(),
-  type: z.enum([
-    "APARTMENT", "HOTEL", "VILLA", "BUNGALOW",
-    "ROOM", "RESORT", "HOSTEL", "CAMP"
-  ]).optional(),
-  features: z.array(
-    z.enum([
-      "WIFI", "POOL", "SPA", "PARKING", "GYM",
-      "PET_FRIENDLY", "RESTAURANT", "BREAKFAST_INCLUDED"
-    ])
-  ).optional(),
-  minRating: z.number().min(0).max(5).optional(),
-  maxRating: z.number().min(0).max(5).optional(),
-  isDiscounted: z.boolean().optional(),
-  isActive: z.boolean().optional(),
-  
-  // Arama
-  search: z.string().optional(), // name, description, city, country içinde arama
-  
-  // Sıralama
-  sortBy: z.enum([
-    "name", "rating", "createdAt", "price", "discountRate"
-  ]).optional(),
+  city: z.string().min(1).optional(),
+  country: z.string().min(1).optional(),
+  type: HotelTypeEnum.optional(),
+  isDiscounted: z.coerce.boolean().optional(),
+  isActive: z.coerce.boolean().optional(),
+  ownerId: z.string().min(1).optional(),
+  minRating: z.coerce.number().min(0).max(5).optional(),
+  maxRating: z.coerce.number().min(0).max(5).optional(),
+  search: z.string().min(1).optional(),
+
+  page: z.coerce.number().int().min(1).default(1).optional(),
+  limit: z.coerce.number().int().min(1).max(100).default(10).optional(),
+
+  sortBy: z
+    .enum(["name", "rating", "createdAt", "updatedAt", "discountRate"])
+    .optional(),
   sortOrder: z.enum(["asc", "desc"]).optional(),
-  
-  // Sayfalama
-  page: z.number().min(1).optional(),
-  limit: z.number().min(1).max(100).optional(),
-  
-  // Özel filtreler
-  ownerId: z.string().optional(), // Belirli bir sahibin otelleri
-  hasRooms: z.boolean().optional(), // Odası olan oteller
 });
 
-export type QueryHotelInput = z.infer<typeof QueryHotelSchema>; 
+export type QueryHotelInput = z.infer<typeof QueryHotelSchema>;

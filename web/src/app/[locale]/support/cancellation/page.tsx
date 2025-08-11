@@ -32,7 +32,7 @@ export default function CancellationPage() {
           <div className="flex justify-center mb-6">
             <div className="relative">
               <Image
-                src="/images/RT.png"
+                src="/images/logo3.png"
                 alt="Rotaly Logo"
                 width={80}
                 height={80}

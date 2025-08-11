@@ -1,76 +1,94 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Link, useRouter } from "@/i18n/routing";
 import React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Form } from "@/components/ui/form";
 import {
-  BottomGradient,
-  GoogleIcon,
-  LabelInputContainer,
-} from "../register/page";
-import { toast } from "react-hot-toast";
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useToastMessages } from "@/hooks/toast-messages";
+import { BottomGradient, GoogleIcon, LabelInputContainer } from "@/components/auth/auth-components";
+
+const loginShema = z.object({
+  email: z.string().email({ message: "Geçersiz e-posta adresi" }),
+  password: z.string().min(8, { message: "Geçersiz şifre" }),
+});
+
+type LoginFormData = z.infer<typeof loginShema>;
 
 export default function LoginPage() {
   const router = useRouter();
+  const { loginSuccess, loginError } = useToastMessages();
+  const form = useForm<LoginFormData>({
+    resolver: zodResolver(loginShema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   const testUser = {
     email: "user@user.com",
-    password: "123456",
+    password: "12345678",
     role: "user",
   };
 
   const testHotel = {
     email: "hotel@hotel.com",
-    password: "123456",
+    password: "12345678",
     role: "hotel",
   };
 
   const testAdmin = {
     email: "admin@admin.com",
-    password: "123456",
+    password: "12345678",
     role: "admin",
   };
 
   const testSupport = {
     email: "support@support.com",
-    password: "123456",
+    password: "12345678",
     role: "support",
   };
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+  const handleLogin = (data: LoginFormData) => {
+    console.log("login data", data);
 
     // Normal kullanıcı girişi
-    if (email === testUser.email && password === testUser.password) {
+    if (data.email === testUser.email && data.password === testUser.password) {
       localStorage.setItem("userRole", "user");
-      toast.success("Kullanıcı girişi başarılı");
+      loginSuccess('user');
       router.push("/");
     }
     // Otel girişi
-    else if (email === testHotel.email && password === testHotel.password) {
+    else if (data.email === testHotel.email && data.password === testHotel.password) {
       localStorage.setItem("userRole", "hotel");
-      toast.success("Otel girişi başarılı");
+      loginSuccess('hotel');
       router.push("/dashboard");
     }
     // Admin girişi
-    else if (email === testAdmin.email && password === testAdmin.password) {
+    else if (data.email === testAdmin.email && data.password === testAdmin.password) {
       localStorage.setItem("userRole", "admin");
-      toast.success("Admin girişi başarılı");
+      loginSuccess('admin');
       router.push("/dashboard");
     }
     // Support girişi
-    else if (email === testSupport.email && password === testSupport.password) {
+    else if (data.email === testSupport.email && data.password === testSupport.password) {
       localStorage.setItem("userRole", "support");
-      toast.success("Support girişi başarılı");
+      loginSuccess('support');
       router.push("/dashboard/support");
     }
     // Hatalı giriş
     else {
-      toast.error("Hatalı e-posta veya şifre!");
+      loginError();
     }
   };
 
@@ -85,72 +103,87 @@ export default function LoginPage() {
             E-posta adresinize giriş yapın ve otel rezervasyonlarınızı yönetin
           </p>
 
-          <form className="my-8" onSubmit={handleLogin}>
-            <div className="mb-4 flex flex-col space-y-2">
-              <LabelInputContainer className="w-full">
-                <Label htmlFor="email">E-posta Adresi</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  placeholder="ornek@email.com"
-                  type="email"
-                  required
-                />
-              </LabelInputContainer>
-              <LabelInputContainer className="w-full">
-                <Label htmlFor="password">Şifre</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  placeholder="••••••••"
-                  type="password"
-                  required
-                />
-              </LabelInputContainer>
-            </div>
-            <div className="flex justify-end my-2">
-              <Link
-                href="/reset-password"
-                className="text-sm text-primary hover:underline"
-              >
-                Şifremi Unuttum
-              </Link>
-            </div>
+          <Form {...form}>
+            <form className="my-8" onSubmit={form.handleSubmit(handleLogin)}>
+              <div className="mb-4 flex flex-col space-y-2">
+                <LabelInputContainer className="w-full">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>E-posta Adresi</FormLabel>
+                        <FormControl>
+                          <Input placeholder="ornek@email.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </LabelInputContainer>
+                <LabelInputContainer className="w-full">
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Şifre</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="••••••••"
+                            type="password"
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </LabelInputContainer>
+              </div>
+              <div className="flex justify-end my-2">
+                <Link
+                  href="/reset-password"
+                  className="text-sm text-primary hover:underline"
+                >
+                  Şifremi Unuttum
+                </Link>
+              </div>
 
-            <button
-              className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset]"
-              type="submit"
-            >
-              Giriş Yap &rarr;
-              <BottomGradient />
-            </button>
-
-            <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-
-            <div className="flex flex-col space-y-4">
               <button
-                className="border border-border group/btn shadow-input relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626]"
-                type="button"
+                className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset]"
+                type="submit"
               >
-                <GoogleIcon />
-                <span className="text-sm text-neutral-700 dark:text-neutral-300">
-                  Google ile Giriş Yap
-                </span>
+                Giriş Yap &rarr;
                 <BottomGradient />
               </button>
-            </div>
-            <div className="flex items-center justify-center gap-2 mt-4">
-              <p className="text-sm text-neutral-700 dark:text-neutral-300">
-                Hesabınız yok mu?
-              </p>
-              <Link
-                href="/register"
-                className="text-sm text-primary hover:underline"
-              >
-                Kayıt Ol
-              </Link>
-            </div>
-          </form>
+
+              <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
+
+              <div className="flex flex-col space-y-4">
+                <button
+                  className="border border-border group/btn shadow-input relative flex h-10 w-full items-center justify-center space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626] hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
+                  type="button"
+                >
+                  <GoogleIcon />
+                  <span className="text-sm text-neutral-700 dark:text-neutral-300">
+                    Google ile Giriş Yap
+                  </span>
+                  <BottomGradient />
+                </button>
+              </div>
+              <div className="flex items-center justify-center gap-2 mt-4">
+                <p className="text-sm text-neutral-700 dark:text-neutral-300">
+                  Hesabınız yok mu?
+                </p>
+                <Link
+                  href="/register"
+                  className="text-sm text-primary hover:underline"
+                >
+                  Kayıt Ol
+                </Link>
+              </div>
+            </form>
+          </Form>
         </div>
       </div>
     </div>
