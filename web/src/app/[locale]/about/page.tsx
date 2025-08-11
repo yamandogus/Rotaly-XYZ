@@ -1,7 +1,6 @@
 import { Metadata } from "next";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { 
   Users, 
   Globe, 
@@ -9,9 +8,6 @@ import {
   Shield, 
   Heart, 
   Star, 
-  MapPin, 
-  Phone, 
-  Mail, 
   TrendingUp,
   Target,
   Lightbulb
@@ -33,11 +29,10 @@ export default function AboutPage() {
           <div className="flex justify-center mb-8">
             <div className="relative">
               <Image
-                src="/images/RT.png"
+                src="/images/logo3.png"
                 alt="Rotaly Logo"
                 width={120}
                 height={120}
-                className="rounded-2xl shadow-2xl"
               />
               <div className="absolute -top-4 -right-4 bg-blue-500 rounded-full p-3">
                 <Heart className="h-6 w-6 text-white" />
@@ -267,7 +262,7 @@ export default function AboutPage() {
       </div>
 
       {/* Stats Section */}
-      <div className="py-16 px-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl">
+      <div className="py-16 mb-16 px-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Rakamlarla Rotaly</h2>
@@ -297,52 +292,6 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Contact Section */}
-      <div className="py-16 px-4">
-        <div className="max-w-4xl mx-auto">
-          <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-xl">
-            <CardHeader className="text-center">
-              <CardTitle className="text-3xl font-bold text-gray-900 dark:text-white">
-                Bizimle İletişime Geçin
-              </CardTitle>
-              <CardDescription className="text-lg text-gray-600 dark:text-gray-300">
-                Sorularınız için biz buradayız
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-8">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center">
-                  <Phone className="h-8 w-8 text-blue-500 mx-auto mb-3" />
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Telefon</h3>
-                  <p className="text-gray-600 dark:text-gray-300">0850 XXX XX XX</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">7/24 Hizmet</p>
-                </div>
-                
-                <div className="text-center">
-                  <Mail className="h-8 w-8 text-green-500 mx-auto mb-3" />
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-1">E-posta</h3>
-                  <p className="text-gray-600 dark:text-gray-300">info@rotaly.com</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">24 saat içinde yanıt</p>
-                </div>
-                
-                <div className="text-center">
-                  <MapPin className="h-8 w-8 text-purple-500 mx-auto mb-3" />
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Adres</h3>
-                  <p className="text-gray-600 dark:text-gray-300">İstanbul, Türkiye</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Merkez Ofis</p>
-                </div>
-              </div>
-              
-              <div className="mt-8 text-center">
-                <Button className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3">
-                  İletişime Geç
-                  <Mail className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
     </div>
   );
 } 
