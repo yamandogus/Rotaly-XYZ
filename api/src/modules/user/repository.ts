@@ -30,7 +30,7 @@ export class UserRepository {
       },
     });
   }
-  static async create(data: RegisterSchemaType & { googleId?: string }) {
+  static async create(data: RegisterSchemaType) {
     // confirmPassword alanını ve hashlenmemiş password'u kaydetmemeliyiz
     const { name, surname, email, phone, password } = data;
     // Burada password'ü hashlemeniz gerekir, örneğin bcrypt ile hashleyebilirsiniz.
@@ -42,7 +42,6 @@ export class UserRepository {
         email,
         phone,
         hashedPassword: password,
-        googleId: data.googleId || undefined,
       },
     });
   }
@@ -52,26 +51,6 @@ export class UserRepository {
         id,
       },
       data,
-    });
-  }
-  // google ile girmeye çalışan kişi kayıtlı mı değil mi
-  static async findByGoogleId(googleId: string) {
-    return Prisma.user.findFirst({
-      where: {
-        googleId,
-      },
-    });
-  }
-
-  // eğer kullanıcı normal kayıt olmuş sonra google ile girmeye çalışırsa googleId'yi güncelle
-  static async updateGoogleId(userId: string, googleId: string) {
-    return Prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        googleId,
-      },
     });
   }
 
