@@ -6,6 +6,7 @@ import {
   passwordResetLimiter,
   otpLimiter,
 } from "../../middleware/rateLimit";
+import passport from "passport";
 
 const router = Router();
 const authController = new AuthController();
@@ -26,6 +27,12 @@ router.post(
   "/forgot-password",
   passwordResetLimiter,
   authController.forgotPassword.bind(authController)
+);
+
+router.get(
+  "/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  authController.googleCallback.bind(authController)
 );
 
 // private routerlar
