@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AuthService } from "./service";
 import { AppError } from "../../utils/appError";
+import { User } from "@prisma/client";
 import {
   RegisterSchemaType,
   LoginSchemaType,
@@ -161,6 +162,7 @@ export class AuthController {
     }
   }
 
+  //TODO
   async getProfile(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?.userId;
@@ -223,6 +225,8 @@ export class AuthController {
       }
     }
   }
+  //TODO
+
   async forgotPassword(req: Request, res: Response): Promise<void> {
     try {
       const { email } = req.body;
@@ -297,6 +301,28 @@ export class AuthController {
           message: "Bir hata oluştu",
         });
       }
+    }
+  }
+
+  async googleCallback(req: Request, res: Response) {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "google auth failed",
+      });
+    }
+    try {
+      const result = await this.authService.login(req.user as User);
+      res.status(200).json({
+        success: true,
+        message: "google auth success",
+        data: result,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "google auth failed",
+      });
     }
   }
 }
