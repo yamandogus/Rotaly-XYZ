@@ -208,10 +208,10 @@
     "reservationsDescription": "Aktif rezervasyonlarınız burada listelenecek.",
     "pastReservationsDescription": "Geçmiş rezervasyonlarınız burada listelenecek.",
     "notifications": "Bildirimler",
-
     "notificationsDescription": "Güncel bildirimlerinizi buradan görüntüleyebilirsiniz.",
-      "passwordOperations": "Şifre İşlemleri",
+    "passwordOperations": "Şifre İşlemleri",
     "changePassword": "Şifre Değiştir",
+    "passwordHint": "Şifrenizi düzenli aralıklarla değiştirmeniz önerilir.",
     "passwordSettingsDescription": "Hesabınızın güvenliği için şifrenizi düzenli olarak güncelleyin.",
     "currentPassword": "Mevcut Şifre",
     "newPassword": "Yeni Şifre",
