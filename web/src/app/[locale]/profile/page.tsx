@@ -1,11 +1,10 @@
 "use client";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import ProfileTabContent from "@/components/profil/profil-tab-content"
+import ProfileTabContent from "@/components/profil/profil-tab-content";
 import { useTranslations } from "next-intl";
 import ReservationsContent from "@/components/profil/reservations-tabs-content";
 import PastReservations from "@/components/profil/past-tabs-content";
 import Notifications from "@/components/profil/notifications-tabs-content";
-
 
 export default function ProfilePage() {
   const t = useTranslations("Profile");
@@ -34,22 +33,22 @@ export default function ProfilePage() {
             ))}
           </TabsList>
         </div>
- <div className="flex-1 space-y-10">
-<TabsContent value="profile">
- <ProfileTabContent t={t} />
-</TabsContent>
+        <div className="flex-1 space-y-10">
+          <TabsContent value="profile">
+            <ProfileTabContent t={t} />
+          </TabsContent>
 
-<TabsContent value="reservations">
-  <ReservationsContent />
-</TabsContent>
+          <TabsContent value="reservations">
+            <ReservationsContent />
+          </TabsContent>
 
-    <TabsContent value="past">
-  <PastReservations />
-</TabsContent>
+          <TabsContent value="past">
+            <PastReservations />
+          </TabsContent>
 
-        <TabsContent value="notifications">
-  <Notifications />
-</TabsContent>
+          <TabsContent value="notifications">
+            <Notifications />
+          </TabsContent>
         </div>
       </Tabs>
     </div>

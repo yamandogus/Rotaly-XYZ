@@ -75,11 +75,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             url: "/dashboard/admin/profile",
             icon: <IconUser />,
           },
-          {
-            title: t("live-support"),
-            url: "/dashboard/admin/live-support",
-            icon: <IconMessageCircle />,
-          },
         ];
       case "hotel":
         return [

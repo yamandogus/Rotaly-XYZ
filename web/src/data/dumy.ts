@@ -906,3 +906,324 @@ export const hotelsData = [
   },
 ];
   
+
+export const customersData = [
+  {
+    id: "550e8400-e29b-41d4-a716-446655440001",
+    name: "Ahmet",
+    surname: "Yılmaz",
+    email: "ahmet.yilmaz@gmail.com",
+    phone: "+90 532 123 4567",
+    role: "CUSTOMER",
+    isVerified: true,
+    createdAt: "2023-05-15T10:30:00Z",
+    updatedAt: "2024-12-10T14:20:00Z",
+    deletedAt: null,
+    // Related data
+    totalReservations: 8,
+    totalSpent: 15600,
+    lastReservation: "2024-12-08T16:45:00Z",
+    favoriteHotels: 3,
+    totalComments: 5,
+    averageRating: 4.2,
+    // Payment info
+    paymentCards: [
+      {
+        id: "card-001",
+        brand: "Visa",
+        last4: "1234",
+        expiresAt: "2026-12-01T00:00:00Z"
+      }
+    ],
+    // Support history
+    supportRequests: 2,
+    lastSupportRequest: "2024-11-20T09:15:00Z",
+    avatar: "/images/userprofile.png"
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655440002",
+    name: "Fatma",
+    surname: "Demir",
+    email: "fatma.demir@hotmail.com",
+    phone: "+90 533 987 6543",
+    role: "CUSTOMER",
+    isVerified: true,
+    createdAt: "2023-03-22T08:15:00Z",
+    updatedAt: "2024-12-05T11:30:00Z",
+    deletedAt: null,
+    // Related data
+    totalReservations: 12,
+    totalSpent: 23400,
+    lastReservation: "2024-12-01T13:20:00Z",
+    favoriteHotels: 5,
+    totalComments: 8,
+    averageRating: 4.5,
+    // Payment info
+    paymentCards: [
+      {
+        id: "card-002",
+        brand: "Mastercard",
+        last4: "5678",
+        expiresAt: "2025-08-01T00:00:00Z"
+      },
+      {
+        id: "card-003",
+        brand: "Troy",
+        last4: "9012",
+        expiresAt: "2027-03-01T00:00:00Z"
+      }
+    ],
+    // Support history
+    supportRequests: 1,
+    lastSupportRequest: "2024-10-15T14:30:00Z",
+    avatar: "/images/userprofile.png"
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655440003",
+    name: "Mehmet",
+    surname: "Kaya",
+    email: "mehmet.kaya@yahoo.com",
+    phone: "+90 534 456 7890",
+    role: "CUSTOMER",
+    isVerified: false,
+    createdAt: "2023-07-10T16:45:00Z",
+    updatedAt: "2024-11-28T10:15:00Z",
+    deletedAt: null,
+    // Related data
+    totalReservations: 3,
+    totalSpent: 4200,
+    lastReservation: "2024-11-15T12:00:00Z",
+    favoriteHotels: 1,
+    totalComments: 2,
+    averageRating: 3.8,
+    // Payment info
+    paymentCards: [],
+    // Support history
+    supportRequests: 0,
+    lastSupportRequest: null,
+    avatar: "/images/userprofile.png"
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655440004",
+    name: "Zeynep",
+    surname: "Özkan",
+    email: "zeynep.ozkan@gmail.com",
+    phone: "+90 535 789 1234",
+    role: "CUSTOMER",
+    isVerified: true,
+    createdAt: "2023-09-05T14:20:00Z",
+    updatedAt: "2024-12-12T09:45:00Z",
+    deletedAt: null,
+    // Related data
+    totalReservations: 15,
+    totalSpent: 28900,
+    lastReservation: "2024-12-10T18:30:00Z",
+    favoriteHotels: 7,
+    totalComments: 12,
+    averageRating: 4.7,
+    // Payment info
+    paymentCards: [
+      {
+        id: "card-004",
+        brand: "Visa",
+        last4: "3456",
+        expiresAt: "2026-06-01T00:00:00Z"
+      }
+    ],
+    // Support history
+    supportRequests: 3,
+    lastSupportRequest: "2024-12-05T15:20:00Z",
+    avatar: "/images/userprofile.png"
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655440005",
+    name: "Ali",
+    surname: "Yıldız",
+    email: "ali.yildiz@outlook.com",
+    phone: "+90 536 321 6547",
+    role: "CUSTOMER",
+    isVerified: true,
+    createdAt: "2023-11-18T12:10:00Z",
+    updatedAt: "2024-10-15T16:30:00Z",
+    deletedAt: null,
+    // Related data
+    totalReservations: 6,
+    totalSpent: 8900,
+    lastReservation: "2024-10-10T11:45:00Z",
+    favoriteHotels: 2,
+    totalComments: 4,
+    averageRating: 4.0,
+    // Payment info
+    paymentCards: [
+      {
+        id: "card-005",
+        brand: "Mastercard",
+        last4: "7890",
+        expiresAt: "2025-12-01T00:00:00Z"
+      }
+    ],
+    // Support history
+    supportRequests: 1,
+    lastSupportRequest: "2024-09-20T13:15:00Z",
+    avatar: "/images/userprofile.png"
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655440006",
+    name: "Selin",
+    surname: "Arslan",
+    email: "selin.arslan@gmail.com",
+    phone: "+90 537 654 3210",
+    role: "CUSTOMER",
+    isVerified: true,
+    createdAt: "2023-04-12T09:30:00Z",
+    updatedAt: "2024-12-15T17:20:00Z",
+    deletedAt: null,
+    // Related data
+    totalReservations: 20,
+    totalSpent: 45600,
+    lastReservation: "2024-12-14T20:15:00Z",
+    favoriteHotels: 10,
+    totalComments: 18,
+    averageRating: 4.8,
+    // Payment info
+    paymentCards: [
+      {
+        id: "card-006",
+        brand: "Visa",
+        last4: "2345",
+        expiresAt: "2027-01-01T00:00:00Z"
+      },
+      {
+        id: "card-007",
+        brand: "Troy",
+        last4: "6789",
+        expiresAt: "2026-09-01T00:00:00Z"
+      }
+    ],
+    // Support history
+    supportRequests: 2,
+    lastSupportRequest: "2024-11-30T10:45:00Z",
+    avatar: "/images/userprofile.png"
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655440007",
+    name: "Can",
+    surname: "Özkan",
+    email: "can.ozkan@hotmail.com",
+    phone: "+90 538 987 6543",
+    role: "CUSTOMER",
+    isVerified: false,
+    createdAt: "2023-06-30T15:45:00Z",
+    updatedAt: "2024-11-25T12:10:00Z",
+    deletedAt: null,
+    // Related data
+    totalReservations: 2,
+    totalSpent: 3200,
+    lastReservation: "2024-11-20T14:30:00Z",
+    favoriteHotels: 0,
+    totalComments: 1,
+    averageRating: 3.5,
+    // Payment info
+    paymentCards: [],
+    // Support history
+    supportRequests: 0,
+    lastSupportRequest: null,
+    avatar: "/images/userprofile.png"
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655440008",
+    name: "Deniz",
+    surname: "Yılmaz",
+    email: "deniz.yilmaz@yahoo.com",
+    phone: "+90 539 456 7890",
+    role: "CUSTOMER",
+    isVerified: true,
+    createdAt: "2023-08-25T11:20:00Z",
+    updatedAt: "2024-12-09T13:40:00Z",
+    deletedAt: null,
+    // Related data
+    totalReservations: 9,
+    totalSpent: 16800,
+    lastReservation: "2024-12-05T19:20:00Z",
+    favoriteHotels: 4,
+    totalComments: 6,
+    averageRating: 4.3,
+    // Payment info
+    paymentCards: [
+      {
+        id: "card-008",
+        brand: "Mastercard",
+        last4: "0123",
+        expiresAt: "2026-03-01T00:00:00Z"
+      }
+    ],
+    // Support history
+    supportRequests: 1,
+    lastSupportRequest: "2024-11-10T16:25:00Z",
+    avatar: "/images/userprofile.png"
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655440009",
+    name: "Burak",
+    surname: "Demir",
+    email: "burak.demir@gmail.com",
+    phone: "+90 540 123 4567",
+    role: "CUSTOMER",
+    isVerified: true,
+    createdAt: "2023-05-08T13:15:00Z",
+    updatedAt: "2024-12-03T08:50:00Z",
+    deletedAt: null,
+    // Related data
+    totalReservations: 11,
+    totalSpent: 19800,
+    lastReservation: "2024-11-28T15:10:00Z",
+    favoriteHotels: 6,
+    totalComments: 9,
+    averageRating: 4.4,
+    // Payment info
+    paymentCards: [
+      {
+        id: "card-009",
+        brand: "Visa",
+        last4: "4567",
+        expiresAt: "2025-10-01T00:00:00Z"
+      }
+    ],
+    // Support history
+    supportRequests: 2,
+    lastSupportRequest: "2024-10-25T11:30:00Z",
+    avatar: "/images/userprofile.png"
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655440010",
+    name: "Elif",
+    surname: "Kaya",
+    email: "elif.kaya@outlook.com",
+    phone: "+90 541 789 0123",
+    role: "CUSTOMER",
+    isVerified: true,
+    createdAt: "2023-03-15T10:40:00Z",
+    updatedAt: "2024-11-20T14:15:00Z",
+    deletedAt: null,
+    // Related data
+    totalReservations: 7,
+    totalSpent: 12300,
+    lastReservation: "2024-11-15T12:45:00Z",
+    favoriteHotels: 3,
+    totalComments: 5,
+    averageRating: 4.1,
+    // Payment info
+    paymentCards: [
+      {
+        id: "card-010",
+        brand: "Troy",
+        last4: "8901",
+        expiresAt: "2026-07-01T00:00:00Z"
+      }
+    ],
+    // Support history
+    supportRequests: 1,
+    lastSupportRequest: "2024-10-30T09:20:00Z",
+    avatar: "/images/userprofile.png"
+  }
+];
