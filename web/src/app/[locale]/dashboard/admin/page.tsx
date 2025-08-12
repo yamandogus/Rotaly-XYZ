@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2Icon, HotelIcon, BarChart3Icon, ShieldCheckIcon, MessageCircleIcon, UsersIcon } from "lucide-react";
+import { Building2Icon, HotelIcon, BarChart3Icon, ShieldCheckIcon, UsersIcon, UserIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -46,10 +46,10 @@ export default function AdminDashboard() {
       color: "text-red-500",
     },
     {
-      title: t("liveSupport"),
-      icon: MessageCircleIcon,
-      description: t("liveSupportDesc"),
-      link: "/dashboard/admin/live-support",
+      title: t("profile"),
+      icon: UserIcon,
+      description: t("profileDesc"),
+      link: "/dashboard/admin/profile",
       color: "text-gray-500",
     },
   ];
