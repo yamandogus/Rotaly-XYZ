@@ -204,10 +204,11 @@
     "save": "Save",
     "fieldRequired": "This field is required",
     "invalidEmail": "Please enter a valid email address",
+     "passwordHint": "It is recommended to change your password regularly.",
     "invalidPhone": "Please enter a valid phone number in format: +90 5XX XXX XXXX",
     "reservationsDescription": "Your active reservations will be listed here.",
     "pastReservationsDescription": "Your past reservations will be listed here.",
-     "notifications": "Notifications",
+    "notifications": "Notifications",
 
     "notificationsDescription": "You can view your recent notifications here.",
     "passwordOperations": "Password Operations",
