@@ -58,14 +58,17 @@ enum SupportCategory {
   OTHER
 }
 
+enum Provider {
+  GOOGLE
+  FACEBOOK
+}
+
 model User {
   id                      String    @id @default(uuid())
   name                    String
   surname                 String
   email                   String    @unique
   phone                   String    @unique
-  googleId                String?   @unique
-  googleEmail             String?   @unique
   hashedPassword          String?
   role                    Role      @default(CUSTOMER)
   isVerified              Boolean   @default(false)
@@ -91,8 +94,19 @@ model User {
   comments  Comment[]
   favorites Favorite[]
   images    Image[]    @relation("UserImages")
+  Account   Account[]
 
   @@map("users")
+}
+
+model Account {
+  id                String   @id @default(uuid())
+  userId            String
+  provider          Provider
+  providerAccountId String   @unique
+  User              User     @relation(fields: [userId], references: [id])
+
+  @@map("accounts")
 }
 
 model Favorite {
