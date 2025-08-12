@@ -109,11 +109,11 @@ export function Navbar() {
               placeholder={t("searchPlaceholder")}
               className="pl-10 rounded-lg border border-gray-300 shadow-sm focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
             />
-            <SearchIcon className="absolute left-3 top-3.5 h-5 w-5 pointer-events-none opacity-50" />
+            <SearchIcon className="absolute left-3 top-2 h-5 w-5 pointer-events-none opacity-50" />
             <Mic
               color={darkMode ? "white" : "black"}
               size={18}
-              className="absolute right-3 top-3.5 opacity-70 cursor-pointer z-10 hover:opacity-100 transition-opacity"
+              className="absolute right-3 top-2.5 opacity-70 cursor-pointer z-10 hover:opacity-100 transition-opacity"
               onClick={handleListOpen}
             />
 
