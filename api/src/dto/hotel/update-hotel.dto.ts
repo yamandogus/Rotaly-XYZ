@@ -18,6 +18,7 @@ export const UpdateHotelSchema = z.object({
     ])
   ).optional(),
   discountRate: z.number().min(0).max(100).optional(),
+  discountPrice: z.number().min(0).optional(), // İndirimli fiyat
   isDiscounted: z.boolean().optional(),
   discountStartDate: z.date().optional(),
   discountEndDate: z.date().optional(),
@@ -31,4 +32,4 @@ export const UpdateHotelSchema = z.object({
   taxCertificate: z.string().optional(),
 });
 
-export type UpdateHotelInput = z.infer<typeof UpdateHotelSchema>; 
+export type UpdateHotelInput = z.infer<typeof UpdateHotelSchema>;
