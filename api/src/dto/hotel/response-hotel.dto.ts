@@ -11,6 +11,7 @@ export const HotelResponseSchema = z.object({
   country: z.string(),
   rating: z.number().nullable(),
   discountRate: z.number().nullable(),
+  discountPrice: z.number().nullable(), // İndirimli fiyat
   isDiscounted: z.boolean(),
   discountStartDate: z.date().nullable(),
   discountEndDate: z.date().nullable(),
@@ -45,7 +46,7 @@ export const HotelResponseSchema = z.object({
   averagePrice: z.number().optional(), // Ortalama oda fiyatı
   owner: z.object({
     id: z.string(),
-    name: z.string(),
+    name: true,
     surname: z.string(),
     email: z.string(),
   }).optional(),

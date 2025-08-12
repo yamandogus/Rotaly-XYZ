@@ -18,6 +18,7 @@ export const CreateHotelSchema = z.object({
     ])
   ).optional(),
   discountRate: z.number().min(0).max(100).optional(),
+  discountPrice: z.number().min(0).optional(), // İndirimli fiyat
 });
 
 export type CreateHotelInput = z.infer<typeof CreateHotelSchema>;

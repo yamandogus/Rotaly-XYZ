@@ -22,13 +22,15 @@ export const QueryHotelSchema = z.object({
   ownerId: z.string().min(1).optional(),
   minRating: z.coerce.number().min(0).max(5).optional(),
   maxRating: z.coerce.number().min(0).max(5).optional(),
+  minDiscountPrice: z.coerce.number().min(0).optional(), // Minimum indirimli fiyat
+  maxDiscountPrice: z.coerce.number().min(0).optional(), // Maksimum indirimli fiyat
   search: z.string().min(1).optional(),
 
   page: z.coerce.number().int().min(1).default(1).optional(),
   limit: z.coerce.number().int().min(1).max(100).default(10).optional(),
 
   sortBy: z
-    .enum(["name", "rating", "createdAt", "updatedAt", "discountRate"])
+    .enum(["name", "rating", "createdAt", "updatedAt", "discountRate", "discountPrice"])
     .optional(),
   sortOrder: z.enum(["asc", "desc"]).optional(),
 });
