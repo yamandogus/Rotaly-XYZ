@@ -3,18 +3,15 @@
 import React, { useState, useEffect } from "react";
 import { type DateRange } from "react-day-picker";
 import { Label } from "./ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
 import { Button } from "./ui/button";
 import { Search } from "lucide-react";
 import { DateRangePicker } from "./date-range-picker";
 import { useTypewriter } from "react-simple-typewriter";
 import { Input } from "./ui/input";
+import { useDispatch } from "react-redux";
+import { setCity, setCheckIn, setCheckOut, setGuests } from "@/store/search/search-slice";
+import GuestSelector from "./guest-selector";
+import { cities } from "@/data/dumy";
 
 const SearchForm = () => {
   const [text] = useTypewriter({
@@ -28,7 +25,17 @@ const SearchForm = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
-  const [guestCount, setGuestCount] = useState<string>("1");
+  const [adultCount, setAdultCount] = useState<string>("1");
+  const [childCount, setChildCount] = useState<string>("0");
+  const [totalCount, setTotalCount] = useState<string>("1");
+  
+  const dispatch = useDispatch();
+
+  // totalCount'u otomatik hesapla
+  useEffect(() => {
+    const total = parseInt(adultCount) + parseInt(childCount);
+    setTotalCount(total.toString());
+  }, [adultCount, childCount]);
 
   // Tarih seçimi işleyicisi
   const handleDateRangeChange = (newDateRange: DateRange | undefined) => {
@@ -52,31 +59,19 @@ const SearchForm = () => {
     }
   };
 
-  const cities = [
-    { value: "istanbul", name: "İstanbul" },
-    { value: "ankara", name: "Ankara" },
-    { value: "izmir", name: "İzmir" },
-    { value: "antalya", name: "Antalya" },
-    { value: "bodrum", name: "Bodrum" },
-    { value: "cappadocia", name: "Kapadokya" },
-    { value: "trabzon", name: "Trabzon" },
-    { value: "bursa", name: "Bursa" },
-    { value: "adana", name: "Adana" },
-    { value: "gaziantep", name: "Gaziantep" },
-    { value: "konya", name: "Konya" },
-    { value: "kayseri", name: "Kayseri" },
-  ];
-
   const filteredCities = cities.filter((city) =>
     city.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleCitySelect = (city: { value: string; name: string }) => {
     setSearchQuery(city.name);
+    dispatch(setCity(city.name));
+    dispatch(setCheckIn(dateRange?.from?.toISOString() || ""));
+    dispatch(setCheckOut(dateRange?.to?.toISOString() || ""));
+    dispatch(setGuests(parseInt(totalCount)));
     setIsDropdownOpen(false);
   };
 
-  // Dropdown'u dışına tıklandığında kapat
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element;
@@ -93,18 +88,12 @@ const SearchForm = () => {
 
   // Form submit fonksiyonu
   const handleSubmit = () => {
-    const formData = {
-      city: searchQuery,
-      dateRange: dateRange,
-      guestCount: guestCount,
-      checkIn: dateRange?.from,
-      checkOut: dateRange?.to,
-    };
-
-    console.log("Arama Bilgileri:", formData);
-
-    // Burada API çağrısı veya routing yapılabilir
-    // Örnek: router.push('/hotels?...')
+    console.log(searchQuery, dateRange?.from?.toISOString(), dateRange?.to?.toISOString(), totalCount);
+    
+    dispatch(setCity(searchQuery));
+    dispatch(setCheckIn(dateRange?.from?.toISOString() || ""));
+    dispatch(setCheckOut(dateRange?.to?.toISOString() || ""));
+    dispatch(setGuests(parseInt(totalCount))); // totalCount kullan
   };
 
   return (
@@ -177,25 +166,21 @@ const SearchForm = () => {
               <Label className="text-sm font-medium text-foreground">
                 Kişi Sayısı
               </Label>
-              <Select value={guestCount} onValueChange={setGuestCount}>
-                <SelectTrigger className="w-full h-11 border border-border focus:border-blue-500 rounded-lg">
-                  <SelectValue placeholder="Kişi sayısı" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">1 Kişi</SelectItem>
-                  <SelectItem value="2">2 Kişi</SelectItem>
-                  <SelectItem value="3">3 Kişi</SelectItem>
-                  <SelectItem value="4">4 Kişi</SelectItem>
-                  <SelectItem value="5">5+ Kişi</SelectItem>
-                </SelectContent>
-              </Select>
+              <GuestSelector
+                value={{ adults: parseInt(adultCount), children: parseInt(childCount), total: parseInt(totalCount) }}
+                onChange={(value) => {
+                  setAdultCount(value.adults.toString());
+                  setChildCount(value.children.toString());
+                  setTotalCount(value.total.toString());
+                }}
+              />
             </div>
 
             {/* Arama Butonu */}
             <div className="flex flex-col">
               <Button
                 onClick={handleSubmit}
-                className="bg-blue-600 hover:bg-blue-700 text-white h-11 px-6 font-medium transition-colors rounded-lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white h-11 px-6 font-medium transition-colors rounded-lg cursor-pointer"
               >
                 <Search className="w-4 h-4 mr-2" />
                 Ara
@@ -268,21 +253,17 @@ const SearchForm = () => {
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <Label className="text-sm font-medium text-foreground">
+            <Label className="text-sm font-medium text-foreground">
                 Kişi Sayısı
               </Label>
-              <Select value={guestCount} onValueChange={setGuestCount}>
-                <SelectTrigger className="w-full h-11 border border-border focus:border-blue-500 rounded-lg">
-                  <SelectValue placeholder="Kişi sayısı" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">1 Kişi</SelectItem>
-                  <SelectItem value="2">2 Kişi</SelectItem>
-                  <SelectItem value="3">3 Kişi</SelectItem>
-                  <SelectItem value="4">4 Kişi</SelectItem>
-                  <SelectItem value="5">5+ Kişi</SelectItem>
-                </SelectContent>
-              </Select>
+              <GuestSelector
+                value={{ adults: parseInt(adultCount), children: parseInt(childCount), total: parseInt(totalCount) }}
+                onChange={(value) => {
+                  setAdultCount(value.adults.toString());
+                  setChildCount(value.children.toString());
+                  setTotalCount(value.total.toString());
+                }}
+              />
             </div>
 
             {/* Üçüncü Satır - Arama Butonu */}

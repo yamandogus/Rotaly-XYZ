@@ -51,6 +51,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: <IconDashboard />,
           },
           {
+            title: t("hotelManagement"),
+            url: "/dashboard/admin/hotels",
+            icon: <IconBuilding />,
+          },
+          {
             title: t("customer-management"),
             url: "/dashboard/admin/customers",
             icon: <IconUsers />,
