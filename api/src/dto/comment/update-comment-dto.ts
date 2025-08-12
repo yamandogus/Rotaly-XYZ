@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const updateCommentSchema = z.object({
-  rating: z.number().min(1).max(5),
+  rating: z.number().min(1).max(5).optional(),
   text: z.string().optional(),
 });
 
