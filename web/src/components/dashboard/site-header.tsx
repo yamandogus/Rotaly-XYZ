@@ -5,17 +5,26 @@ import { ModeToggle } from "../mode-toggle";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "../language-switcher";
 import { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 
 export function SiteHeader() {
   const router = useRouter();
   const t = useTranslations("Dashboard");
   const [userRole, setUserRole] = useState<string | null>(null);
   const [hotelName, setHotelName] = useState<string>("");
-
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     const role = localStorage.getItem("userRole");
     setUserRole(role);
-    
+
     // Hotel adını localStorage'dan al (geçici olarak, normalde API'den gelir)
     const storedHotelName = localStorage.getItem("hotelName") || "Hotel";
     setHotelName(storedHotelName);
@@ -41,17 +50,40 @@ export function SiteHeader() {
         <SidebarTrigger className="-ml-1" />
         <h1 className="text-base font-medium">{getHeaderTitle()}</h1>
         <div className="ml-auto flex items-center gap-2">
-        <LanguageSwitcher />
-        <ModeToggle />
-          <Button
-            onClick={handleLogout}
-            variant="default"
-            asChild
-            size="sm"
-            className="hidden sm:flex text-white bg-red-500 hover:bg-red-600"
-          >
-            <Link href="/login">{t("logout")}</Link>
-          </Button>
+          <LanguageSwitcher />
+          <ModeToggle />
+
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger>
+              <Button
+                variant="default"
+                asChild
+                size="sm"
+                className="hidden sm:flex text-white bg-red-500 hover:bg-red-600"
+              >
+                <Link href="#" onClick={() => setOpen(true)}>{t("logout")}</Link>
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Çıkış Yap</DialogTitle>
+                <DialogDescription>
+                  Çıkış yapmak istediğinize emin misiniz?
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setOpen(false)}>
+                  İptal
+                </Button>
+                <Button
+                  onClick={handleLogout}
+                  className="bg-red-500 hover:bg-red-600 text-white cursor-pointer"
+                >
+                  Çıkış Yap
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </header>
