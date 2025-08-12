@@ -7,7 +7,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
-import { Edit, Camera, BadgeCheck, MessageSquareIcon, XIcon } from "lucide-react";
+import {
+  Edit,
+  Camera,
+  BadgeCheck,
+  MessageSquareIcon,
+  XIcon,
+} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -24,7 +30,7 @@ import { Rating, RatingButton } from "@/components/ui/shadcn-io/rating";
 
 export default function ProfilePage() {
   const t = useTranslations("Profile");
-    // Modal ve Chat State'leri
+  // Modal ve Chat State'leri
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [currentHotel, setCurrentHotel] = useState({
     name: "",
@@ -32,19 +38,22 @@ export default function ProfilePage() {
     image: "",
   });
 
-const defaultMessage = (hotelName: string) => [
-  { id: 1, message: `${hotelName} rezervasyonlarınızda nasıl yardımcı olabilirim?`, sender: "bot" }
-];
+  const defaultMessage = (hotelName: string) => [
+    {
+      id: 1,
+      message: `${hotelName} rezervasyonlarınızda nasıl yardımcı olabilirim?`,
+      sender: "bot",
+    },
+  ];
 
-const [messages, setMessages] = useState(defaultMessage(currentHotel.name));
+  const [messages, setMessages] = useState(defaultMessage(currentHotel.name));
 
-// isChatOpen değiştiğinde mesajları resetle
-useEffect(() => {
-  if (isChatOpen) {
-    setMessages(defaultMessage(currentHotel.name || "Otelimize"));
-  }
-}, [isChatOpen, currentHotel.name]);
-
+  // isChatOpen değiştiğinde mesajları resetle
+  useEffect(() => {
+    if (isChatOpen) {
+      setMessages(defaultMessage(currentHotel.name || "Otelimize"));
+    }
+  }, [isChatOpen, currentHotel.name]);
 
   const [message, setMessage] = useState("");
 
@@ -74,7 +83,6 @@ useEffect(() => {
     setMessage("");
   };
 
-
   const [personalInfo, setPersonalInfo] = useState([
     { id: "firstName", label: t("firstName"), value: "Ahmet" },
     { id: "lastName", label: t("lastName"), value: "Yıldız" },
@@ -90,8 +98,7 @@ useEffect(() => {
     { id: "postalCode", label: t("postalCode"), value: "ERT 1254" },
   ]);
 
-  const notifications= [
-
+  const notifications = [
     {
       id: 1,
       message: "Yeni rezervasyonunuz onaylandı.",
@@ -113,65 +120,62 @@ useEffect(() => {
   ];
 
   const reservationsData = [
-  {
-    id: 1,
-    hotelName: "Kiad Deluxe Hotel",
-    location: "Marmaris",
-    image: "/images/opportunity8.jpg",
-    rating: 4.5,
-    price: "40.290 TL",
-    nights: 4,
-    roomNumber: 302,
-    guests: 2,
-    checkIn: "12 Ağustos 2025",
-    checkOut: "16 Ağustos 2025",
-    breakfast: true,
-    parking: true,
-    cancel: true,
-  },
-  {
-    id: 2,
-    hotelName: "Riad Resort",
-    location: "Antalya",
-    image: "/images/opportunity6.jpg",
-    rating: 4.8,
-    price: "35.000 TL",
-    nights: 3,
-    roomNumber: 215,
-    guests: 3,
-    checkIn: "20 Ağustos 2025",
-    checkOut: "23 Ağustos 2025",
-    breakfast: true,
-    parking: true,
-    cancel: false,
-  },
-  {
+    {
+      id: 1,
+      hotelName: "Kiad Deluxe Hotel",
+      location: "Marmaris",
+      image: "/images/opportunity8.jpg",
+      rating: 4.5,
+      price: "40.290 TL",
+      nights: 4,
+      roomNumber: 302,
+      guests: 2,
+      checkIn: "12 Ağustos 2025",
+      checkOut: "16 Ağustos 2025",
+      breakfast: true,
+      parking: true,
+      cancel: true,
+    },
+    {
+      id: 2,
+      hotelName: "Riad Resort",
+      location: "Antalya",
+      image: "/images/opportunity6.jpg",
+      rating: 4.8,
+      price: "35.000 TL",
+      nights: 3,
+      roomNumber: 215,
+      guests: 3,
+      checkIn: "20 Ağustos 2025",
+      checkOut: "23 Ağustos 2025",
+      breakfast: true,
+      parking: true,
+      cancel: false,
+    },
+    {
       id: 3,
-    hotelName: "Sunset Deluxe Otel",
-    location: "Antalya",
-    image: "/images/opportunity5.jpg",
-    rating: 4.8,
-    price: "35.000 TL",
-    nights: 3,
-    roomNumber: 215,
-    guests: 3,
-    checkIn: "20 Ağustos 2025",
-    checkOut: "23 Ağustos 2025",
-    breakfast: false,
-    parking: true,
-    cancel: true,
-  }
-];
+      hotelName: "Sunset Deluxe Otel",
+      location: "Antalya",
+      image: "/images/opportunity5.jpg",
+      rating: 4.8,
+      price: "35.000 TL",
+      nights: 3,
+      roomNumber: 215,
+      guests: 3,
+      checkIn: "20 Ağustos 2025",
+      checkOut: "23 Ağustos 2025",
+      breakfast: false,
+      parking: true,
+      cancel: true,
+    },
+  ];
 
-
-
-
-
-  const [editSection, setEditSection] = useState<"personal" | "address" | null>(null);
+  const [editSection, setEditSection] = useState<"personal" | "address" | null>(
+    null
+  );
   const [openDialog, setOpenDialog] = useState(false);
   const [tempData, setTempData] = useState<typeof personalInfo>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  
 
   const [openPasswordDialog, setOpenPasswordDialog] = useState(false);
   const [passwords, setPasswords] = useState({
@@ -179,12 +183,16 @@ useEffect(() => {
     new: "",
     confirm: "",
   });
-  const [passwordErrors, setPasswordErrors] = useState<Record<string, string>>({});
+  const [passwordErrors, setPasswordErrors] = useState<Record<string, string>>(
+    {}
+  );
 
   const handleEditClick = (section: "personal" | "address") => {
     const data =
       section === "personal"
-        ? personalInfo.filter((f) => f.id !== "role").map((item) => ({ ...item }))
+        ? personalInfo
+            .filter((f) => f.id !== "role")
+            .map((item) => ({ ...item }))
         : addressInfo.map((item) => ({ ...item }));
 
     setEditSection(section);
@@ -288,8 +296,12 @@ useEffect(() => {
         <div className="flex-1 space-y-10">
           <TabsContent value="profile" className="space-y-10">
             <div>
-              <h1 className="text-3xl font-semibold text-gray-900 dark:text-white">{t("title")}</h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t("subtitle")}</p>
+              <h1 className="text-3xl font-semibold text-gray-900 dark:text-white">
+                {t("title")}
+              </h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                {t("subtitle")}
+              </p>
             </div>
 
             <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md p-6 flex flex-col sm:flex-row items-center sm:items-start gap-6">
@@ -324,40 +336,45 @@ useEffect(() => {
               </div>
             </div>
 
-            {[{ title: t("personalInfo"), data: personalInfo, key: "personal" }, { title: t("addressInfo"), data: addressInfo, key: "address" }].map(
-              (section) => (
-                <section
-                  key={section.key}
-                  className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md p-6 space-y-6"
-                >
-                  <div className="flex justify-between items-center border-b border-gray-300/40 dark:border-gray-600 pb-2">
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
-                      {section.title}
-                    </h3>
-                    <Button
-                      onClick={() => handleEditClick(section.key as "personal" | "address")}
-                      className="bg-blue-500 hover:bg-blue-600 text-white"
-                    >
-                      <Edit className="mr-2 h-4 w-4" />
-                      {t("edit")}
-                    </Button>
-                  </div>
+            {[
+              { title: t("personalInfo"), data: personalInfo, key: "personal" },
+              { title: t("addressInfo"), data: addressInfo, key: "address" },
+            ].map((section) => (
+              <section
+                key={section.key}
+                className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md p-6 space-y-6"
+              >
+                <div className="flex justify-between items-center border-b border-gray-300/40 dark:border-gray-600 pb-2">
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                    {section.title}
+                  </h3>
+                  <Button
+                    onClick={() =>
+                      handleEditClick(section.key as "personal" | "address")
+                    }
+                    className="bg-blue-500 hover:bg-blue-600 text-white"
+                  >
+                    <Edit className="mr-2 h-4 w-4" />
+                    {t("edit")}
+                  </Button>
+                </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-y-6 gap-x-8">
-                    {section.data.map((field) => (
-                      <div key={field.id} className="space-y-1 pb-4">
-                        <Label className="text-gray-500 dark:text-gray-400 text-sm">{field.label}</Label>
-                        <p className="text-gray-800 dark:text-white font-medium">
-                          {field.id === "dob"
-                            ? format(new Date(field.value), "dd.MM.yyyy")
-                            : field.value}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )
-            )}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-y-6 gap-x-8">
+                  {section.data.map((field) => (
+                    <div key={field.id} className="space-y-1 pb-4">
+                      <Label className="text-gray-500 dark:text-gray-400 text-sm">
+                        {field.label}
+                      </Label>
+                      <p className="text-gray-800 dark:text-white font-medium">
+                        {field.id === "dob"
+                          ? format(new Date(field.value), "dd.MM.yyyy")
+                          : field.value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            ))}
 
             {/* Şifre alanı */}
             <section className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md p-6 space-y-6">
@@ -379,235 +396,239 @@ useEffect(() => {
             </section>
           </TabsContent>
 
-<TabsContent value="reservations">
-  <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-lg">
-    <h2 className="text-3xl font-semibold mb-6 -mt-6 text-gray-900 dark:text-white">
-      {t("reservations")}
-    </h2>
+          <TabsContent value="reservations">
+            <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-lg">
+              <h2 className="text-3xl font-semibold mb-6 -mt-6 text-gray-900 dark:text-white">
+                {t("reservations")}
+              </h2>
 
-    <div className="space-y-6">
-      {reservationsData.map((res) => (
-        <div
-          key={res.id}
-          className="bg-card border border-border rounded-2xl overflow-hidden shadow-[0_0_10px_rgba(0,0,0,0.1)] dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] flex flex-col md:flex-row cursor-pointer group hover:shadow-[0_0_15px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-          style={{ minHeight: "200px" }}
-        >
-          {/* Görsel */}
-          <div className="relative h-52 md:h-auto md:w-64 w-full">
-            <Image
-              src={res.image || "/images/opportunity1.jpg"}
-              alt={res.hotelName}
-              fill
-              className="object-cover rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none p-1"
-              priority
-            />
-          </div>
+              <div className="space-y-6">
+                {reservationsData.map((res) => (
+                  <div
+                    key={res.id}
+                    className="bg-card border border-border rounded-2xl overflow-hidden shadow-[0_0_10px_rgba(0,0,0,0.1)] dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] flex flex-col md:flex-row cursor-pointer group hover:shadow-[0_0_15px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                    style={{ minHeight: "200px" }}
+                  >
+                    {/* Görsel */}
+                    <div className="relative h-52 md:h-auto md:w-64 w-full">
+                      <Image
+                        src={res.image || "/images/opportunity1.jpg"}
+                        alt={res.hotelName}
+                        fill
+                        className="object-cover rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none p-1"
+                        priority
+                      />
+                    </div>
 
-          {/* Bilgiler */}
-          <div className="flex flex-col justify-between p-5 flex-1">
-            {/* Otel Adı & Konum */}
-            <div>
-              <h3 className="text-xl font-semibold text-foreground mb-1">
-                {res.hotelName}
-              </h3>
-              <p className="text-muted-foreground text-sm mb-3 ml-1">
-                {res.location}
-              </p>
-              <p className="text-muted-foreground text-sm mb-1">
-                Oda No: {res.roomNumber} • {res.guests} Kişilik • {res.nights} Gece
-              </p>
-              <p className="text-muted-foreground text-sm mb-3">
-                Giriş: {res.checkIn} • Çıkış: {res.checkOut}
-              </p>
+                    {/* Bilgiler */}
+                    <div className="flex flex-col justify-between p-5 flex-1">
+                      {/* Otel Adı & Konum */}
+                      <div>
+                        <h3 className="text-xl font-semibold text-foreground mb-1">
+                          {res.hotelName}
+                        </h3>
+                        <p className="text-muted-foreground text-sm mb-3 ml-1">
+                          {res.location}
+                        </p>
+                        <p className="text-muted-foreground text-sm mb-1">
+                          Oda No: {res.roomNumber} • {res.guests} Kişilik •{" "}
+                          {res.nights} Gece
+                        </p>
+                        <p className="text-muted-foreground text-sm mb-3">
+                          Giriş: {res.checkIn} • Çıkış: {res.checkOut}
+                        </p>
 
-              {/* Özellikler */}
-              <div className="flex flex-wrap gap-2 text-sm">
-                <span
-                  className={`px-3 py-1 rounded-lg ${
-                    res.breakfast
-                      ? "bg-green-50 text-green-600 border border-green-100"
-                      : "bg-gray-100 text-gray-400 border border-gray-200"
-                  }`}
-                >
-                  Kahvaltı: {res.breakfast ? "Dahil" : "Dahil Değil"}
-                </span>
+                        {/* Özellikler */}
+                        <div className="flex flex-wrap gap-2 text-sm">
+                          <span
+                            className={`px-3 py-1 rounded-lg ${
+                              res.breakfast
+                                ? "bg-green-50 text-green-600 border border-green-100"
+                                : "bg-gray-100 text-gray-400 border border-gray-200"
+                            }`}
+                          >
+                            Kahvaltı: {res.breakfast ? "Dahil" : "Dahil Değil"}
+                          </span>
 
-                <span
-                  className={`px-3 py-1 rounded-lg ${
-                    res.parking
-                      ? "bg-blue-50 text-blue-600 border border-blue-100"
-                      : "bg-gray-100 text-gray-400 border border-gray-200"
-                  }`}
-                >
-                  Otopark: {res.parking ? "Mevcut" : "Mevcut Değil"}
-                </span>
+                          <span
+                            className={`px-3 py-1 rounded-lg ${
+                              res.parking
+                                ? "bg-blue-50 text-blue-600 border border-blue-100"
+                                : "bg-gray-100 text-gray-400 border border-gray-200"
+                            }`}
+                          >
+                            Otopark: {res.parking ? "Mevcut" : "Mevcut Değil"}
+                          </span>
 
-                <span
-                  className={`px-3 py-1 rounded-lg ${
-                    res.cancel
-                      ? "bg-red-50 text-red-600 border border-red-100"
-                      : "bg-gray-100 text-gray-400 border border-gray-200"
-                  }`}
-                >
-                  Ücretsiz İptal: {res.cancel ? "Var" : "Yok"}
-                </span>
-              </div>
-            </div>
+                          <span
+                            className={`px-3 py-1 rounded-lg ${
+                              res.cancel
+                                ? "bg-red-50 text-red-600 border border-red-100"
+                                : "bg-gray-100 text-gray-400 border border-gray-200"
+                            }`}
+                          >
+                            Ücretsiz İptal: {res.cancel ? "Var" : "Yok"}
+                          </span>
+                        </div>
+                      </div>
 
-            {/* Fiyat, Puan ve Butonlar */}
-            <div className="mt-6 flex items-center justify-between">
-              <div className="text-blue-600 dark:text-blue-400 text-l font-bold">
-                {res.price}
-              </div>
+                      {/* Fiyat, Puan ve Butonlar */}
+                      <div className="mt-6 flex items-center justify-between">
+                        <div className="text-blue-600 dark:text-blue-400 text-l font-bold">
+                          {res.price}
+                        </div>
 
-              <div className="flex items-center gap-1 mr-4">
-                <Rating defaultValue={res.rating} readOnly>
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <RatingButton key={index} size={16} className="text-yellow-500" />
-                  ))}
-                </Rating>
-                <span className="text-sm text-muted-foreground ml-1">
-                  ({res.rating.toFixed(1)})
-                </span>
-              </div>
+                        <div className="flex items-center gap-1 mr-4">
+                          <Rating defaultValue={res.rating} readOnly>
+                            {Array.from({ length: 5 }).map((_, index) => (
+                              <RatingButton
+                                key={index}
+                                size={16}
+                                className="text-yellow-500"
+                              />
+                            ))}
+                          </Rating>
+                          <span className="text-sm text-muted-foreground ml-1">
+                            ({res.rating.toFixed(1)})
+                          </span>
+                        </div>
 
-              {/* Butonlar */}
-              <div className="flex gap-3">
-<button
-  className="bg-red-600 hover:bg-red-800 text-white px-3 py-2 rounded-xl font-semibold text-xs shadow-sm hover:shadow-md transition flex items-center justify-center gap-2"
-  onClick={() => {
-    console.log("Rezervasyon iptal edildi:", res.id);
-  }}
->
-  <XIcon className="w-5 h-5" />
-  Rezervasyon İptal
-</button>
+                        {/* Butonlar */}
+                        <div className="flex gap-3">
+                          <button
+                            className="bg-red-600 hover:bg-red-800 text-white px-3 py-2 rounded-xl font-semibold text-xs shadow-sm hover:shadow-md transition flex items-center justify-center gap-2"
+                            onClick={() => {
+                              console.log("Rezervasyon iptal edildi:", res.id);
+                            }}
+                          >
+                            <XIcon className="w-5 h-5" />
+                            Rezervasyon İptal
+                          </button>
 
-<button
-  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-semibold text-xs shadow-sm hover:shadow-md transition flex items-center justify-center gap-2"
- onClick={() => {
-                            setCurrentHotel({
-                              name: res.hotelName,
-                              location: res.location,
-                              image: res.image || "/images/opportunity1.jpg",
-                            });
-                            setIsChatOpen(true);
-                            setMessages([
-                              { id: 1, message: "Merhaba, nasıl yardımcı olabilirim?", sender: "bot" },
-                            ]);
-                            setMessage("");
-                          }}
-                        >
-  <MessageSquareIcon className="w-5 h-5" />
-  Otele Sor
-</button>
-
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-
-           {/* Modal Chat */}
-      <Dialog open={isChatOpen} onOpenChange={setIsChatOpen}>
-        <DialogContent  className="sm:max-w-[450px] h-[500px] flex flex-col p-0 ">
-          <DialogHeader className="p-4 border-b flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 relative rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800">
-                <Image
-                  src={currentHotel.image}
-                  alt={currentHotel.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div>
-                <DialogTitle className="text-lg font-semibold">
-                  {currentHotel.name}
-                </DialogTitle>
-                <DialogDescription className="text-sm text-muted-foreground">
-                  {currentHotel.location}
-                </DialogDescription>
-              </div>
-            </div>
-            <button
-              onClick={() => setIsChatOpen(false)}
-              className="text-muted-foreground hover:text-foreground transition"
-            >
-            </button>
-          </DialogHeader>
-
-          {/* Chat messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 dark:bg-gray-800 scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex ${
-                  msg.sender === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                {msg.sender === "bot" && (
-                  <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-300 dark:border-gray-700 mr-2">
-                    <Image
-                    src={currentHotel.image}
-                      alt="Rotaly Logo"
-                      width={35}
-                      height={35}
-                      className="object-cover"
-                    />
+                          <button
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-semibold text-xs shadow-sm hover:shadow-md transition flex items-center justify-center gap-2"
+                            onClick={() => {
+                              setCurrentHotel({
+                                name: res.hotelName,
+                                location: res.location,
+                                image: res.image || "/images/opportunity1.jpg",
+                              });
+                              setIsChatOpen(true);
+                              setMessages([
+                                {
+                                  id: 1,
+                                  message:
+                                    "Merhaba, nasıl yardımcı olabilirim?",
+                                  sender: "bot",
+                                },
+                              ]);
+                              setMessage("");
+                            }}
+                          >
+                            <MessageSquareIcon className="w-5 h-5" />
+                            Otele Sor
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                )}
-                <div
-                  className={`max-w-[75%] p-2 rounded-lg text-sm ${
-                    msg.sender === "user"
-                      ? "bg-blue-600 text-white rounded-br-sm"
-                      : "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-sm"
-                  }`}
-                >
-                  {msg.message}
-                </div>
+                ))}
               </div>
-            ))}
-            <div ref={messagesEndRef} />
-          </div>
+            </div>
 
-          {/* Input area */}
-          <div className="p-4 border-t flex gap-2 items-center bg-white dark:bg-gray-900">
-            <Input
-              placeholder="Mesajınızı yazın..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-              className="flex-1"
-            />
-            <Button
-              onClick={handleSendMessage}
-              disabled={!message.trim()}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              Gönder
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-        </TabsContent>
+            {/* Modal Chat */}
+            <Dialog open={isChatOpen} onOpenChange={setIsChatOpen}>
+              <DialogContent className="sm:max-w-[450px] h-[500px] flex flex-col p-0 ">
+                <DialogHeader className="p-4 border-b flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 relative rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800">
+                      <Image
+                        src={currentHotel.image}
+                        alt={currentHotel.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div>
+                      <DialogTitle className="text-lg font-semibold">
+                        {currentHotel.name}
+                      </DialogTitle>
+                      <DialogDescription className="text-sm text-muted-foreground">
+                        {currentHotel.location}
+                      </DialogDescription>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setIsChatOpen(false)}
+                    className="text-muted-foreground hover:text-foreground transition"
+                  ></button>
+                </DialogHeader>
 
+                {/* Chat messages */}
+                <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 dark:bg-gray-800 scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
+                  {messages.map((msg) => (
+                    <div
+                      key={msg.id}
+                      className={`flex ${
+                        msg.sender === "user" ? "justify-end" : "justify-start"
+                      }`}
+                    >
+                      {msg.sender === "bot" && (
+                        <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-300 dark:border-gray-700 mr-2">
+                          <Image
+                            src={currentHotel.image}
+                            alt="Rotaly Logo"
+                            width={35}
+                            height={35}
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+                      <div
+                        className={`max-w-[75%] p-2 rounded-lg text-sm ${
+                          msg.sender === "user"
+                            ? "bg-blue-600 text-white rounded-br-sm"
+                            : "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-sm"
+                        }`}
+                      >
+                        {msg.message}
+                      </div>
+                    </div>
+                  ))}
+                  <div ref={messagesEndRef} />
+                </div>
 
-
-
-
+                {/* Input area */}
+                <div className="p-4 border-t flex gap-2 items-center bg-white dark:bg-gray-900">
+                  <Input
+                    placeholder="Mesajınızı yazın..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+                    className="flex-1"
+                  />
+                  <Button
+                    onClick={handleSendMessage}
+                    disabled={!message.trim()}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    Gönder
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </TabsContent>
 
           <TabsContent value="past">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
               <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
                 {t("pastReservations")}
               </h2>
-              <p className="text-gray-600 dark:text-gray-400">{t("pastReservationsDescription")}</p>
+              <p className="text-gray-600 dark:text-gray-400">
+                {t("pastReservationsDescription")}
+              </p>
             </div>
           </TabsContent>
-
 
           <TabsContent value="notifications">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
@@ -616,7 +637,9 @@ useEffect(() => {
               </h2>
               <div className="space-y-4">
                 {notifications.length === 0 ? (
-                  <p className="text-gray-600 dark:text-gray-400">{t("noNotifications")}</p>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {t("noNotifications")}
+                  </p>
                 ) : (
                   notifications.map((notif) => (
                     <div
@@ -647,7 +670,6 @@ useEffect(() => {
               </div>
             </div>
           </TabsContent>
-
         </div>
       </Tabs>
 
@@ -673,7 +695,10 @@ useEffect(() => {
           <div className="space-y-4 py-4">
             {tempData.map((field, idx) => (
               <div key={field.id} className="space-y-1">
-                <Label htmlFor={field.id} className="text-gray-700 dark:text-gray-300">
+                <Label
+                  htmlFor={field.id}
+                  className="text-gray-700 dark:text-gray-300"
+                >
                   {field.label}
                 </Label>
 
@@ -688,8 +713,12 @@ useEffect(() => {
                       updated[idx].value = e.target.value;
                       setTempData(updated);
                     }}
-                    placeholder={field.id === "phone" ? "+90 532 123 4567" : undefined}
-                    className={`dark:bg-gray-800 dark:text-white ${errors[field.id] ? "border-red-500" : ""}`}
+                    placeholder={
+                      field.id === "phone" ? "+90 532 123 4567" : undefined
+                    }
+                    className={`dark:bg-gray-800 dark:text-white ${
+                      errors[field.id] ? "border-red-500" : ""
+                    }`}
                   />
                 )}
                 {errors[field.id] && (
@@ -726,7 +755,10 @@ useEffect(() => {
               { id: "confirm", label: t("confirmNewPassword") },
             ].map((field) => (
               <div key={field.id} className="space-y-1">
-                <Label htmlFor={field.id} className="text-gray-700 dark:text-gray-300">
+                <Label
+                  htmlFor={field.id}
+                  className="text-gray-700 dark:text-gray-300"
+                >
                   {field.label}
                 </Label>
                 <Input
@@ -734,14 +766,19 @@ useEffect(() => {
                   type="password"
                   value={passwords[field.id as keyof typeof passwords]}
                   onChange={(e) =>
-                    setPasswords((prev) => ({ ...prev, [field.id]: e.target.value }))
+                    setPasswords((prev) => ({
+                      ...prev,
+                      [field.id]: e.target.value,
+                    }))
                   }
                   className={`dark:bg-gray-800 dark:text-white ${
                     passwordErrors[field.id] ? "border-red-500" : ""
                   }`}
                 />
                 {passwordErrors[field.id] && (
-                  <p className="text-sm text-red-500">{passwordErrors[field.id]}</p>
+                  <p className="text-sm text-red-500">
+                    {passwordErrors[field.id]}
+                  </p>
                 )}
               </div>
             ))}

@@ -126,7 +126,7 @@ export function Navbar() {
                   filteredHotels.map((hotel) => (
                     <Link
                       key={hotel.id}
-                      href={"/dashboard/hotel/reservations"}
+                      href={"/hotels/3"}
                       className="flex items-center justify-between gap-4 p-3 hover:bg-accent/30 transition-colors rounded-lg cursor-pointer"
                       onClick={handleHotelClick}
                     >
