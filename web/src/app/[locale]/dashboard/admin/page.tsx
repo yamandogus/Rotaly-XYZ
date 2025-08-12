@@ -1,55 +1,58 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2Icon, HotelIcon, UsersIcon, BarChart3Icon, ShieldCheckIcon, MessageCircleIcon } from "lucide-react";
+import { Building2Icon, HotelIcon, BarChart3Icon, ShieldCheckIcon, MessageCircleIcon, UsersIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
-const adminMenu = [
-  {
-    title: "Kullanıcı Yönetimi",
-    icon: UsersIcon,
-    description: "Tüm kullanıcıları görüntüleyebilir, düzenleyebilir ve yönetebilirsiniz.",
-    link: "#",
-    color: "text-blue-500",
-  },
-  {
-    title: "Müşteri Yönetimi",
-    icon: HotelIcon,
-    description: "Otelleri görüntüleyebilir, onaylayabilir ve düzenleyebilirsiniz.",
-    link: "/dashboard/admin/customers",
-    color: "text-green-500",
-  },
-  {
-    title: "İstatistikler & Raporlar",
-    icon: BarChart3Icon,
-    description: "Rezervasyon istatistikleri ve sistem raporlarını görüntüleyebilirsiniz.",
-    link: "/dashboard/admin/statistics",
-    color: "text-purple-500",
-  },
-  {
-    title: "Şirket Ayarları",
-    icon: Building2Icon,
-    description: "Şirket bilgilerini ve genel sistem ayarlarını yönetebilirsiniz.",
-    link: "/dashboard/admin/company",
-    color: "text-orange-500",
-  },
-  {
-    title: "Güvenlik & Denetim",
-    icon: ShieldCheckIcon,
-    description: "Sistem güvenliği ve kullanıcı aktivitelerini denetleyebilirsiniz.",
-    link: "#",
-    color: "text-red-500",
-  },
-  {
-    title: "Canlı Destek",
-    icon: MessageCircleIcon,
-    description: "Canlı destek ile müşteri desteği sağlayabilirsiniz.",
-    link: "/dashboard/admin/live-support",
-    color: "text-gray-500",
-  },
-];
+
 
 export default function AdminDashboard() {
+  const t = useTranslations("Admin");
+  const adminMenu = [
+    {
+      title: t("hotelManagement"),
+      icon: HotelIcon,
+      description: t("hotelManagementDesc"),
+      link: "/dashboard/admin/hotels",
+      color: "text-blue-500",
+    },
+    {
+      title: t("customerManagement"),
+      icon: UsersIcon,
+      description: t("customerManagementDesc"),
+      link: "/dashboard/admin/customers",
+      color: "text-green-500",
+    },
+    {
+      title: t("statisticsReports"),
+      icon: BarChart3Icon,
+      description: t("statisticsReportsDesc"),
+      link: "/dashboard/admin/statistics",
+      color: "text-purple-500",
+    },
+    {
+      title: t("companySettings"),
+      icon: Building2Icon,
+      description: t("companySettingsDesc"),
+      link: "/dashboard/admin/company",
+      color: "text-orange-500",
+    },
+    {
+      title: t("securityAudit"),
+      icon: ShieldCheckIcon,
+      description: t("securityAuditDesc"),
+      link: "#",
+      color: "text-red-500",
+    },
+    {
+      title: t("liveSupport"),
+      icon: MessageCircleIcon,
+      description: t("liveSupportDesc"),
+      link: "/dashboard/admin/live-support",
+      color: "text-gray-500",
+    },
+  ];
   const router = useRouter();
   return (
     <div className="p-8">
