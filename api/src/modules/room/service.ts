@@ -14,7 +14,7 @@ export class RoomService {
     if (!existingRoom) {
       throw new Error("Room not found");
     }
-    return await RoomRepository.updateRoom(roomId, data);
+    return await RoomRepository.updateRoom(roomId, existingRoom.hotelId, data);
   }
 
   static async deleteRoom(roomId: string) {
@@ -35,5 +35,9 @@ export class RoomService {
 
   static async getRooms(query: QueryRoomDto) {
     return await RoomRepository.getRoomsByHotelId(query.hotelId || "");
+  }
+
+  static async getRoomsByHotel(hotelId: string) {
+    return await RoomRepository.getRoomsByHotelId(hotelId);
   }
 }
