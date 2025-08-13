@@ -37,6 +37,14 @@ enum HotelType {
   CAMP
 }
 
+enum RoomType {
+  STANDARD
+  DELUXE
+  SUITE
+  PRESIDENTIAL
+  EXECUTIVE
+}
+
 enum HotelFeatures {
   WIFI
   POOL
@@ -46,6 +54,7 @@ enum HotelFeatures {
   PET_FRIENDLY
   RESTAURANT
   BREAKFAST_INCLUDED
+  CANCEL_POLICY
 }
 
 enum SupportCategory {
@@ -114,7 +123,8 @@ model PaymentCard {
   expiresAt DateTime // Son kullanma tarihi
   createdAt DateTime @default(now()) @map("created_at")
 
-  user User @relation(fields: [userId], references: [id])
+  user        User          @relation(fields: [userId], references: [id])
+  reservation Reservation[]
 
   @@map("payment_cards")
 }
@@ -146,6 +156,8 @@ model Hotel {
   id                String    @id @default(uuid())
   name              String
   description       String?
+  checkIn           String    @default("12:00")
+  checkOut          String    @default("14:00")
   location          String
   address           String
   city              String
@@ -208,6 +220,10 @@ model Room {
   name        String
   description String?
   price       Float
+  maxAdults   Int
+  maxChildren Int
+  floor       Int
+  roomNumber  Int
   capacity    Int
   bedCount    Int
   isAvailable Boolean   @default(true)
@@ -220,6 +236,7 @@ model Room {
   bookings      Reservation[]
   featureStatus RoomFeatureStatus[]
   images        Image[]             @relation("RoomImages")
+  type          RoomType            @default(STANDARD)
 
   @@map("rooms")
 }
@@ -253,20 +270,29 @@ model Image {
 }
 
 model Reservation {
-  id         String    @id @default(uuid())
-  checkIn    DateTime
-  checkOut   DateTime
-  guests     Int
-  totalPrice Float
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @updatedAt @map("updated_at")
-  deletedAt  DateTime? @map("deleted_at")
+  id             String    @id @default(uuid())
+  nightCount     Int
+  checkIn        String    @default("12:00")
+  checkOut       String    @default("14:00")
+  guests         Int
+  startDate      DateTime
+  endDate        DateTime
+  totalPrice     Float
+  hotelAddress   String // Otelin adresi
+  userPhone      String // Kullanıcının telefon numarası
+  specialRequest String? // Özel istekler (opsiyonel)
+  paymentMethod  String // Ödeme yöntemi
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
-  room   Room   @relation(fields: [roomId], references: [id])
-  roomId String
+  room          Room         @relation(fields: [roomId], references: [id])
+  roomId        String
+  paymentCard   PaymentCard? @relation(fields: [paymentCardId], references: [id])
+  paymentCardId String?
 
   @@map("reservations")
 }
