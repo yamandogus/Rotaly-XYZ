@@ -7,12 +7,13 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import HotelSummary from "@/components/booking/hotel-summary";
 import { bookingData, hotelData } from "@/data/dumy";
-import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setStepIncrease } from "@/store/reservation/reservation-slice";
 
 export default function BookingInformationPage() {
-  const router = useRouter();
+  const dispatch = useDispatch();
   const handleNextStep = () => {
-    router.push(`?step=2`, { scroll: false });
+    dispatch(setStepIncrease(2)) // 2. adıma (payment sayfasına) geç
   };
 
   return (
