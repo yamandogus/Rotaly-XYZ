@@ -78,7 +78,7 @@ async function testAllVerificationEmails() {
 }
 
 // run every test if the file is executed from cmd
-// npx ts-node src/tests/test-verification-email.ts
+// npx ts-node src/scripts/test-verification-email.ts
 if (require.main === module) {
   testAllVerificationEmails();
 }

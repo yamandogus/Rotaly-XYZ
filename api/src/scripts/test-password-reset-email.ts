@@ -78,7 +78,7 @@ async function testAllPasswordResetEmails() {
 }
 
 // run every test if the file is executed from cmd
-// npx ts-node src/tests/test-password-reset-email.ts
+// npx ts-node src/scripts/test-password-reset-email.ts
 if (require.main === module) {
   testAllPasswordResetEmails();
 }

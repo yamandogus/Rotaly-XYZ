@@ -82,7 +82,7 @@ async function testAllContactEmails() {
 }
 
 // run every test if the file is executed from cmd
-// npx ts-node src/tests/test-contact-email.ts
+// npx ts-node src/scripts/test-contact-email.ts
 if (require.main === module) {
   testAllContactEmails();
 }

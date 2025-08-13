@@ -80,7 +80,7 @@ async function testAllSupportConfirmationEmails() {
 }
 
 // run every test if the file is executed from cmd
-// npx ts-node src/tests/test-support-confirmation-email.ts
+// npx ts-node src/scripts/test-support-confirmation-email.ts
 if (require.main === module) {
   testAllSupportConfirmationEmails();
 }

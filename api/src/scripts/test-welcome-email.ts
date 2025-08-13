@@ -78,7 +78,7 @@ async function testAllWelcomeEmails() {
 }
 
 // run every test if the file is executed from cmd
-// npx ts-node src/tests/test-welcome-email.ts
+// npx ts-node src/scripts/test-welcome-email.ts
 if (require.main === module) {
   testAllWelcomeEmails();
 }
