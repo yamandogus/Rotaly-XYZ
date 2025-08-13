@@ -1,4 +1,8 @@
-import { emailService } from "../modules/email/service";
+// -------------------------------------------------------
+//   npx ts-node src/scripts/email/test-welcome-email.ts
+// -------------------------------------------------------
+
+import { emailService } from "../../modules/email/service";
 
 async function testWelcomeEmailEnglish() {
   console.log("Testing welcome email (English)...");
@@ -78,7 +82,7 @@ async function testAllWelcomeEmails() {
 }
 
 // run every test if the file is executed from cmd
-// npx ts-node src/tests/test-welcome-email.ts
+// npx ts-node src/scripts/test-welcome-email.ts
 if (require.main === module) {
   testAllWelcomeEmails();
 }
