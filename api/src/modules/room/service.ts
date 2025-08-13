@@ -1,4 +1,3 @@
-// src/modules/room/room.service.ts
 import { RoomRepository } from "../../modules/room/repository"
 import { CreateRoomDto } from "../../dto/room/create-room.dto";
 import { UpdateRoomDto } from "../../dto/room/update-room.dto";
