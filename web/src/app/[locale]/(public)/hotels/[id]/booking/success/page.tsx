@@ -6,13 +6,21 @@ import Link from "next/link";
 import { hotelData, bookingData } from "@/data/dumy";
 import Image from "next/image";
 import { Rating, RatingButton } from "@/components/ui/shadcn-io/rating";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setStepReset } from "@/store/reservation/reservation-slice";
 
 export default function BookingSuccessPage() {
+
+  const dispatch = useDispatch()
+  const router = useRouter()
   const handleGoToHomepage = () => {
-    // Rezervasyon tamamlandığında herhangi bir temizlik işlemi gerekmez
-    // URL parametreleri ana sayfaya gidince otomatik temizlenir
+      router.push("/")
+      setTimeout(() => { 
+         dispatch(setStepReset())
+      }, 2000);
   };
-  // Random rezervasyon numarası oluştur
+ 
   const reservationNumber = Math.floor(Math.random() * 900000) + 100000;
 
   return (

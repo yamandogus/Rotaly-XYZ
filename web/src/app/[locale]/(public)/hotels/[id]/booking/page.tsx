@@ -1,33 +1,17 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
+import React, {Suspense } from 'react'
 import BookingInformationPage from './information/page'
 import BookingPaymentPage from './payment/page'
 import { Check } from 'lucide-react'
 import BookingSuccessPage from './success/page'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/store/store'
 
 function BookingContent() {
-  const searchParams = useSearchParams()
+    const step = useSelector((state: RootState) => state.step);
+    const currentStep = step.step;
   
-  // URL'den step parametresini oku, yoksa 1 kullan
-  const urlStep = searchParams.get('step')
-  const [currentStep, setCurrentStep] = useState(() => {
-    if (urlStep && parseInt(urlStep) >= 1 && parseInt(urlStep) <= 3) {
-      return parseInt(urlStep)
-    }
-    return 1
-  })
-
-
-
-  // URL parametresi değiştiğinde state'i güncelle
-  useEffect(() => {
-    const urlStep = searchParams.get('step')
-    if (urlStep && parseInt(urlStep) >= 1 && parseInt(urlStep) <= 3) {
-      setCurrentStep(parseInt(urlStep))
-    }
-  }, [searchParams])
 
   const steps = [
     { id: 1, title: 'Konaklama Bilgileri' },
