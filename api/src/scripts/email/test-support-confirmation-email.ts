@@ -1,4 +1,8 @@
-import { emailService } from "../modules/email/service";
+// --------------------------------------------------------------------
+//   npx ts-node src/scripts/email/test-support-confirmation-email.ts
+// --------------------------------------------------------------------
+
+import { emailService } from "../../modules/email/service";
 
 async function testSupportConfirmationEmailEnglish() {
   console.log("Testing support confirmation email (English)...");

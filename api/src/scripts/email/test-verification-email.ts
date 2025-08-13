@@ -1,12 +1,21 @@
-import { emailService } from "../modules/email/service";
+// ------------------------------------------------------------
+//   npx ts-node src/scripts/email/test-verification-email.ts
+// ------------------------------------------------------------
+
+import { emailService } from "../../modules/email/service";
+import { generateOTP } from "../../utils/otp";
 
 async function testVerificationEmailEnglish() {
   console.log("Testing verification email (English)...");
 
   try {
+    const otp = generateOTP(6);
+    console.log(`Generated OTP for English test: ${otp}`);
+
     const result = await emailService.sendVerificationEmail(
       "test@example.com",
       "Test User",
+      otp,
       "en"
     );
 
@@ -29,9 +38,13 @@ async function testVerificationEmailTurkish() {
   console.log("Testing verification email (Turkish)...");
 
   try {
+    const otp = generateOTP(6);
+    console.log(`Generated OTP for Turkish test: ${otp}`);
+
     const result = await emailService.sendVerificationEmail(
       "test@example.com",
       "Test Kullanıcı",
+      otp,
       "tr"
     );
 

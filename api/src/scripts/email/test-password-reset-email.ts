@@ -1,12 +1,21 @@
-import { emailService } from "../modules/email/service";
+// --------------------------------------------------------------
+//   npx ts-node src/scripts/email/test-password-reset-email.ts
+// --------------------------------------------------------------
+
+import { emailService } from "../../modules/email/service";
+import { generateOTP } from "../../utils/otp";
 
 async function testPasswordResetEmailEnglish() {
   console.log("Testing password reset email (English)...");
 
   try {
+    const otp = generateOTP(6);
+    console.log(`Generated OTP for English test: ${otp}`);
+
     const result = await emailService.sendPasswordResetEmail(
-      "test@example.com",
+      "caglayagmuricer@gmail.com",
       "Test User",
+      otp,
       "en"
     );
 
@@ -29,9 +38,13 @@ async function testPasswordResetEmailTurkish() {
   console.log("Testing password reset email (Turkish)...");
 
   try {
+    const otp = generateOTP(6);
+    console.log(`Generated OTP for Turkish test: ${otp}`);
+
     const result = await emailService.sendPasswordResetEmail(
-      "test@example.com",
+      "caglayagmuricer@gmail.com",
       "Test Kullanıcı",
+      otp,
       "tr"
     );
 
@@ -77,8 +90,6 @@ async function testAllPasswordResetEmails() {
   return allPassed;
 }
 
-// run every test if the file is executed from cmd
-// npx ts-node src/scripts/test-password-reset-email.ts
 if (require.main === module) {
   testAllPasswordResetEmails();
 }
