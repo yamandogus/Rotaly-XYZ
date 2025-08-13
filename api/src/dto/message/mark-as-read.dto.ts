@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-export const markAsReadSchema = z.object({
-  messageIds: z.array(z.string().uuid("Invalid message ID")),
+export const MarkAsReadSchema = z.object({
+  messageIds: z.array(z.string().uuid("Invalid message ID format")),
 });
 
-export type MarkAsReadSchemaType = z.infer<typeof markAsReadSchema>;
+export type MarkAsReadDto = z.infer<typeof MarkAsReadSchema>;
