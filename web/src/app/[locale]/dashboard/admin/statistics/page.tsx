@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { useTranslations } from "next-intl";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -14,137 +13,132 @@ import {
   PieChart,
   Pie,
   Cell,
-  Tooltip as PieTooltip,
+  CartesianGrid,
 } from "recharts";
 import {
-  ChevronDown,
-  Repeat,
   Download,
-  Home,
-  Utensils,
-  Star,
-  CheckCircle,
-  AlertCircle,
+  Building2,
+  CreditCard,
+  TrendingUp,
+  Calendar,
+  DollarSign,
+  Activity,
 } from "lucide-react";
 
-const reservationSourceData = [
-  { name: "İç rezervasyon", value: 400, color: "#8884d8" },
-  { name: "Booking.com", value: 300, color: "#83a6ed" },
-  { name: "Airbnb", value: 300, color: "#8dd1e1" },
-  { name: "Web sitesi", value: 200, color: "#a4de6c" },
-  { name: "Expedia", value: 100, color: "#d0ed57" },
+// Dummy data for admin statistics - Tüm aylar
+const monthlyRevenueData = [
+  { month: "Ocak", revenue: 45000, bookings: 120 },
+  { month: "Şubat", revenue: 52000, bookings: 135 },
+  { month: "Mart", revenue: 48000, bookings: 110 },
+  { month: "Nisan", revenue: 61000, bookings: 150 },
+  { month: "Mayıs", revenue: 55000, bookings: 130 },
+  { month: "Haziran", revenue: 68000, bookings: 165 },
+  { month: "Temmuz", revenue: 72000, bookings: 180 },
+  { month: "Ağustos", revenue: 85000, bookings: 210 },
+  { month: "Eylül", revenue: 65000, bookings: 160 },
+  { month: "Ekim", revenue: 58000, bookings: 145 },
+  { month: "Kasım", revenue: 52000, bookings: 130 },
+  { month: "Aralık", revenue: 75000, bookings: 190 },
 ];
 
-const COLORS = reservationSourceData.map((d) => d.color);
-
-const revenueData = [
-  { name: "Ocak", uv: 400 },
-  { name: "Şubat", uv: 300 },
-  { name: "Mart", uv: 500 },
-  { name: "Nisan", uv: 200 },
-  { name: "Mayıs", uv: 300 },
+const bookingSourceData = [
+  { name: "Booking.com", value: 35, color: "#003580" },
+  { name: "Airbnb", value: 25, color: "#FF5A5F" },
+  { name: "Web Sitesi", value: 20, color: "#10B981" },
+  { name: "Expedia", value: 15, color: "#FF6B35" },
+  { name: "Diğer", value: 5, color: "#6B7280" },
 ];
 
-interface StatsCardProps {
+const COLORS = bookingSourceData.map((d) => d.color);
+
+interface MetricCardProps {
   title: string;
-  status: string;
-  tlValue: string | number;
+  value: string | number;
+  subtitle?: string;
   icon: React.ReactNode;
+  trend?: {
+    value: number;
+    isPositive: boolean;
+  };
 }
 
-const StatsCard: React.FC<StatsCardProps> = ({ title, status, tlValue, icon }) => (
-  <Card className="flex flex-col h-full">
-    <CardHeader className="flex items-center justify-between pb-2">
+const MetricCard: React.FC<MetricCardProps> = ({ title, value, subtitle, icon, trend }) => (
+  <Card className="h-full">
+    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
       <CardTitle className="text-sm font-medium">{title}</CardTitle>
       {icon}
     </CardHeader>
     <CardContent>
-      <p className="text-xs text-muted-foreground">{status}</p>
-      <div className="flex flex-col mt-2">
-        <span className="text-xl font-bold">₺{tlValue}</span>
-        <span className="text-sm text-muted-foreground">Toplam</span>
-      </div>
+      <div className="text-2xl font-bold">{value}</div>
+      {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
+      {trend && (
+        <div className="flex items-center mt-2">
+          <TrendingUp className={`h-3 w-3 mr-1 ${trend.isPositive ? 'text-green-500' : 'text-red-500'}`} />
+          <span className={`text-xs ${trend.isPositive ? 'text-green-500' : 'text-red-500'}`}>
+            {trend.isPositive ? '+' : ''}{trend.value}%
+          </span>
+        </div>
+      )}
     </CardContent>
   </Card>
 );
 
-const RevenueSharingCard = () => {
-  const t = useTranslations("Statistics");
+const RevenueChartCard = () => {
   return (
-    <Card className="col-span-1 h-full flex flex-col">
+    <Card className="col-span-2 h-full">
       <CardHeader>
-        <CardTitle className="text-sm font-medium">{t("revenueSharing.title")}</CardTitle>
-        <p className="text-xs text-muted-foreground">{t("revenueSharing.description")}</p>
+        <CardTitle className="text-sm font-medium">Aylık Gelir Trendi</CardTitle>
+        <p className="text-xs text-muted-foreground">Tüm aylar gelir ve rezervasyon sayısı</p>
       </CardHeader>
-      <CardContent className="flex-1 flex flex-col justify-between space-y-4">
-        {[
-          { icon: <Home className="h-4 w-4 text-primary" />, label: t("revenueSharing.rooms"), value: "₺11.040", badge: "94.85%", progress: 94.85 },
-          { icon: <Utensils className="h-4 w-4 text-primary" />, label: t("revenueSharing.food"), value: "₺600", badge: "5.15%", progress: 5.15 },
-          { icon: <Star className="h-4 w-4 text-primary" />, label: t("revenueSharing.extraServices"), value: "₺0", badge: "0.00%", progress: 0 },
-        ].map(({ icon, label, value, badge, progress }, i) => (
-          <div key={i}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">{icon}<span className="text-sm font-medium">{label}</span></div>
-              <div className="text-sm font-medium">
-                {value} <Badge variant="secondary">{badge}</Badge>
-              </div>
-            </div>
-            <progress value={progress} max={100} className="h-2 w-full mt-1 rounded" />
-          </div>
-        ))}
+      <CardContent>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={monthlyRevenueData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" />
+            <YAxis yAxisId="left" />
+            <YAxis yAxisId="right" orientation="right" />
+            <Tooltip />
+            <Line yAxisId="left" type="monotone" dataKey="revenue" stroke="#8884d8" strokeWidth={2} name="Gelir (₺)" />
+            <Line yAxisId="right" type="monotone" dataKey="bookings" stroke="#82ca9d" strokeWidth={2} name="Rezervasyon" />
+          </LineChart>
+        </ResponsiveContainer>
       </CardContent>
     </Card>
   );
 };
 
-const PaymentTypeCard = () => {
-  const t = useTranslations("Statistics");
+const BookingSourceCard = () => {
   return (
-    <Card className="col-span-1 h-full flex flex-col">
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle className="text-sm font-medium">{t("paymentTypes.title")}</CardTitle>
-        <p className="text-xs text-muted-foreground">{t("paymentTypes.description")}</p>
+        <CardTitle className="text-sm font-medium">Rezervasyon Kaynakları</CardTitle>
+        <p className="text-xs text-muted-foreground">Rezervasyonların kaynak dağılımı</p>
       </CardHeader>
-      <CardContent className="flex-1 flex items-center justify-center">
-        <div className="text-center text-muted-foreground">{t("paymentTypes.noData")}</div>
-      </CardContent>
-    </Card>
-  );
-};
-
-const ReservationSourceCard = () => {
-  const t = useTranslations("Statistics");
-  return (
-    <Card className="col-span-1 h-full flex flex-col">
-      <CardHeader>
-        <CardTitle className="text-sm font-medium">{t("reservationSources.title")}</CardTitle>
-        <p className="text-xs text-muted-foreground">{t("reservationSources.description")}</p>
-      </CardHeader>
-      <CardContent className="flex-1">
-        <ResponsiveContainer width="100%" height={200}>
+      <CardContent>
+        <ResponsiveContainer width="100%" height={250}>
           <PieChart>
             <Pie
-              data={reservationSourceData}
+              data={bookingSourceData}
               cx="50%"
               cy="50%"
-              innerRadius={60}
+              innerRadius={40}
               outerRadius={80}
               fill="#8884d8"
               paddingAngle={5}
               dataKey="value"
             >
-              {reservationSourceData.map((entry, index) => (
+              {bookingSourceData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
-            <PieTooltip />
+            <Tooltip />
           </PieChart>
         </ResponsiveContainer>
         <div className="flex flex-wrap justify-center mt-2 text-xs">
-          {reservationSourceData.map((item) => (
-            <div key={item.name} className="flex items-center mr-4">
-              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: item.color }} />
-              <span className="ml-1 text-muted-foreground">{item.name}</span>
+          {bookingSourceData.map((item) => (
+            <div key={item.name} className="flex items-center mr-3 mb-1">
+              <span className="h-2 w-2 rounded-full mr-1" style={{ backgroundColor: item.color }} />
+              <span className="text-muted-foreground">{item.name} ({item.value}%)</span>
             </div>
           ))}
         </div>
@@ -153,34 +147,74 @@ const ReservationSourceCard = () => {
   );
 };
 
-const RevenueAndOccupancyCard = () => {
-  const t = useTranslations("Statistics");
+const QuickStatsCard = () => {
   return (
-    <Card className="col-span-3 h-full flex flex-col">
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle className="text-sm font-medium">{t("revenueAndOccupancy.title")}</CardTitle>
-        <p className="text-xs text-muted-foreground">{t("revenueAndOccupancy.description")}</p>
+        <CardTitle className="text-sm font-medium">Hızlı İstatistikler</CardTitle>
+        <p className="text-xs text-muted-foreground">Önemli metrikler</p>
       </CardHeader>
-      <CardContent className="flex-1 flex flex-col">
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <p className="text-3xl font-bold">28.63%</p>
-            <p className="text-xs text-muted-foreground">{t("revenueAndOccupancy.occupancy")}</p>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <span className="text-sm">Bekleyen Ödemeler</span>
+            <Badge variant="secondary">₺45,200</Badge>
           </div>
-          <div>
-            <p className="text-3xl font-bold">₺11.640</p>
-            <p className="text-xs text-muted-foreground">{t("revenueAndOccupancy.totalRevenue")}</p>
+          <div className="flex justify-between items-center">
+            <span className="text-sm">Bu Hafta Rezervasyon</span>
+            <Badge variant="outline">156</Badge>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm">Aktif Destek Talepleri</span>
+            <Badge variant="destructive">8</Badge>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm">Yeni Otel Başvuruları</span>
+            <Badge variant="default">3</Badge>
           </div>
         </div>
-        <div className="flex-1">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={revenueData}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey="uv" stroke="#8884d8" strokeWidth={2} dot={false} />
-            </LineChart>
-          </ResponsiveContainer>
+      </CardContent>
+    </Card>
+  );
+};
+
+const RecentActivityCard = () => {
+  const activities = [
+    { type: "rezervasyon", message: "Yeni rezervasyon: Antalya Resort", time: "2 dk önce", amount: "₺2,500" },
+    { type: "ödeme", message: "Ödeme alındı: İstanbul Hotel", time: "15 dk önce", amount: "₺1,800" },
+    { type: "iptal", message: "Rezervasyon iptali: Kapadokya Lodge", time: "1 saat önce", amount: "₺1,200" },
+    { type: "rezervasyon", message: "Yeni rezervasyon: Bodrum Villa", time: "2 saat önce", amount: "₺3,000" },
+  ];
+
+  const getActivityIcon = (type: string) => {
+    switch (type) {
+      case "rezervasyon": return <Calendar className="h-4 w-4 text-blue-500" />;
+      case "ödeme": return <CreditCard className="h-4 w-4 text-green-500" />;
+      case "iptal": return <Activity className="h-4 w-4 text-red-500" />;
+      default: return <Activity className="h-4 w-4 text-gray-500" />;
+    }
+  };
+
+  return (
+    <Card className="h-full">
+      <CardHeader>
+        <CardTitle className="text-sm font-medium">Son Aktiviteler</CardTitle>
+        <p className="text-xs text-muted-foreground">Sistemdeki son işlemler</p>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3">
+          {activities.map((activity, index) => (
+            <div key={index} className="flex items-center space-x-3">
+              {getActivityIcon(activity.type)}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate">{activity.message}</p>
+                <p className="text-xs text-muted-foreground">{activity.time}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm font-medium">{activity.amount}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </CardContent>
     </Card>
@@ -188,36 +222,94 @@ const RevenueAndOccupancyCard = () => {
 };
 
 const StatisticPage = () => {
-  const t = useTranslations("Statistics");
+  const exportToCSV = () => {
+    const csvContent = "data:text/csv;charset=utf-8," + 
+      "Aylık Gelir Verileri\n" +
+      "Ay,Gelir,Rezervasyon\n" +
+      monthlyRevenueData.map(row => `${row.month},${row.revenue},${row.bookings}`).join("\n") +
+      "\n\nRezervasyon Kaynakları\n" +
+      "Kaynak,Yüzde\n" +
+      bookingSourceData.map(row => `${row.name},${row.value}%`).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "admin_statistics.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 ">
+    <div className="flex-1 space-y-6 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">{t("title")}</h2>
+        <h2 className="text-3xl font-bold tracking-tight">Admin İstatistikleri</h2>
         <div className="flex items-center space-x-2">
-          <Button variant="outline"><span>{t("dateRange")}</span><ChevronDown className="h-4 w-4 ml-2" /></Button>
-          <Button variant="outline"><span>{t("allRooms")}</span><ChevronDown className="h-4 w-4 ml-2" /></Button>
-          <Button><Repeat className="h-4 w-4 mr-1" />{t("compare")}</Button>
-          <Button variant="outline"><Download className="h-4 w-4 mr-1" />{t("exportCsv")}</Button>
+          <Button onClick={exportToCSV} variant="outline">
+            <Download className="h-4 w-4 mr-1" />
+            CSV Dışa Aktar
+          </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-4">
-        <StatsCard
-          title={t("payments.received.title")}
-          status={t("payments.received.status", { count: 6 })}
-          tlValue="3.560"
-          icon={<CheckCircle className="h-4 w-4 text-green-500" />}
+      {/* 5 Card Layout - 3x2 Grid with one 2-span card */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* İstatistik Kartları (3 adet) */}
+        <MetricCard
+          title="Toplam Gelir"
+          value="₺289,000"
+          subtitle="Bu ay"
+          icon={<DollarSign className="h-4 w-4 text-green-500" />}
+          trend={{ value: 12.5, isPositive: true }}
         />
-        <StatsCard
-          title={t("payments.pending.title")}
-          status={t("payments.pending.status", { count: 17 })}
-          tlValue="8.080"
-          icon={<AlertCircle className="h-4 w-4 text-yellow-500" />}
+        <MetricCard
+          title="Aktif Oteller"
+          value="24"
+          subtitle="Sistemde kayıtlı"
+          icon={<Building2 className="h-4 w-4 text-blue-500" />}
+          trend={{ value: 8.3, isPositive: true }}
         />
-        <RevenueSharingCard />
-        <PaymentTypeCard />
-        <ReservationSourceCard />
-        <RevenueAndOccupancyCard />
+        <MetricCard
+          title="Toplam Rezervasyon"
+          value="810"
+          subtitle="Bu ay"
+          icon={<Calendar className="h-4 w-4 text-purple-500" />}
+          trend={{ value: 15.2, isPositive: true }}
+        />
+
+        {/* Aylık Gelir Trendi (2'lik yer kaplıyor) */}
+        <RevenueChartCard />
+
+        {/* Diğer Kartlar */}
+        <BookingSourceCard />
+        <QuickStatsCard />
+        <RecentActivityCard />
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle className="text-sm font-medium">Sistem Durumu</CardTitle>
+            <p className="text-xs text-muted-foreground">Platform genel durumu</p>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm">Sunucu Durumu</span>
+                <Badge variant="default" className="bg-green-500">Aktif</Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm">Veritabanı</span>
+                <Badge variant="default" className="bg-green-500">Bağlı</Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm">API Durumu</span>
+                <Badge variant="default" className="bg-green-500">Çalışıyor</Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm">Son Güncelleme</span>
+                <Badge variant="outline">2 dk önce</Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
