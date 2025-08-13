@@ -176,7 +176,10 @@ export class UserController {
 
   static async getProfile(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.user.id; // JWT middleware'den gelen kullanıcı ID'si
+      const userId = req.user?.userId;
+      if (!userId) {
+        throw new AppError("Unauthorized", 401);
+      }
       const profile = await UserService.getProfile(userId);
       res.status(200).json({
         success: true,
