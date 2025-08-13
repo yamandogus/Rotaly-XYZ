@@ -9,6 +9,7 @@ import {
   SendMessageSchema,
   GetMessagesSchema,
   MarkAsReadSchema,
+  EditMessageSchema,
 } from "../../dto/message";
 
 const router = Router();
@@ -77,5 +78,19 @@ router.put(
  * @access Private
  */
 router.delete("/:messageId", messageController.deleteMessage);
+
+/**
+ * @route PUT /api/messages/:messageId
+ * @desc Edit a message
+ * @access Private
+ * @body {
+ *   content: string
+ * }
+ */
+router.put(
+  "/:messageId",
+  validateBody(EditMessageSchema),
+  messageController.editMessage
+);
 
 export default router;

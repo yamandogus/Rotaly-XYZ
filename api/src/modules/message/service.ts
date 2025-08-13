@@ -4,6 +4,7 @@ import {
   SendMessageDto,
   GetMessagesDto,
   MarkAsReadDto,
+  EditMessageDto,
   MessageResponseDto,
   MessagesListResponseDto,
   ConversationResponseDto,
@@ -131,6 +132,32 @@ export class MessageService {
         "Message not found or you don't have permission to delete it",
         404
       );
+    }
+  }
+
+  async editMessage(
+    messageId: string,
+    userId: string,
+    data: EditMessageDto
+  ): Promise<MessageResponseDto> {
+    try {
+      const editedMessage = await this.messageRepository.editMessage(
+        messageId,
+        userId,
+        data
+      );
+
+      const isAIReceiver = editedMessage.receiverId?.startsWith("ai") || false;
+      return this.formatMessageResponse(editedMessage, isAIReceiver);
+    } catch (error: any) {
+      if (error.code === "P2025") {
+        // prisma error code for record not found
+        throw new AppError(
+          "Message not found or you don't have permission to edit it",
+          404
+        );
+      }
+      throw error;
     }
   }
 

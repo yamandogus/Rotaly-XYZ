@@ -5,6 +5,7 @@ import {
   SendMessageSchema,
   GetMessagesSchema,
   MarkAsReadSchema,
+  EditMessageSchema,
 } from "../../dto/message";
 import { TokenPayload } from "../../types/express";
 
@@ -157,6 +158,38 @@ export class MessageController {
       res.status(200).json({
         success: true,
         message: "Message deleted successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  editMessage = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const userId = req.user?.userId;
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          message: "Authentication required",
+        });
+      }
+
+      const { messageId } = req.params;
+      const validatedData = EditMessageSchema.parse(req.body);
+      const editedMessage = await this.messageService.editMessage(
+        messageId,
+        userId,
+        validatedData
+      );
+
+      res.status(200).json({
+        success: true,
+        message: "Message updated successfully",
+        data: editedMessage,
       });
     } catch (error) {
       next(error);
