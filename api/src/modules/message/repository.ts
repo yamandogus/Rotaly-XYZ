@@ -1,5 +1,9 @@
 import { PrismaClient } from "@prisma/client";
-import { SendMessageDto, GetMessagesDto } from "../../dto/message";
+import {
+  SendMessageDto,
+  GetMessagesDto,
+  EditMessageDto,
+} from "../../dto/message";
 
 export class MessageRepository {
   constructor(private prisma: PrismaClient) {}
@@ -251,6 +255,36 @@ export class MessageRepository {
       },
       data: {
         deletedAt: new Date(),
+      },
+    });
+  }
+
+  async editMessage(messageId: string, userId: string, data: EditMessageDto) {
+    // users can only edit their own messages that haven't been deleted
+    return this.prisma.message.update({
+      where: {
+        id: messageId,
+        senderId: userId,
+        deletedAt: null,
+      },
+      data: {
+        content: data.content,
+      },
+      include: {
+        sender: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+          },
+        },
+        receiver: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+          },
+        },
       },
     });
   }
