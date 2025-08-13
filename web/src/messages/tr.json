@@ -112,12 +112,8 @@
     "rotaly": "Rotaly",
     "home": "Anasayfa",
     "customers": "Müşteriler",  
-    "company": "Şirket Bilgileri",
     "admins": "Adminler",
-    "hotel-info": "Otel Bilgileri",
-    "reservations": "Rezervasyonlar",
-    "reports": "Raporlar",
-    "statistics": "İstatistikler",
+    "reservation-management": "Rezervasyon Yönetimi",
     "active-reservations": "Aktif Rezervasyonlar",
     "passive-reservations": "Pasif Rezervasyonlar",
     "active-customers": "Aktif Müşteriler",
@@ -144,7 +140,17 @@
     "security-audit": "Güvenlik & Denetim",
     "system-settings": "Sistem Ayarları",
     "live-support": "Canlı Destek",
-    "information": "Bilgiler"
+    "information": "Bilgiler",
+    "room-price-management":"Oda Fiyat Yönetimi",
+    "hotel-profile":"Otel Profili",
+    "guest-management":"Misafir Yönetimi",
+    "evaluations":"Değerlendirmeler",
+    "reports": "Raporlar",
+    "statistics": "İstatistikler"
+
+
+
+
   },
   "Company": {
     "title": "Şirket Bilgileri",
@@ -353,27 +359,60 @@
     "back": "Giriş Yap"
   },
   
-  "Reservations": {
-    "active": "Aktif",
-    "completed": "Tamamlandı",
-    "room": "Oda",
-    "persons": "kişilik",
+  "Rooms": {
+   "id": "ID",
+  "roomName": "Oda Adı",
+  "room-image":"Oda Görseli",
+  "price": "Fiyat",
+  "capacity": "Kapasite",
+  "status": "Durum",
+   "bedCount": "Yatak Sayısı",
+  "available": "Mevcut",
+  "unavailable": "Mevcut Değil",
+  "viewDetails": " Detayları Gör",
+  "edit": "Düzenle",
+  "delete": "Sil",
 
-    "searchPlaceholder": "Misafir adı veya e-posta ile arayın",
-    "selectRoom": "Oda Seçin",
-    "allRooms": "Tüm Odalar",
+ "roomList": "Oda Listesi",
+  "searchRooms": "Oda Ara...",
+  "filter": "Filtre",
+  "allStatus": "Tümü",
+  "sortBy": "Sırala",
+  "name": "İsim A-Z",
+  "nameDesc": "İsim Z-A",
+  "priceAsc": "Fiyat Artan",
+  "priceDesc": "Fiyat Azalan",
+  "capacityAsc": "Kapasite Artan",
+  "capacityDesc": "Kapasite Azalan",
+  "addRoom": "Oda Ekle",
+  "deletingRoom": "Oda siliniyor:",
 
-    "selectDate": "Tarih Seçin",
-    "allDates": "Tüm Tarihler",
+  "totalRooms": "Toplam Odalar",
+  "availableRooms": "Mevcut Odalar",
+  "unavailableRooms": "Mevcut Olmayan Odalar",
+  "back": "Geri",
+  "roomNotFound": "Oda bulunamadı",
+  "notAvailable": "Mevcut değil",
+  "basicInformation": "Temel Bilgiler",
+  "createdAt": "Oluşturulma Tarihi",
+  "updatedAt": "Güncellenme Tarihi",
+  "description": "Açıklama",
+  "noDescription": "Açıklama yok",
+  "overview": "Genel Bakış",
+  "bookings": "Rezervasyonlar",
+  "bookingInformationComingSoon": "Rezervasyon bilgileri yakında",
+  "features": "Özellikler",
+  "noFeatures": "Özellik yok",
+  "roomId": "Oda ID",
+  "availability": "Durum",
 
-    "noReservations": "Rezervasyon bulunamadı",
-    "noReservationsForRoom": "{roomNumber} numaralı oda için rezervasyon bulunamadı",
-    "noReservationsMessage": "Seçilen kriterlere uygun rezervasyon yok.",
-    "reservations": "rezervasyon",
-
-    "activeReservations": "Aktif Rezervasyonlar",
-    "pastReservations": "Geçmiş Rezervasyonlar"
+  "roomDetails": "Oda Detayları",
+  "hotelId": "Otel ID",
+  "save": "Kaydet",
+  "editRoom":"Oda Düzenle"
   },
+
+
   
   "Statistics": {
     "title": "İstatistikler",
