@@ -1,137 +1,232 @@
+import { PrismaClient } from "@prisma/client";
 import { MessageRepository } from "./repository";
 import {
-  SendMessageSchemaType,
-  GetSupportMessagesQuerySchemaType,
-  MarkAsReadSchemaType,
+  SendMessageDto,
+  GetMessagesDto,
+  MarkAsReadDto,
+  EditMessageDto,
+  MessageResponseDto,
+  MessagesListResponseDto,
+  ConversationResponseDto,
 } from "../../dto/message";
 import { AppError } from "../../utils/appError";
-import { UserRepository } from "../user/repository";
-
-const messageRepository = new MessageRepository();
-const userRepository = new UserRepository();
 
 export class MessageService {
-  // senderId comes from the auth token because its not safe to trust the client
-  // we don't want user/client to be able to specify who they are sending as
-  // this would allow impersonation
-  async sendMessage(data: SendMessageSchemaType, senderId: string) {
-    // checking if receiver exists and is not deleted
-    const receiver = await userRepository.findById(data.receiverId);
-    if (!receiver || receiver.deletedAt) {
-      throw new AppError("Receiver not found", 404);
+  private messageRepository: MessageRepository;
+
+  constructor(private prisma: PrismaClient) {
+    this.messageRepository = new MessageRepository(prisma);
+  }
+
+  async sendMessage(
+    senderId: string,
+    data: SendMessageDto
+  ): Promise<MessageResponseDto> {
+    const isAIReceiver = data.receiverId.startsWith("ai");
+
+    // validating receiver exists (only for humans)
+    if (!isAIReceiver) {
+      const receiverExists = await this.prisma.user.findUnique({
+        where: { id: data.receiverId },
+        select: { id: true },
+      });
+
+      if (!receiverExists) {
+        throw new AppError("Receiver not found", 404);
+      }
     }
 
-    // making sure sender is not trying to send a message to themselves
-    // NOTE: Should we let users send messages to themselves?
-    if (senderId === data.receiverId) {
-      throw new AppError("Cannot send message to yourself", 400);
-    }
-
-    // if supportId is provided check if that support exists and user has access to it
+    // if supportId is provided, validate it exists and user has access
     if (data.supportId) {
-      // TODO: VALIDATE SUPPORT ACCESS
+      const support = await this.prisma.support.findFirst({
+        where: {
+          id: data.supportId,
+          OR: [{ userId: senderId }, { supportRepId: senderId }], // user or support rep
+        },
+      });
+
+      if (!support) {
+        throw new AppError("Support ticket not found or access denied", 404);
+      }
     }
 
-    const message = await messageRepository.create({
-      ...data,
-      senderId,
-    });
+    const message = await this.messageRepository.sendMessage(senderId, data);
 
-    return message;
+    // TODO: implement AI response generation
+    if (isAIReceiver) {
+      // TODO: queue AI response generation
+      this.generateAIResponse(
+        senderId,
+        data.receiverId,
+        data.content,
+        data.supportId
+      );
+    }
+
+    return this.formatMessageResponse(message, isAIReceiver);
   }
 
-  async getConversations(userId: string) {
-    const conversations = await messageRepository.findConversations(userId);
-    return conversations;
-  }
+  async getMessages(
+    userId: string,
+    data: GetMessagesDto
+  ): Promise<MessagesListResponseDto> {
+    const isAIConversation = data.receiverId.startsWith("ai");
 
-  async getMessageById(id: string, userId: string) {
-    const message = await messageRepository.findById(id);
+    // validating receiver exists (only for humans)
+    if (!isAIConversation) {
+      const receiverExists = await this.prisma.user.findUnique({
+        where: { id: data.receiverId },
+        select: { id: true },
+      });
 
-    if (!message) {
-      throw new AppError("Message not found", 404);
+      if (!receiverExists) {
+        throw new AppError("Conversation partner not found", 404);
+      }
     }
 
-    // checking if user has access to this message
-    if (message.senderId !== userId && message.receiverId !== userId) {
-      throw new AppError("Access denied", 403);
-    }
+    const { messages, total } = await this.messageRepository.getMessages(
+      userId,
+      data
+    );
 
-    return message;
-  }
-
-  async markAsRead(data: MarkAsReadSchemaType, userId: string) {
-    const result = await messageRepository.markAsRead(data.messageIds, userId);
-
-    if (result.count === 0) {
-      throw new AppError("No messages were marked as read", 400);
-    }
+    const formattedMessages = messages.map((message) =>
+      this.formatMessageResponse(message, isAIConversation)
+    );
 
     return {
-      markedCount: result.count,
+      messages: formattedMessages,
+      pagination: {
+        page: data.page,
+        limit: data.limit,
+        total,
+        totalPages: Math.ceil(total / data.limit),
+      },
     };
   }
 
-  async getUnreadCount(userId: string) {
-    const count = await messageRepository.getUnreadCount(userId);
-    return { unreadCount: count };
+  async getUserConversations(
+    userId: string
+  ): Promise<ConversationResponseDto[]> {
+    return this.messageRepository.getUserConversations(userId);
   }
 
-  async deleteMessage(id: string, userId: string) {
-    const message = await messageRepository.findById(id);
-
-    if (!message) {
-      throw new AppError("Message not found", 404);
-    }
-
-    // checking if user has access to DELETE this message
-    if (message.senderId !== userId && message.receiverId !== userId) {
-      throw new AppError("Access denied", 403);
-    }
-
-    const result = await messageRepository.delete(id, userId);
-
-    if (result.count === 0) {
-      throw new AppError("Message could not be deleted", 400);
-    }
-
-    return { success: true };
-  }
-
-  async getSupportMessages(
-    supportId: string,
+  async markMessagesAsRead(
     userId: string,
-    query: GetSupportMessagesQuerySchemaType
-  ) {
-    // TODO: Validate support access
-    const result = await messageRepository.findSupportMessages(
-      supportId,
+    data: MarkAsReadDto
+  ): Promise<{ updatedCount: number }> {
+    const result = await this.messageRepository.markMessagesAsRead(
       userId,
-      query.page,
-      query.limit
+      data.messageIds
     );
-    return result;
+    return { updatedCount: result.count };
   }
 
-  async getConversationWith(
-    userId: string,
-    partnerId: string,
-    limit: number = 20,
-    beforeMessageId?: string
-  ) {
-    // validate that partner exists
-    const partner = await userRepository.findById(partnerId);
-    if (!partner || partner.deletedAt) {
-      throw new AppError("User not found", 404);
-    }
-
-    const result = await messageRepository.findConversationMessages(
-      userId,
-      partnerId,
-      limit,
-      beforeMessageId
+  async deleteMessage(messageId: string, userId: string): Promise<void> {
+    const result = await this.messageRepository.deleteMessage(
+      messageId,
+      userId
     );
 
-    return result;
+    if (!result) {
+      throw new AppError(
+        "Message not found or you don't have permission to delete it",
+        404
+      );
+    }
+  }
+
+  async editMessage(
+    messageId: string,
+    userId: string,
+    data: EditMessageDto
+  ): Promise<MessageResponseDto> {
+    try {
+      const editedMessage = await this.messageRepository.editMessage(
+        messageId,
+        userId,
+        data
+      );
+
+      const isAIReceiver = editedMessage.receiverId?.startsWith("ai") || false;
+      return this.formatMessageResponse(editedMessage, isAIReceiver);
+    } catch (error: any) {
+      if (error.code === "P2025") {
+        // prisma error code for record not found
+        throw new AppError(
+          "Message not found or you don't have permission to edit it",
+          404
+        );
+      }
+      throw error;
+    }
+  }
+
+  private formatMessageResponse(
+    message: any,
+    isAIConversation: boolean = false
+  ): MessageResponseDto {
+    const isFromAI = message.senderId.startsWith("ai");
+
+    return {
+      id: message.id,
+      content: message.content,
+      senderId: message.senderId,
+      receiverId: message.receiverId,
+      supportId: message.supportId,
+      createdAt: message.createdAt,
+      readAt: message.readAt,
+      isFromAI,
+      senderInfo: isFromAI
+        ? { name: "AI", surname: "Assistant" }
+        : message.sender
+        ? {
+            name: message.sender.name,
+            surname: message.sender.surname,
+          }
+        : undefined,
+    };
+  }
+
+  // TODO: implement AI Response Generation
+  private async generateAIResponse(
+    userId: string,
+    aiId: string,
+    userMessage: string,
+    supportId?: string
+  ): Promise<void> {
+    try {
+      // TODO: implement AI response generation
+    } catch (error) {
+      console.error("Error generating AI response:", error);
+      // send err
+    }
+  }
+
+  private async getAIResponse(userMessage: string): Promise<string> {
+    // mock AI responses
+    const responses = [
+      "I understand your question. Let me help you with that.",
+      "That's an interesting point. Here's what I think...",
+      "Based on what you've told me, I'd suggest...",
+      "I'm here to help! Could you provide a bit more detail?",
+      "Thank you for your message. I'm processing your request...",
+    ];
+
+    if (userMessage.toLowerCase().includes("hotel")) {
+      return "I can help you with hotel-related questions! What specific information do you need about hotels?";
+    }
+
+    if (userMessage.toLowerCase().includes("reservation")) {
+      return "I can assist you with reservations. Are you looking to make a new reservation or modify an existing one?";
+    }
+
+    if (
+      userMessage.toLowerCase().includes("support") ||
+      userMessage.toLowerCase().includes("help")
+    ) {
+      return "I'm here to provide support! Please describe the issue you're experiencing and I'll do my best to help.";
+    }
+
+    return responses[Math.floor(Math.random() * responses.length)];
   }
 }

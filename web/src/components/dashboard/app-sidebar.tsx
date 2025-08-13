@@ -12,10 +12,13 @@ import {
   IconBuilding,
   IconUser,
   IconMessageCircle,
+
   IconBed,
   IconStar,
   IconCalendar,
   IconCalendarBolt,
+  IconShield,
+
 } from "@tabler/icons-react";
 
 import {
@@ -68,6 +71,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             title: t("statistics-reports"),
             url: "/dashboard/admin/statistics",
             icon: <IconChartBar />,
+          },
+          {
+            title: t("security-audit"),
+            url: "/dashboard/admin/security",
+            icon: <IconShield />,
           },
           {
             title: t("company-settings"),

@@ -1,12 +1,32 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { ArrowUpDown, Filter, MoreHorizontal, Eye, Edit, Trash } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import React from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Customer } from '@/types/customer';
+"use client";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown, Filter, MoreHorizontal, Trash } from "lucide-react";
+import { useTranslations } from "next-intl";
+import React, { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Customer } from "@/types/customer";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface CustomerTableProps {
   filteredCustomers: Customer[];
@@ -17,8 +37,14 @@ interface CustomerTableProps {
   handleDelete: (customer: Customer) => void;
 }
 
-const CustomerTable = ({ filteredCustomers, activeFilter, shortBy, handleViewDetails, handleEdit, handleDelete }: CustomerTableProps) => {
+const CustomerTable = ({
+  filteredCustomers,
+  activeFilter,
+  shortBy,
+}: CustomerTableProps) => {
   const t = useTranslations("Customers");
+
+  const [openDelete, setOpenDelete] = useState(false);
 
   return (
     <div className="hidden lg:block">
@@ -115,10 +141,14 @@ const CustomerTable = ({ filteredCustomers, activeFilter, shortBy, handleViewDet
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => shortBy("lastReservation")}>
+                    <DropdownMenuItem
+                      onClick={() => shortBy("lastReservation")}
+                    >
                       En Yeni
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => shortBy("lastReservation-desc")}>
+                    <DropdownMenuItem
+                      onClick={() => shortBy("lastReservation-desc")}
+                    >
                       En Eski
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -138,7 +168,9 @@ const CustomerTable = ({ filteredCustomers, activeFilter, shortBy, handleViewDet
                     <DropdownMenuItem onClick={() => shortBy("totalSpent")}>
                       En Düşük
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => shortBy("totalSpent-desc")}>
+                    <DropdownMenuItem
+                      onClick={() => shortBy("totalSpent-desc")}
+                    >
                       En Yüksek
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -158,7 +190,9 @@ const CustomerTable = ({ filteredCustomers, activeFilter, shortBy, handleViewDet
                     <DropdownMenuItem onClick={() => activeFilter("verified")}>
                       {t("verified")}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => activeFilter("unverified")}>
+                    <DropdownMenuItem
+                      onClick={() => activeFilter("unverified")}
+                    >
                       {t("unverified")}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => activeFilter("all")}>
@@ -173,37 +207,53 @@ const CustomerTable = ({ filteredCustomers, activeFilter, shortBy, handleViewDet
         </TableHeader>
         <TableBody>
           {filteredCustomers.map((customer) => (
-            <TableRow key={customer.id} className="border-border hover:bg-muted/50">
+            <TableRow
+              key={customer.id}
+              className="border-border hover:bg-muted/50"
+            >
               <TableCell>
                 <div className="flex items-center gap-3">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={customer.avatar} alt={`${customer.name} ${customer.surname}`} />
+                    <AvatarImage
+                      src={customer.avatar}
+                      alt={`${customer.name} ${customer.surname}`}
+                    />
                     <AvatarFallback>
-                      {customer.name[0]}{customer.surname[0]}
+                      {customer.name[0]}
+                      {customer.surname[0]}
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-medium text-foreground">{customer.name} {customer.surname}</p>
+                    <p className="font-medium text-foreground">
+                      {customer.name} {customer.surname}
+                    </p>
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="text-foreground">{customer.phone}</TableCell>
-              <TableCell className="text-foreground">{customer.email}</TableCell>
+              <TableCell className="text-foreground">
+                {customer.phone}
+              </TableCell>
+              <TableCell className="text-foreground">
+                {customer.email}
+              </TableCell>
               <TableCell className="text-foreground">
                 {new Date(customer.createdAt).toLocaleDateString()}
               </TableCell>
               <TableCell className="text-foreground">
-                {customer.lastReservation ? new Date(customer.lastReservation).toLocaleDateString() : '-'}
+                {customer.lastReservation
+                  ? new Date(customer.lastReservation).toLocaleDateString()
+                  : "-"}
               </TableCell>
               <TableCell className="font-medium text-foreground">
-                {customer.totalSpent.toLocaleString('tr-TR')} TL
+                {customer.totalSpent.toLocaleString("tr-TR")} TL
               </TableCell>
               <TableCell>
-                <Badge 
-                  variant={customer.isVerified ? 'default' : 'secondary'}
-                  className={customer.isVerified 
-                    ? 'bg-green-100 text-green-800 hover:bg-green-100' 
-                    : 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100'
+                <Badge
+                  variant={customer.isVerified ? "default" : "secondary"}
+                  className={
+                    customer.isVerified
+                      ? "bg-green-100 text-green-800 hover:bg-green-100"
+                      : "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
                   }
                 >
                   {customer.isVerified ? t("verified") : t("unverified")}
@@ -217,16 +267,8 @@ const CustomerTable = ({ filteredCustomers, activeFilter, shortBy, handleViewDet
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => handleViewDetails(customer)}>
-                      <Eye className="h-4 w-4 mr-2" />
-                      {t("viewDetails")}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleEdit(customer)}>
-                      <Edit className="h-4 w-4 mr-2" />
-                      {t("edit")}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => handleDelete(customer)}
+                    <DropdownMenuItem
+                      onClick={() => setOpenDelete(true)}
                       className="text-red-600 focus:text-red-600"
                     >
                       <Trash className="h-4 w-4 mr-2" />
@@ -239,8 +281,28 @@ const CustomerTable = ({ filteredCustomers, activeFilter, shortBy, handleViewDet
           ))}
         </TableBody>
       </Table>
+      {/*Delet Dialog */}
+      <Dialog open={openDelete} onOpenChange={setOpenDelete}>
+        <DialogContent>
+          <DialogTitle>Kullanıcı Sil</DialogTitle>
+          <p>Kullanıcıyı silmek istediğinize emin misiniz?</p>
+          <DialogFooter>
+            <DialogClose>
+              <Button variant={'outline'}>
+                İptal
+              </Button>
+            </DialogClose>
+            <Button onClick={()=>setOpenDelete(false)}>Evet</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      ;
     </div>
-  )
-}
+  );
+};
+
+<Dialog>
+  <DialogContent>test</DialogContent>
+</Dialog>;
 
 export default CustomerTable;

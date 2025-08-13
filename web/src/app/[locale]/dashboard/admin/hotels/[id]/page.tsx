@@ -6,20 +6,15 @@ import { useParams, useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ArrowLeft,
   Star,
   MapPin,
-  Phone,
-  Mail,
   Calendar,
   Users,
   DollarSign,
   Building,
-  MessageSquare,
-  Settings,
 } from "lucide-react";
 import { hotelsData } from "@/data/dumy";
 import Image from "next/image";
@@ -50,11 +45,6 @@ export default function HotelDetailPage() {
   // otel tipini belirle
   const getHotelType = (hotel: Hotel) => {
     return hotel.type;
-  };
-
-  // otel odası sayısını random olarak belirle
-  const getRoomCount = (hotel: Hotel) => {
-    return Math.floor(Math.random() * 50) + 10;
   };
 
   if (loading) {
@@ -120,10 +110,6 @@ export default function HotelDetailPage() {
             >
               {hotel.status === "Active" ? t("active") : t("inactive")}
             </Badge>
-            <Button variant="outline" size="sm">
-              <Settings className="h-4 w-4 mr-2" />
-              {t("edit")}
-            </Button>
           </div>
         </div>
 
@@ -188,42 +174,6 @@ export default function HotelDetailPage() {
                 </div>
               </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">
-                  {t("ownerInformation")}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-10 w-10">
-                    <AvatarFallback>
-                      {hotel.owner
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-medium">{hotel.owner}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {t("hotelOwner")}
-                    </p>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">{hotel.email}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Phone className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">{hotel.phone}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
 
@@ -231,12 +181,10 @@ export default function HotelDetailPage() {
         <Card className="w-full h-auto py-0">
           <CardContent className="p-0">
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="grid w-full grid-cols-5">
+              <TabsList className="grid w-full grid-cols-3 bg-blue-500">
                 <TabsTrigger value="overview">{t("overview")}</TabsTrigger>
                 <TabsTrigger value="rooms">{t("rooms")}</TabsTrigger>
-                <TabsTrigger value="reviews">{t("reviews")}</TabsTrigger>
                 <TabsTrigger value="bookings">{t("bookings")}</TabsTrigger>
-                <TabsTrigger value="documents">{t("documents")}</TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview" className="p-6">
@@ -335,7 +283,7 @@ export default function HotelDetailPage() {
                           {t("roomCount")}
                         </span>
                         <span className="font-medium">
-                          {getRoomCount(hotel)}
+                          {10}
                         </span>
                       </div>
                     </div>
@@ -352,17 +300,6 @@ export default function HotelDetailPage() {
                   </p>
                 </div>
               </TabsContent>
-
-              <TabsContent value="reviews" className="p-6">
-                <div className="text-center py-8">
-                  <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">{t("reviews")}</h3>
-                  <p className="text-muted-foreground">
-                    {t("reviewInformationComingSoon")}
-                  </p>
-                </div>
-              </TabsContent>
-
               <TabsContent value="bookings" className="p-6">
                 <div className="text-center py-8">
                   <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -372,84 +309,6 @@ export default function HotelDetailPage() {
                   <p className="text-muted-foreground">
                     {t("bookingInformationComingSoon")}
                   </p>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="documents" className="p-6">
-                <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">
-                        {t("businessInformation")}
-                      </h3>
-                      <div className="space-y-3">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">
-                            {t("taxId")}
-                          </span>
-                          <span className="font-medium">{hotel.taxId}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">
-                            {t("taxOffice")}
-                          </span>
-                          <span className="font-medium">{hotel.taxOffice}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">
-                            {t("tradeRegistryNumber")}
-                          </span>
-                          <span className="font-medium">{hotel.tradeRegistryNumber}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">
-                            {t("businessLicense")}
-                          </span>
-                          <span className="font-medium">{hotel.businessLicense}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">
-                        {t("hotelFeatures")}
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {hotel.features.map((feature, index) => (
-                          <Badge key={index} variant="secondary">
-                            {t(feature)}
-                          </Badge>
-                        ))}
-                      </div>
-                      
-                      <div className="space-y-3 mt-4">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">
-                            {t("discountRate")}
-                          </span>
-                          <span className="font-medium">
-                            {hotel.isDiscounted ? `${hotel.discountRate}%` : t("noDiscount")}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">
-                            {t("address")}
-                          </span>
-                          <span className="font-medium text-right max-w-xs">
-                            {hotel.address}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">
-                            {t("description")}
-                          </span>
-                          <span className="font-medium text-right max-w-xs">
-                            {hotel.description}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </TabsContent>
             </Tabs>

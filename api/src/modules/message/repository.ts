@@ -1,176 +1,176 @@
-import Prisma from "../../config/db";
-import { SendMessageSchemaType } from "../../dto/message";
+import { PrismaClient } from "@prisma/client";
+import {
+  SendMessageDto,
+  GetMessagesDto,
+  EditMessageDto,
+} from "../../dto/message";
 
 export class MessageRepository {
-  async create(data: SendMessageSchemaType & { senderId: string }) {
-    return Prisma.message.create({
-      data: {
-        content: data.content,
-        senderId: data.senderId,
-        receiverId: data.receiverId,
-        supportId: data.supportId,
-      },
-      include: {
-        sender: {
-          select: {
-            id: true,
-            name: true,
-            surname: true,
-            email: true,
-            role: true,
-          },
-        },
-        receiver: {
-          select: {
-            id: true,
-            name: true,
-            surname: true,
-            email: true,
-            role: true,
-          },
-        },
-        support: {
-          select: {
-            id: true,
-            subject: true,
-            status: true,
-          },
-        },
-      },
-    });
-  }
+  constructor(private prisma: PrismaClient) {}
 
-  async findById(id: string) {
-    return Prisma.message.findUnique({
+  async ensureAIUserExists(aiId: string) {
+    // check if AI user already exists
+    let aiUser = await this.prisma.user.findFirst({
       where: {
-        id,
-        deletedAt: null,
-      },
-      include: {
-        sender: {
-          select: {
-            id: true,
-            name: true,
-            surname: true,
-            email: true,
-            role: true,
-          },
-        },
-        receiver: {
-          select: {
-            id: true,
-            name: true,
-            surname: true,
-            email: true,
-            role: true,
-          },
-        },
-        support: {
-          select: {
-            id: true,
-            subject: true,
-            status: true,
-          },
-        },
+        email: `${aiId}@ai`,
       },
     });
-  }
 
-  // Chat pagination method : cursor-based pagination
-  // Returns messages in chronological order (oldest first)
-  async findConversationMessages(
-    userId: string,
-    partnerId: string,
-    limit: number = 20,
-    beforeMessageId?: string
-  ) {
-    const whereCondition: any = {
-      deletedAt: null,
-      OR: [
-        { senderId: userId, receiverId: partnerId },
-        { senderId: partnerId, receiverId: userId },
-      ],
-    };
-
-    // if beforeMessageId is provided, get messages older than that message
-    // without it, get the latest 20 messages
-    // when beforeMessageId is provided, we filter messages created before that message's createdAt
-    // and get the next 20 messages
-    if (beforeMessageId) {
-      const beforeMessage = await Prisma.message.findUnique({
-        where: { id: beforeMessageId },
-        select: { createdAt: true },
+    if (!aiUser) {
+      // create AI user if it doesn't exist
+      aiUser = await this.prisma.user.create({
+        data: {
+          id: aiId, // use the AI ID as the user ID
+          name: "AI",
+          surname: "Assistant",
+          email: `${aiId}@ai`,
+          phone: `+1-AI-${aiId.replace("ai", "")}`,
+          isVerified: true,
+          role: "SUPPORT", // NOTE: might create a special AI role if needed
+        },
       });
-
-      if (beforeMessage) {
-        whereCondition.createdAt = {
-          lt: beforeMessage.createdAt,
-        };
-      }
     }
 
-    const messages = await Prisma.message.findMany({
-      where: whereCondition,
-      include: {
-        sender: {
-          select: {
-            id: true,
-            name: true,
-            surname: true,
-            email: true,
-            role: true,
-          },
-        },
-        receiver: {
-          select: {
-            id: true,
-            name: true,
-            surname: true,
-            email: true,
-            role: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "asc", // oldest first
-      },
-      take: limit,
-    });
-
-    const hasMore = messages.length === limit;
-    const oldestMessageId = messages.length > 0 ? messages[0].id : null;
-    const newestMessageId =
-      messages.length > 0 ? messages[messages.length - 1].id : null;
-
-    return {
-      messages,
-      hasMore,
-      oldestMessageId,
-      newestMessageId,
-    };
+    return aiUser;
   }
 
-  async findConversations(userId: string) {
-    // gets all unique conversations for a user
-    const conversations = await Prisma.message.findMany({
+  async sendMessage(senderId: string, data: SendMessageDto) {
+    // for AI messages, we need to handle the receiver differently
+    // since the schema requires receiverId to be a valid User ID,
+    // we'll need to create a special AI user
+    const isAIReceiver = data.receiverId.startsWith("ai");
+
+    if (isAIReceiver) {
+      // create or get AI bot user in the database
+      const aiUser = await this.ensureAIUserExists(data.receiverId);
+
+      return this.prisma.message.create({
+        data: {
+          content: data.content,
+          senderId,
+          receiverId: aiUser.id,
+          supportId: data.supportId,
+        },
+        include: {
+          sender: {
+            select: {
+              id: true,
+              name: true,
+              surname: true,
+            },
+          },
+          receiver: {
+            select: {
+              id: true,
+              name: true,
+              surname: true,
+            },
+          },
+        },
+      });
+    } else {
+      // regular human-to-human message
+      return this.prisma.message.create({
+        data: {
+          content: data.content,
+          senderId,
+          receiverId: data.receiverId,
+          supportId: data.supportId,
+        },
+        include: {
+          sender: {
+            select: {
+              id: true,
+              name: true,
+              surname: true,
+            },
+          },
+          receiver: {
+            select: {
+              id: true,
+              name: true,
+              surname: true,
+            },
+          },
+        },
+      });
+    }
+  }
+
+  async getMessages(userId: string, data: GetMessagesDto) {
+    const isAIConversation = data.receiverId.startsWith("ai");
+    let actualReceiverId = data.receiverId;
+
+    if (isAIConversation) {
+      // get or create the AI user to get its actual UUID
+      const aiUser = await this.ensureAIUserExists(data.receiverId);
+      actualReceiverId = aiUser.id;
+    }
+
+    const where = {
+      OR: [
+        {
+          senderId: userId,
+          receiverId: actualReceiverId,
+        },
+        {
+          senderId: actualReceiverId,
+          receiverId: userId,
+        },
+      ],
+      ...(data.supportId && { supportId: data.supportId }),
+      deletedAt: null,
+    };
+
+    const [messages, total] = await Promise.all([
+      this.prisma.message.findMany({
+        where,
+        include: {
+          sender: {
+            select: {
+              id: true,
+              name: true,
+              surname: true,
+            },
+          },
+          receiver: {
+            select: {
+              id: true,
+              name: true,
+              surname: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        skip: (data.page - 1) * data.limit,
+        take: data.limit,
+      }),
+      this.prisma.message.count({ where }),
+    ]);
+
+    return { messages, total };
+  }
+
+  async getUserConversations(userId: string) {
+    // get all unique convo partners
+    const conversations = await this.prisma.message.findMany({
       where: {
-        deletedAt: null,
         OR: [{ senderId: userId }, { receiverId: userId }],
+        deletedAt: null,
       },
       select: {
-        id: true,
+        senderId: true,
+        receiverId: true,
         content: true,
         createdAt: true,
         readAt: true,
-        senderId: true,
-        receiverId: true,
         sender: {
           select: {
             id: true,
             name: true,
             surname: true,
-            email: true,
-            role: true,
           },
         },
         receiver: {
@@ -178,15 +178,6 @@ export class MessageRepository {
             id: true,
             name: true,
             surname: true,
-            email: true,
-            role: true,
-          },
-        },
-        support: {
-          select: {
-            id: true,
-            subject: true,
-            status: true,
           },
         },
       },
@@ -195,39 +186,59 @@ export class MessageRepository {
       },
     });
 
-    // group messages by conversation partner
+    // group by conversation partner
     const conversationMap = new Map();
 
     conversations.forEach((message) => {
+      // if user sent partner is receiver, if user received partner is sender
       const partnerId =
         message.senderId === userId ? message.receiverId : message.senderId;
-      const partner =
-        message.senderId === userId ? message.receiver : message.sender;
+
+      if (!partnerId) return; // skip if partnerId is null
 
       if (!conversationMap.has(partnerId)) {
+        const isAI = partnerId.startsWith("ai");
+        const partnerInfo =
+          message.senderId === userId ? message.receiver : message.sender;
+
         conversationMap.set(partnerId, {
-          partner,
-          lastMessage: message,
+          participantId: partnerId,
+          participantName: isAI
+            ? "AI Assistant"
+            : `${partnerInfo?.name} ${partnerInfo?.surname}`,
+          isAI,
+          lastMessage: {
+            content: message.content,
+            createdAt: message.createdAt,
+            isRead: !!message.readAt,
+          },
           unreadCount: 0,
         });
       }
-
-      // count unread messages from partner
-      if (message.senderId === partnerId && !message.readAt) {
-        conversationMap.get(partnerId).unreadCount++;
-      }
     });
+
+    // calculate unread counts
+    for (const [partnerId, conversation] of conversationMap) {
+      const unreadCount = await this.prisma.message.count({
+        where: {
+          senderId: partnerId,
+          receiverId: userId,
+          readAt: null,
+          deletedAt: null,
+        },
+      });
+      conversation.unreadCount = unreadCount;
+    }
 
     return Array.from(conversationMap.values());
   }
 
-  async markAsRead(messageIds: string[], userId: string) {
-    return Prisma.message.updateMany({
+  async markMessagesAsRead(userId: string, messageIds: string[]) {
+    return this.prisma.message.updateMany({
       where: {
         id: { in: messageIds },
         receiverId: userId,
         readAt: null,
-        deletedAt: null,
       },
       data: {
         readAt: new Date(),
@@ -235,22 +246,12 @@ export class MessageRepository {
     });
   }
 
-  async getUnreadCount(userId: string) {
-    return Prisma.message.count({
+  async deleteMessage(messageId: string, userId: string) {
+    // users can only delete their own messages
+    return this.prisma.message.update({
       where: {
-        receiverId: userId,
-        readAt: null,
-        deletedAt: null,
-      },
-    });
-  }
-
-  async delete(id: string, userId: string) {
-    return Prisma.message.updateMany({
-      where: {
-        id,
-        OR: [{ senderId: userId }, { receiverId: userId }],
-        deletedAt: null,
+        id: messageId,
+        senderId: userId,
       },
       data: {
         deletedAt: new Date(),
@@ -258,62 +259,33 @@ export class MessageRepository {
     });
   }
 
-  async findSupportMessages(
-    supportId: string,
-    userId: string,
-    page: number = 1,
-    limit: number = 20
-  ) {
-    const skip = (page - 1) * limit;
-
-    const whereCondition = {
-      supportId,
-      deletedAt: null,
-      OR: [{ senderId: userId }, { receiverId: userId }],
-    };
-
-    const [messages, total] = await Promise.all([
-      Prisma.message.findMany({
-        where: whereCondition,
-        include: {
-          sender: {
-            select: {
-              id: true,
-              name: true,
-              surname: true,
-              email: true,
-              role: true,
-            },
-          },
-          receiver: {
-            select: {
-              id: true,
-              name: true,
-              surname: true,
-              email: true,
-              role: true,
-            },
-          },
-        },
-        orderBy: {
-          createdAt: "asc",
-        },
-        skip,
-        take: limit,
-      }),
-      Prisma.message.count({
-        where: whereCondition,
-      }),
-    ]);
-
-    return {
-      messages,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit),
+  async editMessage(messageId: string, userId: string, data: EditMessageDto) {
+    // users can only edit their own messages that haven't been deleted
+    return this.prisma.message.update({
+      where: {
+        id: messageId,
+        senderId: userId,
+        deletedAt: null,
       },
-    };
+      data: {
+        content: data.content,
+      },
+      include: {
+        sender: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+          },
+        },
+        receiver: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+          },
+        },
+      },
+    });
   }
 }
