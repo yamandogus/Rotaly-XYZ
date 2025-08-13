@@ -12,7 +12,11 @@ import {
   IconBuilding,
   IconUser,
   IconMessageCircle,
-  IconShield,
+  IconBed,
+  IconStar,
+  IconCalendar,
+  IconCalendarBolt,
+
 } from "@tabler/icons-react";
 
 import {
@@ -89,21 +93,39 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             url: "/dashboard",
             icon: <IconDashboard />,
           },
-          {
-            title: t("hotel-info"),
-            url: "/dashboard/hotel/hotel-info",
+
+            {
+            title: t("reservation-management"),
+            url: "/dashboard/hotel/reservations",
+            icon: <IconCalendar />,
+          },
+           {
+            title: t("room-price-management"),
+            url: "/dashboard/hotel/room-price",
+            icon: <IconBed />,
+          },
+        
+           {
+            title: t("guest-management"),
+            url: "/dashboard/hotel/guest",
+            icon: <IconUsers />,
+          },
+            {
+            title: t("hotel-profile"),
+            url: "/dashboard/hotel/profile",
             icon: <IconBuilding />,
           },
           {
-            title: t("reservations"),
-            url: "/dashboard/hotel/reservations",
+            title: t("statistics-reports"),
+            url: "/dashboard/hotel/statistics",
             icon: <IconChartBar />,
           },
-          {
-            title: t("company"),
-            url: "/dashboard/hotel/company",
-            icon: <IconFileDescription />,
+              {
+            title: t("evaluations"),
+            url: "/dashboard/hotel/evulations",
+            icon: <IconStar />,
           },
+        
             {
             title: t("live-support"),
             url: "/dashboard/hotel/live-support",

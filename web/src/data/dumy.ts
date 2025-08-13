@@ -1227,3 +1227,71 @@ export const customersData = [
     avatar: "/images/userprofile.png"
   }
 ];
+
+export const rooms = [
+  {
+    id: "R001",
+    name: "Deluxe Deniz Manzaralı Oda",
+    description: "Geniş, deniz manzaralı, balkonlu ve lüks donanımlı oda.",
+    price: 3250.0,
+    capacity: 2,
+    bedCount: 1,
+    isAvailable: true,
+    hotelId: "H001",
+    createdAt: new Date("2024-01-10T00:00:00.000Z"),
+    updatedAt: new Date("2024-12-10T00:00:00.000Z"),
+    deletedAt: null,
+    bookings: [],
+    featureStatus: [],
+    images: ["https://imagedelivery.net/Yw_SVblNotg-H4OIK8cT8g/0f44ada7-c450-4cb0-009f-17d24c9c4400/HorizontalHD"]
+  },
+  {
+    id: "R002",
+    name: "Aile Süiti",
+    description: "4 kişilik geniş süit, iki yatak odası, oturma alanı ve mutfak.",
+    price: 4800.0,
+    capacity: 4,
+    bedCount: 3,
+    isAvailable: true,
+    hotelId: "H001",
+    createdAt: new Date("2024-01-12T00:00:00.000Z"),
+    updatedAt: new Date("2024-12-10T00:00:00.000Z"),
+    deletedAt: null,
+    bookings: [],
+    featureStatus: [],
+    images: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6o0Qzar2_qYMMOmJB8uF96gUnOiQ82G2nNA&s"]
+  },
+  {
+    id: "R003",
+    name: "Ekonomik Tek Kişilik Oda",
+    description: "Bütçe dostu, sade ve konforlu tek kişilik oda.",
+    price: 1500.0,
+    capacity: 1,
+    bedCount: 1,
+    isAvailable: true,
+    hotelId: "H001",
+    createdAt: new Date("2024-01-15T00:00:00.000Z"),
+    updatedAt: new Date("2024-12-10T00:00:00.000Z"),
+    deletedAt: null,
+    bookings: [],
+    featureStatus: [],
+    images: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-EOuqzkVdYSdheGurSafZu-hyOlcv7Oud0A&s"]
+  },
+  {
+    id: "R004",
+    name: "Kral Dairesi",
+    description: "En üst katta panoramik manzaralı, jakuzi ve özel teraslı lüks daire.",
+    price: 8500.0,
+    capacity: 2,
+    bedCount: 1,
+    isAvailable: false,
+    hotelId: "H001",
+    createdAt: new Date("2024-01-20T00:00:00.000Z"),
+    updatedAt: new Date("2024-12-10T00:00:00.000Z"),
+    deletedAt: null,
+    bookings: [],
+    featureStatus: [],
+    images: ["https://www.asortie.com/blogs/uploads/en_haberler/otel-kral-odasi-hizmetleri.jpg"]
+  }
+];
+
