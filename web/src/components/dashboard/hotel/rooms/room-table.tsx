@@ -5,17 +5,19 @@ import { Room } from "@/types/room";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Eye, Edit, Trash } from "lucide-react";
+import { MoreHorizontal, Eye, Trash, Edit } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 interface RoomTableProps {
   filteredRooms: Room[];
   handleViewDetails: (room: Room) => void;
+  handleEdit: (room: Room) => void;
   handleDelete: (room: Room) => void;
 }
 
-const RoomTable: FC<RoomTableProps> = ({ filteredRooms, handleViewDetails,  handleDelete }) => {
+const RoomTable: FC<RoomTableProps> = ({ filteredRooms, handleViewDetails, handleEdit, handleDelete }) => {
   const t = useTranslations("Rooms");
 
   return (
@@ -40,10 +42,12 @@ const RoomTable: FC<RoomTableProps> = ({ filteredRooms, handleViewDetails,  hand
       {/* Görsel */}
       <TableCell>
         {room.images.length > 0 ? (
-          <img
+          <Image
             src={room.images[0]}
             alt={room.name}
             className="h-12 w-20 object-cover rounded-md"
+            width={96}
+            height={96}
           />
         ) : (
           <div className="h-12 w-20 bg-gray-200 rounded-md" />
@@ -77,7 +81,10 @@ const RoomTable: FC<RoomTableProps> = ({ filteredRooms, handleViewDetails,  hand
               <Eye className="h-4 w-4 mr-2" />
               {t("viewDetails")}
             </DropdownMenuItem>
-           
+            <DropdownMenuItem onClick={() => handleEdit(room)}>
+              <Edit className="h-4 w-4 mr-2" />
+              {t("edit")}
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => handleDelete(room)}
               className="text-red-600 focus:text-red-600"

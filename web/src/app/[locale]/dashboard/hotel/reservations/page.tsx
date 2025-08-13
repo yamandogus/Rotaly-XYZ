@@ -107,20 +107,19 @@ export default function RoomsPage() {
             <RoomTable
               filteredRooms={filteredRooms}
               handleViewDetails={handleViewDetails}
-             
+              handleEdit={handleEdit}
               handleDelete={handleDelete}
             />
           </div>
 
           {/* Mobile Cards */}
           <div className="block lg:hidden space-y-4">
-            <RoomMobileCard
+          <RoomMobileCard
               filteredRooms={filteredRooms}
               handleViewDetails={handleViewDetails}
-
-              handleDelete={handleDelete} handleEdit={function (room: Room): void {
-                throw new Error("Function not implemented.");
-              } }            />
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+            />
           </div>
         </CardContent>
       </Card>
