@@ -42,7 +42,7 @@ export default function AdminDashboard() {
       title: t("securityAudit"),
       icon: ShieldCheckIcon,
       description: t("securityAuditDesc"),
-      link: "#",
+      link: "/dashboard/admin/security",
       color: "text-red-500",
     },
     {

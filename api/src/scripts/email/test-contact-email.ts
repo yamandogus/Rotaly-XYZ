@@ -1,4 +1,8 @@
-import { emailService } from "../modules/email/service";
+// -------------------------------------------------------
+//   npx ts-node src/scripts/email/test-contact-email.ts
+// -------------------------------------------------------
+
+import { emailService } from "../../modules/email/service";
 
 async function testContactEmailEnglish() {
   console.log("Testing contact email forwarding (English)...");
@@ -81,8 +85,6 @@ async function testAllContactEmails() {
   return allPassed;
 }
 
-// run every test if the file is executed from cmd
-// npx ts-node src/tests/test-contact-email.ts
 if (require.main === module) {
   testAllContactEmails();
 }
