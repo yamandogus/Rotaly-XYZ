@@ -58,11 +58,6 @@ enum SupportCategory {
   OTHER
 }
 
-enum Provider {
-  GOOGLE
-  FACEBOOK
-}
-
 model User {
   id                      String    @id @default(uuid())
   name                    String
@@ -94,19 +89,8 @@ model User {
   comments  Comment[]
   favorites Favorite[]
   images    Image[]    @relation("UserImages")
-  Account   Account[]
 
   @@map("users")
-}
-
-model Account {
-  id                String   @id @default(uuid())
-  userId            String
-  provider          Provider
-  providerAccountId String   @unique
-  User              User     @relation(fields: [userId], references: [id])
-
-  @@map("accounts")
 }
 
 model Favorite {
@@ -133,6 +117,29 @@ model PaymentCard {
   user User @relation(fields: [userId], references: [id])
 
   @@map("payment_cards")
+}
+
+model Company {
+  id                      String    @id @default(uuid())
+  companyName             String
+  email                   String    @unique
+  hashedPassword          String
+  verificationOTP         String?
+  verificationOTPExpires  DateTime? @map("verification_otp_expires")
+  resetPasswordOTP        String?
+  resetPasswordOTPExpires DateTime? @map("reset_password_otp_expires")
+  companyTaxId            String
+  country                 String
+  city                    String
+  state                   String
+  postCode                String
+  fullAddress             String
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
+
+  logo Image[]
+
+  @@map("company")
 }
 
 model Hotel {
@@ -239,6 +246,8 @@ model Image {
   userId    String?
   createdAt DateTime  @default(now()) @map("created_at")
   deletedAt DateTime? @map("deleted_at")
+  company   Company?  @relation(fields: [companyId], references: [id])
+  companyId String?
 
   @@map("images")
 }
@@ -278,7 +287,6 @@ model Support {
   supportRepId String?
 
   messages Message[]
-  //attachments Attachment[]
 
   @@map("supports")
 }
@@ -295,8 +303,6 @@ model Message {
   createdAt  DateTime  @default(now()) @map("created_at")
   readAt     DateTime?
   deletedAt  DateTime? @map("deleted_at")
-
-  //attachments Attachment[]
 
   @@map("messages")
 }

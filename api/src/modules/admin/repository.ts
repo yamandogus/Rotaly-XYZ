@@ -1,42 +1,60 @@
 import Prisma from "../../config/db";
-import { UpdateUserSchemaType } from "../../dto/auth";
+import { updateAdminProfileDto } from "../../dto/admin/profile-dto";
 
 export class AdminRepository {
-  // şirket bilgisi
-  //   kendi profilini güncelliyo
-  // TODO
-  static async updateAdminProfile(id: string, data: UpdateUserSchemaType) {
-    return Prisma.user.update({
+  static async updateAdminProfile(id: string, data: updateAdminProfileDto) {
+    return Prisma.company.update({
       where: {
         id,
       },
       data,
     });
   }
-
-  //   dashboard kısmında görebildikleri
-  static async getDashboardStatus() {
-    const [totalReservation, totalCustomers, totalHotels] = await Promise.all([
-      Prisma.reservation.count({ where: { deletedAt: null } }),
-      Prisma.user.count({ where: { deletedAt: null } }),
-      Prisma.hotel.count({ where: { deletedAt: null } }),
-    ]);
-
-    return {
-      totalReservation,
-      totalCustomers,
-      totalHotels,
-    };
+  static async getProfile(id: string) {
+    return Prisma.company.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        companyName: true,
+        companyTaxId: true,
+        country: true,
+        city: true,
+        state: true,
+        postCode: true,
+        fullAddress: true,
+        logo: true,
+      },
+    });
+  }
+  static async getTotalEarnings() {
+    return Prisma.reservation.aggregate({
+      where: {
+        deletedAt: null,
+      },
+      _sum: {
+        totalPrice: true,
+      },
+    });
+  }
+  static async getTotalReservations() {
+    return Prisma.reservation.count({
+      where: {
+        deletedAt: null,
+      },
+    });
+  }
+  static async getTotalCustomers() {
+    return Prisma.user.count({
+      where: { role: "CUSTOMER" },
+    });
+  }
+  static async getTotalHotels() {
+    return Prisma.hotel.count({
+      where: {
+        deletedAt: null,
+        isActive: true,
+      },
+    });
   }
 }
-
-// admin şifre değiştirmek için onay maili alsın
-// total kazanç verileri gelicek
-// total rezervasyon verileri gelicek
-// total müşteri verileri gelicek
-// total otel verileri gelicek
-// kendi profilinde company bilgileri olucak
-
-// company şeması olabilir
-// paymentcard kullanıcı görmeli
-// include user image

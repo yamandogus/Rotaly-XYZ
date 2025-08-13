@@ -21,6 +21,19 @@ export class UserRepository {
       where: {
         id,
       },
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+        phone: true,
+        isVerified: true,
+        deletedAt: true,
+        images: true,
+        role: true,
+        paymentCards: true,
+        hashedPassword: true,
+      },
     });
   }
   static async findByPhone(phone: string) {

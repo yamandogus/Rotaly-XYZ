@@ -8,10 +8,10 @@ import {
   RegisterSchemaType,
   UpdateUserSchemaType,
   ChangePasswordSchemaType,
-  ProfileSchemaType,
 } from "../../dto/auth";
 import { EmailService } from "../email/service";
 import { UserService } from "../user/service";
+import { User } from "@prisma/client";
 
 export class AuthService {
   private emailService: EmailService;
@@ -128,20 +128,6 @@ export class AuthService {
     return {
       message: "Verification email sent",
     };
-  }
-
-  async getProfile(userId: string): Promise<ProfileSchemaType> {
-    const user = await UserService.getById(userId);
-
-    const profile: ProfileSchemaType = {
-      id: user.id,
-      name: user.name,
-      surname: user.surname,
-      email: user.email,
-      phone: user.phone,
-    };
-
-    return profile;
   }
 
   async updateProfile(userId: string, data: UpdateUserSchemaType) {

@@ -29,18 +29,6 @@ router.post(
   authController.forgotPassword.bind(authController)
 );
 
-//TODO
-router.get(
-  "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
-
-router.get(
-  "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
-  authController.googleCallback.bind(authController)
-);
-
 // private routerlar
 router.post(
   "/logout",
@@ -52,11 +40,7 @@ router.post(
   authenticateToken,
   authController.verifyEmail.bind(authController)
 );
-router.get(
-  "/get-profile",
-  authenticateToken,
-  authController.getProfile.bind(authController)
-);
+
 router.put(
   "/update-profile",
   authenticateToken,

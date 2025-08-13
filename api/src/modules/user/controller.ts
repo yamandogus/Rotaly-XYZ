@@ -173,4 +173,27 @@ export class UserController {
       }
     }
   }
+
+  static async getProfile(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = req.user.id; // JWT middleware'den gelen kullanıcı ID'si
+      const profile = await UserService.getProfile(userId);
+      res.status(200).json({
+        success: true,
+        data: profile,
+      });
+    } catch (error) {
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Profil bilgileri getirilirken bir hata oluştu",
+        });
+      }
+    }
+  }
 }
