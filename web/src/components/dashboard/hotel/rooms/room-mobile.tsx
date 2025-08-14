@@ -18,7 +18,6 @@ interface RoomMobileCardProps {
 const RoomMobileCard: FC<RoomMobileCardProps> = ({
   filteredRooms,
   handleViewDetails,
-  handleEdit,
   handleDelete,
 }) => {
   return (
@@ -43,7 +42,10 @@ const RoomMobileCard: FC<RoomMobileCardProps> = ({
                 <div>
                   <p className="font-medium text-foreground">{room.name}</p>
                   <p className="text-sm text-muted-foreground">
-                    {room.capacity} Kişilik - {room.bedCount} Yatak
+                    {room.capacity} Kişilik - {room.bedCount} Yatak - {room.type}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Oda {room.roomNumber} - {room.floor}. Kat
                   </p>
                 </div>
               </div>
@@ -60,7 +62,16 @@ const RoomMobileCard: FC<RoomMobileCardProps> = ({
             </div>
 
             <p className="text-sm text-muted-foreground">{room.description}</p>
-            <p className="font-medium text-foreground">Fiyat: {room.price} ₺</p>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div>
+                <p className="text-muted-foreground">Fiyat</p>
+                <p className="font-medium text-foreground">{room.price} ₺</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">Kapasite</p>
+                <p className="font-medium text-foreground">{room.maxAdults} Yetişkin, {room.maxChildren} Çocuk</p>
+              </div>
+            </div>
 
             {room.featureStatus && room.featureStatus.length > 0 && (
               <div className="flex flex-wrap gap-2">
@@ -83,15 +94,7 @@ const RoomMobileCard: FC<RoomMobileCardProps> = ({
                 <Eye className="h-4 w-4 mr-2" />
                 Görüntüle
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleEdit(room)}
-                className="flex-1"
-              >
-                <Edit className="h-4 w-4 mr-2" />
-                Düzenle
-              </Button>
+          
               <Button
                 variant="outline"
                 size="sm"

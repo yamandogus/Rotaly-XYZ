@@ -16,7 +16,7 @@ const hotelMenu = [
     title: "Oda & Fiyat Yönetimi",
     icon: BedDoubleIcon,
     description: "Odalarınızı düzenleyebilir, fiyatlarınızı güncelleyebilir ve müsaitliği ayarlayabilirsiniz.",
-    link: "/dashboard/hotel/rooms",
+    link: "/dashboard/hotel/room-price",
     color: "text-green-500",
   },
   {
@@ -37,14 +37,14 @@ const hotelMenu = [
     title: "Misafir Yönetimi",
     icon: UsersIcon,
     description: "Misafir bilgilerini görüntüleyebilir ve iletişim geçmişini takip edebilirsiniz.",
-    link: "/dashboard/hotel/guests",
+    link: "/dashboard/hotel/customers",
     color: "text-teal-500",
   },
   {
     title: "Değerlendirmeler",
     icon: StarIcon,
     description: "Misafir yorumlarını ve değerlendirmelerini görüntüleyebilir ve yanıtlayabilirsiniz.",
-    link: "/dashboard/hotel/reviews",
+    link: "/dashboard/hotel/evaluations",
     color: "text-yellow-500",
   },
     {

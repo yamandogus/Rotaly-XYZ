@@ -287,9 +287,11 @@ const CustomerTable = ({
           <DialogTitle>Kullanıcı Sil</DialogTitle>
           <p>Kullanıcıyı silmek istediğinize emin misiniz?</p>
           <DialogFooter>
-          <DialogClose asChild>
-  <Button variant="outline">İptal</Button>
-</DialogClose>
+            <DialogClose>
+              <Button variant={'outline'}>
+                İptal
+              </Button>
+            </DialogClose>
             <Button onClick={()=>setOpenDelete(false)}>Evet</Button>
           </DialogFooter>
         </DialogContent>

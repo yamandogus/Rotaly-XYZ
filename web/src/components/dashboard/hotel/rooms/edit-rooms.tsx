@@ -36,6 +36,14 @@ const EditRoomDialog: FC<EditRoomDialogProps> = ({
           value={roomData.name}
           className="input input-bordered w-full mb-2"
           onChange={(e) => setRoomData({ ...roomData, name: e.target.value })}
+          placeholder="Oda Adı"
+        />
+        <textarea
+          value={roomData.description || ""}
+          className="input input-bordered w-full mb-2"
+          onChange={(e) => setRoomData({ ...roomData, description: e.target.value })}
+          placeholder="Oda Açıklaması"
+          rows={3}
         />
         <input
           type="number"
@@ -44,7 +52,48 @@ const EditRoomDialog: FC<EditRoomDialogProps> = ({
           onChange={(e) =>
             setRoomData({ ...roomData, price: Number(e.target.value) })
           }
+          placeholder="Fiyat"
         />
+        <div className="grid grid-cols-2 gap-2 mb-2">
+          <input
+            type="number"
+            value={roomData.maxAdults}
+            className="input input-bordered w-full"
+            onChange={(e) =>
+              setRoomData({ ...roomData, maxAdults: Number(e.target.value) })
+            }
+            placeholder="Maksimum Yetişkin"
+          />
+          <input
+            type="number"
+            value={roomData.maxChildren}
+            className="input input-bordered w-full"
+            onChange={(e) =>
+              setRoomData({ ...roomData, maxChildren: Number(e.target.value) })
+            }
+            placeholder="Maksimum Çocuk"
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-2 mb-2">
+          <input
+            type="number"
+            value={roomData.floor}
+            className="input input-bordered w-full"
+            onChange={(e) =>
+              setRoomData({ ...roomData, floor: Number(e.target.value) })
+            }
+            placeholder="Kat"
+          />
+          <input
+            type="number"
+            value={roomData.roomNumber}
+            className="input input-bordered w-full"
+            onChange={(e) =>
+              setRoomData({ ...roomData, roomNumber: Number(e.target.value) })
+            }
+            placeholder="Oda Numarası"
+          />
+        </div>
         <input
           type="number"
           value={roomData.capacity}
@@ -52,6 +101,16 @@ const EditRoomDialog: FC<EditRoomDialogProps> = ({
           onChange={(e) =>
             setRoomData({ ...roomData, capacity: Number(e.target.value) })
           }
+          placeholder="Toplam Kapasite"
+        />
+        <input
+          type="number"
+          value={roomData.bedCount}
+          className="input input-bordered w-full mb-2"
+          onChange={(e) =>
+            setRoomData({ ...roomData, bedCount: Number(e.target.value) })
+          }
+          placeholder="Yatak Sayısı"
         />
         <div className="flex justify-end space-x-2 mt-4">
           <button

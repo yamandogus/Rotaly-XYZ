@@ -3,6 +3,10 @@ export interface Room {
   name: string;
   description: string;
   price: number;
+  maxAdults: number;
+  maxChildren: number;
+  floor: number;
+  roomNumber: number;
   capacity: number;
   bedCount: number;
   isAvailable: boolean;
@@ -13,6 +17,7 @@ export interface Room {
   bookings: Booking[]; // rezervasyon tipine göre düzenle
   featureStatus: FeatureStatus[]; // özellik tipine göre düzenle
   images: string[];
+  type: string; // STANDARD, DELUXE, SUITE, PRESIDENTIAL
 }
 
 interface Booking {

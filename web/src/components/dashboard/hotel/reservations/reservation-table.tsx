@@ -17,9 +17,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Filter, MoreHorizontal, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Customer } from "@/types/customer";
+import { Reservation } from "@/types/reservations";
 import {
   Dialog,
   DialogClose,
@@ -28,23 +27,28 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-interface CustomerTableProps {
-  filteredCustomers: Customer[];
+interface ReservationTableProps {
+  filteredReservations: Reservation[];
   activeFilter: (value: string) => void;
-  shortBy: (sort: string) => void;
-  handleViewDetails: (customer: Customer) => void;
-  handleEdit: (customer: Customer) => void;
-  handleDelete: (customer: Customer) => void;
+  sortBy: (sort: string) => void;
+  handleDelete: (reservation: Reservation) => void;
 }
 
-const CustomerTable = ({
-  filteredCustomers,
+const ReservationTable = ({
+  filteredReservations,
   activeFilter,
-  shortBy,
-}: CustomerTableProps) => {
-  const t = useTranslations("Customers");
+  sortBy,
+  handleDelete,
+}: ReservationTableProps) => {
+  const t = useTranslations("Reservations");
 
   const [openDelete, setOpenDelete] = useState(false);
+  const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
+
+  const handleDeleteClick = (reservation: Reservation) => {
+    setSelectedReservation(reservation);
+    setOpenDelete(true);
+  };
 
   return (
     <div className="hidden lg:block">
@@ -53,7 +57,7 @@ const CustomerTable = ({
           <TableRow className="border-border">
             <TableHead className="text-muted-foreground">
               <div className="flex items-center justify-between">
-                {t("customerInformation")}
+                {t("reservationId")}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
@@ -61,10 +65,10 @@ const CustomerTable = ({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => shortBy("name")}>
+                    <DropdownMenuItem onClick={() => sortBy("id")}>
                       A-Z
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => shortBy("name-desc")}>
+                    <DropdownMenuItem onClick={() => sortBy("id-desc")}>
                       Z-A
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -73,7 +77,7 @@ const CustomerTable = ({
             </TableHead>
             <TableHead className="text-muted-foreground">
               <div className="flex items-center justify-between">
-                {t("phone")}
+                {t("checkIn")}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
@@ -81,50 +85,10 @@ const CustomerTable = ({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => shortBy("phone")}>
-                      A-Z
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => shortBy("phone-desc")}>
-                      Z-A
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </TableHead>
-            <TableHead className="text-muted-foreground">
-              <div className="flex items-center justify-between">
-                {t("email")}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                      <ArrowUpDown className="h-3 w-3" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => shortBy("email")}>
-                      A-Z
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => shortBy("email-desc")}>
-                      Z-A
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </TableHead>
-            <TableHead className="text-muted-foreground">
-              <div className="flex items-center justify-between">
-                {t("createdAt")}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                      <ArrowUpDown className="h-3 w-3" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => shortBy("createdAt")}>
+                    <DropdownMenuItem onClick={() => sortBy("startDate")}>
                       En Yeni
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => shortBy("createdAt-desc")}>
+                    <DropdownMenuItem onClick={() => sortBy("startDate-desc")}>
                       En Eski
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -133,7 +97,7 @@ const CustomerTable = ({
             </TableHead>
             <TableHead className="text-muted-foreground">
               <div className="flex items-center justify-between">
-                {t("lastReservation")}
+                {t("checkOut")}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
@@ -141,14 +105,10 @@ const CustomerTable = ({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem
-                      onClick={() => shortBy("lastReservation")}
-                    >
+                    <DropdownMenuItem onClick={() => sortBy("endDate")}>
                       En Yeni
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => shortBy("lastReservation-desc")}
-                    >
+                    <DropdownMenuItem onClick={() => sortBy("endDate-desc")}>
                       En Eski
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -157,7 +117,7 @@ const CustomerTable = ({
             </TableHead>
             <TableHead className="text-muted-foreground">
               <div className="flex items-center justify-between">
-                {t("totalSpent")}
+                {t("guests")}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
@@ -165,13 +125,51 @@ const CustomerTable = ({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => shortBy("totalSpent")}>
+                    <DropdownMenuItem onClick={() => sortBy("guests")}>
                       En Düşük
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => shortBy("totalSpent-desc")}
-                    >
+                    <DropdownMenuItem onClick={() => sortBy("guests-desc")}>
                       En Yüksek
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </TableHead>
+            <TableHead className="text-muted-foreground">
+              <div className="flex items-center justify-between">
+                {t("totalPrice")}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                      <ArrowUpDown className="h-3 w-3" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem onClick={() => sortBy("totalPrice")}>
+                      En Düşük
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => sortBy("totalPrice-desc")}>
+                      En Yüksek
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </TableHead>
+            <TableHead className="text-muted-foreground">
+              <div className="flex items-center justify-between">
+                {t("hotelAddress")}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                      <ArrowUpDown className="h-3 w-3" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem onClick={() => sortBy("hotelAddress")}>
+                      A-Z
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => sortBy("hotelAddress-desc")}>
+                      Z-A
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -190,9 +188,7 @@ const CustomerTable = ({
                     <DropdownMenuItem onClick={() => activeFilter("verified")}>
                       {t("verified")}
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => activeFilter("unverified")}
-                    >
+                    <DropdownMenuItem onClick={() => activeFilter("unverified")}>
                       {t("unverified")}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => activeFilter("all")}>
@@ -206,101 +202,81 @@ const CustomerTable = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredCustomers.map((customer) => (
+          {filteredReservations.map((reservation) => (
             <TableRow
-              key={customer.id}
+              key={reservation.id}
               className="border-border hover:bg-muted/50"
             >
               <TableCell>
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage
-                      src={customer.avatar}
-                      alt={`${customer.name} ${customer.surname}`}
-                    />
-                    <AvatarFallback>
-                      {customer.name[0]}
-                      {customer.surname[0]}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-medium text-foreground">
-                      {customer.name} {customer.surname}
-                    </p>
-                  </div>
+                <div>
+                  <p className="font-medium text-foreground">
+                    {reservation.id}
+                  </p>
                 </div>
               </TableCell>
               <TableCell className="text-foreground">
-                {customer.phone}
+                {new Date(reservation.startDate).toLocaleDateString()}
               </TableCell>
               <TableCell className="text-foreground">
-                {customer.email}
+                {new Date(reservation.endDate).toLocaleDateString()}
               </TableCell>
               <TableCell className="text-foreground">
-                {new Date(customer.createdAt).toLocaleDateString()}
-              </TableCell>
-              <TableCell className="text-foreground">
-                {customer.lastReservation
-                  ? new Date(customer.lastReservation).toLocaleDateString()
-                  : "-"}
+                {reservation.guests}
               </TableCell>
               <TableCell className="font-medium text-foreground">
-                {customer.totalSpent.toLocaleString("tr-TR")} TL
+                {reservation.totalPrice.toLocaleString("tr-TR")} TL
+              </TableCell>
+              <TableCell className="text-foreground">
+                {reservation.hotelAddress}
               </TableCell>
               <TableCell>
                 <Badge
-                  variant={customer.isVerified ? "default" : "secondary"}
+                  variant={reservation.isVerified ? "default" : "secondary"}
                   className={
-                    customer.isVerified
+                    reservation.isVerified
                       ? "bg-green-100 text-green-800 hover:bg-green-100"
                       : "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
                   }
                 >
-                  {customer.isVerified ? t("verified") : t("unverified")}
+                  {reservation.isVerified ? t("verified") : t("unverified")}
                 </Badge>
               </TableCell>
               <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem
-                      onClick={() => setOpenDelete(true)}
-                      className="text-red-600 focus:text-red-600"
-                    >
-                      <Trash className="h-4 w-4 mr-2" />
-                      {t("delete")}
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleDeleteClick(reservation)}
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                >
+                  <Trash className="h-4 w-4" />
+                </Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      {/*Delet Dialog */}
+      {/*Delete Dialog */}
       <Dialog open={openDelete} onOpenChange={setOpenDelete}>
         <DialogContent>
-          <DialogTitle>Kullanıcı Sil</DialogTitle>
-          <p>Kullanıcıyı silmek istediğinize emin misiniz?</p>
+          <DialogTitle>Rezervasyon Sil</DialogTitle>
+          <p>Bu rezervasyonu silmek istediğinize emin misiniz?</p>
           <DialogFooter>
-          <DialogClose asChild>
-  <Button variant="outline">İptal</Button>
-</DialogClose>
-            <Button onClick={()=>setOpenDelete(false)}>Evet</Button>
+            <DialogClose asChild>
+              <Button variant="outline">İptal</Button>
+            </DialogClose>
+            <Button
+              onClick={() => {
+                if (selectedReservation) handleDelete(selectedReservation);
+                setOpenDelete(false);
+              }}
+            >
+              Evet
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      ;
     </div>
   );
 };
 
-<Dialog>
-  <DialogContent>test</DialogContent>
-</Dialog>;
-
-export default CustomerTable;
+export default ReservationTable;

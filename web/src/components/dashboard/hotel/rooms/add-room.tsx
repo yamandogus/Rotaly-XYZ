@@ -31,6 +31,58 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
           className="input input-bordered w-full mb-2"
           onChange={(e) => setNewRoom({ ...newRoom, name: e.target.value })}
         />
+        <textarea
+          placeholder="Oda Açıklaması"
+          className="input input-bordered w-full mb-2"
+          onChange={(e) => setNewRoom({ ...newRoom, description: e.target.value })}
+          rows={3}
+        />
+        <select
+          className="input input-bordered w-full mb-2"
+          onChange={(e) => setNewRoom({ ...newRoom, type: e.target.value })}
+        >
+          <option value="">Oda Türü Seçin</option>
+          <option value="STANDARD">Standart</option>
+          <option value="DELUXE">Deluxe</option>
+          <option value="SUITE">Süit</option>
+          <option value="PRESIDENTIAL">Başkanlık</option>
+        </select>
+        <div className="grid grid-cols-2 gap-2 mb-2">
+          <input
+            type="number"
+            placeholder="Maksimum Yetişkin"
+            className="input input-bordered w-full"
+            onChange={(e) =>
+              setNewRoom({ ...newRoom, maxAdults: Number(e.target.value) })
+            }
+          />
+          <input
+            type="number"
+            placeholder="Maksimum Çocuk"
+            className="input input-bordered w-full"
+            onChange={(e) =>
+              setNewRoom({ ...newRoom, maxChildren: Number(e.target.value) })
+            }
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-2 mb-2">
+          <input
+            type="number"
+            placeholder="Kat"
+            className="input input-bordered w-full"
+            onChange={(e) =>
+              setNewRoom({ ...newRoom, floor: Number(e.target.value) })
+            }
+          />
+          <input
+            type="number"
+            placeholder="Oda Numarası"
+            className="input input-bordered w-full"
+            onChange={(e) =>
+              setNewRoom({ ...newRoom, roomNumber: Number(e.target.value) })
+            }
+          />
+        </div>
         <input
           type="number"
           placeholder="Fiyat"
@@ -41,10 +93,18 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
         />
         <input
           type="number"
-          placeholder="Kapasite"
+          placeholder="Toplam Kapasite"
           className="input input-bordered w-full mb-2"
           onChange={(e) =>
             setNewRoom({ ...newRoom, capacity: Number(e.target.value) })
+          }
+        />
+        <input
+          type="number"
+          placeholder="Yatak Sayısı"
+          className="input input-bordered w-full mb-2"
+          onChange={(e) =>
+            setNewRoom({ ...newRoom, bedCount: Number(e.target.value) })
           }
         />
         <div className="flex justify-end space-x-2 mt-4">
