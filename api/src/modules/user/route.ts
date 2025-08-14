@@ -13,6 +13,13 @@ const router = Router();
 // POST /api/users
 // Register a new user
 router.post("", UserController.add);
+// GET /api/users/me/profile
+router.get(
+  "/me/profile",
+  authenticateToken,
+  verifiedUser,
+  UserController.getProfile
+);
 
 // GET /api/users/:id
 router.get(

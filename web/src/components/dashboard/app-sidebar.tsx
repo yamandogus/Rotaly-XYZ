@@ -16,7 +16,6 @@ import {
   IconBed,
   IconStar,
   IconCalendar,
-  IconCalendarBolt,
   IconShield,
 
 } from "@tabler/icons-react";
