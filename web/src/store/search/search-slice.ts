@@ -3,8 +3,8 @@ import { SearchState } from './search-types';
 
 const initialState: SearchState = {
   city: '',
-  checkIn: '',
-  checkOut: '',
+  checkIn: "",
+  checkOut: "",
   guests: 1,
 };
 
@@ -15,19 +15,19 @@ const searchSlice = createSlice({
     setCity: (state, action: PayloadAction<string>) => {
       state.city = action.payload;
     },
-    setCheckIn: (state, action: PayloadAction<string>) => {
+    setCheckInDate: (state, action: PayloadAction<string>) => {
       state.checkIn = action.payload;
     },
-    setCheckOut: (state, action: PayloadAction<string>) => {
+    setCheckOutDate: (state, action: PayloadAction<string>) => {
       state.checkOut = action.payload;
     },
-    setGuests: (state, action: PayloadAction<number>) => {
+    setGuestsCount: (state, action: PayloadAction<number>) => {
       state.guests = action.payload;
     },
     clearSearch: (state) => {
       state.city = '';
-      state.checkIn = '';
-      state.checkOut = '';
+      state.checkIn = "";
+      state.checkOut = "";
       state.guests = 1;
     },
   },
@@ -35,9 +35,9 @@ const searchSlice = createSlice({
 
 export const {
   setCity,
-  setCheckIn,
-  setCheckOut,
-  setGuests,
+  setCheckInDate,
+  setCheckOutDate,
+  setGuestsCount,
   clearSearch,
 } = searchSlice.actions;
 
