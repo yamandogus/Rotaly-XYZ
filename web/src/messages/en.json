@@ -148,7 +148,25 @@
   "hotel-profile": "Hotel Profile",
   "guest-management": "Guest Management",
   "evaluations": "Evaluations"
-
+  },
+  "Evaluations": {
+    "title": "Room Evaluations",
+    "subtitle": "View and respond to your guests' room evaluations",
+    "searchPlaceholder": "Search evaluations...",
+    "filter": "Filter",
+    "averageRating": "Average Rating",
+    "totalReviews": "Total Reviews",
+    "thisMonth": "This Month",
+    "responded": "Responded",
+    "reviews": "reviews",
+    "reply": "Reply",
+    "categories": {
+      "cleanliness": "Cleanliness",
+      "service": "Service",
+      "location": "Location",
+      "price": "Price",
+      "general": "General"
+    }
   },
   "Admin": {
     "title": "Admin Panel",
@@ -422,6 +440,11 @@
   "id": "ID",
   "roomName": "Room Name",
   "room-image":"Room Image",
+  "roomType": "Room Type",
+  "roomNumber": "Room Number",
+  "floor": "Floor",
+  "maxAdults": "Max Adults",
+  "maxChildren": "Max Children",
   "price": "Price",
   "capacity": "Capacity",
   "status": "Status",
@@ -472,44 +495,70 @@
   "editRoom":"Edit Room"
   },
 
+  "Reservations": {
+    "title": "Reservations",
+    "checkIn": "Check-in Date",
+    "checkOut": "Check-out Date",
+    "guests": "Guests",
+    "totalPrice": "Total Price",
+    "actions": "Actions",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "allReservations": "All Reservations",
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "totalGuests": "Total Guests",
+    "totalRevenue": "Total Revenue",
+    "verifiedReservations": "Verified Reservations",
+    "reservationId": "Reservation ID",
+    "hotelAddress": "Hotel Address",
+    "viewDetails": "View Details",
+    "status": "Status",
+    "verified": "Verified",
+    "unverified": "Unverified",
+    "allStatus": "All Status",
+    "search": "Search...",
+    "filter": "Filter",
+    "sortBy": "Sort By",
+    "createdAt": "Created At"
+  },
+
   "Statistics": {
-    "title": "Statistics",
-    "dateRange": "Jan - Aug",
+    "title": "Hotel Statistics",
+    "dateRange": "Last 30 Days",
     "allRooms": "All Rooms",
     "compare": "Compare",
-    "exportCsv": "Export .csv",
-    "payments": {
-      "received": {
-        "title": "Received Payments",
-        "status": "{count} Reservations Paid"
-      },
-      "pending": {
-        "title": "Pending Payments",
-        "status": "{count} Reservations Pending"
-      }
-    },
-    "revenueSharing": {
-      "title": "Revenue Sharing",
-      "description": "Distribution by revenue categories",
-      "rooms": "Rooms",
-      "food": "Food",
-      "extraServices": "Extra Services"
-    },
-    "paymentTypes": {
-      "title": "Payment Types",
-      "description": "Preferred payment methods",
-      "noData": "No data available"
-    },
-    "reservationSources": {
-      "title": "Reservation Sources",
-      "description": "Distribution of revenue by source"
-    },
-    "revenueAndOccupancy": {
-      "title": "Revenue and Occupancy",
-      "description": "Estimated data for recent months",
-      "occupancy": "Occupancy",
-      "totalRevenue": "Total Revenue"
-    }
+    "exportCsv": "Download Report",
+    "refresh": "Refresh",
+    "totalRevenue": "Total Revenue",
+    "totalBookings": "Total Bookings",
+    "averageOccupancy": "Average Occupancy",
+    "customerRating": "Customer Rating",
+    "thisMonth": "This month",
+    "average": "Average",
+    "comparedToLastMonth": "vs last month",
+    "monthlyRevenueTrend": "Monthly Revenue and Booking Trend",
+    "monthlyRevenueDescription": "Revenue and booking data for the last 8 months",
+    "roomTypeDistribution": "Room Type Distribution",
+    "roomTypeDescription": "By reservation rates",
+    "weeklyOccupancy": "Weekly Occupancy and Revenue",
+    "weeklyOccupancyDescription": "Daily performance this week",
+    "customerSatisfaction": "Customer Satisfaction",
+    "customerSatisfactionDescription": "Category-based evaluations",
+    "topRooms": "Most Popular Rooms",
+    "topRoomsDescription": "Rooms with the most bookings",
+    "revenue": "Revenue",
+    "bookings": "Bookings",
+    "occupancy": "Occupancy",
+    "reviews": "reviews",
+    "cleanliness": "Cleanliness",
+    "service": "Service",
+    "location": "Location",
+    "price": "Price",
+    "overall": "Overall",
+    "occupancyRate": "occupancy",
+    "guests": "guests"
   },
   "Hotels": {
     "allRegisteredHotels": "All Registered Hotels",

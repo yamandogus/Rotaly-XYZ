@@ -3,90 +3,89 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { reservations } from "@/data/dumy";
-import ReservationFilters from "@/components/dashboard/hotel/reservations/reservation-filter";
-import ReservationTable from "@/components/dashboard/hotel/reservations/reservation-table";
-import ReservationMobileCard from "@/components/dashboard/hotel/reservations/reservation-mobile-card";
+import { customersData } from "@/data/dumy";
+import { CustomerFilters, CustomerTable, CustomerMobilCard } from "@/components/dashboard/hotel/customers";
 
-export default function ReservationPage() {
-  const t = useTranslations("Reservations");
-  const hotelReservations = reservations.filter(res => res.hotelAddress === "Otel Sokak No:1, İstanbul");
+export default function CustomersPage() {
+  const t = useTranslations("Customers");
+  const hotelCustomers = customersData.filter(customer => customer.hotelId === "H001");
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredReservations, setFilteredReservations] = useState(hotelReservations);
+  const [filteredCustomers, setFilteredCustomers] = useState(hotelCustomers);
 
   const statsData = [
     {
-      title: t("allReservations"),
-      value: hotelReservations.length.toString(),
+      title: t("allRegisteredUsers"),
+      value: hotelCustomers.length.toString(),
       subtitle: "",
     },
     {
-      title: t("totalGuests"),
-      value: hotelReservations.reduce((acc, res) => acc + res.guests, 0).toString(),
+      title: t("joinedThisMonth"),
+      value: hotelCustomers.filter(c => new Date(c.createdAt).getMonth() === new Date().getMonth()).length.toString(),
       subtitle: "",
     },
     {
-      title: t("totalRevenue"),
-      value: hotelReservations.reduce((acc, res) => acc + res.totalPrice, 0).toString(),
+      title: t("purchasedIn30Days"),
+      value: hotelCustomers.reduce((acc, c) => acc + c.totalReservations, 0).toString(),
       subtitle: "",
     },
     {
-      title: t("verifiedReservations"),
-      value: hotelReservations.filter((res) => res.isVerified).length.toString(),
+      title: t("inactiveFor90Days"),
+      value: (
+        (hotelCustomers.filter(c => {
+          const lastRes = new Date(c.lastReservation);
+          const diffDays = (new Date().getTime() - lastRes.getTime()) / (1000 * 3600 * 24);
+          return diffDays > 90;
+        }).length / hotelCustomers.length) * 100
+      ).toFixed(1) + "%",
       subtitle: "",
     },
   ];
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    const filtered = hotelReservations.filter(
-      (res) =>
-        res.userPhone.toLowerCase().includes(value.toLowerCase()) ||
-        (res.specialRequest && res.specialRequest.toLowerCase().includes(value.toLowerCase()))
+    const filtered = hotelCustomers.filter(
+      (customer) =>
+        customer.name.toLowerCase().includes(value.toLowerCase()) ||
+        customer.surname.toLowerCase().includes(value.toLowerCase()) ||
+        customer.email.toLowerCase().includes(value.toLowerCase()) ||
+        customer.phone.toLowerCase().includes(value.toLowerCase())
     );
-    setFilteredReservations(filtered);
+    setFilteredCustomers(filtered);
   };
 
   const activeFilter = (value: string) => {
     if (value === "all") {
-      setFilteredReservations(hotelReservations);
+      setFilteredCustomers(hotelCustomers);
     } else if (value === "verified") {
-      setFilteredReservations(hotelReservations.filter((res) => res.isVerified === true));
+      setFilteredCustomers(hotelCustomers.filter((customer) => customer.isVerified === true));
     } else if (value === "unverified") {
-      setFilteredReservations(hotelReservations.filter((res) => res.isVerified === false));
+      setFilteredCustomers(hotelCustomers.filter((customer) => customer.isVerified === false));
     }
   };
 
-  const sortBy = (sort: string) => {
-    const sortedReservations = [...filteredReservations].sort((a, b) => {
-      if (sort === "startDate") return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-      if (sort === "startDate-desc") return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
-      if (sort === "endDate") return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
-      if (sort === "endDate-desc") return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
-      if (sort === "totalPrice") return a.totalPrice - b.totalPrice;
-      if (sort === "totalPrice-desc") return b.totalPrice - a.totalPrice;
-      if (sort === "guests") return a.guests - b.guests;
-      if (sort === "guests-desc") return b.guests - a.guests;
-      if (sort === "hotelAddress") return a.hotelAddress.localeCompare(b.hotelAddress);
-      if (sort === "hotelAddress-desc") return b.hotelAddress.localeCompare(a.hotelAddress);
-      if (sort === "id") return a.id.localeCompare(b.id);
-      if (sort === "id-desc") return b.id.localeCompare(a.id);
-      if (sort === "createdAt") return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-      if (sort === "createdAt-desc") return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  const shortBy = (short: string) => {
+    const sortedCustomers = [...filteredCustomers].sort((a, b) => {
+      if (short === "name") return a.name.localeCompare(b.name);
+      if (short === "name-desc") return b.name.localeCompare(a.name);
+      if (short === "email") return a.email.localeCompare(b.email);
+      if (short === "email-desc") return b.email.localeCompare(a.email);
+      if (short === "phone") return a.phone.localeCompare(b.phone);
+      if (short === "phone-desc") return b.phone.localeCompare(a.phone);
+      if (short === "createdAt") return a.createdAt.localeCompare(b.createdAt);
+      if (short === "createdAt-desc") return b.createdAt.localeCompare(a.createdAt);
+      if (short === "lastReservation") return a.lastReservation.localeCompare(b.lastReservation);
+      if (short === "lastReservation-desc") return b.lastReservation.localeCompare(a.lastReservation);
+      if (short === "totalSpent") return a.totalSpent - b.totalSpent;
+      if (short === "totalSpent-desc") return b.totalSpent - a.totalSpent;
       return 0;
     });
-    setFilteredReservations(sortedReservations);
-  };
-
-  const handleDelete = (reservation: any) => {
-    setFilteredReservations(prev => prev.filter(res => res.id !== reservation.id));
+    setFilteredCustomers(sortedCustomers);
   };
 
   return (
     <div className="p-4 md:p-6 lg:p-8 space-y-6">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/50 dark:to-emerald-950/50">
             <CardContent className="p-4">
@@ -98,7 +97,7 @@ export default function ReservationPage() {
                   </p>
                 </div>
                 <div className="h-8 w-8 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center">
-                  <span className="text-green-600 dark:text-green-400 text-sm font-bold">📋</span>
+                  <span className="text-green-600 dark:text-green-400 text-sm font-bold">👥</span>
                 </div>
               </div>
             </CardContent>
@@ -114,7 +113,7 @@ export default function ReservationPage() {
                   </p>
                 </div>
                 <div className="h-8 w-8 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
-                  <span className="text-blue-600 dark:text-blue-400 text-sm font-bold">👥</span>
+                  <span className="text-blue-600 dark:text-blue-400 text-sm font-bold">📅</span>
                 </div>
               </div>
             </CardContent>
@@ -126,11 +125,11 @@ export default function ReservationPage() {
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">{statsData[2].title}</p>
                   <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">
-                    {statsData[2].value}₺
+                    {statsData[2].value}
                   </p>
                 </div>
                 <div className="h-8 w-8 bg-orange-100 dark:bg-orange-900/50 rounded-full flex items-center justify-center">
-                  <span className="text-orange-600 dark:text-orange-400 text-sm font-bold">💰</span>
+                  <span className="text-orange-600 dark:text-orange-400 text-sm font-bold">🛒</span>
                 </div>
               </div>
             </CardContent>
@@ -146,37 +145,38 @@ export default function ReservationPage() {
                   </p>
                 </div>
                 <div className="h-8 w-8 bg-purple-100 dark:bg-purple-900/50 rounded-full flex items-center justify-center">
-                  <span className="text-purple-600 dark:text-purple-400 text-sm font-bold">✅</span>
+                  <span className="text-purple-600 dark:text-purple-400 text-sm font-bold">⏰</span>
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Reservation List Section */}
         <Card className="bg-card border border-border">
           <CardHeader className="pb-4">
-            <ReservationFilters
+            <CustomerFilters
               searchTerm={searchTerm}
               handleSearch={handleSearch}
               activeFilter={activeFilter}
-              sortBy={sortBy}
+              shortBy={shortBy}
             />
           </CardHeader>
 
           <CardContent className="p-0">
-            {/* Desktop Table */}
-            <ReservationTable
-              filteredReservations={filteredReservations}
+            <CustomerTable
+              filteredCustomers={filteredCustomers}
               activeFilter={activeFilter}
-              sortBy={sortBy}
-              handleDelete={handleDelete}
+              shortBy={shortBy}
+              handleViewDetails={(customer) => console.log("View details:", customer.id)}
+              handleEdit={(customer) => console.log("Edit:", customer.id)}
+              handleDelete={(customer) => console.log("Delete:", customer.id)}
             />
 
-            {/* Mobile Cards */}
-            <ReservationMobileCard
-              filteredReservations={filteredReservations}
-              handleDelete={handleDelete}
+            <CustomerMobilCard
+              filteredCustomers={filteredCustomers}
+              handleViewDetails={(customer) => console.log("View details:", customer.id)}
+              handleEdit={(customer) => console.log("Edit:", customer.id)}
+              handleDelete={(customer) => console.log("Delete:", customer.id)}
             />
           </CardContent>
         </Card>

@@ -23,7 +23,10 @@ const DeleteRoomDialog: FC<DeleteRoomDialogProps> = ({
       <div className="bg-white p-6 rounded shadow w-full max-w-sm">
         <h2 className="text-xl font-bold mb-4">Oda Sil</h2>
         <p>
-          {selectedRoom.name} adlı oda silinsin mi? Bu işlem geri alınamaz.
+          <strong>{selectedRoom.name}</strong> (Oda {selectedRoom.roomNumber} - {selectedRoom.floor}. Kat) adlı oda silinsin mi? Bu işlem geri alınamaz.
+        </p>
+        <p className="text-sm text-gray-600 mt-2">
+          Oda Türü: {selectedRoom.type} | Kapasite: {selectedRoom.capacity} | Fiyat: {selectedRoom.price}₺
         </p>
         <div className="flex justify-end space-x-2 mt-4">
           <button
