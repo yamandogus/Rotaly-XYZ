@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import SearchForm from "@/components/searchForm";
 import HotelCard from "@/components/hotelCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -12,6 +11,7 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { BookingSearch } from "@/components/home/booking-search";
 
 const images = [
   "/images/Istanbul.jpg",
@@ -206,8 +206,8 @@ export default function HomePage() {
           </Swiper>
         </div>
 
-        <div className="relative z-40 w-full max-w-6xl -mt-12 px-4 mb-12">
-          <SearchForm />
+        <div className="relative z-40 w-full max-w-6xl -mt-20 px-4 mb-12">
+          <BookingSearch />
         </div>
 
         {/* Categories Section */}
