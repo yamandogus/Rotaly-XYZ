@@ -1,6 +1,6 @@
 import { AdminRepository } from "./repository";
 import { updateAdminProfileDto } from "src/dto/admin/profile-dto";
-import { AppError } from "src/utils/appError";
+import { AppError } from "../../utils/appError";
 
 export class AdminService {
   static async updateAdminProfile(id: string, data: updateAdminProfileDto) {

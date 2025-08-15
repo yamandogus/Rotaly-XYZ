@@ -1,13 +1,42 @@
-import { configureStore } from '@reduxjs/toolkit'
-import searchReducer from './search/search-slice'
-import reservationStepReducer from './reservation/reservation-slice'
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import authReducer from "./auth/auth-slice";
+import searchReducer from "./search/search-slice";
+import testUserReducer from "./testUser/test-user-slice";
 
-export const store = configureStore({
-  reducer: {
-    search: searchReducer,
-    step: reservationStepReducer
-  },
-})
+// Persist config
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["testUser", "auth", "search"], // Sadece bu reducer'ları persist et
+};
+
+// Root reducer
+const rootReducer = combineReducers({
+  auth: authReducer,
+  search: searchReducer,
+  testUser: testUserReducer,
+});
+
+// Persisted reducer
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// SSR uyumlu store oluşturma fonksiyonu
+export const makeStore = () => {
+  return configureStore({
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
+        },
+      }),
+  });
+};
+
+export const store = makeStore();
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

@@ -55,7 +55,7 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
   return (
     <Card
       key={item.id}
-      className="bg-card border border-border rounded-2xl overflow-hidden transition-shadow duration-300 shadow-[0_0_10px_rgba(0,0,0,0.2)] hover:shadow-[0_0_15px_rgba(0,0,0,0.25)] dark:shadow-[0_0_10px_rgba(255,255,255,0.1)] dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] gap-0 pt-1 pb-2 cursor-pointer group flex flex-col h-full"
+      className="bg-card border border-border rounded-2xl overflow-hidden transition-shadow duration-300 shadow-[0_0_10px_rgba(0,0,0,0.2)] hover:shadow-[0_0_15px_rgba(0,0,0,0.25)] dark:shadow-[0_0_5px_rgba(255,255,255,0.1)] dark:hover:shadow-[0_0_10px_rgba(255,255,255,0.4)] gap-0 pt-1 pb-2 cursor-pointer group flex flex-col h-full"
     >
       <CardHeader className="relative p-0">
         <div className="relative h-52 w-full">

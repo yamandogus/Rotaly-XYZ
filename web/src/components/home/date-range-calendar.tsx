@@ -72,7 +72,7 @@ export function DateRangeCalendar({ checkIn, checkOut, onDateRangeChange }: Date
         </Button>
       </div>
 
-      <div className="p-4">
+      <div className="p-2">
         <Calendar
           mode="range"
           selected={dateRange}

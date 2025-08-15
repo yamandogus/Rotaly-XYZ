@@ -9,6 +9,7 @@ import commentRoutes from "../modules/comment/route";
 import favoriteRoutes from "../modules/favorites/route";
 import emailRoutes from "../modules/email/route";
 import messageRoutes from "../modules/message/route";
+import adminRoutes from "../modules/admin/route";
 
 const app = express();
 
@@ -31,5 +32,6 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/favorites", favoriteRoutes);
 app.use("/api/email", emailRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/admin", adminRoutes);
 
 export default app;
