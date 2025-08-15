@@ -161,7 +161,7 @@ export class EmailService {
           name: String(process.env.EMAIL_FROM_NAME),
           address: "support@rotaly-xyz.com",
         },
-        to: String(process.env.MAIL_TO), // real email address to receive contact-us forms sent
+        to: String(process.env.SUPPORT_MAIL_TO), // real email address to receive contact-us forms sent
         replyTo: fromEmail, // original sender to reply to
         subject: `[Contact Us] ${subject}`,
         template: templateName,
