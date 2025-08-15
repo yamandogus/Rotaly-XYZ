@@ -11,7 +11,6 @@ import RoomTable from "@/components/dashboard/hotel/rooms/room-table";
 import RoomMobileCard from "@/components/dashboard/hotel/rooms/room-mobile";
 import DeleteRoomDialog from "@/components/dashboard/hotel/rooms/delete-rooms";
 import AddRoomDialog from "@/components/dashboard/hotel/rooms/add-room";
-import RoomCards from "@/components/dashboard/hotel/rooms/room-cards";
 import EditRoomDialog from "@/components/dashboard/hotel/rooms/edit-rooms";
 import { Room } from "@/types/room";
 import { rooms } from "@/data/dumy";

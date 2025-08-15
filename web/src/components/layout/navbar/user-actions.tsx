@@ -106,11 +106,15 @@ const UserActions = () => {
         </React.Fragment>
       ) : (
         <div className="flex items-center space-x-2">
+          <LanguageSwitcher />
+          <ModeToggle />
           <Link href="/login">
-            <Button variant="outline">Giriş Yap</Button>
+            <Button variant="outline" className="cursor-pointer">
+              Giriş Yap
+            </Button>
           </Link>
           <Link href="/register">
-            <Button>Kayıt Ol</Button>
+            <Button className="cursor-pointer">Kayıt Ol</Button>
           </Link>
         </div>
       )}
