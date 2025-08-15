@@ -4,8 +4,9 @@ import storage from "redux-persist/lib/storage";
 import authReducer from "./auth/auth-slice";
 import searchReducer from "./search/search-slice";
 import testUserReducer from "./testUser/test-user-slice";
-import bookingReducer from "./booking/booking-slice";
-import stepReducer from "./step/step-slice";
+
+import stepReducer from "./reservation/reservation-slice";
+
 
 // Persist config
 const persistConfig = {
@@ -19,7 +20,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   search: searchReducer,
   testUser: testUserReducer,
-  booking: bookingReducer,
+
   step: stepReducer,
 });
 
