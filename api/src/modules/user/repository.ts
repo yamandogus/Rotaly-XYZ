@@ -1,3 +1,4 @@
+import { verificationEmailSchema } from "src/dto/email";
 import Prisma from "../../config/db";
 import { RegisterSchemaType, UpdateUserSchemaType } from "../../dto/auth";
 
@@ -33,6 +34,7 @@ export class UserRepository {
         role: true,
         paymentCards: true,
         hashedPassword: true,
+        verificationOTP:true
       },
     });
   }

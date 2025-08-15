@@ -110,7 +110,8 @@ export class AuthController {
       }
       const { verificationOTP } = req.body;
       const userId = req.user?.userId;
-
+      console.log(userId);
+      
       if (!userId) {
         throw new AppError("User ID not found", 401);
       }
