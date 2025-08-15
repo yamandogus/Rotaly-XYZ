@@ -15,7 +15,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToastMessages } from "@/hooks/toast-messages";
-import { BottomGradient, GoogleIcon, LabelInputContainer } from "@/components/auth/auth-components";
+import {
+  BottomGradient,
+  LabelInputContainer,
+} from "@/components/auth/auth-components";
+import { useDispatch} from "react-redux";
+import { setUserRole } from "@/store/testUser/test-user-slice";
+
 
 const loginShema = z.object({
   email: z.string().email({ message: "Geçersiz e-posta adresi" }),
@@ -26,6 +32,7 @@ type LoginFormData = z.infer<typeof loginShema>;
 
 export default function LoginPage() {
   const router = useRouter();
+  const dispatch = useDispatch()
   const { loginSuccess, loginError } = useToastMessages();
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginShema),
@@ -59,31 +66,44 @@ export default function LoginPage() {
     role: "support",
   };
 
-  const handleLogin = (data: LoginFormData) => {
+  const handleLogin = async (data: LoginFormData) => {
     console.log("login data", data);
+
+    // const response = await api.login(data);
+    // console.log("login response", response);
 
     // Normal kullanıcı girişi
     if (data.email === testUser.email && data.password === testUser.password) {
       localStorage.setItem("userRole", "user");
-      loginSuccess('user');
+      dispatch(setUserRole(testUser.role))
+      loginSuccess("user");
       router.push("/");
     }
     // Otel girişi
-    else if (data.email === testHotel.email && data.password === testHotel.password) {
+    else if (
+      data.email === testHotel.email &&
+      data.password === testHotel.password
+    ) {
       localStorage.setItem("userRole", "hotel");
-      loginSuccess('hotel');
+      loginSuccess("hotel");
       router.push("/dashboard");
     }
     // Admin girişi
-    else if (data.email === testAdmin.email && data.password === testAdmin.password) {
+    else if (
+      data.email === testAdmin.email &&
+      data.password === testAdmin.password
+    ) {
       localStorage.setItem("userRole", "admin");
-      loginSuccess('admin');
+      loginSuccess("admin");
       router.push("/dashboard");
     }
     // Support girişi
-    else if (data.email === testSupport.email && data.password === testSupport.password) {
+    else if (
+      data.email === testSupport.email &&
+      data.password === testSupport.password
+    ) {
       localStorage.setItem("userRole", "support");
-      loginSuccess('support');
+      loginSuccess("support");
       router.push("/dashboard/support");
     }
     // Hatalı giriş
@@ -158,19 +178,6 @@ export default function LoginPage() {
               </button>
 
               <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-
-              <div className="flex flex-col space-y-4">
-                <button
-                  className="border border-border group/btn shadow-input relative flex h-10 w-full items-center justify-center space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_#262626] hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
-                  type="button"
-                >
-                  <GoogleIcon />
-                  <span className="text-sm text-neutral-700 dark:text-neutral-300">
-                    Google ile Giriş Yap
-                  </span>
-                  <BottomGradient />
-                </button>
-              </div>
               <div className="flex items-center justify-center gap-2 mt-4">
                 <p className="text-sm text-neutral-700 dark:text-neutral-300">
                   Hesabınız yok mu?
