@@ -1237,7 +1237,6 @@ export const customersData = [
     avatar: "/images/userprofile.png"
   }
 ];
-
 export const rooms = [
   {
     id: "R001",
