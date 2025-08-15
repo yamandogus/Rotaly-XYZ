@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,6 +23,15 @@ import {
 import { useRouter } from "next/navigation";
 import { RootState } from "@/store/store";
 import { useToastMessages } from "@/hooks/toast-messages";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "../ui/command";
+import { hotelsData, popularHotels } from "@/data/dumy";
 
 export function BookingSearch() {
   const dispatch = useDispatch();
@@ -79,11 +88,6 @@ export function BookingSearch() {
     setCheckOut(newCheckOut ?? new Date());
   };
 
-  // const handleCitySelect = (selectedCity: string) => {
-  //   setDestination(selectedCity);
-  //   setIsOpen(false);
-  // };
-
   const [text] = useTypewriter({
     words: ["Otel", "Pansiyon", "Kiralık Daire"],
     loop: true,
@@ -91,6 +95,15 @@ export function BookingSearch() {
     deleteSpeed: 60,
     delaySpeed: 1000,
   });
+
+  const filteredHotels = useMemo(() => {
+    if (searchTerm.length > 2) {
+      return hotelsData.filter((hotel) =>
+        hotel.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    return [];
+  }, [searchTerm]);
 
   return (
     <div className="relative">
@@ -121,25 +134,97 @@ export function BookingSearch() {
                     </div>
                   </PopoverTrigger>
                   <PopoverContent
-                    className="w-[300px] p-0 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+                    className="w-[400px] p-0 bg-card border-gray-300 dark:border-gray-600"
                     align="center"
                   >
                     <div className="p-2">
                       {/* Search Input */}
-                      <div className="relative mb-2">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                        <Input
-                          placeholder="Şehir ara..."
-                          value={searchTerm}
-                          onChange={(e) => setSearchTerm(e.target.value)}
-                          className="pl-10 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-black dark:text-white placeholder:text-gray-400"
-                        />
-                      </div>
 
                       {/* Results */}
-                      <div className="max-h-60 overflow-y-auto">
-                        <div className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400 text-center">
-                          Şehir aramaya başlayın...
+                      <div className="max-h-80 overflow-y-auto p-2 overflow-hidden">
+                        <div className="mt-2">
+                          <div className="relative mb-2">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                            <Input
+                              placeholder="Şehir aramaya başlayın..."
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                              className="pl-10 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-black dark:text-white placeholder:text-gray-400"
+                            />
+                          </div>
+                          <Command className="bg-card">
+                            <CommandList className="bg-card">
+                              <CommandEmpty>Sonuç bulunamadı.</CommandEmpty>
+                              {filteredHotels.length > 0 ? (
+                                <CommandGroup heading="Sonuçlar">
+                                  {filteredHotels.map((hotel) => (
+                                    <CommandItem
+                                      key={hotel.name}
+                                      onSelect={() => {
+                                        setDestination(hotel.name);
+                                        setIsOpen(false);
+                                      }}
+                                    >
+                                      <div className="flex flex-row gap-4">
+                                        <div className="flex justify-center items-center">
+                                          <MapPin width={4} hanging={4} />
+                                        </div>
+                                        <div className="flex flex-col">
+                                          <p className="text-md">
+                                            {hotel.city}
+                                          </p>
+                                          <p className="text-gray-400 text-sm">
+                                            {hotel.location}
+                                          </p>
+                                          <p></p>
+                                        </div>
+                                      </div>
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              ) : (
+                                <CommandGroup heading="Sonuçlar">
+                                  <span className="text-gray-400 py-2 text-sm">
+                                    {searchTerm === ""
+                                      ? "Şehir aramaya başlayın..."
+                                      : "Sonuç bulunamadı."}
+                                  </span>
+                                </CommandGroup>
+                              )}
+                              <CommandSeparator />
+                            </CommandList>
+                            <CommandList>
+                              <CommandGroup>
+                                <div className="px-2 py-1 text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                                  Popüler aramalar
+                                </div>
+                                {popularHotels.map((hotel) => (
+                                  <CommandItem
+                                    key={hotel.name}
+                                    onSelect={() => {
+                                      setDestination(hotel.name);
+                                      setIsOpen(false);
+                                    }}
+                                  >
+                                    <div className="flex flex-row gap-4">
+                                      <div className="flex justify-center items-center">
+                                        <MapPin width={4} hanging={4} />
+                                      </div>
+                                      <div className="flex flex-col">
+                                        <p className="text-md">{hotel.city}</p>
+                                        <p className="text-gray-400 text-sm">
+                                          {hotel.location}
+                                        </p>
+                                        <p></p>
+                                      </div>
+                                    </div>
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+
+                              <CommandSeparator />
+                            </CommandList>
+                          </Command>
                         </div>
                       </div>
                     </div>
