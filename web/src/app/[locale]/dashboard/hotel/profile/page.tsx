@@ -373,12 +373,12 @@ export default function HotelPage() {
             </div>
 
             {/* Kaydet Butonu */}
-            <div className="flex justify-center pt-8">
+            <div className="flex justify-center ">
                              <Button
                  type="submit"
                  className="bg-black hover:bg-gray-800 text-white font-semibold px-8 py-3 rounded-xl text-base shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-3 min-w-[200px]"
                >
-                <SaveIcon className="w-5 h-5" />
+                <SaveIcon className="w-5 h-5 " />
                 Değişiklikleri Kaydet
               </Button>
             </div>

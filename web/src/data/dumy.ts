@@ -1237,7 +1237,6 @@ export const customersData = [
     avatar: "/images/userprofile.png"
   }
 ];
-
 export const rooms = [
   {
     id: "R001",
@@ -1520,5 +1519,53 @@ export const reservations = [
     roomId: "room3",
     paymentCardId: "card4",
     isVerified: true
+  }
+];
+// Popüler oteller için export
+export const popularHotels = [
+  {
+    id: "1",
+    name: "Istanbul Grand Hotel",
+    city: "İstanbul",
+    location: "İstanbul, Türkiye",
+    rating: 4.5,
+    price: 120,
+    image: "/images/istanbul-hotel.jpg"
+  },
+  {
+    id: "2", 
+    name: "Paris Central Hotel",
+    city: "Paris",
+    location: "Paris, Fransa",
+    rating: 4.2,
+    price: 150,
+    image: "/images/paris-hotel.jpg"
+  },
+  {
+    id: "3",
+    name: "Marseille Seaside Hotel", 
+    city: "Marsilya",
+    location: "Marsilya, Fransa",
+    rating: 4.0,
+    price: 130,
+    image: "/images/marseille-hotel.jpg"
+  },
+  {
+    id: "4",
+    name: "Rabat Royal Hotel",
+    city: "Rabat", 
+    location: "Rabat, Fas",
+    rating: 4.3,
+    price: 110,
+    image: "/images/rabat-hotel.jpg"
+  },
+  {
+    id: "5",
+    name: "Istanbul Bosphorus Hotel",
+    city: "İstanbul",
+    location: "İstanbul, Türkiye", 
+    rating: 4.6,
+    price: 180,
+    image: "/images/bosphorus-hotel.jpg"
   }
 ];
