@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Star, MessageCircle, Calendar, User, Filter, Search } from "lucide-react";
+
 import Image from "next/image";
 
 interface RoomReview {
@@ -26,6 +27,7 @@ interface Review {
   date: string;
   category: string;
 }
+
 
 // Oda değerlendirmeleri için dummy data
 const roomReviews: RoomReview[] = [

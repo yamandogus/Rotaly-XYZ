@@ -18,7 +18,7 @@ import { ArrowUpDown, Filter, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Reservation } from "@/types/reservations";
+import { Reservation } from "@/types/reservation";
 import {
   Dialog,
   DialogClose,
