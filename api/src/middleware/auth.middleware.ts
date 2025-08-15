@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Prisma from "../config/db";
 import { Role } from "@prisma/client";
-import { AppError } from "../utils/appError";
 
 /**
  * Email doğrulama kontrolü middleware'i
