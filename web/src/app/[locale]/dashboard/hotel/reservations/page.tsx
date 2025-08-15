@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { reservations } from "@/data/dumy";
+import { Reservation } from "@/types/reservation";
 import ReservationFilters from "@/components/dashboard/hotel/reservations/reservation-filter";
 import ReservationTable from "@/components/dashboard/hotel/reservations/reservation-table";
 import ReservationMobileCard from "@/components/dashboard/hotel/reservations/reservation-mobile-card";
@@ -79,7 +80,7 @@ export default function ReservationPage() {
     setFilteredReservations(sortedReservations);
   };
 
-  const handleDelete = (reservation: any) => {
+  const handleDelete = (reservation: Reservation) => {
     setFilteredReservations(prev => prev.filter(res => res.id !== reservation.id));
   };
 
