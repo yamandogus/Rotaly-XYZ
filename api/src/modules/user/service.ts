@@ -14,7 +14,7 @@ export class UserService {
 
   static async getById(id: string) {
     const user = await UserRepository.findById(id);
-    if (!user || user.deletedAt || user.isVerified === false) {
+    if (!user || user.deletedAt) {
       throw new AppError("User not found", 404);
     }
     return user;
@@ -22,7 +22,7 @@ export class UserService {
 
   static async getByEmail(email: string) {
     const user = await UserRepository.findByEmail(email);
-    if (!user || user.deletedAt || user.isVerified === false) {
+    if (!user || user.deletedAt) {
       throw new AppError("User not found", 404);
     }
     return user;

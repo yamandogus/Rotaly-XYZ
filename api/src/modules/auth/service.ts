@@ -11,7 +11,6 @@ import {
 } from "../../dto/auth";
 import { EmailService } from "../email/service";
 import { UserService } from "../user/service";
-import { User } from "@prisma/client";
 
 export class AuthService {
   private emailService: EmailService;
@@ -52,9 +51,9 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new AppError("Invalid credentials", 401);
     }
-    if (!user.isVerified) {
-      throw new AppError("Please verify your email first", 401);
-    }
+    // if (!user.isVerified) {
+    //   throw new AppError("Please verify your email first", 401);
+    // }
     const accessToken = this.jwtService.generateAccessToken({
       userId: user.id,
       role: user.role,
@@ -86,7 +85,8 @@ export class AuthService {
     if (user.isVerified) {
       throw new AppError("User already verified", 400);
     }
-
+    console.log(user.verificationOTP);
+    console.log(verificationOTP);
     if (!user.verificationOTP || user.verificationOTP !== verificationOTP) {
       throw new AppError("Invalid or expired verification OTP", 400);
     }
