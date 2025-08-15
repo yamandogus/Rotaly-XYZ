@@ -12,6 +12,7 @@ import {
   IconBuilding,
   IconUser,
   IconMessageCircle,
+
   IconBed,
   IconStar,
   IconCalendar,
@@ -106,8 +107,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           },
         
            {
-            title: t("guest-management"),
-            url: "/dashboard/hotel/guest",
+            title: t("customer-management"),
+            url: "/dashboard/hotel/customers",
             icon: <IconUsers />,
           },
             {
@@ -117,12 +118,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           },
           {
             title: t("statistics-reports"),
-            url: "/dashboard/hotel/statistics",
+            url: "/dashboard/hotel/statistic",
             icon: <IconChartBar />,
           },
               {
             title: t("evaluations"),
-            url: "/dashboard/hotel/evulations",
+            url: "/dashboard/hotel/evaluations",
             icon: <IconStar />,
           },
         

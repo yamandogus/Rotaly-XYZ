@@ -13,11 +13,11 @@ import Image from "next/image";
 interface RoomTableProps {
   filteredRooms: Room[];
   handleViewDetails: (room: Room) => void;
-  handleEdit: (room: Room) => void;
+ 
   handleDelete: (room: Room) => void;
 }
 
-const RoomTable: FC<RoomTableProps> = ({ filteredRooms, handleViewDetails, handleEdit, handleDelete }) => {
+const RoomTable: FC<RoomTableProps> = ({ filteredRooms, handleViewDetails,  handleDelete }) => {
   const t = useTranslations("Rooms");
 
   return (
@@ -28,8 +28,13 @@ const RoomTable: FC<RoomTableProps> = ({ filteredRooms, handleViewDetails, handl
     <TableHead className="text-muted-foreground">{t("room-image")}</TableHead>
     <TableHead className="text-muted-foreground">{t("id")}</TableHead>
     <TableHead className="text-muted-foreground">{t("roomName")}</TableHead>
+    <TableHead className="text-muted-foreground">{t("roomType")}</TableHead>
+    <TableHead className="text-muted-foreground">{t("roomNumber")}</TableHead>
+    <TableHead className="text-muted-foreground">{t("floor")}</TableHead>
     <TableHead className="text-muted-foreground">{t("price")}</TableHead>
     <TableHead className="text-muted-foreground">{t("capacity")}</TableHead>
+    <TableHead className="text-muted-foreground">{t("maxAdults")}</TableHead>
+    <TableHead className="text-muted-foreground">{t("maxChildren")}</TableHead>
     <TableHead className="text-muted-foreground">{t("bedCount")}</TableHead>
     <TableHead className="text-muted-foreground">{t("status")}</TableHead>
     <TableHead className="text-muted-foreground w-12"></TableHead>
@@ -56,8 +61,17 @@ const RoomTable: FC<RoomTableProps> = ({ filteredRooms, handleViewDetails, handl
 
       <TableCell>{room.id}</TableCell>
       <TableCell>{room.name}</TableCell>
+      <TableCell>
+        <Badge variant="outline" className="text-xs">
+          {room.type}
+        </Badge>
+      </TableCell>
+      <TableCell>{room.roomNumber}</TableCell>
+      <TableCell>{room.floor}</TableCell>
       <TableCell>{room.price} ₺</TableCell>
       <TableCell>{room.capacity}</TableCell>
+      <TableCell>{room.maxAdults}</TableCell>
+      <TableCell>{room.maxChildren}</TableCell>
       <TableCell>{room.bedCount}</TableCell> 
       <TableCell>
         <Badge
@@ -81,10 +95,7 @@ const RoomTable: FC<RoomTableProps> = ({ filteredRooms, handleViewDetails, handl
               <Eye className="h-4 w-4 mr-2" />
               {t("viewDetails")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleEdit(room)}>
-              <Edit className="h-4 w-4 mr-2" />
-              {t("edit")}
-            </DropdownMenuItem>
+           
             <DropdownMenuItem
               onClick={() => handleDelete(room)}
               className="text-red-600 focus:text-red-600"
