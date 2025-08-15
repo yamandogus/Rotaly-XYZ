@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Reservation } from "@/types/reservations";
+import { Reservation } from "@/types/reservation";
 
 interface ReservationMobileCardProps {
   filteredReservations: Reservation[];

@@ -20,4 +20,14 @@ export interface Reservation {
   roomId: string;
   paymentCardId?: string | null;
   isVerified: boolean;
+  
+  // Room bilgileri (opsiyonel)
+  roomName?: string;
+  roomType?: string;
+  roomNumber?: number;
+  floor?: number;
+  maxAdults?: number;
+  maxChildren?: number;
+  capacity?: number;
+  bedCount?: number;
 }
