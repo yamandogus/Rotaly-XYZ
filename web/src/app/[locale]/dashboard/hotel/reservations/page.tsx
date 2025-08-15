@@ -7,6 +7,7 @@ import { reservations } from "@/data/dumy";
 import ReservationFilters from "@/components/dashboard/hotel/reservations/reservation-filter";
 import ReservationTable from "@/components/dashboard/hotel/reservations/reservation-table";
 import ReservationMobileCard from "@/components/dashboard/hotel/reservations/reservation-mobile-card";
+import { Reservation } from "@/types/reservations";
 
 export default function ReservationPage() {
   const t = useTranslations("Reservations");
@@ -79,7 +80,7 @@ export default function ReservationPage() {
     setFilteredReservations(sortedReservations);
   };
 
-  const handleDelete = (reservation: any) => {
+  const handleDelete = (reservation: Reservation) => {
     setFilteredReservations(prev => prev.filter(res => res.id !== reservation.id));
   };
 

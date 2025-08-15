@@ -6,10 +6,29 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Star, MessageCircle, Calendar, User, Filter, Search } from "lucide-react";
-import { rooms } from "@/data/dumy";
+import Image from "next/image";
+
+interface RoomReview {
+  id: string;
+  roomName: string;
+  roomImage: string;
+  averageRating: number;
+  totalReviews: number;
+  recentReviews: Review[];
+}
+
+interface Review {
+  id: number;
+  guestName: string;
+  guestAvatar: string;
+  rating: number;
+  comment: string;
+  date: string;
+  category: string;
+}
 
 // Oda değerlendirmeleri için dummy data
-const roomReviews = [
+const roomReviews: RoomReview[] = [
   {
     id: "R001",
     roomName: "Deluxe Deniz Manzaralı Oda",
@@ -184,16 +203,18 @@ const CategoryBadge = ({ category }: { category: string }) => {
 };
 
 // Oda değerlendirme kartı
-const RoomReviewCard = ({ roomReview }: { roomReview: any }) => {
+const RoomReviewCard = ({ roomReview }: { roomReview: RoomReview }) => {
   const t = useTranslations("Evaluations");
   return (
     <Card className="mb-6">
       <CardHeader>
         <div className="flex items-start space-x-4">
           <div className="relative">
-            <img
+            <Image
               src={roomReview.roomImage}
               alt={roomReview.roomName}
+              width={96}
+              height={96}
               className="w-24 h-24 object-cover rounded-lg"
             />
             <div className="absolute -top-2 -right-2 bg-white dark:bg-gray-800 rounded-full p-1 shadow-md">
@@ -216,7 +237,7 @@ const RoomReviewCard = ({ roomReview }: { roomReview: any }) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {roomReview.recentReviews.map((review: any) => (
+          {roomReview.recentReviews.map((review: Review) => (
             <div key={review.id} className="border-l-4 border-blue-500 pl-4 py-2">
               <div className="flex items-start space-x-3">
                 <Avatar className="h-10 w-10">

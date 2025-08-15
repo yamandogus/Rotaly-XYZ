@@ -9,7 +9,7 @@ export default function HotelTabs() {
   return (
     <div className="mt-8 bg-white dark:bg-card rounded-lg shadow-md p-6">
       <Tabs defaultValue="description" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-3 ">
           <TabsTrigger value="description">Açıklama</TabsTrigger>
           <TabsTrigger value="reviews">Değerlendirme</TabsTrigger>
           <TabsTrigger value="map">Harita</TabsTrigger>
