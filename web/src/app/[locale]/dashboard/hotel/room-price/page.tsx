@@ -41,7 +41,7 @@ export default function RoomPricePage() {
   };
 
   const handleViewDetails = (room: Room) => {
-    router.push(`/dashboard/hotel/reservations/${room.id}`);
+    router.push(`/dashboard/hotel/room-price/${room.id}`);
   };
 
   
