@@ -113,6 +113,7 @@
     "home": "Anasayfa",
     "customers": "Müşteriler",  
     "admins": "Adminler",
+    "WelcamePage" :"Ana Sayfa",
     "reservation-management": "Rezervasyon Yönetimi",
     "active-reservations": "Aktif Rezervasyonlar",
     "passive-reservations": "Pasif Rezervasyonlar",
