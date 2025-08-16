@@ -181,7 +181,7 @@ export default function HotelDetailPage() {
         <Card className="w-full h-auto py-0">
           <CardContent className="p-0">
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 bg-blue-500">
+              <TabsList className="grid w-full grid-cols-3 bg-blue-500 dark:bg-card">
                 <TabsTrigger value="overview">{t("overview")}</TabsTrigger>
                 <TabsTrigger value="rooms">{t("rooms")}</TabsTrigger>
                 <TabsTrigger value="bookings">{t("bookings")}</TabsTrigger>

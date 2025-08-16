@@ -14,12 +14,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { setPageTitle } from "@/store/dashboard/dashboard-slice";
 
 export function SiteHeader() {
   const router = useRouter();
   const t = useTranslations("Dashboard");
   const [userRole, setUserRole] = useState<string | null>(null);
   const [hotelName, setHotelName] = useState<string>("");
+  const pageTitle = useSelector((state: RootState)=> state.dashboard.pageTitle)
+  const dispacth = useDispatch()
   const [open, setOpen] = useState(false);
   useEffect(() => {
     const role = localStorage.getItem("userRole");
@@ -33,16 +38,15 @@ export function SiteHeader() {
   const handleLogout = () => {
     localStorage.removeItem("userRole");
     localStorage.removeItem("hotelName");
+    dispacth(setPageTitle(t("WelcamePage")))
     router.push("/login");
   };
 
   const getHeaderTitle = () => {
-    if (userRole === "admin") {
-      return t("admin-management-system");
-    } else if (userRole === "hotel") {
-      return `${hotelName} ${t("hotel-management-system")}`;
+    if(pageTitle === ""){
+      dispacth(setPageTitle(t("WelcamePage")))
     }
-    return t("rotaly");
+    return pageTitle;
   };
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">

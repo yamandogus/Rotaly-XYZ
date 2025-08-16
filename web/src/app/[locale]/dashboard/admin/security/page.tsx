@@ -136,12 +136,12 @@ export default function AdminSecurityPage() {
   };
 
   return (
-    <div className="w-full bg-gray-50 min-h-screen p-6">
+    <div className="w-full min-h-screen p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{t("title")}</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-200">{t("title")}</h1>
             <p className="text-gray-600 mt-2">{t("subtitle")}</p>
           </div>
           <Button className="flex items-center gap-2">
@@ -192,7 +192,7 @@ export default function AdminSecurityPage() {
 
         {/* Ana Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 bg-blue-500">
+          <TabsList className="grid w-full grid-cols-3 bg-blue-500 dark:bg-card">
             <TabsTrigger value="overview">{t("overview")}</TabsTrigger>
             <TabsTrigger value="settings">{t("settings")}</TabsTrigger>
             <TabsTrigger value="logs">{t("logs")}</TabsTrigger>
@@ -206,10 +206,10 @@ export default function AdminSecurityPage() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-600">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-200">
                         {t("twoFactorStatus")}
                       </p>
-                      <p className="text-2xl font-bold text-gray-900">
+                      <p className="text-2xl font-bold text-gray-900 dark:text-gray-400">
                         {twoFactorEnabled ? t("active") : t("inactive")}
                       </p>
                     </div>
@@ -233,10 +233,10 @@ export default function AdminSecurityPage() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-600">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-200">
                         {t("activeSessions")}
                       </p>
-                      <p className="text-2xl font-bold text-gray-900">
+                      <p className="text-2xl font-bold text-gray-900 dark:text-gray-400">
                         {activeSessions.length}
                       </p>
                     </div>
@@ -252,10 +252,10 @@ export default function AdminSecurityPage() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-600">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-200">
                         {t("lastLogin")}
                       </p>
-                      <p className="text-2xl font-bold text-gray-900">2 dk</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-gray-400">2 dk</p>
                     </div>
                     <div className="p-2 rounded-full bg-purple-100">
                       <Clock className="w-6 h-6 text-purple-600" />
@@ -269,10 +269,10 @@ export default function AdminSecurityPage() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-600">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-200">
                         {t("alerts")}
                       </p>
-                      <p className="text-2xl font-bold text-gray-900">1</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-gray-400">1</p>
                     </div>
                     <div className="p-2 rounded-full bg-yellow-100">
                       <Bell className="w-6 h-6 text-yellow-600" />
