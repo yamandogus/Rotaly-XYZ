@@ -81,11 +81,12 @@ export function DateRangePicker({
           </Button>
         </PopoverTrigger>
         <PopoverContent 
-          className="w-full max-h-screen md:max-h-none p-0" 
+          className="w-full max-h-screen md:max-h-none p-6" 
           align="start"
           side="bottom"
           sideOffset={4}
         >
+          <p className="font-medium">Giriş ve çıkış tarihi seçiniz</p>
           <Calendar
             initialFocus
             mode="range"

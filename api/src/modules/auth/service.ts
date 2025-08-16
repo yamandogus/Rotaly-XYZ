@@ -8,7 +8,6 @@ import {
   RegisterSchemaType,
   UpdateUserSchemaType,
   ChangePasswordSchemaType,
-  ProfileSchemaType,
 } from "../../dto/auth";
 import { EmailService } from "../email/service";
 import { UserService } from "../user/service";
@@ -52,9 +51,9 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new AppError("Invalid credentials", 401);
     }
-    if (!user.isVerified) {
-      throw new AppError("Please verify your email first", 401);
-    }
+    // if (!user.isVerified) {
+    //   throw new AppError("Please verify your email first", 401);
+    // }
     const accessToken = this.jwtService.generateAccessToken({
       userId: user.id,
       role: user.role,
@@ -86,7 +85,8 @@ export class AuthService {
     if (user.isVerified) {
       throw new AppError("User already verified", 400);
     }
-
+    console.log(user.verificationOTP);
+    console.log(verificationOTP);
     if (!user.verificationOTP || user.verificationOTP !== verificationOTP) {
       throw new AppError("Invalid or expired verification OTP", 400);
     }
@@ -128,20 +128,6 @@ export class AuthService {
     return {
       message: "Verification email sent",
     };
-  }
-
-  async getProfile(userId: string): Promise<ProfileSchemaType> {
-    const user = await UserService.getById(userId);
-
-    const profile: ProfileSchemaType = {
-      id: user.id,
-      name: user.name,
-      surname: user.surname,
-      email: user.email,
-      phone: user.phone,
-    };
-
-    return profile;
   }
 
   async updateProfile(userId: string, data: UpdateUserSchemaType) {

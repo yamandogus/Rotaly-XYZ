@@ -1,3 +1,4 @@
+import { verificationEmailSchema } from "src/dto/email";
 import Prisma from "../../config/db";
 import { RegisterSchemaType, UpdateUserSchemaType } from "../../dto/auth";
 
@@ -20,6 +21,20 @@ export class UserRepository {
     return Prisma.user.findUnique({
       where: {
         id,
+      },
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+        phone: true,
+        isVerified: true,
+        deletedAt: true,
+        images: true,
+        role: true,
+        paymentCards: true,
+        hashedPassword: true,
+        verificationOTP:true
       },
     });
   }

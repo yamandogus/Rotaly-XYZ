@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
-import { setCity, setCheckIn, setCheckOut, setGuests, clearSearch } from './search-slice';
+import { setCity, setCheckInDate, setCheckOutDate, setGuestsCount, clearSearch } from './search-slice';
 
 export const useSearch = () => {
   const dispatch = useDispatch();
@@ -15,9 +15,9 @@ export const useSearch = () => {
     
     // Actions
     setCity: (city: string) => dispatch(setCity(city)),
-    setCheckIn: (checkIn: string) => dispatch(setCheckIn(checkIn)),
-    setCheckOut: (checkOut: string) => dispatch(setCheckOut(checkOut)),
-    setGuests: (guests: number) => dispatch(setGuests(guests)),
+    setCheckIn: (checkIn: string) => dispatch(setCheckInDate(checkIn)),
+    setCheckOut: (checkOut: string) => dispatch(setCheckOutDate(checkOut)),
+    setGuests: (guests: number) => dispatch(setGuestsCount(guests)),
     clearSearch: () => dispatch(clearSearch()),
   };
 };

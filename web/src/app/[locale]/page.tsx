@@ -3,8 +3,22 @@
 import React from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import SearchForm from "@/components/searchForm";
 import HotelCard from "@/components/hotelCard";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { BookingSearch } from "@/components/home/booking-search";
+
+const images = [
+  "/images/Istanbul.jpg",
+  "/images/Pariss.jpg",
+  "/images/London.jpg",
+  "/images/Burano.jpg",
+];
 
 export default function HomePage() {
   const t = useTranslations("HomePage");
@@ -41,7 +55,7 @@ export default function HomePage() {
     { name: t("destinationAntalya"), image: "/images/antalya.jpg" },
   ];
 
-const specialOffers = [
+  const specialOffers = [
     {
       id: 1,
       name: t("offerKiadDeluxeHotel"),
@@ -150,7 +164,7 @@ const specialOffers = [
             alt="Mappa Logo"
             width={900}
             height={600}
-            className="opacity-100 object-contain"
+            className="opacity-100 object-contain dark:hidden"
           />
         </div>
 
@@ -163,18 +177,37 @@ const specialOffers = [
           </p>
         </div>
 
-        <div className="relative w-full h-[60vh] -mt-12 z-10">
-          <Image
-            src="/images/header.jpg"
-            alt="Istanbul cityscape at sunset"
-            fill
-            className="object-cover rounded-[32px]"
-            quality={80}
-          />
+        <div className="relative w-full h-[60vh] -mt-12 z-20">
+          <Swiper
+            modules={[Autoplay]}
+            spaceBetween={0}
+            slidesPerView={1}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+            loop={true}
+            className="w-full h-full rounded-[32px] overflow-hidden"
+          >
+            {images.map((image, index) => (
+              <SwiperSlide key={index}>
+                <div className="relative w-full h-full">
+                  <Image
+                    src={image}
+                    alt={`Slide ${index + 1}`}
+                    fill
+                    className="object-cover"
+                    priority={index === 0}
+                    sizes="100vw"
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
-        <div className="relative z-10 w-full max-w-6xl -mt-12 px-4 mb-12">
-          <SearchForm />
+        <div className="relative z-40 w-full max-w-6xl -mt-20 px-4 mb-12">
+          <BookingSearch />
         </div>
 
         {/* Categories Section */}
@@ -234,12 +267,20 @@ const specialOffers = [
 
         {/* Special Offers */}
         <section className="max-w-7xl mx-auto px-4 my-12">
-          <h2 className="text-lg font-semibold text-foreground mb-6">{t("specialOffers")}</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-6">
+            {t("specialOffers")}
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {specialOffers.map((offer) => {
-              const cancelText = offer.cancel ? "Ücretsiz iptal" : "İptal edilemez";
-              const breakfastText = offer.breakfast ? "Kahvaltı dahil" : "Kahvaltı dahil değil";
-              const parkingText = offer.parking ? "Otopark" : "Otopark bulunmamakta";
+              const cancelText = offer.cancel
+                ? "Ücretsiz iptal"
+                : "İptal edilemez";
+              const breakfastText = offer.breakfast
+                ? "Kahvaltı dahil"
+                : "Kahvaltı dahil değil";
+              const parkingText = offer.parking
+                ? "Otopark"
+                : "Otopark bulunmamakta";
 
               return (
                 <HotelCard

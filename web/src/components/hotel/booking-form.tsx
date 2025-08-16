@@ -170,13 +170,15 @@ const BookingForm: React.FC<BookingFormProps> = ({
       {/* Butonlar */}
 
       <Link href="/hotels/1/booking" className="w-full">
-        <Button className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white py-2 rounded-md font-semibold">
+        <Button className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white py-2 rounded-md font-semibold
+        cursor-pointer
+        ">
           <p className="text-sm">Rezervasyon yap</p>
         </Button>
       </Link>
       <Button
         variant="outline"
-        className="w-full mt-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900 font-semibold"
+        className="w-full mt-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-900 font-semibold cursor-pointer"
       >
         Detaylı bilgi al
       </Button>

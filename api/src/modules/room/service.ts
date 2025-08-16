@@ -1,4 +1,3 @@
-// src/modules/room/room.service.ts
 import { RoomRepository } from "../../modules/room/repository"
 import { CreateRoomDto } from "../../dto/room/create-room.dto";
 import { UpdateRoomDto } from "../../dto/room/update-room.dto";
@@ -14,7 +13,7 @@ export class RoomService {
     if (!existingRoom) {
       throw new Error("Room not found");
     }
-    return await RoomRepository.updateRoom(roomId, data);
+    return await RoomRepository.updateRoom(roomId, existingRoom.hotelId, data);
   }
 
   static async deleteRoom(roomId: string) {
@@ -35,5 +34,9 @@ export class RoomService {
 
   static async getRooms(query: QueryRoomDto) {
     return await RoomRepository.getRoomsByHotelId(query.hotelId || "");
+  }
+
+  static async getRoomsByHotel(hotelId: string) {
+    return await RoomRepository.getRoomsByHotelId(hotelId);
   }
 }

@@ -112,12 +112,8 @@
     "rotaly": "Rotaly",
     "home": "Anasayfa",
     "customers": "Müşteriler",  
-    "company": "Şirket Bilgileri",
     "admins": "Adminler",
-    "hotel-info": "Otel Bilgileri",
-    "reservations": "Rezervasyonlar",
-    "reports": "Raporlar",
-    "statistics": "İstatistikler",
+    "reservation-management": "Rezervasyon Yönetimi",
     "active-reservations": "Aktif Rezervasyonlar",
     "passive-reservations": "Pasif Rezervasyonlar",
     "active-customers": "Aktif Müşteriler",
@@ -144,7 +140,35 @@
     "security-audit": "Güvenlik & Denetim",
     "system-settings": "Sistem Ayarları",
     "live-support": "Canlı Destek",
-    "information": "Bilgiler"
+    "information": "Bilgiler",
+    "room-price-management":"Oda Fiyat Yönetimi",
+    "hotel-profile":"Otel Profili",
+    "evaluations":"Değerlendirmeler",
+    "reports": "Raporlar",
+    "statistics": "İstatistikler"
+  },
+  "Evaluations": {
+    "title": "Oda Değerlendirmeleri",
+    "subtitle": "Misafirlerinizin oda değerlendirmelerini görüntüleyin ve yanıtlayın",
+    "searchPlaceholder": "Değerlendirme ara...",
+    "filter": "Filtrele",
+    "averageRating": "Ortalama Puan",
+    "totalReviews": "Toplam Değerlendirme",
+    "thisMonth": "Bu Ay",
+    "responded": "Yanıtlanan",
+    "reviews": "değerlendirme",
+    "reply": "Yanıtla",
+    "categories": {
+      "cleanliness": "Temizlik",
+      "service": "Hizmet",
+      "location": "Konum",
+      "price": "Fiyat",
+      "general": "Genel"
+    }
+
+
+
+
   },
   "Company": {
     "title": "Şirket Bilgileri",
@@ -420,66 +444,130 @@
     "back": "Giriş Yap"
   },
   
-  "Reservations": {
-    "active": "Aktif",
-    "completed": "Tamamlandı",
-    "room": "Oda",
-    "persons": "kişilik",
+  "Rooms": {
+   "id": "ID",
+  "roomName": "Oda Adı",
+  "room-image":"Oda Görseli",
+  "roomType": "Oda Türü",
+  "roomNumber": "Oda Numarası",
+  "floor": "Kat",
+  "maxAdults": "Maksimum Yetişkin",
+  "maxChildren": "Maksimum Çocuk",
+  "price": "Fiyat",
+  "capacity": "Kapasite",
+  "status": "Durum",
+   "bedCount": "Yatak Sayısı",
+  "available": "Mevcut",
+  "unavailable": "Mevcut Değil",
+  "viewDetails": " Detayları Gör",
+  "edit": "Düzenle",
+  "delete": "Sil",
 
-    "searchPlaceholder": "Misafir adı veya e-posta ile arayın",
-    "selectRoom": "Oda Seçin",
-    "allRooms": "Tüm Odalar",
+ "roomList": "Oda Listesi",
+  "searchRooms": "Oda Ara...",
+  "filter": "Filtre",
+  "allStatus": "Tümü",
+  "sortBy": "Sırala",
+  "name": "İsim A-Z",
+  "nameDesc": "İsim Z-A",
+  "priceAsc": "Fiyat Artan",
+  "priceDesc": "Fiyat Azalan",
+  "capacityAsc": "Kapasite Artan",
+  "capacityDesc": "Kapasite Azalan",
+  "addRoom": "Oda Ekle",
+  "deletingRoom": "Oda siliniyor:",
 
-    "selectDate": "Tarih Seçin",
-    "allDates": "Tüm Tarihler",
+  "totalRooms": "Toplam Odalar",
+  "availableRooms": "Mevcut Odalar",
+  "unavailableRooms": "Mevcut Olmayan Odalar",
+  "back": "Geri",
+  "roomNotFound": "Oda bulunamadı",
+  "notAvailable": "Mevcut değil",
+  "basicInformation": "Temel Bilgiler",
+  "createdAt": "Oluşturulma Tarihi",
+  "updatedAt": "Güncellenme Tarihi",
+  "description": "Açıklama",
+  "noDescription": "Açıklama yok",
+  "overview": "Genel Bakış",
+  "bookings": "Rezervasyonlar",
+  "bookingInformationComingSoon": "Rezervasyon bilgileri yakında",
+  "features": "Özellikler",
+  "noFeatures": "Özellik yok",
+  "roomId": "Oda ID",
+  "availability": "Durum",
 
-    "noReservations": "Rezervasyon bulunamadı",
-    "noReservationsForRoom": "{roomNumber} numaralı oda için rezervasyon bulunamadı",
-    "noReservationsMessage": "Seçilen kriterlere uygun rezervasyon yok.",
-    "reservations": "rezervasyon",
-
-    "activeReservations": "Aktif Rezervasyonlar",
-    "pastReservations": "Geçmiş Rezervasyonlar"
+  "roomDetails": "Oda Detayları",
+  "hotelId": "Otel ID",
+  "save": "Kaydet",
+  "editRoom":"Oda Düzenle"
   },
+
+   "Reservations": {
+    "title": "Rezervasyonlar",
+    "checkIn": "Giriş Tarihi",
+    "checkOut": "Çıkış Tarihi",
+    "guests": "Misafirler",
+    "totalPrice": "Toplam Tutar",
+    "actions": "İşlemler",
+    "view": "Görüntüle",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "allReservations": "Tüm Rezervasyonlar",
+    "pending": "Bekleyen",
+    "confirmed": "Onaylanan",
+    "totalGuests": "Toplam Misafir Sayısı",
+    "totalRevenue": "Toplam Gelir",
+    "verifiedReservations": "Doğrulanmış Rezervasyonlar",
+    "reservationId": "Rezervasyon ID",
+    "hotelAddress": "Otel Adresi",
+    "viewDetails": "Detayları Görüntüle",
+    "status": "Durum",
+    "verified": "Doğrulanmış",
+    "unverified": "Doğrulanmamış",
+    "allStatus": "Tüm Durumlar",
+    "search": "Ara...",
+    "filter": "Filtrele",
+    "sortBy": "Sırala",
+    "createdAt": "Oluşturulma Tarihi"
+  },
+
+
   
   "Statistics": {
-    "title": "İstatistikler",
-    "dateRange": "Ocak - Ağustos",
+    "title": "Otel İstatistikleri",
+    "dateRange": "Son 30 Gün",
     "allRooms": "Tüm Odalar",
     "compare": "Karşılaştır",
-    "exportCsv": ".csv Dışa Aktar",
-    "payments": {
-      "received": {
-        "title": "Alınan Ödemeler",
-        "status": "{count} Rezervasyon Ödendi"
-      },
-      "pending": {
-        "title": "Bekleyen Ödemeler",
-        "status": "{count} Rezervasyon Bekliyor"
-      }
-    },
-    "revenueSharing": {
-      "title": "Gelir Paylaşımı",
-      "description": "Gelir kategorilerine göre dağılım",
-      "rooms": "Odalar",
-      "food": "Yemekler",
-      "extraServices": "Ek Hizmetler"
-    },
-    "paymentTypes": {
-      "title": "Ödeme Türleri",
-      "description": "Tercih edilen ödeme yöntemleri",
-      "noData": "Henüz veri yok"
-    },
-    "reservationSources": {
-      "title": "Rezervasyon Kaynakları",
-      "description": "Gelirin kaynağa göre dağılımı"
-    },
-    "revenueAndOccupancy": {
-      "title": "Gelir ve Doluluk",
-      "description": "Son aylara ait tahmini veriler",
-      "occupancy": "Doluluk",
-      "totalRevenue": "Toplam Gelir"
-    }
+    "exportCsv": "Rapor İndir",
+    "refresh": "Yenile",
+    "totalRevenue": "Toplam Gelir",
+    "totalBookings": "Rezervasyon Sayısı",
+    "averageOccupancy": "Ortalama Doluluk",
+    "customerRating": "Müşteri Puanı",
+    "thisMonth": "Bu ay",
+    "average": "Ortalama",
+    "comparedToLastMonth": "Geçen aya göre",
+    "monthlyRevenueTrend": "Aylık Gelir ve Rezervasyon Trendi",
+    "monthlyRevenueDescription": "Son 8 ayın gelir ve rezervasyon verileri",
+    "roomTypeDistribution": "Oda Türleri Dağılımı",
+    "roomTypeDescription": "Rezervasyon oranlarına göre",
+    "weeklyOccupancy": "Haftalık Doluluk ve Gelir",
+    "weeklyOccupancyDescription": "Bu haftanın günlük performansı",
+    "customerSatisfaction": "Müşteri Memnuniyeti",
+    "customerSatisfactionDescription": "Kategori bazında değerlendirmeler",
+    "topRooms": "En Popüler Odalar",
+    "topRoomsDescription": "En çok rezervasyon alan odalar",
+    "revenue": "Gelir",
+    "bookings": "Rezervasyon",
+    "occupancy": "Doluluk",
+    "reviews": "değerlendirme",
+    "cleanliness": "Temizlik",
+    "service": "Hizmet",
+    "location": "Konum",
+    "price": "Fiyat",
+    "overall": "Genel",
+    "occupancyRate": "doluluk",
+    "guests": "misafir"
   },
   "Hotels": {
     "allRegisteredHotels": "Tüm Kayıtlı Oteller",

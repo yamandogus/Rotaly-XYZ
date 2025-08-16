@@ -75,4 +75,18 @@ export class UserService {
     }
     return UserRepository.delete(id);
   }
+
+  static async getProfile(userId: string) {
+    const user = await this.getById(userId);
+    return {
+      id: user.id,
+      name: user.name,
+      surname: user.surname,
+      email: user.email,
+      phone: user.phone,
+      isVerified: user.isVerified,
+      images: user.images,
+      paymentCards: user.paymentCards,
+    };
+  }
 }

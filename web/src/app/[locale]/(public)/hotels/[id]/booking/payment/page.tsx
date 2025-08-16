@@ -7,10 +7,16 @@ import PaymentMethodSelector from "@/components/booking/payment/payment-method-s
 import PaymentForm, { PaymentFormData } from "@/components/booking/payment/payment-form";
 import PaymentProcessing from "@/components/booking/payment/payment-processing";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setStepIncrease } from "@/store/reservation/reservation-slice";
 
 export default function BookingPaymentPage() {
   const [isPaymentControl, setIsPaymentControl] = useState(true);
+  const dispatch = useDispatch()
   const router = useRouter();
+  const handleNextStep = () => {
+      dispatch(setStepIncrease(3)) // 3. adıma (success sayfasına) geç
+    };
 
   const onSubmit = (data: PaymentFormData) => {
     console.log("Payment form data:", data);
@@ -25,7 +31,7 @@ export default function BookingPaymentPage() {
         data.phoneNumber &&
         data.specialRequest
       ) {
-        router.push(`?step=3`, { scroll: false });
+        handleNextStep()
       }
     }, 6000);
   };

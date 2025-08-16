@@ -1,20 +1,41 @@
-import React from 'react'
-import { Link } from '@/i18n/routing'
-import { Button } from '@/components/ui/button'
-import { Heart } from 'lucide-react'
-import { LanguageSwitcher } from '@/components/language-switcher'
-import { ModeToggle } from '@/components/mode-toggle'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Settings } from 'lucide-react'
-import { User } from 'lucide-react'
-import { MessageCircle } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+"use client";
+
+import React from "react";
+import { Link } from "@/i18n/routing";
+import { Button } from "@/components/ui/button";
+import { Heart, LogOut } from "lucide-react";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { ModeToggle } from "@/components/mode-toggle";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Settings } from "lucide-react";
+import { User } from "lucide-react";
+import { MessageCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Notification from "../../notifications/page";
+import { RootState } from "@/store/store";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "@/store/testUser/test-user-slice";
+
 const UserActions = () => {
   const t = useTranslations("Navigation");
+  const dispatch = useDispatch();
+  const { role, email } = useSelector((state: RootState) => state.testUser);
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <div className="hidden md:flex flex-1 items-center justify-end space-x-2">
+      {role === "user" ? (
+        <React.Fragment>
           <Link href="/favorites">
             <Button
               variant="ghost"
@@ -46,7 +67,7 @@ const UserActions = () => {
                 <div className="flex flex-col space-y-1 leading-none">
                   <p className="font-medium">Kullanıcı</p>
                   <p className="w-[200px] truncate text-sm text-muted-foreground">
-                    user@example.com
+                    {email || "user@example.com"}
                   </p>
                 </div>
               </div>
@@ -58,15 +79,9 @@ const UserActions = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/login">
+                <Link href="/profile">
                   <User className="mr-2 h-4 w-4" />
-                  {t("login")}
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/register">
-                  <User className="mr-2 h-4 w-4" />
-                  {t("register")}
+                  {t("profile")}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
@@ -81,16 +96,30 @@ const UserActions = () => {
                   {t("contact")}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/profile">
-                  <User className="mr-2 h-4 w-4" />
-                  {t("profile")}
-                </Link>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleLogout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Çıkış Yap
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+        </React.Fragment>
+      ) : (
+        <div className="flex items-center space-x-2">
+          <LanguageSwitcher />
+          <ModeToggle />
+          <Link href="/login">
+            <Button variant="outline" className="cursor-pointer">
+              Giriş Yap
+            </Button>
+          </Link>
+          <Link href="/register">
+            <Button className="cursor-pointer">Kayıt Ol</Button>
+          </Link>
         </div>
-  )
-}
+      )}
+    </div>
+  );
+};
 
-export default UserActions
+export default UserActions;

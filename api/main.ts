@@ -1,14 +1,5 @@
 import { createServer } from "http";
 import app from "./src/config/app";
-import emailRoutes from "./src/modules/email/route";
-import userRoutes from "./src/modules/user/route";
-import authRoutes from "./src/modules/auth/route";
-import { SocketController } from "./src/modules/socket/controller";
-import { authLimiter, otpLimiter } from "./src/middleware/rateLimit";
-
-app.use("/api/email", otpLimiter, emailRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/auth", authLimiter, authRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World");

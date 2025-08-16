@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { AuthService } from "./service";
 import { AppError } from "../../utils/appError";
-import { User } from "@prisma/client";
+
 import {
   RegisterSchemaType,
   LoginSchemaType,
@@ -110,7 +110,8 @@ export class AuthController {
       }
       const { verificationOTP } = req.body;
       const userId = req.user?.userId;
-
+      console.log(userId);
+      
       if (!userId) {
         throw new AppError("User ID not found", 401);
       }
@@ -162,34 +163,6 @@ export class AuthController {
     }
   }
 
-  //TODO
-  async getProfile(req: Request, res: Response): Promise<void> {
-    try {
-      const userId = req.user?.userId;
-      if (!userId) {
-        throw new AppError("Unauthorized", 401);
-      }
-
-      const profile = await this.authService.getProfile(userId);
-
-      res.status(200).json({
-        success: true,
-        data: profile,
-      });
-    } catch (error) {
-      if (error instanceof AppError) {
-        res.status(error.statusCode).json({
-          success: false,
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          success: false,
-          message: "Profil bilgileri getirilirken bir hata oluştu",
-        });
-      }
-    }
-  }
   async updateProfile(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?.userId;
@@ -225,7 +198,6 @@ export class AuthController {
       }
     }
   }
-  //TODO
 
   async forgotPassword(req: Request, res: Response): Promise<void> {
     try {
@@ -301,28 +273,6 @@ export class AuthController {
           message: "Bir hata oluştu",
         });
       }
-    }
-  }
-
-  async googleCallback(req: Request, res: Response) {
-    if (!req.user) {
-      return res.status(401).json({
-        success: false,
-        message: "google auth failed",
-      });
-    }
-    try {
-      const result = await this.authService.login(req.user as User);
-      res.status(200).json({
-        success: true,
-        message: "google auth success",
-        data: result,
-      });
-    } catch (error) {
-      return res.status(500).json({
-        success: false,
-        message: "google auth failed",
-      });
     }
   }
 }
