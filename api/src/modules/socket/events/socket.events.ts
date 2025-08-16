@@ -55,6 +55,19 @@ export const SOCKET_EVENTS = {
   SUPPORT_RESPONSE: "supportResponse",
   SUPPORT_ASSIGNED: "supportAssigned",
   SUPPORT_CLOSED: "supportClosed",
+  JOIN_SUPPORT_ROOM: "joinSupportRoom",
+  LEAVE_SUPPORT_ROOM: "leaveSupportRoom",
+  USER_JOINED_SUPPORT_ROOM: "userJoinedSupportRoom",
+  USER_LEFT_SUPPORT_ROOM: "userLeftSupportRoom",
+
+  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
+  //    AI Chat events
+  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
+
+  AI_CHAT_MESSAGE: "aiChatMessage",
+  AI_RESPONSE: "aiResponse",
+  JOIN_AI_CHAT_ROOM: "joinAIChatRoom",
+  LEAVE_AI_CHAT_ROOM: "leaveAIChatRoom",
 
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
   //    Notification events

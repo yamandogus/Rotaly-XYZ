@@ -18,6 +18,20 @@ export interface MessageEventData {
   receiverId: string;
   supportId?: string;
   roomId?: string;
+  isAIMessage?: boolean;
+}
+
+export interface SupportEventData {
+  supportId: string;
+  userId: string;
+  supportRepId?: string;
+  message?: string;
+}
+
+export interface AIChatEventData {
+  message: string;
+  userId: string;
+  conversationHistory?: { role: "user" | "assistant"; content: string }[];
 }
 
 export interface JoinRoomData {

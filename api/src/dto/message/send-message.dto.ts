@@ -7,8 +7,20 @@ export const SendMessageSchema = z.object({
     .max(5000, "Message too long"),
   receiverId: z
     .string()
-    .uuid("Invalid receiver ID format")
-    .or(z.string().regex(/^ai.*/i, "Invalid AI ID format")),
+    .min(1, "Receiver ID is required")
+    .refine(
+      (val) => {
+        return (
+          /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+            val
+          ) || val.startsWith("ai")
+        );
+      },
+      {
+        message:
+          "Receiver ID must be a valid UUID or AI identifier starting with 'ai'",
+      }
+    ),
   supportId: z.string().uuid("Invalid support ID format").optional(),
 });
 

@@ -1,5 +1,6 @@
 import { createServer } from "http";
 import app from "./src/config/app";
+import { SocketController } from "./src/modules/socket/controller";
 
 app.get("/", (req, res) => {
   res.send("Hello World");

@@ -1,12 +1,15 @@
 import { AuthenticatedSocket, OnlineUser } from "../types/socket.types";
+import { PrismaClient } from "@prisma/client";
 
 export class ConnectionHandler {
   private onlineUsers: Map<string, OnlineUser> = new Map();
+  private prisma: PrismaClient;
 
-  handleConnection(socket: AuthenticatedSocket): void {
-    // TODO: when a user connects join them to their hotels -> socket.join(`hotel:${hotelId}`);
-    //  this way, we can easily send notifications to all users in a specific hotel
+  constructor() {
+    this.prisma = new PrismaClient();
+  }
 
+  async handleConnection(socket: AuthenticatedSocket): Promise<void> {
     console.log(`User connected: ${socket.id}`);
     console.log(`Total connections before adding: ${this.onlineUsers.size}`);
 
@@ -26,8 +29,40 @@ export class ConnectionHandler {
     console.log(`Emitted onlineUsersCount: ${this.onlineUsers.size}`);
 
     if (socket.userId) {
+      // join user's personal room
       socket.join(`user:${socket.userId}`);
       console.log(`User ${socket.userId} joined personal room`);
+
+      // join user to their hotels (for hotel owners and staff)
+      if (socket.role === "OWNER" || socket.role === "ADMIN") {
+        try {
+          const userHotels = await this.prisma.hotel.findMany({
+            where: {
+              ownerId: socket.userId,
+              isActive: true,
+            },
+            select: {
+              id: true,
+              name: true,
+            },
+          });
+
+          for (const hotel of userHotels) {
+            socket.join(`hotel:${hotel.id}`);
+            console.log(
+              `User ${socket.userId} joined hotel room: ${hotel.id} (${hotel.name})`
+            );
+          }
+        } catch (error) {
+          console.error("Error joining user to hotel rooms:", error);
+        }
+      }
+
+      // join support representatives to support rooms
+      if (socket.role === "SUPPORT" || socket.role === "ADMIN") {
+        socket.join("support-team");
+        console.log(`Support user ${socket.userId} joined support team room`);
+      }
     }
   }
 

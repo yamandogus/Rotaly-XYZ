@@ -6,6 +6,7 @@ import { MessageHandler } from "./handlers/message.handler";
 import { TypingHandler } from "./handlers/typing.handler";
 import { NotificationHandler } from "./handlers/notification.handler";
 import { SOCKET_EVENTS } from "./events/socket.events";
+import { JwtService } from "../../jwt/jwt.service";
 
 const ORIGIN = process.env.FRONTEND_URL || "http://localhost:3000";
 
@@ -15,6 +16,7 @@ export class SocketController {
   private messageHandler: MessageHandler;
   private typingHandler: TypingHandler;
   private notificationHandler: NotificationHandler;
+  private jwtService: JwtService;
 
   constructor(server: HttpServer) {
     this.io = new SocketServer(server, {
@@ -32,86 +34,148 @@ export class SocketController {
     this.messageHandler = new MessageHandler(this.io);
     this.typingHandler = new TypingHandler(this.io);
     this.notificationHandler = new NotificationHandler(this.io);
+    this.jwtService = new JwtService();
 
     this.initializeSocketEvents();
   }
 
   private initializeSocketEvents(): void {
-    this.io.on(SOCKET_EVENTS.CONNECTION, (socket: AuthenticatedSocket) => {
-      // handle connection
-      this.connectionHandler.handleConnection(socket);
+    // apply authentication middleware globally
+    this.io.use(this.authenticateSocket.bind(this));
 
-      // connection events
-      socket.on(SOCKET_EVENTS.DISCONNECT, (reason) => {
-        this.connectionHandler.handleDisconnection(socket, reason);
-        this.typingHandler.handleDisconnection(socket);
-      });
+    this.io.on(
+      SOCKET_EVENTS.CONNECTION,
+      async (socket: AuthenticatedSocket) => {
+        // handle connection
+        await this.connectionHandler.handleConnection(socket);
 
-      socket.on(SOCKET_EVENTS.CONNECT_ERROR, (error) => {
-        this.connectionHandler.handleConnectionError(socket, error);
-      });
+        // connection events
+        socket.on(SOCKET_EVENTS.DISCONNECT, (reason) => {
+          this.connectionHandler.handleDisconnection(socket, reason);
+          this.typingHandler.handleDisconnection(socket);
+        });
 
-      // room events
-      socket.on(SOCKET_EVENTS.JOIN_ROOM, (data) => {
-        this.messageHandler.handleJoinRoom(socket, data);
-      });
+        socket.on(SOCKET_EVENTS.CONNECT_ERROR, (error) => {
+          this.connectionHandler.handleConnectionError(socket, error);
+        });
 
-      socket.on(SOCKET_EVENTS.LEAVE_ROOM, (roomId) => {
-        this.messageHandler.handleLeaveRoom(socket, roomId);
-      });
+        // room events
+        socket.on(SOCKET_EVENTS.JOIN_ROOM, (data) => {
+          this.messageHandler.handleJoinRoom(socket, data);
+        });
 
-      // message events
-      socket.on(SOCKET_EVENTS.NEW_MESSAGE, (data) => {
-        this.messageHandler.handleNewMessage(socket, data);
-      });
+        socket.on(SOCKET_EVENTS.LEAVE_ROOM, (roomId) => {
+          this.messageHandler.handleLeaveRoom(socket, roomId);
+        });
 
-      socket.on(SOCKET_EVENTS.MESSAGE_READ, (data) => {
-        this.messageHandler.handleMessageRead(socket, data);
-      });
+        // support room events
+        socket.on("joinSupportRoom", (supportId) => {
+          this.messageHandler.handleJoinSupportRoom(socket, supportId);
+        });
 
-      socket.on(SOCKET_EVENTS.MESSAGE_DELETE, (data) => {
-        this.messageHandler.handleMessageDelete(socket, data);
-      });
+        socket.on("leaveSupportRoom", (supportId) => {
+          this.messageHandler.handleLeaveSupportRoom(socket, supportId);
+        });
 
-      // typing events
-      socket.on(SOCKET_EVENTS.START_TYPING, (data) => {
-        this.typingHandler.handleStartTyping(socket, data);
-      });
+        // AI chat room events
+        socket.on("joinAIChatRoom", () => {
+          this.messageHandler.handleJoinAIChatRoom(socket);
+        });
 
-      socket.on(SOCKET_EVENTS.STOP_TYPING, (data) => {
-        this.typingHandler.handleStopTyping(socket, data);
-      });
+        socket.on("leaveAIChatRoom", () => {
+          this.messageHandler.handleLeaveAIChatRoom(socket);
+        });
 
-      // notification events
-      socket.on(SOCKET_EVENTS.SEND_NOTIFICATION, (data) => {
-        this.notificationHandler.handleSendNotification(socket, data);
-      });
+        // AI chat message event
+        socket.on("aiChatMessage", (data) => {
+          this.messageHandler.handleNewMessage(socket, {
+            ...data,
+            receiverId: data.receiverId || "ai-assistant",
+            isAIMessage: true,
+          });
+        });
 
-      socket.on(SOCKET_EVENTS.BROADCAST_NOTIFICATION, (data) => {
-        this.notificationHandler.handleBroadcastNotification(socket, data);
-      });
+        // message events
+        socket.on(SOCKET_EVENTS.NEW_MESSAGE, (data) => {
+          this.messageHandler.handleNewMessage(socket, data);
+        });
 
-      socket.on(SOCKET_EVENTS.HOTEL_NOTIFICATION, (data) => {
-        this.notificationHandler.handleHotelNotification(socket, data);
-      });
+        socket.on(SOCKET_EVENTS.MESSAGE_READ, (data) => {
+          this.messageHandler.handleMessageRead(socket, data);
+        });
 
-      socket.on(SOCKET_EVENTS.MARK_NOTIFICATION_READ, (data) => {
-        this.notificationHandler.handleMarkNotificationRead(socket, data);
-      });
+        socket.on(SOCKET_EVENTS.MESSAGE_DELETE, (data) => {
+          this.messageHandler.handleMessageDelete(socket, data);
+        });
 
-      // TODO: AUTH
-      //  socket.use(this.authenticateSocket.bind(this));
-    });
+        // typing events
+        socket.on(SOCKET_EVENTS.START_TYPING, (data) => {
+          this.typingHandler.handleStartTyping(socket, data);
+        });
+
+        socket.on(SOCKET_EVENTS.STOP_TYPING, (data) => {
+          this.typingHandler.handleStopTyping(socket, data);
+        });
+
+        // notification events
+        socket.on(SOCKET_EVENTS.SEND_NOTIFICATION, (data) => {
+          this.notificationHandler.handleSendNotification(socket, data);
+        });
+
+        socket.on(SOCKET_EVENTS.BROADCAST_NOTIFICATION, (data) => {
+          this.notificationHandler.handleBroadcastNotification(socket, data);
+        });
+
+        socket.on(SOCKET_EVENTS.HOTEL_NOTIFICATION, (data) => {
+          this.notificationHandler.handleHotelNotification(socket, data);
+        });
+
+        socket.on(SOCKET_EVENTS.MARK_NOTIFICATION_READ, (data) => {
+          this.notificationHandler.handleMarkNotificationRead(socket, data);
+        });
+      }
+    );
   }
 
-  // TODO: AUTH
+  // socket Authentication Implementation
   private authenticateSocket(
     socket: AuthenticatedSocket,
     next: (err?: Error) => void
   ): void {
-    // TODO:Authentication
-    // verify JWT token and set socket.userId
-    next();
+    try {
+      const token =
+        socket.handshake.auth.token || socket.handshake.headers.authorization;
+
+      if (!token) {
+        // allow connection but mark as unauthenticated
+        socket.userId = undefined;
+        return next();
+      }
+
+      // extract and verify JWT token
+      const cleanToken =
+        typeof token === "string"
+          ? this.jwtService.extractTokenFromHeader(
+              token.startsWith("Bearer ") ? token : `Bearer ${token}`
+            )
+          : token;
+
+      const decoded = this.jwtService.verifyToken(
+        cleanToken,
+        process.env.JWT_ACCESS_SECRET || "secret_access_token"
+      );
+
+      // set user information on socket
+      socket.userId = decoded.userId;
+      socket.role = decoded.role;
+
+      next();
+    } catch (error) {
+      console.error("Socket authentication error:", error);
+      // allow connection but without authentication
+      socket.userId = undefined;
+      next();
+    }
   }
 
   // public methods
