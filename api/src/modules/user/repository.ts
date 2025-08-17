@@ -27,12 +27,11 @@ export class UserRepository {
         surname: true,
         email: true,
         phone: true,
-        isVerified: true,
-        deletedAt: true,
-        images: true,
         role: true,
+        deletedAt: true,
+        isVerified: true,
+        images: true,
         paymentCards: true,
-        hashedPassword: true,
       },
     });
   }
@@ -44,18 +43,8 @@ export class UserRepository {
     });
   }
   static async create(data: RegisterSchemaType) {
-    // confirmPassword alanını ve hashlenmemiş password'u kaydetmemeliyiz
-    const { name, surname, email, phone, password } = data;
-    // Burada password'ü hashlemeniz gerekir, örneğin bcrypt ile hashleyebilirsiniz.
-    // Şimdilik hashedPassword alanını doğrudan password olarak atıyoruz, gerçek uygulamada hash kullanmalısınız.
     return Prisma.user.create({
-      data: {
-        name,
-        surname,
-        email,
-        phone,
-        hashedPassword: password,
-      },
+      data,
     });
   }
   static async update(id: string, data: UpdateUserSchemaType) {
@@ -73,6 +62,37 @@ export class UserRepository {
         id,
       },
       data: { deletedAt: new Date() },
+    });
+  }
+
+  // auth işlemleri için prisma işlemleri
+
+  // resendVerificationEmail,register ve forgotPassword için
+  static async updateVerificationOTP(id: string, otp: string) {
+    return Prisma.user.update({
+      where: { id },
+      data: {
+        verificationOTP: otp,
+        verificationOTPExpires: new Date(Date.now() + 10 * 60 * 1000),
+      },
+    });
+  }
+  // email doğrulama için
+  static async verifyEmail(id: string) {
+    return Prisma.user.update({
+      where: { id },
+      data: {
+        isVerified: true,
+        verificationOTP: null,
+        verificationOTPExpires: null,
+      },
+    });
+  }
+  // forgotPassword ve changePassword için
+  static async updatePassword(id: string, hashedPassword: string) {
+    return Prisma.user.update({
+      where: { id },
+      data: { hashedPassword },
     });
   }
 }

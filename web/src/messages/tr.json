@@ -47,6 +47,12 @@
     "reviewsCount": "{count} Yorum",
     "viewDetailsButton": "Detayları Görüntüle"
   },
+  "HotelCard": {
+    "discountLabel": "%20 indirim",
+    "nightsFor": "{nights} gece için",
+    "viewDetails": "Detaylı İncele",
+    "reviewsCount": "({count})"
+  },
   "CategoryPage": {
     "resultsFound": "{count} sonuç bulundu"
   },
@@ -113,6 +119,7 @@
     "home": "Anasayfa",
     "customers": "Müşteriler",  
     "admins": "Adminler",
+    "WelcamePage" :"Ana Sayfa",
     "reservation-management": "Rezervasyon Yönetimi",
     "active-reservations": "Aktif Rezervasyonlar",
     "passive-reservations": "Pasif Rezervasyonlar",

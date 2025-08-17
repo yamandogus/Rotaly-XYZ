@@ -12,22 +12,21 @@ export class UserService {
     return users;
   }
 
-  static async getById(id: string) {
-    const user = await UserRepository.findById(id);
-    if (!user || user.deletedAt || user.isVerified === false) {
-      throw new AppError("User not found", 404);
-    }
-    return user;
-  }
-
   static async getByEmail(email: string) {
     const user = await UserRepository.findByEmail(email);
-    if (!user || user.deletedAt || user.isVerified === false) {
+    if (!user || user.deletedAt) {
       throw new AppError("User not found", 404);
     }
     return user;
   }
 
+  static async getById(id: string) {
+    const user = await UserRepository.findById(id);
+    if (!user || user.deletedAt) {
+      throw new AppError("User not found", 404);
+    }
+    return user;
+  }
   static async getByPhone(phone: string) {
     const user = await UserRepository.findByPhone(phone);
     if (!user || user.deletedAt) {
@@ -48,8 +47,8 @@ export class UserService {
   }
   static async add(data: RegisterSchemaType) {
     await this.checkEmailUnique(data.email);
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+
+    const hashedPassword = await bcrypt.hash(data.password, 10);
 
     return UserRepository.create({
       ...data,
@@ -70,7 +69,7 @@ export class UserService {
 
   static async delete(id: string) {
     const user = await this.getById(id);
-    if (!user) {
+    if (!user || user.deletedAt) {
       throw new AppError("User not found", 404);
     }
     return UserRepository.delete(id);
@@ -87,6 +86,18 @@ export class UserService {
       isVerified: user.isVerified,
       images: user.images,
       paymentCards: user.paymentCards,
+      role: user.role,
     };
+  }
+
+  // auth işlemleri için
+  static async updateVerificationOTP(userId: string, otp: string) {
+    return await UserRepository.updateVerificationOTP(userId, otp);
+  }
+  static async verifyUserEmail(userId: string) {
+    return await UserRepository.verifyEmail(userId);
+  }
+  static async updatePassword(userId: string, hashedPassword: string) {
+    return await UserRepository.updatePassword(userId, hashedPassword);
   }
 }

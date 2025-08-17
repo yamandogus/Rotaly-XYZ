@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Eye, Edit, Trash } from "lucide-react";
+import { Eye, Trash } from "lucide-react";
 
 interface RoomMobileCardProps {
   filteredRooms: Room[];
@@ -44,9 +44,9 @@ const RoomMobileCard: FC<RoomMobileCardProps> = ({
                   <p className="text-sm text-muted-foreground">
                     {room.capacity} Kişilik - {room.bedCount} Yatak - {room.type}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    Oda {room.roomNumber} - {room.floor}. Kat
-                  </p>
+                                     <p className="text-xs text-muted-foreground">
+                     Oda {room.roomNumber}
+                   </p>
                 </div>
               </div>
               <Badge
@@ -69,7 +69,7 @@ const RoomMobileCard: FC<RoomMobileCardProps> = ({
               </div>
               <div>
                 <p className="text-muted-foreground">Kapasite</p>
-                <p className="font-medium text-foreground">{room.maxAdults} Yetişkin, {room.maxChildren} Çocuk</p>
+                <p className="font-medium text-foreground">{room.capacity} Kişi</p>
               </div>
             </div>
 

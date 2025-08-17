@@ -9,6 +9,7 @@ import ReservationFilters from "@/components/dashboard/hotel/reservations/reserv
 import ReservationTable from "@/components/dashboard/hotel/reservations/reservation-table";
 import ReservationMobileCard from "@/components/dashboard/hotel/reservations/reservation-mobile-card";
 
+
 export default function ReservationPage() {
   const t = useTranslations("Reservations");
   const hotelReservations = reservations.filter(res => res.hotelAddress === "Otel Sokak No:1, İstanbul");

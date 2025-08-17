@@ -47,6 +47,12 @@
     "reviewsCount": "{count} Reviews",
     "viewDetailsButton": "View Details"
   },
+  "HotelCard": {
+    "discountLabel": "20% off",
+    "nightsFor": "for {nights} nights",
+    "viewDetails": "View Details",
+    "reviewsCount": "({count})"
+  },
   "CategoryPage": {
     "resultsFound": "{count} results found"
   },
@@ -117,6 +123,7 @@
     "reservation-management":"Reservations Management",
     "reports": "Reports",
     "statistics": "Statistics",
+    "WelcamePage" :"Home",
     "active-reservations": "Active Reservations",
     "passive-reservations": "Passive Reservations",
     "active-customers": "Active Customers",

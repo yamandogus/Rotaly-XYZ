@@ -71,13 +71,12 @@ const RoomFilters: FC<RoomFiltersProps> = ({
               <DropdownMenuItem onClick={() => getSortBy("name-desc")}>{t("nameDesc")}</DropdownMenuItem>
               <DropdownMenuItem onClick={() => getSortBy("type")}>{t("roomType")}</DropdownMenuItem>
               <DropdownMenuItem onClick={() => getSortBy("roomNumber")}>{t("roomNumber")}</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => getSortBy("floor")}>{t("floor")}</DropdownMenuItem>
+
               <DropdownMenuItem onClick={() => getSortBy("price")}>{t("priceAsc")}</DropdownMenuItem>
               <DropdownMenuItem onClick={() => getSortBy("price-desc")}>{t("priceDesc")}</DropdownMenuItem>
               <DropdownMenuItem onClick={() => getSortBy("capacity")}>{t("capacityAsc")}</DropdownMenuItem>
               <DropdownMenuItem onClick={() => getSortBy("capacity-desc")}>{t("capacityDesc")}</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => getSortBy("maxAdults")}>{t("maxAdults")}</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => getSortBy("maxChildren")}>{t("maxChildren")}</DropdownMenuItem>
+
             </DropdownMenuContent>
           </DropdownMenu>
 

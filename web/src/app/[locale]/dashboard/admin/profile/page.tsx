@@ -107,7 +107,7 @@ export default function AdminProfilePage() {
   };
 
   return (
-    <div className="w-full bg-gray-50 min-h-screen">
+    <div className="w-full min-h-screen">
       <div className="w-full max-w-6xl mx-auto p-6">
         <div className="grid grid-cols-12 gap-8">
           {/* Profile Image & Company Info */}

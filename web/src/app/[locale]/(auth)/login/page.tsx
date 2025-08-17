@@ -23,6 +23,7 @@ import { useDispatch} from "react-redux";
 import { setUserRole } from "@/store/testUser/test-user-slice";
 
 
+
 const loginShema = z.object({
   email: z.string().email({ message: "Geçersiz e-posta adresi" }),
   password: z.string().min(8, { message: "Geçersiz şifre" }),
@@ -69,8 +70,25 @@ export default function LoginPage() {
   const handleLogin = async (data: LoginFormData) => {
     console.log("login data", data);
 
-    // const response = await api.login(data);
-    // console.log("login response", response);
+    //const response = await api.login(data);
+    //console.log("login response", response);
+
+    // const response = await api.login(data)
+    // const user = response.data.userData.email
+    // console.log(user);
+
+    // const profileResponse = await api.getUserProfile()
+
+    // console.log("res",profileResponse);
+    
+    
+    // console.log("response", response);
+    // console.log("test");
+    
+    
+    // if(response.success){
+    //   router.push("/")
+    // }
 
     // Normal kullanıcı girişi
     if (data.email === testUser.email && data.password === testUser.password) {
