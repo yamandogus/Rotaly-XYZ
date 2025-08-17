@@ -1390,7 +1390,6 @@ export const reservations: Reservation[] = [
     roomId: "R001",
     paymentCardId: "card1",
     isVerified: true,
-    // Room bilgileri
     roomName: "Deluxe Deniz Manzaralı Oda",
     roomType: "DELUXE",
     roomNumber: 301,
@@ -1411,7 +1410,6 @@ export const reservations: Reservation[] = [
     totalPrice: 250,
     hotelAddress: "Otel Sokak No:1, İstanbul",
     userPhone: "05000000002",
-    specialRequest: undefined,
     paymentMethod: "Cash",
     createdAt: "2024-12-10T00:00:00.000Z",
     updatedAt: "2024-12-10T00:00:00.000Z",
@@ -1420,7 +1418,6 @@ export const reservations: Reservation[] = [
     roomId: "R003",
     paymentCardId: null,
     isVerified: false,
-    // Room bilgileri
     roomName: "Ekonomik Tek Kişilik Oda",
     roomType: "STANDARD",
     roomNumber: 101,
@@ -1450,7 +1447,6 @@ export const reservations: Reservation[] = [
     roomId: "R002",
     paymentCardId: "card2",
     isVerified: true,
-    // Room bilgileri
     roomName: "Aile Süiti",
     roomType: "SUITE",
     roomNumber: 501,
@@ -1471,13 +1467,12 @@ export const reservations: Reservation[] = [
     totalPrice: 800,
     hotelAddress: "Otel Sokak No:3, İzmir",
     userPhone: "05000000004",
-    specialRequest: undefined,
     paymentMethod: "Cash",
     createdAt: "2024-12-10T00:00:00.000Z",
     updatedAt: "2024-12-10T00:00:00.000Z",
     deletedAt: null,
     userId: "user4",
-    roomId: "room4",
+    roomId: "R004",
     paymentCardId: null,
     isVerified: false
   },
@@ -1498,7 +1493,7 @@ export const reservations: Reservation[] = [
     updatedAt: "2024-12-10T00:00:00.000Z",
     deletedAt: null,
     userId: "user5",
-    roomId: "room1",
+    roomId: "R005",
     paymentCardId: "card3",
     isVerified: true
   },
@@ -1519,11 +1514,12 @@ export const reservations: Reservation[] = [
     updatedAt: "2024-12-10T00:00:00.000Z",
     deletedAt: null,
     userId: "user6",
-    roomId: "room3",
+    roomId: "R006",
     paymentCardId: "card4",
     isVerified: true
   }
 ];
+
 export const popularHotels: Hotel[] = [
   {
     id: "1",

@@ -30,11 +30,9 @@ export default function RoomPricePage() {
     const filtered = rooms.filter(
       (room) =>
         room.name.toLowerCase().includes(value.toLowerCase()) ||
-        room.id.toLowerCase().includes(value.toLowerCase()) ||
         room.hotelId.toLowerCase().includes(value.toLowerCase()) ||
         room.type.toLowerCase().includes(value.toLowerCase()) ||
-        room.roomNumber.toString().includes(value) ||
-        room.floor.toString().includes(value)
+        room.roomNumber.toString().includes(value)
     );
     setFilteredRooms(filtered);
   };
@@ -72,13 +70,10 @@ export default function RoomPricePage() {
       if (sortBy === "name-desc") return b.name.localeCompare(a.name);
       if (sortBy === "type") return a.type.localeCompare(b.type);
       if (sortBy === "roomNumber") return a.roomNumber - b.roomNumber;
-      if (sortBy === "floor") return a.floor - b.floor;
       if (sortBy === "price") return a.price - b.price;
       if (sortBy === "price-desc") return b.price - a.price;
       if (sortBy === "capacity") return a.capacity - b.capacity;
       if (sortBy === "capacity-desc") return b.capacity - a.capacity;
-      if (sortBy === "maxAdults") return a.maxAdults - b.maxAdults;
-      if (sortBy === "maxChildren") return a.maxChildren - b.maxChildren;
       if (sortBy === "createdAt")
         return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
       if (sortBy === "createdAt-desc")

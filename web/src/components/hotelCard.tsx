@@ -6,7 +6,8 @@ import Image from "next/image";
 import { Sparkles, HeartIcon, LocateIcon, CarIcon } from "lucide-react";
 import { Rating, RatingButton } from "./ui/shadcn-io/rating";
 import { Button } from "./ui/button";
-import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/routing";
 
 interface HotelCardProps {
   item: {
@@ -25,6 +26,8 @@ interface HotelCardProps {
 }
 
 const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
+  const t = useTranslations("HotelCard");
+  const router = useRouter();
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
@@ -69,7 +72,7 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
           <div className="absolute top-3 left-3">
             <div className="bg-[#4E946C] text-white px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-sm">
               <Sparkles className="w-3 h-3" />
-              <span className="text-xs font-semibold">%20 indirim</span>
+              <span className="text-xs font-semibold">{t("discountLabel")}</span>
             </div>
           </div>
           <div className="absolute top-3 right-3">
@@ -113,13 +116,13 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
                 />
               ))}
             </Rating>
-            <span className="text-xs text-muted-foreground ml-1">(120)</span>
+            <span className="text-xs text-muted-foreground ml-1">{t("reviewsCount", { count: 120 })}</span>
           </div>
         </div>
 
         <div className="flex flex-wrap gap-2">
           {item.cancelText && (
-            <div className="flex items-center gap-1.5 text-xs text-red-600 bg-red-50 px-2.5 py-1.5 rounded-lg border border-red-100">
+            <div className="flex items-center gap-1.5 text-xs text-red-600 bg-red-50 dark:bg-red-900/20 dark:text-red-400 px-2.5 py-1.5 rounded-lg border border-red-100 dark:border-red-800/30">
               <svg
                 className="w-3 h-3"
                 fill="none"
@@ -137,7 +140,7 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
             </div>
           )}
           {item.breakfastText && (
-            <div className="flex items-center gap-1.5 text-xs text-green-600 bg-green-50 px-2.5 py-1.5 rounded-lg border border-green-100">
+            <div className="flex items-center gap-1.5 text-xs text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400 px-2.5 py-1.5 rounded-lg border border-green-100 dark:border-green-800/30">
               <svg
                 className="w-3 h-3"
                 fill="none"
@@ -155,7 +158,7 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
             </div>
           )}
           {item.parkingText && (
-            <div className="flex items-center gap-1.5 text-xs text-blue-600 bg-blue-50 px-2.5 py-1.5 rounded-lg border border-blue-100">
+            <div className="flex items-center gap-1.5 text-xs text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 px-2.5 py-1.5 rounded-lg border border-blue-100 dark:border-blue-800/30">
               <CarIcon className="w-3 h-3" />
               <span className="font-medium">{item.parkingText}</span>
             </div>
@@ -166,15 +169,16 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
       <CardFooter className="p-4 pt-4 flex justify-between items-center gap-2 mt-auto">
         <div className="flex flex-col">
           <span className="text-sm text-muted-foreground mb-1">
-            {item.nights} gece için
+            {t("nightsFor", { nights: item.nights || 1 })}
           </span>
           <span className="text-xl font-bold text-blue-600">{item.price}</span>
         </div>
-        <Link href={`/hotels/${item.id}`}>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-6 rounded-xl font-semibold text-sm shadow-sm hover:shadow-md transition-all cursor-pointer">
-            Detaylı İncele
-          </Button>
-        </Link>
+        <Button 
+          onClick={() => router.push(`/hotels/${item.id}`)}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-6 rounded-xl font-semibold text-sm shadow-sm hover:shadow-md transition-all cursor-pointer"
+        >
+          {t("viewDetails")}
+        </Button>
       </CardFooter>
     </Card>
   );
