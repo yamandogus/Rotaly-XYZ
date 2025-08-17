@@ -7,7 +7,7 @@ const router = Router();
 router.get(
   "/hotel/:hotelId",
   authenticateToken,
-  CommentController.getHotComments
+  CommentController.getHotelComments
 );
 router.post("/", authenticateToken, CommentController.createComment);
 router.put("/:id", authenticateToken, CommentController.updateComment);

@@ -20,19 +20,22 @@ export class AuthService {
     this.jwtService = new JwtService();
   }
 
+  //
   async register(data: RegisterSchemaType) {
     const user = await UserService.add(data);
     const otp = generateOTP();
 
-    await UserService.updateVerificationOTP(user.id, otp);
     await this.emailService.sendWelcomeEmail(user.email, user.name);
     await this.emailService.sendVerificationEmail(user.email, user.name, otp);
+    await UserService.updateVerificationOTP(user.id, otp);
 
     return {
       message:
         "Registration successful. Please check your email for verification.",
     };
   }
+
+  //
 
   async login(data: LoginSchemaType) {
     const user = await UserService.getByEmail(data.email);
@@ -58,6 +61,8 @@ export class AuthService {
     };
   }
 
+  //
+
   async logout(authorizationHeader: string) {
     await this.jwtService.logout(authorizationHeader);
     return {
@@ -65,6 +70,7 @@ export class AuthService {
     };
   }
 
+  //TODO
   async verifyEmail(userId: string | undefined, verificationOTP: string) {
     if (!userId) {
       throw new AppError("Login first", 401);
@@ -81,11 +87,6 @@ export class AuthService {
       throw new AppError("Invalid or expired verification OTP", 400);
     }
 
-    // will add a cron job to clear expired OTPs or smt else ???
-    /*     if (new Date() > user.verificationOTPExpires) {
-      throw new AppError("Verification OTP has expired", 400);
-    } */
-
     await UserService.verifyUserEmail(userId);
 
     return {
@@ -93,22 +94,22 @@ export class AuthService {
     };
   }
 
+  //
   async resendVerificationEmail(email: string) {
     const user = await UserService.getByEmail(email);
     if (user.isVerified) {
       throw new AppError("user already verified", 400);
     }
     const otp = generateOTP();
-    await UserService.updateVerificationOTP(user.id, otp);
-
     await this.emailService.sendVerificationEmail(user.email, user.name, otp);
+    await UserService.updateVerificationOTP(user.id, otp);
     return {
       message: "Verification email sent",
     };
   }
 
+  //TODO
   async updateProfile(userId: string, data: UpdateUserSchemaType) {
-    const otp = generateOTP();
     const user = await UserService.getById(userId);
     if (data.email && data.email !== user.email) {
       await UserService.checkEmailUnique(data.email, userId);
@@ -118,6 +119,7 @@ export class AuthService {
         userId: user.id,
         role: user.role,
       });
+      const otp = generateOTP();
       await this.emailService.sendVerificationEmail(data.email, user.name, otp);
     }
     const updateUser = await UserService.update(user.id, data);
@@ -129,17 +131,22 @@ export class AuthService {
       updatedUser: updateUser,
     };
   }
+
+  //
+
   async forgotPassword(email: string) {
     const user = await UserService.getByEmail(email);
 
     const otp = generateOTP();
+    await this.emailService.sendPasswordResetEmail(user.email, user.name, otp);
     await UserService.updateVerificationOTP(user.id, otp);
 
-    await this.emailService.sendPasswordResetEmail(user.email, user.name, otp);
     return {
       message: "Reset password email sent",
     };
   }
+
+  //
 
   async changePassword(userId: string, data: ChangePasswordSchemaType) {
     const user = await UserService.getById(userId);
@@ -160,10 +167,12 @@ export class AuthService {
     };
   }
 
+  //
+
   async deleteAccount(userId: string) {
     const user = await UserService.getById(userId);
-    this.jwtService.logoutAll(user.id);
     await UserService.delete(userId);
+    this.jwtService.logoutAll(user.id);
     return {
       message: "Account deleted successfully",
     };

@@ -28,7 +28,7 @@ export class CommentController {
     }
   }
 
-  static async getHotComments(req: Request, res: Response) {
+  static async getHotelComments(req: Request, res: Response) {
     try {
       const { hotelId } = req.params;
       const comments = await CommentService.getHotelComments(hotelId);
@@ -50,10 +50,19 @@ export class CommentController {
 
   static async updateComment(req: Request, res: Response) {
     try {
-      const user = (req as any).user?.id;
-      const { id } = req.params;
+      const userId = (req as any).user?.id;
+      const { commentId } = req.params;
+
+      const existingComment = await CommentService.getCommentById(commentId);
+      if (!existingComment) {
+        throw new AppError("Comment not found", 404);
+      }
+      if (existingComment.userId !== userId) {
+        throw new AppError("You do not have access to this comment.", 403);
+      }
+
       const data = req.body as UpdateCommentSchemaType;
-      const comment = await CommentService.update(user, id, data);
+      const comment = await CommentService.update(userId, commentId, data);
       res.status(200).json({
         message: "Comment updated successfully",
         data: comment,
@@ -72,9 +81,16 @@ export class CommentController {
 
   static async deleteComment(req: Request, res: Response) {
     try {
-      const user = (req as any).user?.id;
-      const { id } = req.params;
-      await CommentService.delete(user, id);
+      const userId = (req as any).user?.id;
+      const { commentId } = req.params;
+      const existingComment = await CommentService.getCommentById(commentId);
+      if (!existingComment) {
+        throw new AppError("Comment not found", 404);
+      }
+      if (existingComment.userId !== userId) {
+        throw new AppError("You do not have access to this comment.", 403);
+      }
+      await CommentService.delete(commentId, userId);
       res.status(200).json({
         message: "Comment deleted successfully",
       });
