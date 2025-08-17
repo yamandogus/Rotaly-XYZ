@@ -30,3 +30,4 @@ const stepSlice = createSlice({
 export const { setStep, nextStep, prevStep, resetStep } = stepSlice.actions;
 
 export default stepSlice.reducer;
+
