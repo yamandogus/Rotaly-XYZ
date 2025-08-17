@@ -1,16 +1,10 @@
 import { Router } from "express";
 import { UserController } from "./controller";
 import { authenticateToken } from "../../middleware/jwt.middleware";
-import { authorizeRoles, verifiedUser } from "../../middleware/auth.middleware";
-import { Role } from "@prisma/client";
-import {
-  adminActionLimiter,
-  userSearchLimiter,
-} from "../../middleware/rateLimit";
+import { verifiedUser } from "../../middleware/auth.middleware";
 
 const router = Router();
 
-// POST /api/users
 // Register a new user
 router.post("", UserController.add);
 // GET /api/users/me/profile
@@ -22,49 +16,14 @@ router.get(
 );
 
 // GET /api/users/:id
-router.get(
-  "/:id",
-  authenticateToken,
-  verifiedUser,
-  authorizeRoles(Role.ADMIN),
-  adminActionLimiter,
-  UserController.ById
-);
+router.get("/:id", authenticateToken, verifiedUser, UserController.ById);
 // GET /api/users/:email
-router.get(
-  "/:email",
-  authenticateToken,
-  verifiedUser,
-  authorizeRoles(Role.ADMIN),
-  userSearchLimiter,
-  UserController.ByEmail
-);
+router.get("/:email", authenticateToken, verifiedUser, UserController.ByEmail);
 // GET /api/users/:phone
-router.get(
-  "/:phone",
-  authenticateToken,
-  verifiedUser,
-  authorizeRoles(Role.ADMIN),
-  userSearchLimiter,
-  UserController.ByPhone
-);
+router.get("/:phone", authenticateToken, verifiedUser, UserController.ByPhone);
 // PUT /api/users/:id
-router.put(
-  "/:id",
-  authenticateToken,
-  verifiedUser,
-  authorizeRoles(Role.ADMIN),
-  adminActionLimiter,
-  UserController.update
-);
+router.put("/:id", authenticateToken, verifiedUser, UserController.update);
 // DELETE /api/users/:id
-router.delete(
-  "/:id",
-  authenticateToken,
-  verifiedUser,
-  authorizeRoles(Role.ADMIN),
-  adminActionLimiter,
-  UserController.delete
-);
+router.delete("/:id", authenticateToken, verifiedUser, UserController.delete);
 
 export default router;

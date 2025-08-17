@@ -1,4 +1,3 @@
-import { verificationEmailSchema } from "src/dto/email";
 import Prisma from "../../config/db";
 import { RegisterSchemaType, UpdateUserSchemaType } from "../../dto/auth";
 
@@ -28,13 +27,11 @@ export class UserRepository {
         surname: true,
         email: true,
         phone: true,
-        isVerified: true,
-        deletedAt: true,
-        images: true,
         role: true,
+        deletedAt: true,
+        isVerified: true,
+        images: true,
         paymentCards: true,
-        hashedPassword: true,
-        verificationOTP:true
       },
     });
   }
@@ -46,18 +43,8 @@ export class UserRepository {
     });
   }
   static async create(data: RegisterSchemaType) {
-    // confirmPassword alanını ve hashlenmemiş password'u kaydetmemeliyiz
-    const { name, surname, email, phone, password } = data;
-    // Burada password'ü hashlemeniz gerekir, örneğin bcrypt ile hashleyebilirsiniz.
-    // Şimdilik hashedPassword alanını doğrudan password olarak atıyoruz, gerçek uygulamada hash kullanmalısınız.
     return Prisma.user.create({
-      data: {
-        name,
-        surname,
-        email,
-        phone,
-        hashedPassword: password,
-      },
+      data,
     });
   }
   static async update(id: string, data: UpdateUserSchemaType) {
@@ -78,3 +65,4 @@ export class UserRepository {
     });
   }
 }
+// user.role
