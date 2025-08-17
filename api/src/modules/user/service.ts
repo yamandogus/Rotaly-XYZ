@@ -47,8 +47,8 @@ export class UserService {
   }
   static async add(data: RegisterSchemaType) {
     await this.checkEmailUnique(data.email);
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+
+    const hashedPassword = await bcrypt.hash(data.password, 10);
 
     return UserRepository.create({
       ...data,
@@ -86,6 +86,18 @@ export class UserService {
       isVerified: user.isVerified,
       images: user.images,
       paymentCards: user.paymentCards,
+      role: user.role,
     };
+  }
+
+  // auth işlemleri için
+  static async updateVerificationOTP(userId: string, otp: string) {
+    return await UserRepository.updateVerificationOTP(userId, otp);
+  }
+  static async verifyUserEmail(userId: string) {
+    return await UserRepository.verifyEmail(userId);
+  }
+  static async updatePassword(userId: string, hashedPassword: string) {
+    return await UserRepository.updatePassword(userId, hashedPassword);
   }
 }

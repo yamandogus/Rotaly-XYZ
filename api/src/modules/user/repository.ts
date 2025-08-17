@@ -64,5 +64,35 @@ export class UserRepository {
       data: { deletedAt: new Date() },
     });
   }
+
+  // auth işlemleri için prisma işlemleri
+
+  // resendVerificationEmail,register ve forgotPassword için
+  static async updateVerificationOTP(id: string, otp: string) {
+    return Prisma.user.update({
+      where: { id },
+      data: {
+        verificationOTP: otp,
+        verificationOTPExpires: new Date(Date.now() + 10 * 60 * 1000),
+      },
+    });
+  }
+  // email doğrulama için
+  static async verifyEmail(id: string) {
+    return Prisma.user.update({
+      where: { id },
+      data: {
+        isVerified: true,
+        verificationOTP: null,
+        verificationOTPExpires: null,
+      },
+    });
+  }
+  // forgotPassword ve changePassword için
+  static async updatePassword(id: string, hashedPassword: string) {
+    return Prisma.user.update({
+      where: { id },
+      data: { hashedPassword },
+    });
+  }
 }
-// user.role

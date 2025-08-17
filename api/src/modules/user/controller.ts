@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { UserService } from "./service";
 import { RegisterSchemaType, UpdateUserSchemaType } from "../../dto/auth";
 import { AppError } from "../../utils/appError";
-import { Role } from "@prisma/client";
 
 export class UserController {
   static async index(req: Request, res: Response): Promise<void> {
