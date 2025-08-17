@@ -61,10 +61,12 @@ export function Footer() {
                 className="text-sm text-blue-100 hover:text-white"
               >
                 Canlı Destek
+              </Link>
+              <Link
                 href="/support/faq"
                 className="text-sm text-blue-100 hover:text-white dark:text-blue-200 dark:hover:text-white"
               >
-                {t("faq")}
+                Sıkça Sorulan Sorular
               </Link>
               <Link
                 href="/support/cancellation"
