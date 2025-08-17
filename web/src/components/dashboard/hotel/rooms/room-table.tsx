@@ -44,7 +44,7 @@ const RoomTable: FC<RoomTableProps> = ({
             <TableHead className="text-muted-foreground">
               {t("room-image")}
             </TableHead>
-            <TableHead className="text-muted-foreground">{t("id")}</TableHead>
+
             <TableHead className="text-muted-foreground">
               {t("roomName")}
             </TableHead>
@@ -54,21 +54,14 @@ const RoomTable: FC<RoomTableProps> = ({
             <TableHead className="text-muted-foreground">
               {t("roomNumber")}
             </TableHead>
-            <TableHead className="text-muted-foreground">
-              {t("floor")}
-            </TableHead>
+
             <TableHead className="text-muted-foreground">
               {t("price")}
             </TableHead>
             <TableHead className="text-muted-foreground">
               {t("capacity")}
             </TableHead>
-            <TableHead className="text-muted-foreground">
-              {t("maxAdults")}
-            </TableHead>
-            <TableHead className="text-muted-foreground">
-              {t("maxChildren")}
-            </TableHead>
+
             <TableHead className="text-muted-foreground">
               {t("bedCount")}
             </TableHead>
@@ -97,7 +90,7 @@ const RoomTable: FC<RoomTableProps> = ({
                 )}
               </TableCell>
 
-              <TableCell>{room.id}</TableCell>
+
               <TableCell>{room.name}</TableCell>
               <TableCell>
                 <Badge variant="outline" className="text-xs">
@@ -105,11 +98,10 @@ const RoomTable: FC<RoomTableProps> = ({
                 </Badge>
               </TableCell>
               <TableCell>{room.roomNumber}</TableCell>
-              <TableCell>{room.floor}</TableCell>
+
               <TableCell>{room.price} ₺</TableCell>
               <TableCell>{room.capacity}</TableCell>
-              <TableCell>{room.maxAdults}</TableCell>
-              <TableCell>{room.maxChildren}</TableCell>
+
               <TableCell>{room.bedCount}</TableCell>
               <TableCell>
                 <Badge

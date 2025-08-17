@@ -21,7 +21,7 @@ import {
 } from "@/components/auth/auth-components";
 import { useDispatch} from "react-redux";
 import { setUserRole } from "@/store/testUser/test-user-slice";
-import { api } from "@/services/api";
+
 
 
 const loginShema = z.object({
@@ -70,8 +70,8 @@ export default function LoginPage() {
   const handleLogin = async (data: LoginFormData) => {
     console.log("login data", data);
 
-    const response = await api.login(data);
-    console.log("login response", response);
+    //const response = await api.login(data);
+    //console.log("login response", response);
 
     // const response = await api.login(data)
     // const user = response.data.userData.email

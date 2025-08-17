@@ -172,7 +172,7 @@ export default function HomePage() {
           <h1 className="text-2xl md:text-4xl font-bold mb-4">
             {t("heroHeading")}
           </h1>
-          <p className="text-base md:text-lg max-w-2xl mb-8 text-gray-400 font-medium">
+          <p className="text-base md:text-lg max-w-2xl mb-8 text-gray-400 dark:text-gray-300 font-medium">
             {t("heroSubheading")}
           </p>
         </div>
@@ -219,7 +219,7 @@ export default function HomePage() {
             {categories.map((category) => (
               <div
                 key={category.name}
-                className="w-full max-w-[160px] flex items-center justify-center space-x-3 p-4 rounded-full bg-gray-100 shadow-sm cursor-pointer hover:bg-gray-200 transition-colors duration-200 border border-gray-300 dark:bg-gray-800 dark:border-gray-700"
+                className="w-full max-w-[160px] flex items-center justify-center space-x-3 p-4 rounded-full bg-gray-100 shadow-sm cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 border border-gray-300 dark:bg-gray-800 dark:border-gray-700"
               >
                 <div className="w-10 h-8 flex items-center justify-center rounded-full">
                   <Image

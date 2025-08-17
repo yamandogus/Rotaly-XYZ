@@ -5,9 +5,8 @@ import authReducer from "./auth/auth-slice";
 import searchReducer from "./search/search-slice";
 import testUserReducer from "./testUser/test-user-slice";
 import dashboardReducer from "./dashboard/dashboard-slice";
-
-import stepReducer from "./reservation/reservation-slice";
-
+import bookingReducer from "./booking/booking-slice";
+import stepReducer from "./step/step-slice";
 
 // Persist config
 const persistConfig = {
@@ -22,7 +21,7 @@ const rootReducer = combineReducers({
   search: searchReducer,
   testUser: testUserReducer,
   dashboard: dashboardReducer,
-
+  booking: bookingReducer,
   step: stepReducer,
 });
 
