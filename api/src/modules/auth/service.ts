@@ -1,4 +1,3 @@
-import Prisma from "../../config/db";
 import { JwtService } from "../../jwt/jwt.service";
 import { AppError } from "../../utils/appError";
 import { generateOTP } from "../../utils/otp";
@@ -25,16 +24,9 @@ export class AuthService {
     const user = await UserService.add(data);
     const otp = generateOTP();
 
+    await UserService.updateVerificationOTP(user.id, otp);
     await this.emailService.sendWelcomeEmail(user.email, user.name);
     await this.emailService.sendVerificationEmail(user.email, user.name, otp);
-
-    await Prisma.user.update({
-      where: { id: user.id },
-      data: {
-        verificationOTP: otp,
-        verificationOTPExpires: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
-      },
-    });
 
     return {
       message:
@@ -51,9 +43,7 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new AppError("Invalid credentials", 401);
     }
-    // if (!user.isVerified) {
-    //   throw new AppError("Please verify your email first", 401);
-    // }
+
     const accessToken = this.jwtService.generateAccessToken({
       userId: user.id,
       role: user.role,
@@ -96,14 +86,7 @@ export class AuthService {
       throw new AppError("Verification OTP has expired", 400);
     } */
 
-    await Prisma.user.update({
-      where: { id: userId },
-      data: {
-        isVerified: true,
-        verificationOTP: null,
-        verificationOTPExpires: null,
-      },
-    });
+    await UserService.verifyUserEmail(userId);
 
     return {
       message: "Email verified successfully",
@@ -112,17 +95,11 @@ export class AuthService {
 
   async resendVerificationEmail(email: string) {
     const user = await UserService.getByEmail(email);
-    const otp = generateOTP();
     if (user.isVerified) {
       throw new AppError("user already verified", 400);
     }
-    await Prisma.user.update({
-      where: { id: user.id },
-      data: {
-        verificationOTP: otp,
-        verificationOTPExpires: new Date(Date.now() + 10 * 60 * 1000), // 10 dakika
-      },
-    });
+    const otp = generateOTP();
+    await UserService.updateVerificationOTP(user.id, otp);
 
     await this.emailService.sendVerificationEmail(user.email, user.name, otp);
     return {
@@ -153,16 +130,11 @@ export class AuthService {
     };
   }
   async forgotPassword(email: string) {
-    const otp = generateOTP();
     const user = await UserService.getByEmail(email);
 
-    await Prisma.user.update({
-      where: { id: user.id },
-      data: {
-        verificationOTP: otp,
-        verificationOTPExpires: new Date(Date.now() + 10 * 60 * 1000), // 10 dakika
-      },
-    });
+    const otp = generateOTP();
+    await UserService.updateVerificationOTP(user.id, otp);
+
     await this.emailService.sendPasswordResetEmail(user.email, user.name, otp);
     return {
       message: "Reset password email sent",
@@ -178,14 +150,11 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new AppError("Invalid current password", 401);
     }
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(data.newPassword, saltRounds);
-    await Prisma.user.update({
-      where: { id: userId },
-      data: {
-        hashedPassword,
-      },
-    });
+
+    const hashedPassword = await bcrypt.hash(data.newPassword, 10);
+
+    await UserService.updatePassword(userId, hashedPassword);
+
     return {
       message: "Password changed successfully",
     };
