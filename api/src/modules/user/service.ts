@@ -12,14 +12,6 @@ export class UserService {
     return users;
   }
 
-  static async getById(id: string) {
-    const user = await UserRepository.findById(id);
-    if (!user || user.deletedAt) {
-      throw new AppError("User not found", 404);
-    }
-    return user;
-  }
-
   static async getByEmail(email: string) {
     const user = await UserRepository.findByEmail(email);
     if (!user || user.deletedAt) {
@@ -28,6 +20,13 @@ export class UserService {
     return user;
   }
 
+  static async getById(id: string) {
+    const user = await UserRepository.findById(id);
+    if (!user || user.deletedAt) {
+      throw new AppError("User not found", 404);
+    }
+    return user;
+  }
   static async getByPhone(phone: string) {
     const user = await UserRepository.findByPhone(phone);
     if (!user || user.deletedAt) {
@@ -70,7 +69,7 @@ export class UserService {
 
   static async delete(id: string) {
     const user = await this.getById(id);
-    if (!user) {
+    if (!user || user.deletedAt) {
       throw new AppError("User not found", 404);
     }
     return UserRepository.delete(id);
