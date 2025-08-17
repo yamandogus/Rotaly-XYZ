@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Eye, Edit, Trash } from "lucide-react";
+import { Eye, Trash } from "lucide-react";
 
 interface RoomMobileCardProps {
   filteredRooms: Room[];

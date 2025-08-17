@@ -186,7 +186,7 @@ export default function RegisterPage() {
             <BottomGradient />
           </button>
 
-          <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
+          <div className="my-4 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
           <div className="flex items-center justify-center gap-2 mt-4">
             <p className="text-sm text-neutral-700 dark:text-neutral-300">{t("haveAccount")}</p>
             <Link href="/login" className="text-sm text-primary hover:underline">

@@ -16,7 +16,7 @@ export function LanguageSwitcher() {
   const toggleLanguage = () => {
     const newLocale = locale === "tr" ? "en" : "tr";
     startTransition(() => {
-      router.replace(pathname, { locale: newLocale });
+      router.push(pathname, { locale: newLocale, scroll: false});
     });
   };
 

@@ -1,28 +1,25 @@
-export interface User {
+// Basit User interface
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  isVerified: boolean;
+}
+
+export interface AuthState {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: string | null;
+  accessToken: string | null;
+  refreshToken: string | null;
+  tokens: {
     id: string;
-    name: string;
-    surname: string;
-    email: string;
-    phone: string;
-    isVerified: boolean;
-    role: 'CUSTOMER' | 'OWNER' | 'ADMIN' | 'SUPPORT';
-    images?: Array<{
-      id: string;
-      url: string;
-    }>;
-    paymentCards?: Array<{
-      id: string;
-      brand: string;
-      last4: string;
-      expiresAt: string;
-    }>;
-  }
-  
-  export interface AuthState {
-    user: User | null;
-    isAuthenticated: boolean;
-    isLoading: boolean;
-    error: string | null;
-    accessToken: string | null;
-    refreshToken: string | null;
-  }
+    userId: string;
+    createdAt: string;
+    updatedAt: string;
+    expiresAt: string;
+    revokedAt?: string;
+  }[];
+}

@@ -16,12 +16,10 @@ const stepSlice = createSlice({
       state.step = action.payload;
     },
     nextStep: (state) => {
-      state.step += 1;
+      state.step = Math.min(state.step + 1, 3);
     },
     prevStep: (state) => {
-      if (state.step > 1) {
-        state.step -= 1;
-      }
+      state.step = Math.max(state.step - 1, 1);
     },
     resetStep: (state) => {
       state.step = 1;
@@ -32,4 +30,3 @@ const stepSlice = createSlice({
 export const { setStep, nextStep, prevStep, resetStep } = stepSlice.actions;
 
 export default stepSlice.reducer;
-

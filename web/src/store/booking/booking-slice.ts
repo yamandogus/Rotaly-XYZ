@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Reservation } from "@/types/reservation";
 
+// Basit type'lar
 interface PaymentCard {
   id: string;
   cardNumber: string;
-  cardHolder: string;
+  cardHolderName: string;
   expiryDate: string;
   cvv: string;
-  isDefault: boolean;
+  userId: string;
 }
 
 interface Room {
@@ -16,25 +17,7 @@ interface Room {
   type: string;
   price: number;
   capacity: number;
-  image: string;
-  description?: string;
-  amenities?: string[];
-}
-
-interface BookingForm {
-  checkIn: string;
-  checkOut: string;
-  adults: number;
-  children: number;
-  selectedRoomId?: string;
-  selectedHotelId?: string;
-}
-
-interface Pagination {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
+  hotelId: string;
 }
 
 interface BookingState {
@@ -42,10 +25,21 @@ interface BookingState {
   currentReservation: Reservation | null;
   paymentCards: PaymentCard[];
   selectedRoom: Room | null;
-  bookingForm: BookingForm;
-  loading: boolean;
+  bookingForm: {
+    checkIn: string;
+    checkOut: string;
+    guests: number;
+    specialRequest: string;
+    paymentMethod: string;
+    selectedCardId: string | null;
+  };
+  isLoading: boolean;
   error: string | null;
-  pagination: Pagination;
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+  };
 }
 
 const initialState: BookingState = {
@@ -56,16 +50,17 @@ const initialState: BookingState = {
   bookingForm: {
     checkIn: "",
     checkOut: "",
-    adults: 1,
-    children: 0,
+    guests: 1,
+    specialRequest: "",
+    paymentMethod: "credit_card",
+    selectedCardId: null,
   },
-  loading: false,
+  isLoading: false,
   error: null,
   pagination: {
     page: 1,
     limit: 10,
     total: 0,
-    totalPages: 0,
   },
 };
 
@@ -75,6 +70,9 @@ const bookingSlice = createSlice({
   reducers: {
     setReservations: (state, action: PayloadAction<Reservation[]>) => {
       state.reservations = action.payload;
+    },
+    setCurrentReservation: (state, action: PayloadAction<Reservation>) => {
+      state.currentReservation = action.payload;
     },
     addReservation: (state, action: PayloadAction<Reservation>) => {
       state.reservations.push(action.payload);
@@ -88,68 +86,66 @@ const bookingSlice = createSlice({
     deleteReservation: (state, action: PayloadAction<string>) => {
       state.reservations = state.reservations.filter(r => r.id !== action.payload);
     },
-    setCurrentReservation: (state, action: PayloadAction<Reservation | null>) => {
-      state.currentReservation = action.payload;
-    },
     setPaymentCards: (state, action: PayloadAction<PaymentCard[]>) => {
       state.paymentCards = action.payload;
     },
     addPaymentCard: (state, action: PayloadAction<PaymentCard>) => {
       state.paymentCards.push(action.payload);
     },
-    removePaymentCard: (state, action: PayloadAction<string>) => {
-      state.paymentCards = state.paymentCards.filter(card => card.id !== action.payload);
+    updatePaymentCard: (state, action: PayloadAction<PaymentCard>) => {
+      const index = state.paymentCards.findIndex(c => c.id === action.payload.id);
+      if (index !== -1) {
+        state.paymentCards[index] = action.payload;
+      }
     },
-    setDefaultPaymentCard: (state, action: PayloadAction<string>) => {
-      state.paymentCards.forEach(card => {
-        card.isDefault = card.id === action.payload;
-      });
+    deletePaymentCard: (state, action: PayloadAction<string>) => {
+      state.paymentCards = state.paymentCards.filter(c => c.id !== action.payload);
     },
-    setSelectedRoom: (state, action: PayloadAction<Room | null>) => {
+    setSelectedRoom: (state, action: PayloadAction<Room>) => {
       state.selectedRoom = action.payload;
     },
-    updateBookingForm: (state, action: PayloadAction<Partial<BookingForm>>) => {
+    clearSelectedRoom: (state) => {
+      state.selectedRoom = null;
+    },
+    updateBookingForm: (state, action: PayloadAction<Partial<BookingState['bookingForm']>>) => {
       state.bookingForm = { ...state.bookingForm, ...action.payload };
     },
     resetBookingForm: (state) => {
       state.bookingForm = initialState.bookingForm;
     },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
+    setPagination: (state, action: PayloadAction<Partial<BookingState['pagination']>>) => {
+      state.pagination = { ...state.pagination, ...action.payload };
     },
-    setError: (state, action: PayloadAction<string | null>) => {
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
-    setPagination: (state, action: PayloadAction<Pagination>) => {
-      state.pagination = action.payload;
-    },
-    setPage: (state, action: PayloadAction<number>) => {
-      state.pagination.page = action.payload;
-    },
-    resetBookingState: () => {
-      return initialState;
+    clearError: (state) => {
+      state.error = null;
     },
   },
 });
 
 export const {
   setReservations,
+  setCurrentReservation,
   addReservation,
   updateReservation,
   deleteReservation,
-  setCurrentReservation,
   setPaymentCards,
   addPaymentCard,
-  removePaymentCard,
-  setDefaultPaymentCard,
+  updatePaymentCard,
+  deletePaymentCard,
   setSelectedRoom,
+  clearSelectedRoom,
   updateBookingForm,
   resetBookingForm,
+  setPagination,
   setLoading,
   setError,
-  setPagination,
-  setPage,
-  resetBookingState,
+  clearError,
 } = bookingSlice.actions;
 
 export default bookingSlice.reducer;

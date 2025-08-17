@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Filter, MoreHorizontal, Trash } from "lucide-react";
+import { ArrowUpDown, Filter, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";

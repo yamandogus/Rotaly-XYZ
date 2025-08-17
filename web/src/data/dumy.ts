@@ -1,4 +1,5 @@
 import { Hotel } from "@/types/hotel";
+import { Reservation } from "@/types/reservation";
 
 export const singleHotelData = {
     id: "1",
@@ -1368,7 +1369,7 @@ export const rooms = [
   }
 ];
 
-export const reservations = [
+export const reservations: Reservation[] = [
   {
     id: "res1",
     nightCount: 2,

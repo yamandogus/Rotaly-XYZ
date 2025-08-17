@@ -1,16 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "./auth-types";
+import { AuthState } from "./auth-types";
 
-interface AuthState {
-  user: User | null;
-  isLoading: boolean;
-  error: string | null;
+// Basit User interface
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  isVerified: boolean;
 }
 
 const initialState: AuthState = {
   user: null,
+  isAuthenticated: false,
   isLoading: false,
   error: null,
+  accessToken: null,
+  refreshToken: null,
+  tokens: [],
 };
 
 const authSlice = createSlice({
@@ -20,13 +27,32 @@ const authSlice = createSlice({
     // User bilgisini set et
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
+      state.isAuthenticated = true;
       state.error = null;
     },
 
     // User'ı temizle (logout için)
     clearUser: (state) => {
       state.user = null;
+      state.isAuthenticated = false;
+      state.accessToken = null;
+      state.refreshToken = null;
+      state.tokens = [];
       state.error = null;
+    },
+
+    // Token'ları set et
+    setTokens: (state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) => {
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+      state.isAuthenticated = true;
+    },
+
+    // Token'ları temizle
+    clearTokens: (state) => {
+      state.accessToken = null;
+      state.refreshToken = null;
+      state.isAuthenticated = false;
     },
 
     // Loading durumu
@@ -50,6 +76,8 @@ const authSlice = createSlice({
 export const {
   setUser,
   clearUser,
+  setTokens,
+  clearTokens,
   setLoading,
   setError,
   clearError,

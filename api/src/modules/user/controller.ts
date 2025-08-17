@@ -6,6 +6,10 @@ import { AppError } from "../../utils/appError";
 export class UserController {
   static async index(req: Request, res: Response): Promise<void> {
     try {
+      const userRole = req.user?.role;
+      if (userRole !== "ADMİN") {
+        throw new AppError("You are not authorized for this transaction.", 403);
+      }
       const users = await UserService.getAll();
       res.status(200).json({
         success: true,
@@ -13,16 +17,6 @@ export class UserController {
       });
     } catch (error) {
       if (error instanceof AppError) {
-        // Eğer hata bizim bilinçli olarak fırlattığımız özel bir hataysa (AppError) ona göre
-        // kullanıcıya özel mesaj ve durum kodu veririz. (Örneğin: 404 Not Found)
-        // Ama hata JavaScript'in içinden gelen genel bir hata ise
-        // (örneğin TypeError, null is not a function vs), o zaman 500 - sunucu hatası döneriz.
-
-        // Yani sistem şöyle düşünüyor:
-
-        // “Bu hata benim bildiğim türden mi (AppError)? O zaman mesajı ve kodu kullanıcıya düzgün
-        // şekilde vereyim. Yoksa genel bir hata mesajı gösteririm.”
-
         res.status(error.statusCode).json({
           success: false,
           message: error.message,
@@ -30,7 +24,7 @@ export class UserController {
       } else {
         res.status(500).json({
           success: false,
-          message: "Kullanıcılar getirilirken bir hata oluştu",
+          message: "Error occurred while fetching users",
         });
       }
     }
@@ -38,7 +32,16 @@ export class UserController {
 
   static async ById(req: Request, res: Response): Promise<void> {
     try {
+      const userId = req.user?.userId;
+      const userRole = req.user?.role;
       const { id } = req.params;
+
+      if (userId !== id && userRole !== "ADMİN") {
+        throw new AppError(
+          "You do not have access to this user's information.",
+          403
+        );
+      }
       const user = await UserService.getById(id);
       res.status(200).json({
         success: true,
@@ -53,14 +56,22 @@ export class UserController {
       } else {
         res.status(500).json({
           success: false,
-          message: "Kullanıcı getirilirken bir hata oluştu",
+          message: "Error occurred while fetching user",
         });
       }
     }
   }
   static async ByEmail(req: Request, res: Response): Promise<void> {
     try {
+      const userRole = req.user?.role;
       const { email } = req.params;
+
+      if (!req.path.includes("/auth") && userRole !== "ADMİN") {
+        throw new AppError(
+          "You do not have access to this user's information.",
+          403
+        );
+      }
       const user = await UserService.getByEmail(email);
       res.status(200).json({
         success: true,
@@ -75,7 +86,7 @@ export class UserController {
       } else {
         res.status(500).json({
           success: false,
-          message: "Kullanıcı getirilirken bir hata oluştu",
+          message: "Error occurred while fetching user",
         });
       }
     }
@@ -83,6 +94,13 @@ export class UserController {
 
   static async ByPhone(req: Request, res: Response): Promise<void> {
     try {
+      const userRole = req.user?.role;
+      if (userRole !== "ADMİN") {
+        throw new AppError(
+          "You do not have access to this user's information.",
+          403
+        );
+      }
       const { phone } = req.params;
       const user = await UserService.getByPhone(phone);
       res.status(200).json({
@@ -98,7 +116,7 @@ export class UserController {
       } else {
         res.status(500).json({
           success: false,
-          message: "Kullanıcı getirilirken bir hata oluştu",
+          message: "Error occurred while fetching user",
         });
       }
     }
@@ -121,14 +139,23 @@ export class UserController {
       } else {
         res.status(500).json({
           success: false,
-          message: "Kullanıcı oluşturulurken bir hata oluştu",
+          message: "Error occurred while fetching users",
         });
       }
     }
   }
   static async update(req: Request, res: Response): Promise<void> {
     try {
+      const userId = req.user?.userId;
+      const userRole = req.user?.role;
       const { id } = req.params;
+
+      if (userId !== id && userRole !== "ADMİN") {
+        throw new AppError(
+          "You do not have access to this user's information.",
+          403
+        );
+      }
       const updateData = req.body as UpdateUserSchemaType;
       const user = await UserService.update(id, updateData);
       res.status(200).json({
@@ -145,7 +172,7 @@ export class UserController {
       } else {
         res.status(500).json({
           success: false,
-          message: "Kullanıcı güncellenirken bir hata oluştu",
+          message: "Error occurred while updating the user",
         });
       }
     }
@@ -153,7 +180,17 @@ export class UserController {
 
   static async delete(req: Request, res: Response): Promise<void> {
     try {
+      const userId = req.user?.userId;
+      const userRole = req.user?.role;
       const { id } = req.params;
+
+      if (userId !== id && userRole !== "ADMİN") {
+        throw new AppError(
+          "You do not have access to this user's information.",
+          403
+        );
+      }
+
       await UserService.delete(id);
       res.status(200).json({
         success: true,
@@ -168,7 +205,7 @@ export class UserController {
       } else {
         res.status(500).json({
           success: false,
-          message: "Kullanıcı silinirken bir hata oluştu",
+          message: "error occurred while updating the user",
         });
       }
     }
@@ -194,7 +231,7 @@ export class UserController {
       } else {
         res.status(500).json({
           success: false,
-          message: "Profil bilgileri getirilirken bir hata oluştu",
+          message: "Error occurred while fetching profile",
         });
       }
     }
