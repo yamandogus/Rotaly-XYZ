@@ -69,10 +69,10 @@ const MobileNav = () => {
               </Link>
             </SheetClose>
             <SheetClose asChild>
-              <Link href="/support/contact">
+              <Link href="/support">
                 <Button variant="outline" className="w-full">
                   <MessageCircle className="h-5 w-5" />
-                  {t("contact")}
+                  Canlı Destek
                 </Button>
               </Link>
             </SheetClose>

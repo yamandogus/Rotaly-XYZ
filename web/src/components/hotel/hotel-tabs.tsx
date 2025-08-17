@@ -4,6 +4,8 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Rating, RatingButton } from "../ui/shadcn-io/rating";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { MapPin } from "lucide-react";
 
 export default function HotelTabs() {
   return (
@@ -165,24 +167,45 @@ export default function HotelTabs() {
         </TabsContent>
 
         <TabsContent value="map" className="pt-4">
-          <h2 className="text-xl font-semibold mb-3">Harita</h2>
-          <div className="relative h-96 w-full rounded-lg overflow-hidden">
-            {/* Placeholder for map */}
-            <Image
-              src="/images/map_placeholder.png" // Placeholder image for a map
-              alt="Hotel Location Map"
-              fill
-              className="object-cover"
-            />
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-200/50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300">
-              <span className="text-lg font-semibold">
-                Harita Yükleniyor...
-              </span>
-            </div>
+          <div className="relative h-[400px] w-full rounded-lg overflow-hidden">
+          <Card className="border border-gray-200 dark:border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold text-gray-900 dark:text-white flex items-center">
+                <MapPin className="h-5 w-5 text-red-500 mr-2" />
+                Otel Konumu
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0 h-[400px]">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6016.451935958043!2d28.980267249633762!3d41.064053019894764!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab71cc5d69f1f%3A0x51e922b9e59b5a9b!2zaXN0YW5idWwgcm90YXJ5IGt1bMO8YsO8IGRlcm5lxJ9p!5e0!3m2!1str!2str!4v1754138151565!5m2!1str!2str"
+                className="w-full h-[300px] rounded-b-lg"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Google Map"
+              />
+              <div className="p-4">
+                <div className="flex items-center space-x-4">
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Rotaly Merkez Ofisi</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      Bertance Bulvarı, Sevin Apartman No:64 D:11<br />
+                      Balmumcu Beşiktaş / İstanbul
+                    </p>
+                  </div>
+                  <Image
+                    src="/images/logo3.png"
+                    alt="Rotaly Logo"
+                    width={50}
+                    height={50}
+                    className="rounded-lg"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
           </div>
-          <Button variant="outline" className="mt-4">
-            Google Haritalar&apos;da Aç
-          </Button>
         </TabsContent>
       </Tabs>
     </div>
