@@ -11,15 +11,6 @@ export class OwnerRepository {
     });
   }
   static async getProfile(ownerId: string) {
-    return Prisma.hotel.findFirst({
-      where: {
-        ownerId: ownerId,
-      },
-      select: {
-        name: true,
-        email: true,
-        phone: true,
-      },
-    });
+    //  companydto kullanılcak
   }
 }

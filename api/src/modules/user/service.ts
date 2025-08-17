@@ -45,6 +45,8 @@ export class UserService {
       throw new AppError("Email address is already in use", 409);
     }
   }
+
+  //TODO select email ve role
   static async add(data: RegisterSchemaType) {
     await this.checkEmailUnique(data.email);
 
