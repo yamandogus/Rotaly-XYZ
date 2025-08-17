@@ -56,22 +56,22 @@ export function Footer() {
             <h3 className="text-lg font-semibold">Destek</h3>
             <nav className="flex flex-col space-y-2">
               <Link
+
+                href="/support"
+                className="text-sm text-blue-100 hover:text-white"
+              >
+                Canlı Destek
                 href="/support/faq"
                 className="text-sm text-blue-100 hover:text-white dark:text-blue-200 dark:hover:text-white"
               >
                 {t("faq")}
               </Link>
               <Link
-                href="/support/live-chat"
-                className="text-sm text-blue-100 hover:text-white dark:text-blue-200 dark:hover:text-white"
-              >
-                {t("live-chat")}
-              </Link>
-              <Link
                 href="/support/cancellation"
                 className="text-sm text-blue-100 hover:text-white dark:text-blue-200 dark:hover:text-white"
               >
                 {t("cancellation")}
+
               </Link>
             </nav>
           </div>

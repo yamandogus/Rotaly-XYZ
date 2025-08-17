@@ -91,9 +91,9 @@ const UserActions = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/support/contact">
+                <Link href="/support">
                   <MessageCircle className="mr-2 h-4 w-4" />
-                  {t("contact")}
+                  Canlı Destek
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />

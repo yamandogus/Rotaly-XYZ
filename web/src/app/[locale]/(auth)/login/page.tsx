@@ -70,9 +70,6 @@ export default function LoginPage() {
   const handleLogin = async (data: LoginFormData) => {
     console.log("login data", data);
 
-    //const response = await api.login(data);
-    //console.log("login response", response);
-
     // const response = await api.login(data)
     // const user = response.data.userData.email
     // console.log(user);
