@@ -81,7 +81,11 @@ const RoomFilters: FC<RoomFiltersProps> = ({
           </DropdownMenu>
 
           {/* Oda Ekle */}
-          <Button variant="outline" size="sm" onClick={() => setIsAddRoomDialogOpen(true)}>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => setIsAddRoomDialogOpen(true)}
+          >
             <Plus className="h-4 w-4 mr-2" />
             {t("addRoom")}
           </Button>

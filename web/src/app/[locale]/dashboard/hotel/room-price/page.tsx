@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 import RoomFilters from "@/components/dashboard/hotel/rooms/room-filter";
 import RoomTable from "@/components/dashboard/hotel/rooms/room-table";
@@ -85,8 +85,6 @@ export default function RoomPricePage() {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-
-
       {/* Price Management Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/50 dark:to-emerald-950/50">
@@ -197,7 +195,15 @@ export default function RoomPricePage() {
         </CardContent>
       </Card>
 
-      {/* Dialogs */}
+      {/* Add Room Dialog */}
+      <Dialog open={isAddRoomDialogOpen} onOpenChange={setIsAddRoomDialogOpen}>
+        <AddRoomDialog
+          isAddRoomDialogOpen={isAddRoomDialogOpen}
+          setIsAddRoomDialogOpen={setIsAddRoomDialogOpen}
+        />
+      </Dialog>
+
+      {/* Other Dialogs */}
       <EditRoomDialog
         isEditDialogOpen={isEditDialogOpen}
         setIsEditDialogOpen={setIsEditDialogOpen}
@@ -209,11 +215,6 @@ export default function RoomPricePage() {
         setIsDeleteDialogOpen={setIsDeleteDialogOpen}
         selectedRoom={selectedRoom || ({} as Room)}
         confirmDelete={confirmDelete}
-      />
-
-      <AddRoomDialog
-        isAddRoomDialogOpen={isAddRoomDialogOpen}
-        setIsAddRoomDialogOpen={setIsAddRoomDialogOpen}
       />
     </div>
   );
