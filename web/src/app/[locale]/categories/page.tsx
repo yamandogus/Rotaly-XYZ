@@ -22,7 +22,7 @@ export default function CategoryPage({
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-1/2 md:min-h-screen bg-background">
       <div className="relative mb-16">
         {/* Hero Banner */}
         <div className="relative w-full h-[55vh] overflow-hidden">
@@ -30,12 +30,12 @@ export default function CategoryPage({
             src="/images/MAPPA.png"
             alt="Banner"
             fill
-            className="object-contain"
+            className="object-cover md:object-contain"
             priority
           />
         </div>
 
-        <div className="-mt-[200px]">
+        <div className="-mt-[400px]  md:-mt-[200px] max-w-6xl flex justify-center items-center mx-auto">
           <BookingSearch handleSearch={handleSearch} />
         </div>
 
