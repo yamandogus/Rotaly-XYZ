@@ -35,7 +35,7 @@ export class SupportController {
         throw new AppError("User not authenticated", 401);
       }
 
-      const validatedData = CreateSupportSchema.parse(req.body);
+      const validatedData = req.body;
       const support = await this.supportService.createSupportRequest(
         userId,
         validatedData

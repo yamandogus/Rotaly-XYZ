@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { globalLimiter } from "../middleware/rateLimit";
+import { errorHandler } from "../middleware/errorHandler";
 
 // Route imports
 import authRoutes from "../modules/auth/route";
@@ -35,5 +36,8 @@ app.use("/api/email", emailRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/support", supportRoutes);
 app.use("/api/admin", adminRoutes);
+
+// error handler has to come after all other routes
+app.use(errorHandler);
 
 export default app;
