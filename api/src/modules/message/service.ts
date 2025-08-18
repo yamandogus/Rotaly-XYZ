@@ -61,8 +61,8 @@ export class MessageService {
       }
     }
 
-    // if supportId is provided, validate it exists and user has access
-    if (data.supportId) {
+    // if supportId is provided, validate it exists and user has access (only for human messages)
+    if (data.supportId && !isAIReceiver) {
       const support = await this.prisma.support.findFirst({
         where: {
           id: data.supportId,
@@ -79,14 +79,11 @@ export class MessageService {
 
     // AI response generation for AI receivers
     if (isAIReceiver) {
-      this.generateAIResponse(
-        senderId,
-        data.receiverId,
-        data.content,
-        data.supportId
-      ).catch((error) => {
-        console.error("Error generating AI response:", error);
-      });
+      this.generateAIResponse(senderId, data.receiverId, data.content).catch(
+        (error) => {
+          console.error("Error generating AI response:", error);
+        }
+      );
     }
 
     return this.formatMessageResponse(message, isAIReceiver);
@@ -198,7 +195,7 @@ export class MessageService {
       content: message.content,
       senderId: message.senderId,
       receiverId: message.receiverId,
-      supportId: message.supportId,
+      supportId: isFromAI ? undefined : message.supportId, // AI messages don't have supportId
       createdAt: message.createdAt,
       readAt: message.readAt,
       isFromAI,
@@ -217,36 +214,40 @@ export class MessageService {
   private async generateAIResponse(
     userId: string,
     aiId: string,
-    userMessage: string,
-    supportId?: string
+    userMessage: string
   ): Promise<void> {
     try {
-      // get recent conversation history if we have a supportId
+      // get recent conversation history for AI context
       let conversationHistory: {
         role: "user" | "assistant";
         content: string;
       }[] = [];
 
-      if (supportId) {
-        const recentMessages = await this.prisma.message.findMany({
-          where: {
-            supportId,
-          },
-          orderBy: {
-            createdAt: "desc",
-          },
-          take: 10,
-        });
+      // get or create AI user to get its actual UUID
+      const aiUser = await this.messageRepository.ensureAIUserExists(aiId);
 
-        conversationHistory = recentMessages
-          .reverse() // reversing to get chronologically
-          .map((msg) => ({
-            role: msg.senderId.startsWith("ai")
-              ? "assistant"
-              : ("user" as "user" | "assistant"),
-            content: msg.content,
-          }));
-      }
+      const recentMessages = await this.prisma.message.findMany({
+        where: {
+          OR: [
+            { senderId: userId, receiverId: aiUser.id },
+            { senderId: aiUser.id, receiverId: userId },
+          ],
+          supportId: null, // only get AI conversation messages (not support messages)
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 10,
+      });
+
+      conversationHistory = recentMessages
+        .reverse() // reversing to get chronologically
+        .map((msg) => ({
+          role: msg.senderId.startsWith("ai")
+            ? "assistant"
+            : ("user" as "user" | "assistant"),
+          content: msg.content,
+        }));
 
       // generate AI response
       const aiResponse = await this.aiService.generateResponseWithHistory(
@@ -254,16 +255,13 @@ export class MessageService {
         conversationHistory
       );
 
-      // get or create AI user
-      const aiUser = await this.messageRepository.ensureAIUserExists(aiId);
-
       // send AI response back to user
       const aiMessage = await this.prisma.message.create({
         data: {
           content: aiResponse,
           senderId: aiUser.id,
           receiverId: userId,
-          supportId,
+          // AI messages don't have supportId
         },
       });
 
@@ -274,7 +272,6 @@ export class MessageService {
           content: aiResponse,
           senderId: aiUser.id,
           receiverId: userId,
-          supportId,
           createdAt: aiMessage.createdAt,
           isFromAI: true,
         });
@@ -293,7 +290,7 @@ export class MessageService {
               "I apologize, but I'm having trouble responding right now. Please try again or contact our human support team for assistance.",
             senderId: aiUser.id,
             receiverId: userId,
-            supportId,
+            // AI messages don't have supportId
           },
         });
       } catch (fallbackError) {
@@ -301,32 +298,4 @@ export class MessageService {
       }
     }
   }
-
-  /*    mock AI responses - now replaced by the AI service
-  private async getAIResponse(userMessage: string): Promise<string> {
-    const responses = [
-      "I understand your question. Let me help you with that.",
-      "That's an interesting point. Here's what I think...",
-      "Based on what you've told me, I'd suggest...",
-      "I'm here to help! Could you provide a bit more detail?",
-      "Thank you for your message. I'm processing your request...",
-    ];
-
-    if (userMessage.toLowerCase().includes("hotel")) {
-      return "I can help you with hotel-related questions! What specific information do you need about hotels?";
-    }
-
-    if (userMessage.toLowerCase().includes("reservation")) {
-      return "I can assist you with reservations. Are you looking to make a new reservation or modify an existing one?";
-    }
-
-    if (
-      userMessage.toLowerCase().includes("support") ||
-      userMessage.toLowerCase().includes("help")
-    ) {
-      return "I'm here to provide support! Please describe the issue you're experiencing and I'll do my best to help.";
-    }
-
-    return responses[Math.floor(Math.random() * responses.length)];
-  } */
 }

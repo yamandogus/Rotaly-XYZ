@@ -49,7 +49,6 @@ export class MessageRepository {
           content: data.content,
           senderId,
           receiverId: aiUser.id,
-          supportId: data.supportId,
         },
         include: {
           sender: {
@@ -118,7 +117,10 @@ export class MessageRepository {
           receiverId: userId,
         },
       ],
-      ...(data.supportId && { supportId: data.supportId }),
+      // only apply supportId filter for human conversations
+      ...(data.supportId && !isAIConversation && { supportId: data.supportId }),
+      // AI conversations should not have supportId
+      ...(isAIConversation && { supportId: null }),
       deletedAt: null,
     };
 
