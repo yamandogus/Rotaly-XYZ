@@ -12,6 +12,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { BookingSearch } from "@/components/home/booking-search";
+import { useRouter } from "next/navigation";
 
 const images = [
   "/images/Istanbul.jpg",
@@ -22,6 +23,13 @@ const images = [
 
 export default function HomePage() {
   const t = useTranslations("HomePage");
+  const router = useRouter();
+
+  const handleSearch = () => {
+    // BookingSearch component'i kendi validation'ını yapacak ve store'a kaydetecek
+    // Başarılı olursa categories sayfasına yönlendir
+    router.push(`/categories`);
+  };
 
   const categories = [
     { name: t("categoryDaire"), label: "Daire", icon: "/icons/daire.svg" },
@@ -207,7 +215,7 @@ export default function HomePage() {
         </div>
 
         <div className="relative z-40 w-full max-w-6xl -mt-20 px-4 mb-12">
-          <BookingSearch />
+          <BookingSearch handleSearch={handleSearch} />
         </div>
 
         {/* Categories Section */}
