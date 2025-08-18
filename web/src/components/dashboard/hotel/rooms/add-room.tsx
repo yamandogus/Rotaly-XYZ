@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Image from "next/image";
 
 interface AddRoomDialogProps {
   isAddRoomDialogOpen: boolean;
@@ -26,7 +27,6 @@ interface AddRoomDialogProps {
 }
 
 const AddRoomDialog: FC<AddRoomDialogProps> = ({
-  isAddRoomDialogOpen,
   setIsAddRoomDialogOpen,
 }) => {
   const [newRoom, setNewRoom] = useState<Partial<Room & { image?: File }>>({});
@@ -54,12 +54,13 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
   };
 
   return (
-    <DialogContent  className="sm:max-w-[600px] w-full max-h-[90vh] overflow-y-auto">
+    <DialogContent className="sm:max-w-[700px] w-full max-h-[90vh] overflow-y-auto">
       <DialogHeader>
         <DialogTitle>Oda Ekle</DialogTitle>
       </DialogHeader>
 
       <div className="grid gap-4 py-4">
+        {/* Oda Adı */}
         <div className="grid gap-2">
           <Label htmlFor="name">Oda Adı</Label>
           <Input
@@ -70,6 +71,7 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
           />
         </div>
 
+        {/* Oda Açıklaması */}
         <div className="grid gap-2">
           <Label htmlFor="description">Oda Açıklaması</Label>
           <Textarea
@@ -83,6 +85,7 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
           />
         </div>
 
+        {/* Oda Türü */}
         <div className="grid gap-2">
           <Label htmlFor="type">Oda Türü</Label>
           <Select
@@ -101,6 +104,7 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
           </Select>
         </div>
 
+        {/* Yetişkin / Çocuk */}
         <div className="grid grid-cols-2 gap-4">
           <div className="grid gap-2">
             <Label htmlFor="maxAdults">Maksimum Yetişkin</Label>
@@ -128,6 +132,7 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
           </div>
         </div>
 
+        {/* Kat / Oda Numarası */}
         <div className="grid grid-cols-2 gap-4">
           <div className="grid gap-2">
             <Label htmlFor="floor">Kat</Label>
@@ -155,6 +160,7 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
           </div>
         </div>
 
+        {/* Fiyat */}
         <div className="grid gap-2">
           <Label htmlFor="price">Fiyat</Label>
           <Input
@@ -168,6 +174,7 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
           />
         </div>
 
+        {/* Kapasite / Yatak Sayısı */}
         <div className="grid grid-cols-2 gap-4">
           <div className="grid gap-2">
             <Label htmlFor="capacity">Toplam Kapasite</Label>
@@ -195,7 +202,7 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
           </div>
         </div>
 
-        {/* Oda görseli alanı */}
+        {/* Oda Görseli */}
         <div className="grid gap-2">
           <Label htmlFor="roomImage">Oda Görseli</Label>
           <Input
@@ -205,11 +212,15 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
             onChange={handleImageChange}
           />
           {previewImage && (
-            <img
-              src={previewImage}
-              alt="Oda Önizleme"
-              className="mt-2 h-32 w-full object-cover rounded"
-            />
+            <div className="relative h-40 w-full mt-2">
+              <Image
+                src={previewImage}
+                alt="Oda Önizleme"
+                fill
+                className="object-cover rounded"
+                unoptimized
+              />
+            </div>
           )}
         </div>
       </div>

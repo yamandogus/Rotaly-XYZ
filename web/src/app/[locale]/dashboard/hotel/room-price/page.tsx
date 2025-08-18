@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog } from "@/components/ui/dialog";
 
 import RoomFilters from "@/components/dashboard/hotel/rooms/room-filter";
 import RoomTable from "@/components/dashboard/hotel/rooms/room-table";
