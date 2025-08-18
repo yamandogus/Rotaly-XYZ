@@ -116,10 +116,10 @@ export default function ChatWidget() {
   return (
     <div className="fixed bottom-4 right-4 z-50">
       <Popover open={isOpen} onOpenChange={setIsOpen}>
-        <PopoverTrigger asChild>
+        <PopoverTrigger asChild className={`${isOpen ? "hidden" : "block"}`}>
           <Button
             variant="outline"
-            className="flex items-center gap-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-600 shadow-lg p-2 cursor-pointer"
+            className="flex items-center gap-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-600 shadow-lg p-2 cursor-pointer "
             size="lg"
           >
             <MessageCircleIcon className="w-10 h-10 text-white" />

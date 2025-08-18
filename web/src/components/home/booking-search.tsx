@@ -20,7 +20,6 @@ import {
   setCheckOutDate,
   setGuestsCount,
 } from "@/store/search/search-slice";
-import { useRouter } from "next/navigation";
 import { RootState } from "@/store/store";
 import { useToastMessages } from "@/hooks/toast-messages";
 import {
@@ -33,9 +32,13 @@ import {
 } from "../ui/command";
 import { hotelsData, popularHotels } from "@/data/dumy";
 
-export function BookingSearch() {
+interface BookingSearchProps {
+  handleSearch: () => void;
+}
+
+
+export function BookingSearch({ handleSearch }: BookingSearchProps) {
   const dispatch = useDispatch();
-  const router = useRouter();
   const { showError } = useToastMessages();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -57,28 +60,40 @@ export function BookingSearch() {
     storeCheckOut ? new Date(storeCheckOut) : undefined
   );
   const [guests, setGuests] = useState({
-    adults: storeGuests,
+    adults: storeGuests || 1,
     children: 0,
   });
 
-  const handleSearch = () => {
-    if (checkIn && destination && checkOut && guests) {
-      console.log("Searching with:", {
-        destination,
-        checkIn,
-        checkOut,
-        guests,
-      });
-      const totalGuest = guests.adults + guests.children;
-      dispatch(setCity(destination));
-      dispatch(setCheckInDate(checkIn?.toISOString() ?? ""));
-      dispatch(setCheckOutDate(checkOut?.toISOString() ?? ""));
-      dispatch(setGuestsCount(totalGuest));
-      router.push(`/categories`);
-    } else {
-      showError("Lütfen boş alanları doldurunuz");
+  // Search fonksiyonu - store'a veri kaydet ve parent'a bildir
+  const handleSearchClick = () => {
+    if (!destination.trim()) {
+      showError("Lütfen bir şehir seçin");
+      return;
     }
+    if (!checkIn) {
+      showError("Lütfen giriş tarihi seçin");
+      return;
+    }
+    if (!checkOut) {
+      showError("Lütfen çıkış tarihi seçin");
+      return;
+    }
+    if (guests.adults < 1) {
+      showError("En az 1 yetişkin seçin");
+      return;
+    }
+
+    // Store'a veri kaydet
+    dispatch(setCity(destination));
+    dispatch(setCheckInDate(checkIn.toISOString()));
+    dispatch(setCheckOutDate(checkOut.toISOString()));
+    dispatch(setGuestsCount(guests.adults + guests.children));
+
+    // Parent component'e bildir ve categories sayfasına git
+    handleSearch();
   };
+
+
 
   const handleDateRangeChange = (
     newCheckIn: Date | undefined,
@@ -115,7 +130,8 @@ export function BookingSearch() {
               {/* Destination */}
               <div className="lg:col-span-1">
                 <Label className="text-black dark:text-white text-sm font-medium mb-2 block">
-                  {text}
+                  <span className="md:block hidden">{text}</span>
+                  <span className="md:hidden block">Rotaly ile {" "} {text}</span>
                 </Label>
                 <Popover open={isOpen} onOpenChange={setIsOpen}>
                   <PopoverTrigger asChild>
@@ -270,9 +286,9 @@ export function BookingSearch() {
                 <GuestSelector guests={guests} onGuestsChange={setGuests} />
               </div>
 
-              <div className="lg:col-span-1">
+              <div className="col-span-full lg:col-span-1">
                 <Button
-                  onClick={handleSearch}
+                  onClick={handleSearchClick}
                   className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg"
                 >
                   <Search className="h-4 w-4 mr-2" />

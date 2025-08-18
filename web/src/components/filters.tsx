@@ -24,18 +24,41 @@ import { Slider } from "@/components/ui/slider";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "./ui/input";
 import { useState } from "react";
+import { MinusIcon } from "lucide-react";
 
-const filterOrder = ["Klima", "Mutfak", "Wifi", "TV"];
+export const filterOrder = [
+  // RoomFeature
+  "WIFI",
+  "AIR_CONDITIONER",
+  "TV",
+  "MINIBAR",
+  "SAFE_BOX",
+  "BALCONY",
+  "ROOM_SERVICE",
+  "BATH_TUB",
+  "HAIR_DRYER",
+  // HotelFeatures
+  "POOL",
+  "SPA",
+  "PARKING",
+  "GYM",
+  "PET_FRIENDLY",
+  "RESTAURANT",
+  "BREAKFAST_INCLUDED",
+  "CANCEL_POLICY",
+];
 
-const categories = [
-  { id: "otel", label: "Otel", piece: 100 },
-  { id: "kiralik-daire", label: "Kiralık daire", piece: 100 },
-  { id: "villa", label: "Villa", piece: 100 },
-  { id: "bungalov", label: "Bungalov", piece: 100 },
-  { id: "hostel", label: "Hostel", piece: 10 },
-  { id: "pansiyon", label: "Pansiyon", piece: 10 },
+export const categories = [
+  { id: "HOTEL", label: "Otel", piece: 100 },
+  { id: "APARTMENT", label: "Daire", piece: 100 },
+  { id: "VILLA", label: "Villa", piece: 100 },
+  { id: "BUNGALOW", label: "Bungalov", piece: 100 },
+  { id: "HOSTEL", label: "Hostel", piece: 10 },
+  { id: "ROOM", label: "Oda", piece: 10 },
+  { id: "RESORT", label: "Resort", piece: 15 },
+  { id: "CAMP", label: "Kamp", piece: 5 },
 ] as const;
-const ratings = [
+export const ratings = [
   { id: "5", label: "5", piece: 100 },
   { id: "4", label: "4", piece: 100 },
   { id: "3", label: "3", piece: 100 },
@@ -48,8 +71,14 @@ const FormSchema = z.object({
 });
 
 export function Filters() {
-  const [priceRange, setPriceRange] = useState([50, 40000]);
+  const [priceRange, setPriceRange] = useState([50, 100000]);
   const [minPrice, maxPrice] = priceRange;
+  const [filters, setFilters] = useState({
+    categories: [] as string[],
+    ratings: [] as string[],
+    priceRange: [50, 100000] as number[],
+    other: [] as string[],
+  });
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -58,26 +87,48 @@ export function Filters() {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log("Seçilen kategoriler:", data.categories);
+  const onSubmit = () => {
+    console.log("Seçilen kategoriler:", filters.categories);
+    console.log("Seçilen değerlendirme:", filters.ratings);
+    console.log("Seçilen fiyat:", filters.priceRange);
+    console.log("Seçilen diğer:", filters.other);
+
+    const filterScroll = document.querySelector(".category-page");
+    if (filterScroll) {
+      filterScroll.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const handlePriceRangeChange = (newRange: number[]) => {
     setPriceRange(newRange);
+    setFilters({
+      ...filters,
+      priceRange: newRange,
+    });
   };
 
   const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 50;
-    setPriceRange([Math.min(value, maxPrice - 1), maxPrice]);
+    const newRange = [Math.min(value, maxPrice - 1), maxPrice];
+    setPriceRange(newRange);
+    setFilters({
+      ...filters,
+      priceRange: newRange,
+    });
   };
 
   const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 40000;
-    setPriceRange([minPrice, Math.max(value, minPrice + 1)]);
+    const newRange = [minPrice, Math.max(value, minPrice + 1)];
+    setPriceRange(newRange);
+    setFilters({
+      ...filters,
+      priceRange: newRange,
+    });
   };
 
   return (
-    <div className="lg:col-span-1">
+    <div className="lg:col-span-1 hidden lg:block">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-foreground">Filtreler</h2>
         <Button variant="outline" size="sm" className="rounded-full">
@@ -94,10 +145,7 @@ export function Filters() {
             <AccordionTrigger>Kategori</AccordionTrigger>
             <AccordionContent>
               <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-4"
-                >
+                <form onSubmit={onSubmit} className="space-y-4">
                   <FormField
                     control={form.control}
                     name="categories"
@@ -108,18 +156,26 @@ export function Filters() {
                             key={cat.id}
                             control={form.control}
                             name="categories"
-                            render={({ field }) => (
+                            render={() => (
                               <FormItem className="flex items-center space-x-2">
                                 <FormControl>
                                   <Checkbox
-                                    checked={field.value?.includes(cat.id)}
+                                    checked={filters.categories.includes(
+                                      cat.id
+                                    )}
+                                    className="data-[state=checked]:bg-blue-500 data-[state=checked]:text-white"
                                     onCheckedChange={(checked) => {
-                                      const updated = checked
-                                        ? [...(field.value || []), cat.id]
-                                        : field.value?.filter(
-                                            (v) => v !== cat.id
-                                          );
-                                      field.onChange(updated);
+                                      setFilters({
+                                        ...filters,
+                                        categories: checked
+                                          ? [
+                                              ...(filters.categories || []),
+                                              cat.id,
+                                            ]
+                                          : filters.categories?.filter(
+                                              (v) => v !== cat.id
+                                            ),
+                                      });
                                     }}
                                   />
                                 </FormControl>
@@ -146,10 +202,7 @@ export function Filters() {
             <AccordionTrigger>Değerlendirme</AccordionTrigger>
             <AccordionContent>
               <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-4"
-                >
+                <form onSubmit={onSubmit} className="space-y-4">
                   <FormField
                     control={form.control}
                     name="categories"
@@ -160,18 +213,26 @@ export function Filters() {
                             key={rating.id}
                             control={form.control}
                             name="categories"
-                            render={({ field }) => (
+                            render={() => (
                               <FormItem className="flex items-center space-x-2">
                                 <FormControl>
                                   <Checkbox
-                                    checked={field.value?.includes(rating.id)}
+                                    checked={filters.ratings.includes(
+                                      rating.id
+                                    )}
+                                    className="data-[state=checked]:bg-blue-500 data-[state=checked]:text-white"
                                     onCheckedChange={(checked) => {
-                                      const updated = checked
-                                        ? [...(field.value || []), rating.id]
-                                        : field.value?.filter(
-                                            (v) => v !== rating.id
-                                          );
-                                      field.onChange(updated);
+                                      setFilters({
+                                        ...filters,
+                                        ratings: checked
+                                          ? [
+                                              ...(filters.ratings || []),
+                                              rating.id,
+                                            ]
+                                          : filters.ratings?.filter(
+                                              (v) => v !== rating.id
+                                            ),
+                                      });
                                     }}
                                   />
                                 </FormControl>
@@ -212,53 +273,57 @@ export function Filters() {
             <AccordionContent>
               <div className="w-full">
                 <div className="w-full flex items-center justify-between gap-2 mb-2">
-                  <span className="text-sm text-muted-foreground">50₺</span>
-                  <Slider
-                    value={priceRange}
-                    onValueChange={handlePriceRangeChange}
-                    max={40000}
-                    min={50}
-                    defaultValue={[50, 100000]}
-                    step={1}
-                    className="w-full cursor-pointer"
-                  />
-                  <span className="text-sm text-muted-foreground">
-                    100.000₺
-                  </span>
+                  <div className="w-full flex flex-col gap-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-sm text-muted-foreground">50₺</span>
+                      <span className="text-sm text-muted-foreground">
+                        100.000₺
+                      </span>
+                    </div>
+                    <Slider
+                      value={filters.priceRange}
+                      onValueChange={handlePriceRangeChange}
+                      max={100000}
+                      min={50}
+                      defaultValue={[50, 100000]}
+                      step={1}
+                      color="blue"
+                      className="[&_[role=slider]]:bg-blue-500 [&_[role=slider]]:border-blue-500 [&_[role=slider]]:focus:ring-blue-500 cursor-pointer"
+                    />
+                  </div>
                 </div>
               </div>
               <div className="flex items-center justify-center gap-2 mt-4 w-full">
-                <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col gap-2 w-full items-center">
                   <Label className="text-sm text-muted-foreground text-center">
                     Min.fiyat
                   </Label>
                   <Input
-                    value={minPrice}
+                    value={filters.priceRange[0]}
                     onChange={handleMinPriceChange}
-                    type="number"
                     placeholder="50 ₺"
+                    size={20}
                     min={50}
                     max={maxPrice - 1}
-                    className="w-full px-1"
+                    className="w-3/4 px-1 text-center"
+                    inputMode="numeric"
                   />
                 </div>
-                <div className="flex items-end justify-center pb-1">
-                  <span className="text-sm text-muted-foreground">
-                    -
-                  </span>
+                <div className="flex items-center justify-center h-full pt-6">
+                  <MinusIcon className="w-4 h-4 text-muted-foreground" />
                 </div>
-                <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col gap-2 w-full items-center">
                   <Label className="text-sm text-muted-foreground text-center">
                     Max.fiyat
                   </Label>
                   <Input
-                    value={maxPrice}
+                    value={filters.priceRange[1]}
                     onChange={handleMaxPriceChange}
-                    type="number"
-                    placeholder="40000 ₺"
+                    placeholder="100.000 ₺"
                     min={minPrice + 1}
-                    max={40000}
-                    className="w-full px-1"
+                    max={100000}
+                    className="w-3/4 px-1 text-center"
+                    inputMode="numeric"
                   />
                 </div>
               </div>
@@ -274,7 +339,19 @@ export function Filters() {
                     key={item}
                     variant="outline"
                     size="sm"
-                    className="rounded-full"
+                    className={`rounded-full mx-2 my-1 px-4 ${
+                      filters.other.includes(item)
+                        ? "bg-blue-500 hover:bg-blue-600 text-white hover:text-white"
+                        : "bg-background text-foreground hover:bg-background hover:text-foreground"
+                    }`}
+                    onClick={() => {
+                      setFilters({
+                        ...filters,
+                        other: filters.other.includes(item)
+                          ? filters.other.filter((v) => v !== item)
+                          : [...(filters.other || []), item],
+                      });
+                    }}
                   >
                     {item}
                   </Button>
@@ -283,6 +360,9 @@ export function Filters() {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+        <Button variant="outline" className="w-full" onClick={onSubmit}>
+          Filtrele
+        </Button>
       </div>
     </div>
   );
