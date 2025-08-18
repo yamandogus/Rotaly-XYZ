@@ -30,6 +30,7 @@ export class UserRepository {
         role: true,
         deletedAt: true,
         isVerified: true,
+        verificationOTP: true,
         images: true,
         paymentCards: true,
       },
@@ -44,7 +45,21 @@ export class UserRepository {
   }
   static async create(data: RegisterSchemaType) {
     return Prisma.user.create({
-      data,
+      data: {
+        ...data,
+        hashedPassword: data.password,
+      },
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+        phone: true,
+        role: true,
+        isVerified: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
   }
   static async update(id: string, data: UpdateUserSchemaType) {
