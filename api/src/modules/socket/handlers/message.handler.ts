@@ -58,7 +58,7 @@ export class MessageHandler {
     }
 
     // Handle AI chat messages
-    if (data.receiverId && data.receiverId.startsWith("ai")) {
+    if (data.receiverId && data.receiverId.startsWith("ai-assistant")) {
       const aiChatRoom = `ai-chat:${socket.userId}`;
       socket.to(aiChatRoom).emit("newMessage", {
         ...data,

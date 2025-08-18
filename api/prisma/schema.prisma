@@ -12,6 +12,7 @@ enum Role {
   OWNER
   ADMIN
   SUPPORT
+  AI
 }
 
 enum RoomFeature {

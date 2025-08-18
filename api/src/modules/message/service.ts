@@ -47,7 +47,7 @@ export class MessageService {
     senderId: string,
     data: SendMessageDto
   ): Promise<MessageResponseDto> {
-    const isAIReceiver = data.receiverId.startsWith("ai");
+    const isAIReceiver = data.receiverId.startsWith("ai-assistant");
 
     // validating receiver exists (only for humans)
     if (!isAIReceiver) {
@@ -93,7 +93,7 @@ export class MessageService {
     userId: string,
     data: GetMessagesDto
   ): Promise<MessagesListResponseDto> {
-    const isAIConversation = data.receiverId.startsWith("ai");
+    const isAIConversation = data.receiverId.startsWith("ai-assistant");
 
     // validating receiver exists (only for humans)
     if (!isAIConversation) {
@@ -170,7 +170,8 @@ export class MessageService {
         data
       );
 
-      const isAIReceiver = editedMessage.receiverId?.startsWith("ai") || false;
+      const isAIReceiver =
+        editedMessage.receiverId?.startsWith("ai-assistant") || false;
       return this.formatMessageResponse(editedMessage, isAIReceiver);
     } catch (error: any) {
       if (error.code === "P2025") {
@@ -188,7 +189,7 @@ export class MessageService {
     message: any,
     isAIConversation: boolean = false
   ): MessageResponseDto {
-    const isFromAI = message.senderId.startsWith("ai");
+    const isFromAI = message.senderId.startsWith("ai-assistant");
 
     return {
       id: message.id,
@@ -243,7 +244,7 @@ export class MessageService {
       conversationHistory = recentMessages
         .reverse() // reversing to get chronologically
         .map((msg) => ({
-          role: msg.senderId.startsWith("ai")
+          role: msg.senderId.startsWith("ai-assistant")
             ? "assistant"
             : ("user" as "user" | "assistant"),
           content: msg.content,
