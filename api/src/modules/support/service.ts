@@ -123,6 +123,85 @@ export class SupportService {
     }
   }
 
+  async handleAIChatWithAutoTicket(
+    userId: string,
+    message: string,
+    conversationHistory: { role: "user" | "assistant"; content: string }[]
+  ): Promise<{
+    response: string;
+    ticketCreated: boolean;
+    supportId?: string;
+  }> {
+    try {
+      const aiResponse = await this.aiService.generateEnhancedResponse(
+        message,
+        conversationHistory
+      );
+
+      let supportId: string | undefined;
+
+      if (aiResponse.shouldCreateTicket) {
+        // Create support ticket automatically
+        const support = await this.createAutoSupportTicket(
+          userId,
+          message,
+          aiResponse.suggestedCategory,
+          aiResponse.escalationReason
+        );
+        supportId = support.id;
+      }
+
+      return {
+        response: aiResponse.content,
+        ticketCreated: aiResponse.shouldCreateTicket,
+        supportId,
+      };
+    } catch (error) {
+      console.error("Error handling AI chat with auto ticket:", error);
+      throw new AppError("Failed to get AI response", 500);
+    }
+  }
+
+  private async createAutoSupportTicket(
+    userId: string,
+    originalMessage: string,
+    category?: string,
+    reason?: string
+  ) {
+    // Map category string to enum, defaulting to GENERAL
+    const supportCategory = this.mapCategoryToSupportEnum(category);
+
+    const subject = `Auto-created: ${reason || "AI escalation"}`;
+    const body = `This ticket was automatically created based on your conversation with our AI assistant.
+
+Original message: "${originalMessage}"
+
+${reason ? `Escalation reason: ${reason}` : ""}
+
+A support representative will assist you shortly.`;
+
+    const supportData = {
+      subject,
+      body,
+      category: supportCategory,
+    };
+
+    return this.supportRepository.createSupportRequest(userId, supportData);
+  }
+
+  private mapCategoryToSupportEnum(category?: string): any {
+    const categoryMap: { [key: string]: string } = {
+      TECHNICAL: "TECHNICAL",
+      BILLING: "BILLING",
+      RESERVATION: "RESERVATION",
+      COMPLAINT: "COMPLAINT",
+      OTHER: "OTHER",
+    };
+
+    // Return the mapped category or default to GENERAL
+    return categoryMap[category || ""] || "GENERAL";
+  }
+
   async getSupportRepWorkload(supportRepId: string): Promise<number> {
     return this.supportRepository.getSupportRepWorkload(supportRepId);
   }

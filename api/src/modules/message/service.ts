@@ -10,6 +10,7 @@ import {
   ConversationResponseDto,
 } from "../../dto/message";
 import { AIService } from "../../services/ai.service";
+import { SupportService } from "../support/service";
 import { AppError } from "../../utils/appError";
 
 interface SocketEmitter {
@@ -20,6 +21,7 @@ interface SocketEmitter {
 export class MessageService {
   private messageRepository: MessageRepository;
   private aiService: AIService;
+  private supportService: SupportService;
   private socketEmitter?: SocketEmitter;
 
   constructor(
@@ -41,6 +43,9 @@ export class MessageService {
         temperature: parseFloat(process.env.OPENAI_TEMPERATURE || "0.7"),
       });
     }
+
+    // Initialize support service for auto-ticket creation
+    this.supportService = new SupportService(prisma, this.aiService);
   }
 
   async sendMessage(
@@ -250,19 +255,29 @@ export class MessageService {
           content: msg.content,
         }));
 
-      // generate AI response
-      const aiResponse = await this.aiService.generateResponseWithHistory(
+      // generate enhanced AI response with auto-ticket creation capability
+      const result = await this.supportService.handleAIChatWithAutoTicket(
+        userId,
         userMessage,
         conversationHistory
       );
 
+      let responseContent = result.response;
+
+      // If a ticket was created, append notification to the response
+      if (result.ticketCreated && result.supportId) {
+        responseContent += `\n\nI've created a support ticket (#${result.supportId.slice(
+          -8
+        )}) for you. A human support representative will assist you soon.`;
+      }
+
       // send AI response back to user
       const aiMessage = await this.prisma.message.create({
         data: {
-          content: aiResponse,
+          content: responseContent,
           senderId: aiUser.id,
           receiverId: userId,
-          // AI messages don't have supportId
+          // AI messages don't have supportId, even when they create tickets
         },
       });
 
@@ -270,15 +285,21 @@ export class MessageService {
       if (this.socketEmitter?.emitAIResponse) {
         this.socketEmitter.emitAIResponse(userId, {
           id: aiMessage.id,
-          content: aiResponse,
+          content: responseContent,
           senderId: aiUser.id,
           receiverId: userId,
           createdAt: aiMessage.createdAt,
           isFromAI: true,
+          ticketCreated: result.ticketCreated,
+          supportId: result.supportId,
         });
       }
 
-      console.log(`AI response sent: ${aiMessage.id}`);
+      console.log(
+        `AI response sent: ${aiMessage.id}${
+          result.ticketCreated ? " (ticket created)" : ""
+        }`
+      );
     } catch (error) {
       console.error("Error generating AI response:", error);
 

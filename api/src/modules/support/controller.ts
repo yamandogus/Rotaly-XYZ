@@ -182,7 +182,7 @@ export class SupportController {
     }
   };
 
-  // Handle AI chat (no database storage)
+  // Handle AI chat (with automatic ticket creation when needed)
   handleAIChat = async (
     req: Request,
     res: Response,
@@ -200,24 +200,20 @@ export class SupportController {
         throw new AppError("Message is required", 400);
       }
 
-      let aiResponse: string;
-
-      if (conversationHistory && Array.isArray(conversationHistory)) {
-        aiResponse = await this.supportService.handleAIChatWithContext(
-          userId,
-          message,
-          conversationHistory
-        );
-      } else {
-        aiResponse = await this.supportService.handleAIChat(userId, message);
-      }
+      const result = await this.supportService.handleAIChatWithAutoTicket(
+        userId,
+        message,
+        conversationHistory || []
+      );
 
       res.status(200).json({
         success: true,
         data: {
-          message: aiResponse,
+          message: result.response,
           timestamp: new Date(),
           isFromAI: true,
+          ticketCreated: result.ticketCreated,
+          supportId: result.supportId,
         },
       });
     } catch (error) {
