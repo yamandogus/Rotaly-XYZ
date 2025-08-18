@@ -107,7 +107,7 @@ const MobileFilter = () => {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline" className="lg:hidden">
+        <Button variant="outline" className="lg:hidden mb-4">
           Filtrele
         </Button>
       </DrawerTrigger>
@@ -324,7 +324,7 @@ const MobileFilter = () => {
                 <AccordionItem value="other" className="flex-1 md:flex-1">
                 <AccordionTrigger>Diğer</AccordionTrigger>
                 <AccordionContent>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {filterOrder.map((item) => (
                       <Button
                         key={item}
