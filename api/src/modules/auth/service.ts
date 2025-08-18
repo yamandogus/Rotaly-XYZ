@@ -70,14 +70,11 @@ export class AuthService {
     };
   }
 
-  //TODO
   async verifyEmail(userId: string | undefined, verificationOTP: string) {
     if (!userId) {
       throw new AppError("Login first", 401);
     }
-
     const user = await UserService.getById(userId);
-
     if (user.isVerified) {
       throw new AppError("User already verified", 400);
     }
