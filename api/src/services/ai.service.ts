@@ -163,7 +163,7 @@ export class AIService {
         throw new Error("No response generated from AI");
       }
 
-      // Parse the structured response
+      // parse the structured res
       const aiResponse = this.parseAIResponse(response.trim(), userMessage);
       return aiResponse;
     } catch (error) {
@@ -222,74 +222,78 @@ Your role is to:
 Guidelines:
 - Be friendly, professional, and helpful
 - Keep responses concise but informative
-- If you cannot help with something, politely direct the user to contact human support
+- NEVER include literal \\n or \\n\\n in your responses - use proper formatting
+- If you cannot help with something, escalate to human support
 - Always maintain user privacy and do not ask for sensitive information like passwords or payment details
 - Focus on hotel and booking-related topics
 
-IMPORTANT: When you need to escalate to human support, format your response as follows:
-ESCALATE: [CATEGORY] | [REASON]
-[Your response to the user]
+CRITICAL: You MUST escalate the following issues immediately by using the ESCALATE format:
 
-Categories for escalation:
+ALWAYS ESCALATE for:
+- Account security issues (hacked accounts, unauthorized bookings, suspicious activity)
+- Payment issues (refunds, double charges, billing problems)
+- Booking cancellations (flight cancellations, emergency cancellations, urgent changes)
+- Technical problems (website errors, bugs, app not working)
+- Customer complaints (poor service, cleanliness issues, bad experiences)
+- Any complex issue that requires human investigation
+
+Format your escalation response EXACTLY like this:
+ESCALATE: [CATEGORY] | [REASON]
+[Your helpful response to the user without any \\n characters]
+
+Categories:
 - TECHNICAL: Technical issues with the website/app
-- BILLING: Payment problems or refunds
-- RESERVATION: Complex booking modifications
-- COMPLAINT: Complaints that require investigation
+- BILLING: Payment problems or refunds  
+- RESERVATION: Booking cancellations, modifications, or urgent changes
+- COMPLAINT: Complaints requiring investigation
 - OTHER: Account security issues or other complex matters
 
 Example:
-ESCALATE: BILLING | User needs refund processing
-For refund requests, I'll connect you with our billing team who can process this for you.
+ESCALATE: BILLING | User needs refund for double charge
+I'm sorry to hear about the double charge. I'll connect you with our billing team who can process the refund for you immediately.
 
-Only use ESCALATE when you truly cannot help or when the issue requires human intervention.`;
+NEVER include \\n or \\n\\n in your responses. Use natural paragraph breaks instead.`;
   }
 
   private parseAIResponse(response: string, userMessage: string): AIResponse {
-    // Check if the response contains escalation instruction
-    if (response.startsWith("ESCALATE:")) {
-      const lines = response.split("\n");
-      const escalationLine = lines[0];
-      const userResponse = lines.slice(1).join("\n").trim();
+    // clean up response - remove \n and normalize whitespace
+    let cleanedResponse = response
+      .replace(/\\n\\n/g, "\n\n") // convert literal \n\n to actual newlines
+      .replace(/\\n/g, "\n") // convert literal \n to actual newlines
+      .replace(/\n\s*\n\s*\n/g, "\n\n") // remove excessive newlines
+      .trim();
 
-      // Parse escalation line: ESCALATE: CATEGORY | REASON
-      const escalationMatch = escalationLine.match(
-        /ESCALATE:\s*(\w+)\s*\|\s*(.+)/
-      );
+    // check if the response contains escalation instruction anywhere in the text
+    const escalationMatch = cleanedResponse.match(
+      /ESCALATE:\s*(\w+)\s*\|\s*(.+?)(?:\n|$)/
+    );
 
-      if (escalationMatch) {
-        const category = escalationMatch[1].toLowerCase();
-        const reason = escalationMatch[2];
+    if (escalationMatch) {
+      const category = escalationMatch[1].toLowerCase();
+      const reason = escalationMatch[2].trim();
 
-        return {
-          content:
-            userResponse ||
-            "I'll create a support ticket for you to get personalized assistance.",
-          shouldCreateTicket: true,
-          suggestedCategory: this.mapCategoryToEnum(category),
-          escalationReason: reason,
-        };
-      }
-    }
+      // remove the escalation instruction from the content sent to user
+      const userResponse = cleanedResponse
+        .replace(/ESCALATE:\s*\w+\s*\|\s*.+?(?:\n|$)/g, "")
+        .trim();
 
-    // Check if response suggests contacting human support
-    const lowerResponse = response.toLowerCase();
-    if (
-      lowerResponse.includes("human support") ||
-      lowerResponse.includes("support team") ||
-      lowerResponse.includes("contact our team")
-    ) {
-      const escalation = this.shouldEscalateToHuman(userMessage, response);
       return {
-        content: response,
-        shouldCreateTicket: escalation.shouldEscalate,
-        suggestedCategory: escalation.category,
-        escalationReason: escalation.reason,
+        content:
+          userResponse ||
+          "I'll create a support ticket for you to get personalized assistance.",
+        shouldCreateTicket: true,
+        suggestedCategory: this.mapCategoryToEnum(category),
+        escalationReason: reason,
       };
     }
 
+    const escalation = this.shouldEscalateToHuman(userMessage, cleanedResponse);
+
     return {
-      content: response,
-      shouldCreateTicket: false,
+      content: cleanedResponse,
+      shouldCreateTicket: escalation.shouldEscalate,
+      suggestedCategory: escalation.category,
+      escalationReason: escalation.reason,
     };
   }
 
@@ -304,22 +308,50 @@ Only use ESCALATE when you truly cannot help or when the issue requires human in
     const lowerMessage = userMessage.toLowerCase();
     const lowerResponse = aiResponse.toLowerCase();
 
-    // Check if AI response suggests human support
     const suggestsHumanSupport =
       lowerResponse.includes("human support") ||
       lowerResponse.includes("support team") ||
-      lowerResponse.includes("contact our team");
+      lowerResponse.includes("contact our team") ||
+      lowerResponse.includes("escalate") ||
+      lowerResponse.includes("connect you") ||
+      lowerResponse.includes("billing team") ||
+      lowerResponse.includes("technical team") ||
+      lowerResponse.includes("complaints team") ||
+      lowerResponse.includes("investigation") ||
+      lowerResponse.includes("further assistance");
 
-    if (!suggestsHumanSupport) {
-      return { shouldEscalate: false };
+    // security/account issues - always escalate
+    if (
+      lowerMessage.includes("hacked") ||
+      lowerMessage.includes("unauthorized") ||
+      lowerMessage.includes("security breach") ||
+      lowerMessage.includes("suspicious activity") ||
+      lowerMessage.includes("account compromised") ||
+      lowerMessage.includes("someone else") ||
+      lowerMessage.includes("not me") ||
+      (lowerMessage.includes("booking") &&
+        lowerMessage.includes("didn't make")) ||
+      (lowerMessage.includes("password") &&
+        (lowerMessage.includes("change") || lowerMessage.includes("reset")))
+    ) {
+      return {
+        shouldEscalate: true,
+        category: "SECURITY",
+        reason: "Account security issue requiring immediate attention",
+      };
     }
 
-    // Determine category based on user message content
+    // billing/payment issues - always escalate
     if (
       lowerMessage.includes("refund") ||
+      lowerMessage.includes("double charge") ||
+      lowerMessage.includes("charged twice") ||
       lowerMessage.includes("payment") ||
+      lowerMessage.includes("billing") ||
       lowerMessage.includes("charge") ||
-      lowerMessage.includes("bill")
+      lowerMessage.includes("bill") ||
+      lowerMessage.includes("money back") ||
+      lowerMessage.includes("overcharged")
     ) {
       return {
         shouldEscalate: true,
@@ -328,24 +360,35 @@ Only use ESCALATE when you truly cannot help or when the issue requires human in
       };
     }
 
+    // reservation/booking issues - escalate for cancellations and modifications
     if (
       lowerMessage.includes("cancel") ||
       lowerMessage.includes("modify") ||
       lowerMessage.includes("change booking") ||
-      lowerMessage.includes("reservation")
+      lowerMessage.includes("flight cancel") ||
+      lowerMessage.includes("emergency") ||
+      (lowerMessage.includes("booking") &&
+        (lowerMessage.includes("cancel") || lowerMessage.includes("change"))) ||
+      lowerMessage.includes("urgent")
     ) {
       return {
         shouldEscalate: true,
         category: "RESERVATION",
-        reason: "Complex reservation modification requiring human assistance",
+        reason:
+          "Booking cancellation or modification requiring human assistance",
       };
     }
 
+    // technical issues - always escalate
     if (
       lowerMessage.includes("bug") ||
       lowerMessage.includes("error") ||
       lowerMessage.includes("not working") ||
-      lowerMessage.includes("technical")
+      lowerMessage.includes("technical") ||
+      lowerMessage.includes("website") ||
+      lowerMessage.includes("app") ||
+      lowerMessage.includes("loading") ||
+      lowerMessage.includes("broken")
     ) {
       return {
         shouldEscalate: true,
@@ -354,11 +397,19 @@ Only use ESCALATE when you truly cannot help or when the issue requires human in
       };
     }
 
+    // complaints - always escalate
     if (
       lowerMessage.includes("complaint") ||
-      lowerMessage.includes("problem") ||
-      lowerMessage.includes("issue") ||
-      lowerMessage.includes("unsatisfied")
+      lowerMessage.includes("terrible") ||
+      lowerMessage.includes("awful") ||
+      lowerMessage.includes("horrible") ||
+      lowerMessage.includes("worst") ||
+      lowerMessage.includes("disappointed") ||
+      lowerMessage.includes("unsatisfied") ||
+      lowerMessage.includes("poor service") ||
+      lowerMessage.includes("bad experience") ||
+      lowerMessage.includes("dirty") ||
+      lowerMessage.includes("unacceptable")
     ) {
       return {
         shouldEscalate: true,
@@ -367,25 +418,29 @@ Only use ESCALATE when you truly cannot help or when the issue requires human in
       };
     }
 
+    // general account issues
     if (
       lowerMessage.includes("account") ||
       lowerMessage.includes("login") ||
-      lowerMessage.includes("password") ||
-      lowerMessage.includes("security")
+      lowerMessage.includes("profile")
     ) {
       return {
         shouldEscalate: true,
         category: "OTHER",
-        reason:
-          "Account or security related inquiry requiring human assistance",
+        reason: "Account related inquiry requiring human assistance",
       };
     }
 
-    return {
-      shouldEscalate: true,
-      category: "GENERAL",
-      reason: "General inquiry requiring human assistance",
-    };
+    // if AI response suggests human support but we didn't catch the category above
+    if (suggestsHumanSupport) {
+      return {
+        shouldEscalate: true,
+        category: "GENERAL",
+        reason: "Issue requires human assistance as suggested by AI",
+      };
+    }
+
+    return { shouldEscalate: false };
   }
 
   private mapCategoryToEnum(category: string): string {

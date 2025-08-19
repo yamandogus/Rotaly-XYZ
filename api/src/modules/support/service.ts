@@ -141,7 +141,7 @@ export class SupportService {
       let supportId: string | undefined;
 
       if (aiResponse.shouldCreateTicket) {
-        // Create support ticket automatically
+        // create support ticket automatically
         const support = await this.createAutoSupportTicket(
           userId,
           message,
@@ -168,7 +168,7 @@ export class SupportService {
     category?: string,
     reason?: string
   ) {
-    // Map category string to enum, defaulting to GENERAL
+    // map category string to enum, defaulting to GENERAL
     const supportCategory = this.mapCategoryToSupportEnum(category);
 
     const subject = `Auto-created: ${reason || "AI escalation"}`;
@@ -198,7 +198,7 @@ A support representative will assist you shortly.`;
       OTHER: "OTHER",
     };
 
-    // Return the mapped category or default to GENERAL
+    // return the mapped category or default to GENERAL
     return categoryMap[category || ""] || "GENERAL";
   }
 

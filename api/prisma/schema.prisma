@@ -65,6 +65,7 @@ enum SupportCategory {
   GENERAL
   COMPLAINT
   FEATURE_REQUEST
+  SECURITY
   OTHER
 }
 
