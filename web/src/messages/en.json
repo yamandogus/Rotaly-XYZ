@@ -136,7 +136,9 @@
   "systemUpdate": "System Update",
   "newFeaturesAdded": "New features added",
   "threeDaysAgo": "3 days ago",
-  "viewAll": "View all notifications"
+  "viewAll": "View all notifications",
+  "emptyMessage": "No notifications yet",
+  "markAllRead": "Mark all as read"
 },
 
 
@@ -1008,7 +1010,7 @@
     "createdAt": "Created At"
   },
 
-  "Statistics": {
+  "HotelStatistics": {
     "title": "Hotel Statistics",
     "dateRange": "Last 30 Days",
     "allRooms": "All Rooms",

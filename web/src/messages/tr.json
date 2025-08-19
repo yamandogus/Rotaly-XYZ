@@ -130,7 +130,7 @@
   "typeMessage": "Mesajınızı yazın..."
   },
 
-  "Notification":{
+  "Notifications":{
   "title": "Bildirimler",
   "newReservation": "Yeni rezervasyon",
   "reservationConfirmed": "Otel rezervasyonunuz onaylandı",
@@ -141,7 +141,9 @@
   "systemUpdate": "Sistem güncellemesi",
   "newFeaturesAdded": "Yeni özellikler eklendi",
   "threeDaysAgo": "3 gün önce",
-  "viewAll": "Tüm bildirimleri görüntüle"
+  "viewAll": "Tüm bildirimleri görüntüle",
+  "emptyMessage": "Henüz bildirim yok",
+  "markAllRead": "Tümünü okundu olarak işaretle"
 },
 
   "HotelCard": {
