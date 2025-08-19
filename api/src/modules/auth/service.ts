@@ -20,7 +20,6 @@ export class AuthService {
     this.jwtService = new JwtService();
   }
 
-  //
   async register(data: RegisterSchemaType) {
     const user = await UserService.add(data);
     const otp = generateOTP();
@@ -34,8 +33,6 @@ export class AuthService {
         "Registration successful. Please check your email for verification.",
     };
   }
-
-  //
 
   async login(data: LoginSchemaType) {
     const user = await UserService.getByEmail(data.email);
@@ -60,8 +57,6 @@ export class AuthService {
       refreshToken,
     };
   }
-
-  //
 
   async logout(authorizationHeader: string) {
     await this.jwtService.logout(authorizationHeader);
@@ -105,7 +100,6 @@ export class AuthService {
     };
   }
 
-  //TODO
   async updateProfile(userId: string, data: UpdateUserSchemaType) {
     const user = await UserService.getById(userId);
     if (data.email && data.email !== user.email) {

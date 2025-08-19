@@ -14,7 +14,7 @@ router.get(
   verifiedUser,
   UserController.getProfile
 );
-
+router.get("/", authenticateToken, verifiedUser, UserController.index);
 // GET /api/users/:id
 router.get("/:id", authenticateToken, verifiedUser, UserController.ById);
 // GET /api/users/:email
