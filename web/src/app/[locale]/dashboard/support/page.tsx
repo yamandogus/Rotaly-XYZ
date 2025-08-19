@@ -3,33 +3,36 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3Icon, MessageCircleIcon, FileTextIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-
-const adminMenu = [
-  {
-    title: "Canlı Destek",
-    icon: MessageCircleIcon,
-    description: "Canlı destek ile müşteri desteği sağlayabilirsiniz.",
-    link: "/dashboard/support/live-support",
-    color: "text-green-500",
-  },
-  {
-    title: "İstatistikler & Raporlar",
-    icon: BarChart3Icon,
-    description: "Rezervasyon istatistikleri ve sistem raporlarını görüntüleyebilirsiniz.",
-    link: "/dashboard/support/statistic",
-    color: "text-purple-500",
-  },
-  {
-    title: "Bilgilendirme ve Sistem Bilgileri",
-    icon: FileTextIcon,
-    description: "Bilgilendirme ve sistem bilgilerini görüntüleyebilirsiniz.",
-    link: "/dashboard/support/information",
-    color: "text-blue-500",
-  },
-];
+import { useTranslations } from "next-intl";
 
 export default function SupportDashboard() {
   const router = useRouter();
+  const t = useTranslations("Support");
+
+  const adminMenu = [
+    {
+      title: t("liveSupport"),
+      icon: MessageCircleIcon,
+      description: t("liveSupportDescription"),
+      link: "/dashboard/support/live-support",
+      color: "text-green-500",
+    },
+    {
+      title: t("statisticsReports"),
+      icon: BarChart3Icon,
+      description: t("statisticsReportsDescription"),
+      link: "/dashboard/support/statistic",
+      color: "text-purple-500",
+    },
+    {
+      title: t("informationSystemInfo"),
+      icon: FileTextIcon,
+      description: t("informationSystemInfoDescription"),
+      link: "/dashboard/support/information",
+      color: "text-blue-500",
+    },
+  ];
+
   return (
     <div className="p-8">
       <div className="max-w-7xl mx-auto">

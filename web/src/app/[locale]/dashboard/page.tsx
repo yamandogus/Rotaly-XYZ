@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import AdminDashboard from "./admin/page";
 import HotelDashboard from "./hotel/page";
 
 type UserRole = "admin" | "hotel" | "user" | null;
 
 export default function Page() {
+  const t = useTranslations("Support");
   const [userRole, setUserRole] = useState<UserRole>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -21,7 +23,7 @@ export default function Page() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg">Yükleniyor...</div>
+        <div className="text-lg">{t("loading")}</div>
       </div>
     );
   }

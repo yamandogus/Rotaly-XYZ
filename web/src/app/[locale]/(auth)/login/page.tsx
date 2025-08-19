@@ -19,30 +19,32 @@ import {
   BottomGradient,
   LabelInputContainer,
 } from "@/components/auth/auth-components";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUserRole } from "@/store/testUser/test-user-slice";
-
-
-
-const loginShema = z.object({
-  email: z.string().email({ message: "Geçersiz e-posta adresi" }),
-  password: z.string().min(8, { message: "Geçersiz şifre" }),
-});
-
-type LoginFormData = z.infer<typeof loginShema>;
+import { useTranslations } from "next-intl";
 
 export default function LoginPage() {
+  const t = useTranslations("LoginPage");
   const router = useRouter();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { loginSuccess, loginError } = useToastMessages();
+
+  const loginSchema = z.object({
+    email: z.string().email({ message: t("invalidEmail") }),
+    password: z.string().min(8, { message: t("invalidPassword") }),
+  });
+
+  type LoginFormData = z.infer<typeof loginSchema>;
+
   const form = useForm<LoginFormData>({
-    resolver: zodResolver(loginShema),
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
+  // Test kullanıcıları
   const testUser = {
     email: "user@user.com",
     password: "12345678",
@@ -70,27 +72,10 @@ export default function LoginPage() {
   const handleLogin = async (data: LoginFormData) => {
     console.log("login data", data);
 
-    // const response = await api.login(data)
-    // const user = response.data.userData.email
-    // console.log(user);
-
-    // const profileResponse = await api.getUserProfile()
-
-    // console.log("res",profileResponse);
-    
-    
-    // console.log("response", response);
-    // console.log("test");
-    
-    
-    // if(response.success){
-    //   router.push("/")
-    // }
-
     // Normal kullanıcı girişi
     if (data.email === testUser.email && data.password === testUser.password) {
       localStorage.setItem("userRole", "user");
-      dispatch(setUserRole(testUser.role))
+      dispatch(setUserRole(testUser.role));
       loginSuccess("user");
       router.push("/");
     }
@@ -100,6 +85,7 @@ export default function LoginPage() {
       data.password === testHotel.password
     ) {
       localStorage.setItem("userRole", "hotel");
+      dispatch(setUserRole(testHotel.role));
       loginSuccess("hotel");
       router.push("/dashboard");
     }
@@ -109,6 +95,7 @@ export default function LoginPage() {
       data.password === testAdmin.password
     ) {
       localStorage.setItem("userRole", "admin");
+      dispatch(setUserRole(testAdmin.role));
       loginSuccess("admin");
       router.push("/dashboard");
     }
@@ -118,6 +105,7 @@ export default function LoginPage() {
       data.password === testSupport.password
     ) {
       localStorage.setItem("userRole", "support");
+      dispatch(setUserRole(testSupport.role));
       loginSuccess("support");
       router.push("/dashboard/support");
     }
@@ -132,10 +120,10 @@ export default function LoginPage() {
       <div className="min-h-screen flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
         <div className="bg-card border border-border rounded-2xl shadow-input mx-auto w-full max-w-md p-4 md:rounded-2xl md:p-8">
           <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
-            Rotaly&apos;ye Hoş Geldiniz!
+            {t("welcome")}
           </h2>
           <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
-            E-posta adresinize giriş yapın ve otel rezervasyonlarınızı yönetin
+            {t("subtitle")}
           </p>
 
           <Form {...form}>
@@ -147,9 +135,9 @@ export default function LoginPage() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>E-posta Adresi</FormLabel>
+                        <FormLabel>{t("email")}</FormLabel>
                         <FormControl>
-                          <Input placeholder="ornek@email.com" {...field} />
+                          <Input placeholder={t("emailPlaceholder")} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -162,14 +150,15 @@ export default function LoginPage() {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Şifre</FormLabel>
+                        <FormLabel>{t("password")}</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="••••••••"
+                            placeholder={t("passwordPlaceholder")}
                             type="password"
                             {...field}
                           />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -180,7 +169,7 @@ export default function LoginPage() {
                   href="/reset-password"
                   className="text-sm text-primary hover:underline"
                 >
-                  Şifremi Unuttum
+                  {t("forgotPassword")}
                 </Link>
               </div>
 
@@ -188,20 +177,20 @@ export default function LoginPage() {
                 className="group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_#27272a_inset,0px_-1px_0px_0px_#27272a_inset]"
                 type="submit"
               >
-                Giriş Yap &rarr;
+                {t("loginButton")} &rarr;
                 <BottomGradient />
               </button>
 
               <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
               <div className="flex items-center justify-center gap-2 mt-4">
                 <p className="text-sm text-neutral-700 dark:text-neutral-300">
-                  Hesabınız yok mu?
+                  {t("noAccount")}
                 </p>
                 <Link
                   href="/register"
                   className="text-sm text-primary hover:underline"
                 >
-                  Kayıt Ol
+                  {t("register")}
                 </Link>
               </div>
             </form>

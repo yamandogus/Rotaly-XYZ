@@ -2,6 +2,7 @@
 
 import { FC, useState } from "react";
 import { Room } from "@/types/room";
+import { useTranslations } from "next-intl";
 import {
   DialogContent,
   DialogHeader,
@@ -19,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Image from "next/image";
 
 interface AddRoomDialogProps {
   isAddRoomDialogOpen: boolean;
@@ -26,9 +28,9 @@ interface AddRoomDialogProps {
 }
 
 const AddRoomDialog: FC<AddRoomDialogProps> = ({
-  isAddRoomDialogOpen,
   setIsAddRoomDialogOpen,
 }) => {
+  const t = useTranslations("Rooms");
   const [newRoom, setNewRoom] = useState<Partial<Room & { image?: File }>>({});
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
@@ -54,27 +56,29 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
   };
 
   return (
-    <DialogContent  className="sm:max-w-[600px] w-full max-h-[90vh] overflow-y-auto">
+    <DialogContent className="sm:max-w-[700px] w-full max-h-[90vh] overflow-y-auto">
       <DialogHeader>
-        <DialogTitle>Oda Ekle</DialogTitle>
+        <DialogTitle>{t("addRoomTitle")}</DialogTitle>
       </DialogHeader>
 
       <div className="grid gap-4 py-4">
+        {/* Oda Adı */}
         <div className="grid gap-2">
-          <Label htmlFor="name">Oda Adı</Label>
+          <Label htmlFor="name">{t("roomName")}</Label>
           <Input
             id="name"
-            placeholder="Oda Adı"
+            placeholder={t("roomNamePlaceholder")}
             value={newRoom.name || ""}
             onChange={(e) => setNewRoom({ ...newRoom, name: e.target.value })}
           />
         </div>
 
+        {/* Oda Açıklaması */}
         <div className="grid gap-2">
-          <Label htmlFor="description">Oda Açıklaması</Label>
+          <Label htmlFor="description">{t("description")}</Label>
           <Textarea
             id="description"
-            placeholder="Oda Açıklaması"
+            placeholder={t("roomDescriptionPlaceholder")}
             value={newRoom.description || ""}
             onChange={(e) =>
               setNewRoom({ ...newRoom, description: e.target.value })
@@ -83,14 +87,15 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
           />
         </div>
 
+        {/* Oda Türü */}
         <div className="grid gap-2">
-          <Label htmlFor="type">Oda Türü</Label>
+          <Label htmlFor="type">{t("roomType")}</Label>
           <Select
             value={newRoom.type || ""}
             onValueChange={(value) => setNewRoom({ ...newRoom, type: value })}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Oda Türü Seçin" />
+              <SelectValue placeholder={t("roomTypePlaceholder")} />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="STANDARD">Standart</SelectItem>
@@ -101,13 +106,14 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
           </Select>
         </div>
 
+        {/* Yetişkin / Çocuk */}
         <div className="grid grid-cols-2 gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="maxAdults">Maksimum Yetişkin</Label>
+            <Label htmlFor="maxAdults">{t("maxAdults")}</Label>
             <Input
               id="maxAdults"
               type="number"
-              placeholder="Maksimum Yetişkin"
+              placeholder={t("maxAdultsPlaceholder")}
               value={newRoom.maxAdults || ""}
               onChange={(e) =>
                 setNewRoom({ ...newRoom, maxAdults: Number(e.target.value) })
@@ -115,11 +121,11 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="maxChildren">Maksimum Çocuk</Label>
+            <Label htmlFor="maxChildren">{t("maxChildren")}</Label>
             <Input
               id="maxChildren"
               type="number"
-              placeholder="Maksimum Çocuk"
+              placeholder={t("maxChildrenPlaceholder")}
               value={newRoom.maxChildren || ""}
               onChange={(e) =>
                 setNewRoom({ ...newRoom, maxChildren: Number(e.target.value) })
@@ -128,13 +134,14 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
           </div>
         </div>
 
+        {/* Kat / Oda Numarası */}
         <div className="grid grid-cols-2 gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="floor">Kat</Label>
+            <Label htmlFor="floor">{t("floor")}</Label>
             <Input
               id="floor"
               type="number"
-              placeholder="Kat"
+              placeholder={t("floorPlaceholder")}
               value={newRoom.floor || ""}
               onChange={(e) =>
                 setNewRoom({ ...newRoom, floor: Number(e.target.value) })
@@ -142,11 +149,11 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="roomNumber">Oda Numarası</Label>
+            <Label htmlFor="roomNumber">{t("roomNumber")}</Label>
             <Input
               id="roomNumber"
               type="number"
-              placeholder="Oda Numarası"
+              placeholder={t("roomNumberPlaceholder")}
               value={newRoom.roomNumber || ""}
               onChange={(e) =>
                 setNewRoom({ ...newRoom, roomNumber: Number(e.target.value) })
@@ -155,12 +162,13 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
           </div>
         </div>
 
+        {/* Fiyat */}
         <div className="grid gap-2">
-          <Label htmlFor="price">Fiyat</Label>
+          <Label htmlFor="price">{t("price")}</Label>
           <Input
             id="price"
             type="number"
-            placeholder="Fiyat"
+            placeholder={t("pricePlaceholder")}
             value={newRoom.price || ""}
             onChange={(e) =>
               setNewRoom({ ...newRoom, price: Number(e.target.value) })
@@ -168,13 +176,14 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
           />
         </div>
 
+        {/* Kapasite / Yatak Sayısı */}
         <div className="grid grid-cols-2 gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="capacity">Toplam Kapasite</Label>
+            <Label htmlFor="capacity">{t("capacity")}</Label>
             <Input
               id="capacity"
               type="number"
-              placeholder="Toplam Kapasite"
+              placeholder={t("capacityPlaceholder")}
               value={newRoom.capacity || ""}
               onChange={(e) =>
                 setNewRoom({ ...newRoom, capacity: Number(e.target.value) })
@@ -182,11 +191,11 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="bedCount">Yatak Sayısı</Label>
+            <Label htmlFor="bedCount">{t("bedCount")}</Label>
             <Input
               id="bedCount"
               type="number"
-              placeholder="Yatak Sayısı"
+              placeholder={t("bedCountPlaceholder")}
               value={newRoom.bedCount || ""}
               onChange={(e) =>
                 setNewRoom({ ...newRoom, bedCount: Number(e.target.value) })
@@ -195,9 +204,9 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
           </div>
         </div>
 
-        {/* Oda görseli alanı */}
+        {/* Oda Görseli */}
         <div className="grid gap-2">
-          <Label htmlFor="roomImage">Oda Görseli</Label>
+          <Label htmlFor="roomImage">{t("roomImage")}</Label>
           <Input
             id="roomImage"
             type="file"
@@ -205,20 +214,24 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
             onChange={handleImageChange}
           />
           {previewImage && (
-            <img
-              src={previewImage}
-              alt="Oda Önizleme"
-              className="mt-2 h-32 w-full object-cover rounded"
-            />
+            <div className="relative h-40 w-full mt-2">
+              <Image
+                src={previewImage}
+                alt="Oda Önizleme"
+                fill
+                className="object-cover rounded"
+                unoptimized
+              />
+            </div>
           )}
         </div>
       </div>
 
       <DialogFooter>
         <Button variant="outline" onClick={handleCancel}>
-          İptal
+          {t("cancel")}
         </Button>
-        <Button onClick={handleSave}>Kaydet</Button>
+        <Button onClick={handleSave}>{t("save")}</Button>
       </DialogFooter>
     </DialogContent>
   );

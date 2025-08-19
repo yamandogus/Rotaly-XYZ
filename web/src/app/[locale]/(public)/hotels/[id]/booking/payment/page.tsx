@@ -9,11 +9,13 @@ import PaymentProcessing from "@/components/booking/payment/payment-processing";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setStepIncrease } from "@/store/reservation/reservation-slice";
+import { useTranslations } from 'next-intl';
 
 export default function BookingPaymentPage() {
   const [isPaymentControl, setIsPaymentControl] = useState(true);
   const dispatch = useDispatch()
   const router = useRouter();
+  const t = useTranslations("HotelDetail.BookingPaymentPage");
   const handleNextStep = () => {
       dispatch(setStepIncrease(3)) // 3. adıma (success sayfasına) geç
     };
@@ -39,7 +41,7 @@ export default function BookingPaymentPage() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20">
       <div className="flex flex-col gap-4 border border-gray-200 dark:border-gray-700 rounded-md p-4 bg-white dark:bg-card">
-        <h1 className="text-2xl font-semibold">Ödeme Seçenekleri</h1>
+        <h1 className="text-2xl font-semibold">{t("paymentOptionsTitle")}</h1>
         
         <PaymentMethodSelector />
 

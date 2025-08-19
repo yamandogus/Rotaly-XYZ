@@ -138,8 +138,8 @@ export default function RegisterPage() {
                   <FormControl>
                     <Input placeholder={t("phonePlaceholder")} {...field} 
                     type="tel"
-                    pattern="^\+90\s?5\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$"
-                    title="Telefon numarası formatı: +90 5XX XXX XX XX"
+                    pattern="^\\+90\\s?5\\d{2}\\s?\\d{3}\\s?\\d{2}\\s?\\d{2}$"
+                    title={t("phoneFormatHint")}
                     />
                   </FormControl>
                   <FormMessage />

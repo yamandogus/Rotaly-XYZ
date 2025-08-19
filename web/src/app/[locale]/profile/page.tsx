@@ -7,7 +7,7 @@ import PastReservations from "@/components/profil/past-tabs-content";
 import Notifications from "@/components/profil/notifications-tabs-content";
 
 export default function ProfilePage() {
-  const t = useTranslations("Profile");
+  const t = useTranslations("UserProfile");
 
   return (
     <div className="min-h-screen p-6 md:p-10 max-w-7xl mx-auto">

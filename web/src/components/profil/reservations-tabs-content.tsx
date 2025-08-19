@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import {
   Dialog,
@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { MessageSquareIcon, XIcon } from "lucide-react";
 import { Rating, RatingButton } from "@/components/ui/shadcn-io/rating";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 const initialReservationsData = [
   {
@@ -66,6 +67,7 @@ const initialReservationsData = [
 ];
 
 export default function ReservationsContent() {
+  const t = useTranslations("UserProfile.reservationss");
   const [reservations, setReservations] = useState(initialReservationsData);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [currentHotel, setCurrentHotel] = useState({
@@ -77,9 +79,9 @@ export default function ReservationsContent() {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [selectedReservationId, setSelectedReservationId] = useState<number | null>(null);
 
-  const defaultMessage = (hotelName: string) => [
-    { id: 1, message: `${hotelName} rezervasyonlarınızda nasıl yardımcı olabilirim?`, sender: "bot" },
-  ];
+  const defaultMessage = useCallback((hotelName: string) => [
+    { id: 1, message: `Welcome to ${hotelName}! How can I assist you with your reservation?`, sender: "bot" },
+  ], []);
 
   const [messages, setMessages] = useState(defaultMessage(currentHotel.name));
   const [message, setMessage] = useState("");
@@ -87,9 +89,9 @@ export default function ReservationsContent() {
 
   useEffect(() => {
     if (isChatOpen) {
-      setMessages(defaultMessage(currentHotel.name || "Otelimize"));
+      setMessages(defaultMessage(currentHotel.name || t("chat.ourHotel")));
     }
-  }, [isChatOpen, currentHotel.name]);
+  }, [isChatOpen, currentHotel.name, defaultMessage, t]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -105,8 +107,7 @@ export default function ReservationsContent() {
     };
     const botResponse = {
       id: Date.now() + 1,
-      message:
-        "Teşekkür ederim. Size nasıl yardımcı olabilirim? Daha detaylı bilgi için canlı destek ile iletişime geçebilirsiniz.",
+      message: t("chat.botResponse"),
       sender: "bot",
     };
 
@@ -229,7 +230,7 @@ export default function ReservationsContent() {
                         image: res.image || "/images/opportunity1.jpg",
                       });
                       setIsChatOpen(true);
-                      setMessages([{ id: 1, message: "Merhaba, nasıl yardımcı olabilirim?", sender: "bot" }]);
+                      setMessages([{ id: 1, message: t("chat.welcomeMessage"), sender: "bot" }]);
                       setMessage("");
                     }}
                   >
@@ -295,7 +296,7 @@ export default function ReservationsContent() {
 
           <div className="p-4 border-t flex gap-2 items-center bg-white dark:bg-gray-900">
             <Input
-              placeholder="Mesajınızı yazın..."
+              placeholder={t("chat.placeholder")}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
@@ -306,7 +307,7 @@ export default function ReservationsContent() {
               disabled={!message.trim()}
               className="bg-blue-600 hover:bg-blue-700 text-white"
             >
-              Gönder
+              {t("chat.send")}
             </Button>
           </div>
         </DialogContent>

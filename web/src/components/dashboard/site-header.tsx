@@ -21,6 +21,7 @@ import { setPageTitle } from "@/store/dashboard/dashboard-slice";
 export function SiteHeader() {
   const router = useRouter();
   const t = useTranslations("Dashboard");
+  const logoutTranslations = useTranslations("Dashboard.logoutModal");
   const pageTitle = useSelector((state: RootState) => state.dashboard.pageTitle);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -63,20 +64,20 @@ export function SiteHeader() {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Çıkış Yap</DialogTitle>
+                <DialogTitle>{logoutTranslations("title")}</DialogTitle>
                 <DialogDescription>
-                  Çıkış yapmak istediğinize emin misiniz?
+                  {logoutTranslations("description")}
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
                 <Button variant="outline" onClick={() => setOpen(false)}>
-                  İptal
+                  {logoutTranslations("cancel")}
                 </Button>
                 <Button
                   onClick={handleLogout}
                   className="bg-red-500 hover:bg-red-600 text-white cursor-pointer"
                 >
-                  Çıkış Yap
+                  {logoutTranslations("confirm")}
                 </Button>
               </DialogFooter>
             </DialogContent>

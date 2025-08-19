@@ -65,7 +65,7 @@ const UserActions = () => {
             <DropdownMenuContent className="w-56" align="end" forceMount>
               <div className="flex items-center justify-start gap-2 p-2">
                 <div className="flex flex-col space-y-1 leading-none">
-                  <p className="font-medium">Kullanıcı</p>
+                  <p className="font-medium">{t("user")}</p>
                   <p className="w-[200px] truncate text-sm text-muted-foreground">
                     {email || "user@example.com"}
                   </p>
@@ -93,13 +93,13 @@ const UserActions = () => {
               <DropdownMenuItem asChild>
                 <Link href="/support">
                   <MessageCircle className="mr-2 h-4 w-4" />
-                  Canlı Destek
+                  {t("live-chat")}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
-                Çıkış Yap
+                {t("logout")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -110,11 +110,11 @@ const UserActions = () => {
           <ModeToggle />
           <Link href="/login">
             <Button variant="outline" className="cursor-pointer">
-              Giriş Yap
+              {t("login")}
             </Button>
           </Link>
           <Link href="/register">
-            <Button className="cursor-pointer">Kayıt Ol</Button>
+            <Button className="cursor-pointer">{t("register")}</Button>
           </Link>
         </div>
       )}

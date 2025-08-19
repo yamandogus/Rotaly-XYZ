@@ -30,9 +30,9 @@ const MobileNav = () => {
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
-            <SheetTitle>ROTALY</SheetTitle>
+            <SheetTitle>{t("sheetTitle")}</SheetTitle>
             <SheetDescription>
-              ROTALY ile rezervasyon yapın, otel bulun.
+              {t("sheetDescription")}
             </SheetDescription>
           </SheetHeader>
           <div className="grid flex-1 auto-rows-min gap-6 px-4">
@@ -72,7 +72,7 @@ const MobileNav = () => {
               <Link href="/support">
                 <Button variant="outline" className="w-full">
                   <MessageCircle className="h-5 w-5" />
-                  Canlı Destek
+                  {t("live-chat")}
                 </Button>
               </Link>
             </SheetClose>
@@ -87,7 +87,7 @@ const MobileNav = () => {
           </div>
           <SheetFooter>
             <SheetClose asChild>
-              <Button variant="outline">Kapat</Button>
+              <Button variant="outline">{t("close")}</Button>
             </SheetClose>
           </SheetFooter>
         </SheetContent>
