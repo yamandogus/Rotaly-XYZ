@@ -18,52 +18,42 @@ import {
   AlertCircleIcon,
 } from "lucide-react";
 import React, { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 const LiveSupportPage = () => {
+  const t = useTranslations("LiveChat"); // Çeviri fonksiyonu
   const [message, setMessage] = useState("");
   const [activeTab, setActiveTab] = useState("support");
-  const [messages, setMessages] = useState<
-    {
-      id: number;
-      message: string;
-      sender: "user" | "support" | "system";
-      timestamp: string;
-    }[]
-  >([
+  const [messages, setMessages] = useState([
     {
       id: 1,
-      message:
-        "Merhaba! Rotaly destek ekibine hoş geldiniz. Size nasıl yardımcı olabilirim?",
+      message: t("systemWelcome"),
       sender: "support",
       timestamp: "14:30",
     },
     {
       id: 2,
-      message: "Rezervasyon iptal etmek istiyorum",
+      message: t("exampleUserMessage"),
       sender: "user",
       timestamp: "14:32",
     },
     {
       id: 3,
-      message:
-        "Rezervasyon iptali için size yardımcı olabilirim. Lütfen rezervasyon numaranızı paylaşır mısınız?",
+      message: t("supportReply"),
       sender: "support",
       timestamp: "14:33",
     },
     {
       id: 4,
-      message:
-        "Canlı destek ile bağlanmak istiyorsunuz. Destek ekibimiz size en kısa sürede yanıt verecektir.",
+      message: t("systemInfo"),
       sender: "system",
       timestamp: "14:35",
     },
   ]);
 
-  // Otomatik scroll fonksiyonu
   const scrollToBottom = () => {
     const messagesContainer = document.getElementById("messages-container");
     if (messagesContainer) {
-      // Smooth scroll için
       messagesContainer.scrollTo({
         top: messagesContainer.scrollHeight,
         behavior: "smooth",
@@ -71,7 +61,6 @@ const LiveSupportPage = () => {
     }
   };
 
-  // Mesajlar değiştiğinde otomatik scroll
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -95,7 +84,7 @@ const LiveSupportPage = () => {
   return (
     <div className="min-h-screen p-2 md:p-4">
       <div className="grid grid-cols-1 lg:grid-cols-12 min-h-screen gap-4">
-        {/* Sol Panel - Kullanıcı Listesi */}
+        {/* Sol Panel */}
         <div className="lg:col-span-4">
           <Card>
             <CardContent>
@@ -110,7 +99,7 @@ const LiveSupportPage = () => {
                     className="flex items-center gap-1 w-full"
                   >
                     <MessageCircleIcon className="w-3 h-3" />
-                    Rotaly Destek Birimi
+                    {t("supportUnit")}
                   </TabsTrigger>
                 </TabsList>
 
@@ -129,20 +118,20 @@ const LiveSupportPage = () => {
                         <div className="flex-1 min-w-0 text-left">
                           <div className="flex items-center gap-2 mb-1">
                             <p className="font-medium text-sm truncate">
-                              Rotaly Destek Birimi
+                              {t("supportUnit")}
                             </p>
                             <Badge
                               variant="secondary"
                               className="bg-green-100 text-green-800 text-xs"
                             >
-                              Çevrimiçi
+                              {t("online")}
                             </Badge>
                           </div>
                           <p className="text-xs text-gray-600 mb-1">
-                            Uzman Destek Ekibi
+                            {t("expertTeam")}
                           </p>
                           <div className="flex items-center gap-2 text-xs text-gray-500">
-                            <span>Yanıt süresi: ~2 dk</span>
+                            <span>{t("responseTime")}</span>
                           </div>
                         </div>
                       </div>
@@ -154,10 +143,10 @@ const LiveSupportPage = () => {
           </Card>
         </div>
 
-        {/* Sağ Panel - Chat Alanı */}
+        {/* Sağ Panel */}
         <div className="lg:col-span-8">
           <Card className="h-[600px] flex flex-col pt-0">
-            {/* Chat Header */}
+            {/* Header */}
             <CardHeader className="border-b bg-green-500 text-white rounded-t-lg pb-0 mb-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -166,7 +155,7 @@ const LiveSupportPage = () => {
                   </Avatar>
                   <div>
                     <CardTitle className="text-white text-lg">
-                      Rotaly Destek
+                      {t("supportTitle")}
                     </CardTitle>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
@@ -174,11 +163,9 @@ const LiveSupportPage = () => {
                         variant="secondary"
                         className="bg-green-300 text-green-800 text-xs"
                       >
-                        Çevrimiçi
+                        {t("online")}
                       </Badge>
-                      <span className="text-sm opacity-90">
-                        Uzman Destek Ekibi
-                      </span>
+                      <span className="text-sm opacity-90">{t("expertTeam")}</span>
                     </div>
                   </div>
                 </div>
@@ -244,12 +231,12 @@ const LiveSupportPage = () => {
               </div>
             </CardContent>
 
-            {/* Message Input */}
+            {/* Input */}
             <CardFooter className="border-t p-4">
               <div className="relative w-full">
                 <Textarea
                   className="w-full resize-none rounded-lg border border-gray-300 p-3 pr-12 focus:outline-none focus:ring-2 focus:ring-green-500 min-h-[48px] max-h-[120px]"
-                  placeholder="Mesajınızı yazın..."
+                  placeholder={t("typeMessage")}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyPress={(e) =>
