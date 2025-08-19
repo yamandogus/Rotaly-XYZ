@@ -215,7 +215,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
               </div>
 
               {/* Check-in Date */}
-              <div className="lg:col-span-1">
+              <div className="lg:col-span-1 overflow-hidden">
                 <Label className="text-black dark:text-white text-sm font-medium mb-2 block">
                   {t("labels.checkIn")}
                 </Label>
@@ -231,7 +231,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
               </div>
 
               {/* Check-out Date */}
-              <div className="lg:col-span-1">
+              <div className="lg:col-span-1 overflow-hidden">
                 <Label className="text-black dark:text-white text-sm font-medium mb-2 block">
                   {t("labels.checkOut")}
                 </Label>
