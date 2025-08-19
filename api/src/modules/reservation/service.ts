@@ -7,6 +7,7 @@ import {
   ReservationListQuerySchema,
   ReservationListQueryDto,
 } from "../../dto/reservation";
+import { z } from "zod";
 
 interface ExistingReservationScalars {
   id: string;
