@@ -695,11 +695,11 @@
     "passwordsDoNotMatch": "New passwords do not match.",
     "reservationss": {
       "title": "Reservations",
-      "roomNumber": "Room No",
-      "guests": "Guests",
-      "nights": "Nights",
-      "checkIn": "Check-in",
-      "checkOut": "Check-out",
+      "roomNumber": "Room No: {roomNumber}",
+      "guests": "{guests} Guests",
+      "nights": "{nights} Nights",
+      "checkIn": "Check-in: {date}",
+      "checkOut": "Check-out: {date}",
       "breakfast": "Breakfast",
       "breakfastIncluded": "Included",
       "breakfastNotIncluded": "Not Included",
@@ -722,7 +722,8 @@
         "send": "Send",
         "welcomeMessage": "Hello, how can I help you?",
         "defaultMessage": "How can I help you with your {hotelName} reservations?",
-        "botResponse": "Thank you. How can I help you? For more detailed information, you can contact live support."
+        "botResponse": "Thank you. How can I help you? For more detailed information, you can contact live support.",
+        "ourHotel": "Our Hotel"
       },
       "toast": {
         "cancelled": "Your reservation has been cancelled."

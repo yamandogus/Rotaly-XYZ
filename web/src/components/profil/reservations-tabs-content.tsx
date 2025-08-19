@@ -136,7 +136,7 @@ export default function ReservationsContent() {
       
 
       <h2 className="text-3xl font-semibold mb-6 -mt-6 text-gray-900 dark:text-white">
-        Rezervasyonlar
+        {t("title")}
       </h2>
 
       <div className="space-y-6">
@@ -161,10 +161,10 @@ export default function ReservationsContent() {
                 <h3 className="text-xl font-semibold text-foreground mb-1">{res.hotelName}</h3>
                 <p className="text-muted-foreground text-sm mb-3 ml-1">{res.location}</p>
                 <p className="text-muted-foreground text-sm mb-1">
-                  Oda No: {res.roomNumber} • {res.guests} Kişilik • {res.nights} Gece
+                  {t("roomNumber", { roomNumber: res.roomNumber })} • {t("guests", { guests: res.guests })} • {t("nights", { nights: res.nights })}
                 </p>
                 <p className="text-muted-foreground text-sm mb-3">
-                  Giriş: {res.checkIn} • Çıkış: {res.checkOut}
+                  {t("checkIn", { date: res.checkIn })} • {t("checkOut", { date: res.checkOut })}
                 </p>
 
                 <div className="flex flex-wrap gap-2 text-sm">
@@ -175,7 +175,7 @@ export default function ReservationsContent() {
                         : "bg-gray-100 text-gray-400 border border-gray-200"
                     }`}
                   >
-                    Kahvaltı: {res.breakfast ? "Dahil" : "Dahil Değil"}
+                    {t("breakfast")}: {res.breakfast ? t("breakfastIncluded") : t("breakfastNotIncluded")}
                   </span>
 
                   <span
@@ -185,7 +185,7 @@ export default function ReservationsContent() {
                         : "bg-gray-100 text-gray-400 border border-gray-200"
                     }`}
                   >
-                    Otopark: {res.parking ? "Mevcut" : "Mevcut Değil"}
+                    {t("parking")}: {res.parking ? t("parkingAvailable") : t("parkingNotAvailable")}
                   </span>
 
                   <span
@@ -195,7 +195,7 @@ export default function ReservationsContent() {
                         : "bg-gray-100 text-gray-400 border border-gray-200"
                     }`}
                   >
-                    Ücretsiz İptal: {res.cancel ? "Var" : "Yok"}
+                    {t("freeCancellation")}: {res.cancel ? t("freeCancellationAvailable") : t("freeCancellationNotAvailable")}
                   </span>
                 </div>
               </div>
@@ -218,7 +218,7 @@ export default function ReservationsContent() {
                     onClick={() => openCancelModal(res.id)}
                   >
                     <XIcon className="w-5 h-5" />
-                    Rezervasyon İptal
+                    {t("cancelReservation")}
                   </button>
 
                   <button
@@ -235,7 +235,7 @@ export default function ReservationsContent() {
                     }}
                   >
                     <MessageSquareIcon className="w-5 h-5" />
-                    Otele Sor
+                    {t("askHotel")}
                   </button>
                 </div>
               </div>
@@ -317,15 +317,15 @@ export default function ReservationsContent() {
       <Dialog open={isCancelModalOpen} onOpenChange={setIsCancelModalOpen}>
         <DialogContent className="sm:max-w-[400px] p-6">
           <DialogHeader>
-            <DialogTitle>Rezervasyon İptali</DialogTitle>
-            <DialogDescription>Rezervasyonunuzu iptal etmek istediğinize emin misiniz?</DialogDescription>
+            <DialogTitle>{t("cancelModal.title")}</DialogTitle>
+            <DialogDescription>{t("cancelModal.description")}</DialogDescription>
           </DialogHeader>
           <div className="mt-6 flex justify-end gap-4">
             <Button variant="outline" onClick={() => setIsCancelModalOpen(false)}>
-              Vazgeç
+              {t("cancelModal.cancel")}
             </Button>
             <Button className="bg-red-600 hover:bg-red-700 text-white" onClick={confirmCancelReservation}>
-              Evet, İptal Et
+              {t("cancelModal.confirm")}
             </Button>
           </div>
         </DialogContent>
