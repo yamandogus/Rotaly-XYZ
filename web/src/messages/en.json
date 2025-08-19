@@ -54,30 +54,39 @@
     "specialOffers": "Special Deals",
     "reviewsCount": "{count} Reviews",
     "viewDetailsButton": "View Details",
-    "bookingSearch": {
-      "hotel": "Hotel",
-      "pension": "Pension",
-      "apartment": "Apartment",
-      "destinationPlaceholder": "Search and select a city",
-      "searchPlaceholder": "Start searching for a city...",
-      "checkIn": "Check-in",
-      "checkOut": "Check-out",
-      "checkInPlaceholder": "Select check-in date",
-      "checkOutPlaceholder": "Select check-out date",
-      "guestCount": "Number of Guests",
-      "searchButton": "Search",
-      "noResults": "No results found.",
-      "results": "Results",
-      "popularSearches": "Popular searches",
-      "startSearching": "Start searching for a city...",
-      "withRotaly": "With Rotaly",
+       "bookingSearch": {
       "errors": {
         "selectCity": "Please select a city",
         "selectCheckIn": "Please select check-in date",
         "selectCheckOut": "Please select check-out date",
         "selectAdults": "Please select at least 1 adult"
+      },
+      "typewriter": {
+        "hotel": "Hotel",
+        "pension": "Pension",
+        "apartment": "Rental Apartment"
+      },
+      "labels": {
+        "withRotaly": "With Rotaly",
+        "checkIn": "Check-in",
+        "checkOut": "Check-out",
+        "guestCount": "Guest Count"
+      },
+      "placeholders": {
+        "searchCity": "Search and select city",
+        "startSearching": "Start searching for cities...",
+        "selectCheckIn": "Select check-in date",
+        "selectCheckOut": "Select check-out date"
+      },
+      "search": {
+        "noResults": "No results found.",
+        "results": "Results",
+        "popularSearches": "Popular Searches",
+        "startSearching": "Start searching for cities..."
+      },
+      "buttons": {
+        "search": "Search"
       }
-      
     },
     "dateRangeCalendar": {
       "heading": "Select check-in and check-out dates",

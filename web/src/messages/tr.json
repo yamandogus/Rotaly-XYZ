@@ -51,47 +51,39 @@
     "specialOffers": "Özel Teklifler",
     "reviewsCount": "{count} Yorum",
     "viewDetailsButton": "Detayları Görüntüle",
-    "bookingSearch": {
-      "hotel": "Otel",
-      "pension": "Pansiyon",
-      "apartment": "Kiralık Daire",
-      "destinationPlaceholder": "Şehir arayın ve seçin",
-      "searchPlaceholder": "Şehir aramaya başlayın...",
-      "checkIn": "Giriş",
-      "checkOut": "Çıkış",
-      "checkInPlaceholder": "Giriş tarihi seçin",
-      "checkOutPlaceholder": "Çıkış tarihi seçin",
-      "guestCount": "Kişi Sayısı",
-      "searchButton": "Ara",
-      "noResults": "Sonuç bulunamadı.",
-      "results": "Sonuçlar",
-      "popularSearches": "Popüler aramalar",
-      "startSearching": "Şehir aramaya başlayın...",
-      "withRotaly": "Rotaly ile",
+   "bookingSearch": {
       "errors": {
-      "selectCity": "Lütfen bir şehir seçin",
-      "selectCheckIn": "Lütfen giriş tarihi seçin",
-      "selectCheckOut": "Lütfen çıkış tarihi seçin",
-      "selectAdults": "En az 1 yetişkin seçin"
-       },
-      "dateRangeCalendar": {
-      "heading": "Giriş ve çıkış tarihi seçiniz",
-      "monthFormat": "long year",
-      "months": [
-        "Ocak",
-        "Şubat",
-        "Mart",
-        "Nisan",
-        "Mayıs",
-        "Haziran",
-        "Temmuz",
-        "Ağustos",
-        "Eylül",
-        "Ekim",
-        "Kasım",
-        "Aralık"
-      ]
-    }
+        "selectCity": "Lütfen bir şehir seçin",
+        "selectCheckIn": "Lütfen giriş tarihi seçin",
+        "selectCheckOut": "Lütfen çıkış tarihi seçin",
+        "selectAdults": "En az 1 yetişkin seçin"
+      },
+      "typewriter": {
+        "hotel": "Otel",
+        "pension": "Pansiyon",
+        "apartment": "Kiralık Daire"
+      },
+      "labels": {
+        "withRotaly": "Rotaly ile",
+        "checkIn": "Giriş",
+        "checkOut": "Çıkış",
+        "guestCount": "Kişi Sayısı"
+      },
+      "placeholders": {
+        "searchCity": "Şehir arayın ve seçin",
+        "startSearching": "Şehir aramaya başlayın...",
+        "selectCheckIn": "Giriş tarihi seçin",
+        "selectCheckOut": "Çıkış tarihi seçin"
+      },
+      "search": {
+        "noResults": "Sonuç bulunamadı.",
+        "results": "Sonuçlar",
+        "popularSearches": "Popüler aramalar",
+        "startSearching": "Şehir aramaya başlayın..."
+      },
+      "buttons": {
+        "search": "Ara"
+      }
     },
     "guestSelector": {
       "title": "Kişi Sayısı",

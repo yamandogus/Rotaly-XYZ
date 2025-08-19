@@ -1,16 +1,18 @@
-"use client";
+"use client"
 
-import { useEffect, useRef, useState } from "react";
-import { MessageCircleIcon, SendIcon, UserIcon, XIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useRouter } from "next/navigation";
-import { Input } from "../ui/input";
-import { Avatar, AvatarImage } from "../ui/avatar";
-import { useTranslations } from "next-intl";
+import type React from "react"
+
+import { useEffect, useRef, useState } from "react"
+import { MessageCircleIcon, SendIcon, UserIcon, XIcon } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { useRouter } from "next/navigation"
+import { Input } from "../ui/input"
+import { Avatar, AvatarImage } from "../ui/avatar"
+import { useTranslations } from "next-intl"
 
 // Welcome mesajını artık t ile oluşturuyoruz
-const welcomeMessages = (t: any) => {
+const welcomeMessages = (t: (key: string) => string) => {
   return (
     <div>
       <div className="max-w-sm w-full bg-card shadow-lg rounded-xl overflow-hidden">
@@ -31,43 +33,43 @@ const welcomeMessages = (t: any) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default function ChatWidget() {
-  const t = useTranslations("ChatWidget");
-  const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
-  const [message, setMessage] = useState<string>("");
+  const t = useTranslations("ChatWidget")
+  const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter()
+  const [message, setMessage] = useState<string>("")
   const [messages, setMessages] = useState<
     {
-      id: number;
-      message: string | React.ReactNode;
-      sender: "user" | "bot" | "system";
-      type?: "live-support";
+      id: number
+      message: string | React.ReactNode
+      sender: "user" | "bot" | "system"
+      type?: "live-support"
     }[]
-  >([{ id: 1, message: welcomeMessages(t), sender: "bot" }]);
+  >([{ id: 1, message: welcomeMessages(t), sender: "bot" }])
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    scrollToBottom()
+  }, [messages])
 
   useEffect(() => {
-    const openChat = () => setIsOpen(true);
-    window.addEventListener("open-chat-widget", openChat);
-    return () => window.removeEventListener("open-chat-widget", openChat);
-  }, []);
+    const openChat = () => setIsOpen(true)
+    window.addEventListener("open-chat-widget", openChat)
+    return () => window.removeEventListener("open-chat-widget", openChat)
+  }, [])
 
   const handleLiveSupport = () => {
-    setIsOpen(false);
-    router.push("/support");
-  };
+    setIsOpen(false)
+    router.push("/support")
+  }
 
   const handleSendMessage = () => {
     if (message.trim()) {
@@ -75,10 +77,10 @@ export default function ChatWidget() {
         id: Date.now(),
         message: message,
         sender: "user" as const,
-      };
+      }
 
-      setMessages((prev) => [...prev, userMessage]);
-      setMessage("");
+      setMessages((prev) => [...prev, userMessage])
+      setMessage("")
 
       if (message.toLowerCase().includes("canlı destek")) {
         const liveSupportMessage = {
@@ -86,25 +88,25 @@ export default function ChatWidget() {
           message: t("liveSupportMessage"),
           sender: "system" as const,
           type: "live-support" as const,
-        };
-        setMessages((prev) => [...prev, liveSupportMessage]);
+        }
+        setMessages((prev) => [...prev, liveSupportMessage])
       } else if (message.toLowerCase().includes("anamenu")) {
         const reservationMessage = {
           id: Date.now() + 1,
           message: welcomeMessages(t),
           sender: "bot" as const,
-        };
-        setMessages((prev) => [...prev, reservationMessage]);
+        }
+        setMessages((prev) => [...prev, reservationMessage])
       } else {
         const botResponse = {
           id: Date.now() + 1,
           message: t("botDefaultMessage"),
           sender: "bot" as const,
-        };
-        setMessages((prev) => [...prev, botResponse]);
+        }
+        setMessages((prev) => [...prev, botResponse])
       }
     }
-  };
+  }
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
@@ -141,12 +143,7 @@ export default function ChatWidget() {
           <div className="flex-1 overflow-y-auto p-3 scrollbar-hide">
             <div className="flex flex-col gap-3 scrollbar-hide">
               {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex gap-2 ${
-                    msg.sender === "user" ? "justify-end" : "justify-start"
-                  }`}
-                >
+                <div key={msg.id} className={`flex gap-2 ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
                   {(msg.sender === "bot" || (msg.sender === "system" && msg.type === "live-support")) && (
                     <Avatar className="w-6 h-6 flex-shrink-0">
                       <AvatarImage src="/images/logo3.png" alt="Rotaly Logo" />
@@ -158,8 +155,8 @@ export default function ChatWidget() {
                         msg.sender === "user"
                           ? "bg-blue-500 dark:bg-blue-500 text-white rounded-br-sm"
                           : msg.sender === "system"
-                          ? "bg-yellow-50 text-gray-800 rounded-bl-sm border border-yellow-200"
-                          : "bg-gray-100 text-gray-800 rounded-bl-sm"
+                            ? "bg-yellow-50 text-gray-800 rounded-bl-sm border border-yellow-200"
+                            : "bg-gray-100 text-gray-800 rounded-bl-sm"
                       }`}
                     >
                       {msg.message}
@@ -215,5 +212,5 @@ export default function ChatWidget() {
         </PopoverContent>
       </Popover>
     </div>
-  );
+  )
 }
