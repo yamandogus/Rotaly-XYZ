@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { MessageController } from "./controller";
 import { authenticateToken } from "../../middleware/jwt.middleware";
+import { verifiedUser } from "../../middleware/auth.middleware";
 import {
   validateBody,
   validateQuery,
@@ -15,8 +16,9 @@ import {
 const router = Router();
 const messageController = new MessageController();
 
-// all message routes require auth
+// all message routes require auth and email verification
 router.use(authenticateToken);
+router.use(verifiedUser);
 
 /**
  * @route POST /api/messages/send
