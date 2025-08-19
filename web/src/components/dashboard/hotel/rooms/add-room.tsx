@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Image from "next/image";
 
 interface AddRoomDialogProps {
   isAddRoomDialogOpen: boolean;
@@ -26,7 +27,6 @@ interface AddRoomDialogProps {
 }
 
 const AddRoomDialog: FC<AddRoomDialogProps> = ({
-  isAddRoomDialogOpen,
   setIsAddRoomDialogOpen,
 }) => {
   const [newRoom, setNewRoom] = useState<Partial<Room & { image?: File }>>({});
@@ -205,10 +205,12 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
             onChange={handleImageChange}
           />
           {previewImage && (
-            <img
+            <Image
               src={previewImage}
               alt="Oda Önizleme"
               className="mt-2 h-32 w-full object-cover rounded"
+              width={100}
+              height={100}
             />
           )}
         </div>

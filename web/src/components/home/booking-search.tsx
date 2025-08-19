@@ -30,7 +30,9 @@ import {
   CommandList,
   CommandSeparator,
 } from "../ui/command";
-import { hotelsData, popularHotels } from "@/data/dumy";
+import hotelsData from "@/data/hotelsData.json";
+import { popularHotels } from "@/data/dumy";
+import { HotelNew } from "@/types/hotel";
 
 interface BookingSearchProps {
   handleSearch: () => void;
@@ -113,7 +115,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
 
   const filteredHotels = useMemo(() => {
     if (searchTerm.length > 2) {
-      return hotelsData.filter((hotel) =>
+      return hotelsData.filter((hotel: HotelNew) =>
         hotel.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }

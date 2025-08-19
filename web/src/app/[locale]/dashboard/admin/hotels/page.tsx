@@ -4,8 +4,8 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { hotelsData } from "@/data/dumy";
-import { Hotel } from "@/types/hotel";
+import hotelsData from "@/data/hotelsData.json";
+import { HotelNew } from "@/types/hotel";
 import {
   HotelCards,
   HotelFilters,
@@ -20,8 +20,8 @@ export default function HotelsPage() {
   const t = useTranslations("Hotels");
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredHotels, setFilteredHotels] = useState<Hotel[]>(hotelsData);
-  const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
+  const [filteredHotels, setFilteredHotels] = useState<HotelNew[]>(hotelsData);
+  const [selectedHotel, setSelectedHotel] = useState<HotelNew | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isAddHotelDialogOpen, setIsAddHotelDialogOpen] = useState(false);
@@ -29,26 +29,27 @@ export default function HotelsPage() {
   const handleSearch = (value: string) => {
     setSearchTerm(value);
     const filtered = hotelsData.filter(
-      (hotel: Hotel) =>
+      (hotel: HotelNew) =>
         hotel.name.toLowerCase().includes(value.toLowerCase()) ||
         hotel.location.toLowerCase().includes(value.toLowerCase()) ||
         hotel.id.toLowerCase().includes(value.toLowerCase()) ||
-        hotel.owner.toLowerCase().includes(value.toLowerCase())
+        hotel.city.toLowerCase().includes(value.toLowerCase()) ||
+        hotel.type.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredHotels(filtered);
   };
 
-  const handleViewDetails = (hotel: Hotel) => {
+  const handleViewDetails = (hotel: HotelNew) => {
     // SEO için ayrı sayfaya yönlendirme yapıyoruz
     router.push(`/dashboard/admin/hotels/${hotel.id}`);
   };
 
-  const handleEdit = (hotel: Hotel) => {
+  const handleEdit = (hotel: HotelNew) => {
     setSelectedHotel(hotel);
     setIsEditDialogOpen(true);
   };
 
-  const handleDelete = (hotel: Hotel) => {
+  const handleDelete = (hotel: HotelNew) => {
     setSelectedHotel(hotel);
     setIsDeleteDialogOpen(true);
   };
@@ -67,10 +68,10 @@ export default function HotelsPage() {
 
   const getHotelStatus = (status: string) => {
     const filteredHotelsActive = hotelsData.filter(
-      (hotel: Hotel) => hotel.status === "Active"
+      (hotel: HotelNew) => hotel.isActive === true
     );
     const filteredHotelsInactive = hotelsData.filter(
-      (hotel: Hotel) => hotel.status === "Inactive"
+      (hotel: HotelNew) => hotel.isActive === false
     );
     const filteredHotelsAll = hotelsData;
     if (status === "Active") {
@@ -164,7 +165,7 @@ export default function HotelsPage() {
         isEditDialogOpen={isEditDialogOpen}
         setIsEditDialogOpen={setIsEditDialogOpen}
         t={t}
-        selectedHotel={selectedHotel || ({} as Hotel)}
+        selectedHotel={selectedHotel || ({} as HotelNew)}
       />
 
       {/* Delete Confirmation Dialog */}
@@ -172,7 +173,7 @@ export default function HotelsPage() {
         isDeleteDialogOpen={isDeleteDialogOpen}
         setIsDeleteDialogOpen={setIsDeleteDialogOpen}
         t={t}
-        selectedHotel={selectedHotel || ({} as Hotel)}
+        selectedHotel={selectedHotel || ({} as HotelNew)}
         confirmDelete={confirmDelete}
       />
 

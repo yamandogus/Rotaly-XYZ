@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Hotel } from "@/types/hotel";
+import { HotelNew } from "@/types/hotel";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -34,7 +34,7 @@ interface EditHotelDialogProps {
   isEditDialogOpen: boolean;
   setIsEditDialogOpen: (open: boolean) => void;
   t: (key: string) => string;
-  selectedHotel: Hotel;
+  selectedHotel: HotelNew;
 }
 
 // isActive - Oteli aktif/pasif yapma (en önemli)
