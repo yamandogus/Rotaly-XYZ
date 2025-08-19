@@ -214,6 +214,7 @@ const AddRoomDialog: FC<AddRoomDialogProps> = ({
             onChange={handleImageChange}
           />
           {previewImage && (
+
             <div className="relative h-40 w-full mt-2">
               <Image
                 src={previewImage}

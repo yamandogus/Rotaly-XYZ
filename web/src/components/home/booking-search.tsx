@@ -30,8 +30,9 @@ import {
   CommandList,
   CommandSeparator,
 } from "../ui/command";
-import { hotelsData, popularHotels } from "@/data/dumy";
-import { useTranslations } from "next-intl";
+import hotelsData from "@/data/hotelsData.json";
+import { popularHotels } from "@/data/dumy";
+import { HotelNew } from "@/types/hotel";
 
 interface BookingSearchProps {
   handleSearch: () => void;
@@ -42,7 +43,6 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
   const dispatch = useDispatch();
   const { showError } = useToastMessages();
   const [isOpen, setIsOpen] = useState(false);
-  const t = useTranslations("HomePage.bookingSearch");
 
   // Store'dan mevcut verileri al
   const {
@@ -69,19 +69,19 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
   // Search fonksiyonu - store'a veri kaydet ve parent'a bildir
   const handleSearchClick = () => {
     if (!destination.trim()) {
-      showError(t("errors.selectCity"));
+      showError("Lütfen bir şehir seçin");
       return;
     }
     if (!checkIn) {
-      showError(t("errors.selectCheckIn"));
+      showError("Lütfen giriş tarihi seçin");
       return;
     }
     if (!checkOut) {
-      showError(t("errors.selectCheckOut"));
+      showError("Lütfen çıkış tarihi seçin");
       return;
     }
     if (guests.adults < 1) {
-      showError(t("errors.selectAdults"));
+      showError("En az 1 yetişkin seçin");
       return;
     }
 
@@ -106,7 +106,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
   };
 
   const [text] = useTypewriter({
-    words: [t("hotel"), t("pension"), t("apartment")],
+    words: ["Otel", "Pansiyon", "Kiralık Daire"],
     loop: true,
     typeSpeed: 80,
     deleteSpeed: 60,
@@ -115,7 +115,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
 
   const filteredHotels = useMemo(() => {
     if (searchTerm.length > 2) {
-      return hotelsData.filter((hotel) =>
+      return hotelsData.filter((hotel: HotelNew) =>
         hotel.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
@@ -133,14 +133,14 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
               <div className="lg:col-span-1">
                 <Label className="text-black dark:text-white text-sm font-medium mb-2 block">
                   <span className="md:block hidden">{text}</span>
-                  <span className="md:hidden block">{t("withRotaly")} {" "} {text}</span>
+                  <span className="md:hidden block">Rotaly ile {" "} {text}</span>
                 </Label>
                 <Popover open={isOpen} onOpenChange={setIsOpen}>
                   <PopoverTrigger asChild>
                     <div className="relative">
                       <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 z-10" />
                       <Input
-                        placeholder={t("destinationPlaceholder")}
+                        placeholder="Şehir arayın ve seçin"
                         value={destination}
                         onChange={(e) => {
                           setSearchTerm(e.target.value);
@@ -164,7 +164,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
                           <div className="relative mb-2">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                             <Input
-                              placeholder={t("searchPlaceholder")}
+                              placeholder="Şehir aramaya başlayın..."
                               value={searchTerm}
                               onChange={(e) => setSearchTerm(e.target.value)}
                               className="pl-10 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-black dark:text-white placeholder:text-gray-400"
@@ -172,9 +172,9 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
                           </div>
                           <Command className="bg-card">
                             <CommandList className="bg-card">
-                              <CommandEmpty>{t("noResults")}</CommandEmpty>
+                              <CommandEmpty>Sonuç bulunamadı.</CommandEmpty>
                               {filteredHotels.length > 0 ? (
-                                <CommandGroup heading={t("results")}>
+                                <CommandGroup heading="Sonuçlar">
                                   {filteredHotels.map((hotel) => (
                                     <CommandItem
                                       key={hotel.name}
@@ -201,11 +201,11 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
                                   ))}
                                 </CommandGroup>
                               ) : (
-                                <CommandGroup heading={t("results")}>
+                                <CommandGroup heading="Sonuçlar">
                                   <span className="text-gray-400 py-2 text-sm">
                                     {searchTerm === ""
-                                      ? t("startSearching")
-                                      : t("noResults")}
+                                      ? "Şehir aramaya başlayın..."
+                                      : "Sonuç bulunamadı."}
                                   </span>
                                 </CommandGroup>
                               )}
@@ -214,7 +214,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
                             <CommandList>
                               <CommandGroup>
                                 <div className="px-2 py-1 text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                                  {t("popularSearches")}
+                                  Popüler aramalar
                                 </div>
                                 {popularHotels.map((hotel) => (
                                   <CommandItem
@@ -253,7 +253,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
               {/* Diğer alanlar aynı kalacak */}
               <div className="lg:col-span-1">
                 <Label className="text-black dark:text-white text-sm font-medium mb-2 block">
-                  {t("checkIn")}
+                  Giriş
                 </Label>
                 <SingleDatePicker
                   date={checkIn}
@@ -261,14 +261,14 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
                   checkOut={checkOut}
                   onDateChange={(date) => setCheckIn(date ?? new Date())}
                   onDateRangeChange={handleDateRangeChange}
-                  placeholder={t("checkInPlaceholder")}
+                  placeholder="Giriş tarihi seçin"
                   type="checkin"
                 />
               </div>
 
               <div className="lg:col-span-1">
                 <Label className="text-black dark:text-white text-sm font-medium mb-2 block">
-                  {t("checkOut")}
+                  Çıkış
                 </Label>
                 <SingleDatePicker
                   date={checkOut}
@@ -276,14 +276,14 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
                   checkOut={checkOut}
                   onDateChange={(date) => setCheckOut(date ?? new Date())}
                   onDateRangeChange={handleDateRangeChange}
-                  placeholder={t("checkOutPlaceholder")}
+                  placeholder="Çıkış tarihi seçin"
                   type="checkout"
                 />
               </div>
 
               <div className="lg:col-span-1">
                 <Label className="text-black dark:text-white text-sm font-medium mb-2 block">
-                  {t("guestCount")}
+                  Kişi Sayısı
                 </Label>
                 <GuestSelector guests={guests} onGuestsChange={setGuests} />
               </div>
@@ -294,7 +294,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
                   className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg"
                 >
                   <Search className="h-4 w-4 mr-2" />
-                  {t("searchButton")}
+                  Ara
                 </Button>
               </div>
             </div>

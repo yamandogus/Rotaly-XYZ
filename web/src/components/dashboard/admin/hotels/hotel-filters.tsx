@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { CardTitle } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
+import hotelsData from '@/data/hotelsData.json';
 import { ArrowUpDown, Filter, Plus, Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import React from 'react'
@@ -20,7 +21,7 @@ const HotelFilters = ({ searchTerm, handleSearch, getHotelStatus, getSortBy, set
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-    <CardTitle className="text-xl font-semibold">{t("hotelList")}</CardTitle>
+    <CardTitle className="text-xl font-semibold">{t("hotelList")} <span className="text-muted-foreground text-xl font-semibold">({hotelsData.length})</span></CardTitle>
     <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
       {/* Search */}
       <div className="relative">

@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import HotelCard from "@/components/hotelCard";
-import { hotelData } from "@/data/dumy";
+import hotelsData from "@/data/hotelsData.json";
 import { RootState } from "@/store/store";
 import {
   Pagination,
@@ -13,23 +13,26 @@ import {
   PaginationPrevious,
   PaginationNext,
 } from "@/components/ui/pagination";
+import { HotelNew } from "@/types/hotel";
+import { Button } from "./ui/button";
+import { clearSearch } from "@/store/search/search-slice";
 
 const ITEMS_PER_PAGE = 9;
 
 export function HotelListWithPagination() {
   const [currentPage, setCurrentPage] = useState(1);
-
+  const dispatch = useDispatch();
   // Store'dan search verilerini al
   const { city, guests } = useSelector((state: RootState) => state.search);
 
   // Filtrelenmiş oteller - search kriterlerine göre
   const filteredHotels = useMemo(() => {
-    let filtered = hotelData;
+    let filtered = hotelsData;
 
     // Şehir filtresi
     if (city.trim()) {
       filtered = filtered.filter(
-        (hotel) =>
+        (hotel: HotelNew) =>
           hotel.location.toLowerCase().includes(city.toLowerCase()) ||
           hotel.name.toLowerCase().includes(city.toLowerCase())
       );
@@ -66,6 +69,14 @@ export function HotelListWithPagination() {
             </span>
           )}
         </h2>
+        <div>
+          <Button variant="outline" onClick={() => {
+            dispatch(clearSearch());
+            setCurrentPage(1);
+          }}>
+            Tüm Otelleri Görünütüle
+          </Button>
+        </div>
         <div className="text-sm text-muted-foreground">
           Sayfa {currentPage}/{totalPages}
         </div>
@@ -73,22 +84,21 @@ export function HotelListWithPagination() {
 
       <div className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[30px]">
-          {currentItems.map((hotel) => {
-            const cancelText = hotel.cancel
-              ? "Ücretsiz iptal"
-              : "Ücretsiz iptal edilemez";
-            const breakfastText = hotel.breakfast
-              ? "Kahvaltı dahil"
-              : "Kahvaltı dahil değil";
-            const parkingText = hotel.parking
-              ? "Otopark mevcut"
-              : "Otopark yok";
+          {currentItems.map((hotel: HotelNew) => {
+            const cancelText = "Ücretsiz iptal";
+            const breakfastText = "Kahvaltı dahil";
+            const parkingText = "Otopark mevcut";
 
             return (
               <HotelCard
                 key={hotel.id}
                 item={{
-                  ...hotel,
+                  id: hotel.id,
+                  name: hotel.name,
+                  location: hotel.location,
+                  rating: hotel.rating,
+                  price: hotel.price || "Fiyat belirtilmemiş",
+                  image: hotel.images[0]?.url || "/images/hotel-placeholder.jpg",
                   cancelText,
                   breakfastText,
                   parkingText,
