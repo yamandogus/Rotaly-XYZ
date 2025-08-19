@@ -6,15 +6,18 @@ import { Rating, RatingButton } from "../ui/shadcn-io/rating";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function HotelTabs() {
+  const t = useTranslations("HotelDetail.hotelTabs");
+
   return (
     <div className="mt-8 bg-white dark:bg-card rounded-lg shadow-md p-6">
       <Tabs defaultValue="description" className="w-full">
         <TabsList className="grid w-full grid-cols-3 ">
-          <TabsTrigger value="description">Açıklama</TabsTrigger>
-          <TabsTrigger value="reviews">Değerlendirme</TabsTrigger>
-          <TabsTrigger value="map">Harita</TabsTrigger>
+          <TabsTrigger value="description">{t("descriptionTab")}</TabsTrigger>
+          <TabsTrigger value="reviews">{t("reviewsTab")}</TabsTrigger>
+          <TabsTrigger value="map">{t("mapTab")}</TabsTrigger>
         </TabsList>
 
         <TabsContent
@@ -22,53 +25,41 @@ export default function HotelTabs() {
           className="pt-4 text-gray-700 dark:text-gray-300"
         >
           <h2 className="text-xl font-semibold mb-3">
-            Marakeş&apos;in Kalbinde Huzurlu Bir Kaçış
+            {t("description.title")}
           </h2>
           <p className="mb-4">
-            Marakeş&apos;in kalbinde yer alan Riad Deluxe, geleneksel Fas
-            mimarisiyle modern konforu birleştiriyor. Geniş avlusu, serinletici
-            havuzu ve huzurlu bahçeleriyle şehrin gürültüsünden uzaklaşmak için
-            ideal bir sığınak sunar. Her odası özenle dekore edilmiş olup, Fas
-            el sanatlarının zenginliğini yansıtır.
+            {t("description.paragraph1")}
           </p>
           <p className="mb-4">
-            Tüm önemli turistik mekanlara yürüme mesafesinde olan otelimiz,
-            Djemaa el-Fna Meydanı&apos;na ve Medine çarşılarına kolay erişim
-            sağlar. Misafirlerimiz, geleneksel Fas hamamımızda rahatlayabilir
-            veya çatı terasımızda panoramik şehir manzarası eşliğinde nane çayı
-            keyfi yapabilirler.
+            {t("description.paragraph2")}
           </p>
-          <h3 className="text-lg font-semibold mb-2 mt-4">Odalar ve Süitler</h3>
+          <h3 className="text-lg font-semibold mb-2 mt-4">{t("description.roomsAndSuitesTitle")}</h3>
           <ul className="list-disc list-inside mb-4 space-y-1">
-            <li>Özenle dekore edilmiş, konforlu odalar ve lüks süitler.</li>
-            <li>
-              Her odada özel banyo, klima, ücretsiz Wi-Fi ve düz ekran TV.
-            </li>
-            <li>Geleneksel Fas el sanatları ve modern olanaklar.</li>
+            <li>{t("description.roomFeature1")}</li>
+            <li>{t("description.roomFeature2")}</li>
+            <li>{t("description.roomFeature3")}</li>
           </ul>
-          <h3 className="text-lg font-semibold mb-2 mt-4">Hizmetler</h3>
+          <h3 className="text-lg font-semibold mb-2 mt-4">{t("description.servicesTitle")}</h3>
           <ul className="list-disc list-inside mb-4 space-y-1">
-            <li>24 Saat Resepsiyon</li>
-            <li>Oda Servisi</li>
-            <li>Ücretsiz Wi-Fi</li>
-            <li>Restoran ve Bar</li>
-            <li>Açık Havuz</li>
-            <li>Geleneksel Hamam</li>
-            <li>Çatı Terası</li>
-            <li>Havalimanı Transferi (ek ücretli)</li>
+            <li>{t("description.service1")}</li>
+            <li>{t("description.service2")}</li>
+            <li>{t("description.service3")}</li>
+            <li>{t("description.service4")}</li>
+            <li>{t("description.service5")}</li>
+            <li>{t("description.service6")}</li>
+            <li>{t("description.service7")}</li>
+            <li>{t("description.service8")}</li>
           </ul>
-          <h3 className="text-lg font-semibold mb-2 mt-4">Yerel İpuçları</h3>
+          <h3 className="text-lg font-semibold mb-2 mt-4">{t("description.localTipsTitle")}</h3>
           <ul className="list-disc list-inside mb-4 space-y-1">
             <li>
-              Djemaa el-Fna Meydanı&apos;nı ziyaret edin ve akşam yemeği için
-              yerel yemek tezgahlarını deneyin.
+              {t("description.localTip1")}
             </li>
             <li>
-              Medine&apos;nin dar sokaklarında kaybolun ve el yapımı ürünler
-              bulun.
+              {t("description.localTip2")}
             </li>
-            <li>Jardin Majorelle&apos;i keşfedin.</li>
-            <li>Baharat çarşılarını ziyaret edin.</li>
+            <li>{t("description.localTip3")}</li>
+            <li>{t("description.localTip4")}</li>
           </ul>
         </TabsContent>
 
@@ -77,7 +68,7 @@ export default function HotelTabs() {
           className="pt-4 text-gray-700 dark:text-gray-300"
         >
           <h2 className="text-xl font-semibold mb-3">
-            Misafir Değerlendirmeleri (125)
+            {t("reviews.title", { count: 125 })}
           </h2>
           <div className="mb-4 flex items-center gap-4">
             <div className="flex flex-col items-center">
@@ -91,12 +82,12 @@ export default function HotelTabs() {
                   />
                 ))}
               </Rating>
-              <span className="text-sm text-gray-500">Mükemmel</span>
+              <span className="text-sm text-gray-500">{t("reviews.excellent")}</span>
             </div>
             <div className="flex-1 space-y-2">
               {[5, 4, 3, 2, 1].map((starCount) => (
                 <div key={starCount} className="flex items-center gap-2">
-                  <span className="text-sm">{starCount} Yıldız</span>
+                  <span className="text-sm">{t("reviews.stars", { starCount })}</span>
                   <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                     <div
                       className="bg-blue-600 h-2.5 rounded-full"
@@ -123,7 +114,7 @@ export default function HotelTabs() {
           <div className="border-t pt-4 mt-4 space-y-6">
             <div className="border rounded-lg p-4">
               <div className="flex items-center mb-2">
-                <div className="font-semibold mr-2">Ayşe Yılmaz</div>
+                <div className="font-semibold mr-2">{t("reviews.user1Name")}</div>
                 <Rating defaultValue={5} readOnly>
                   {Array.from({ length: 5 }).map((_, index) => (
                     <RatingButton
@@ -133,16 +124,15 @@ export default function HotelTabs() {
                     />
                   ))}
                 </Rating>
-                <span className="text-sm text-gray-500 ml-2">5 gün önce</span>
+                <span className="text-sm text-gray-500 ml-2">{t("reviews.user1Date")}</span>
               </div>
               <p className="text-sm">
-                &quot;Harika bir deneyimdi! Otelin konumu muhteşem, personel çok
-                ilgili ve odalar tertemizdi. Kesinlikle tekrar kalacağım.&quot;
+                {t("reviews.user1Comment")}
               </p>
             </div>
             <div className="border rounded-lg p-4">
               <div className="flex items-center mb-2">
-                <div className="font-semibold mr-2">Mehmet Demir</div>
+                <div className="font-semibold mr-2">{t("reviews.user2Name")}</div>
                 <Rating defaultValue={4} readOnly>
                   {Array.from({ length: 5 }).map((_, index) => (
                     <RatingButton
@@ -152,16 +142,14 @@ export default function HotelTabs() {
                     />
                   ))}
                 </Rating>
-                <span className="text-sm text-gray-500 ml-2">2 hafta önce</span>
+                <span className="text-sm text-gray-500 ml-2">{t("reviews.user2Date")}</span>
               </div>
               <p className="text-sm">
-                &quot;Otel çok şık, Fas atmosferini sonuna kadar yaşatıyor.
-                Kahvaltı biraz daha çeşitli olabilirdi ama genel olarak çok
-                memnun kaldık.&quot;
+                {t("reviews.user2Comment")}
               </p>
             </div>
             <Button variant="outline" className="w-full mt-4">
-              Tüm Değerlendirmeleri Gör
+              {t("reviews.viewAllReviews")}
             </Button>
           </div>
         </TabsContent>
@@ -172,12 +160,12 @@ export default function HotelTabs() {
             <CardHeader>
               <CardTitle className="text-xl font-bold text-gray-900 dark:text-white flex items-center">
                 <MapPin className="h-5 w-5 text-red-500 mr-2" />
-                Otel Konumu
+                {t("map.title")}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0 h-[400px]">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6016.451935958043!2d28.980267249633762!3d41.064053019894764!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab71cc5d69f1f%3A0x51e922b9e59b5a9b!2zaXN0YW5idWwgcm90YXJ5IGt1bMO8YsO8IGRlcm5lxJ9p!5e0!3m2!1str!2str!4v1754138151565!5m2!1str!2str"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6016.451935958043!2d28.980267249633762!3d41.064053019894764!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab71cc5d69f1f%3A0x51e922b9e59b5a9b!2zaXN0YW5idWwgcm90YWx5IGt1bMO8YsO8IGRlcm5lxJ9p!5e0!3m2!1s!2str!4v1754138151565!5m2!1s!2str"
                 className="w-full h-[300px] rounded-b-lg"
                 style={{ border: 0 }}
                 allowFullScreen
@@ -188,10 +176,10 @@ export default function HotelTabs() {
               <div className="p-4">
                 <div className="flex items-center space-x-4">
                   <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Rotaly Merkez Ofisi</h4>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-1">{t("map.officeName")}</h4>
                     <p className="text-sm text-gray-600 dark:text-gray-300">
-                      Bertance Bulvarı, Sevin Apartman No:64 D:11<br />
-                      Balmumcu Beşiktaş / İstanbul
+                      {t("map.officeAddress1")}<br />
+                      {t("map.officeAddress2")}
                     </p>
                   </div>
                   <Image

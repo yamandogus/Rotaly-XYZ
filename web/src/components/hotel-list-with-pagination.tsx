@@ -23,9 +23,7 @@ export function HotelListWithPagination() {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   // Store'dan search verilerini al
-  const { city, checkIn, checkOut, guests } = useSelector(
-    (state: RootState) => state.search
-  );
+  const { city, guests } = useSelector((state: RootState) => state.search);
 
   // Filtrelenmiş oteller - search kriterlerine göre
   const filteredHotels = useMemo(() => {
@@ -36,19 +34,17 @@ export function HotelListWithPagination() {
       filtered = filtered.filter(
         (hotel: HotelNew) =>
           hotel.location.toLowerCase().includes(city.toLowerCase()) ||
-          hotel.location.toLowerCase().includes(city.toLowerCase()) ||
           hotel.name.toLowerCase().includes(city.toLowerCase())
       );
     }
 
     // Misafir sayısı filtresi (oda kapasitesi varsa)
     if (guests > 0) {
-      // Bu kısım hotel datasında capacity field'i varsa kullanılabilir
       // filtered = filtered.filter(hotel => hotel.capacity >= guests);
     }
 
     return filtered;
-  }, [city, checkIn, checkOut, guests]);
+  }, [city, guests]); // checkIn ve checkOut bağımlılıkları kaldırıldı
 
   const totalPages = Math.ceil(filteredHotels.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -59,13 +55,11 @@ export function HotelListWithPagination() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Sayfanın üstüne scroll yap
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <div className="bg-background">
-      {/* Başlık */}
       <div className="px-6 flex justify-between items-center">
         <h2 className="text-xl font-bold text-foreground">
           {filteredHotels.length} sonuç bulundu
@@ -88,7 +82,6 @@ export function HotelListWithPagination() {
         </div>
       </div>
 
-      {/* Oteller grid */}
       <div className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[30px]">
           {currentItems.map((hotel: HotelNew) => {
@@ -115,12 +108,10 @@ export function HotelListWithPagination() {
           })}
         </div>
 
-        {/* Sayfalama */}
         {totalPages > 1 && (
           <div className="flex justify-center items-center mt-10">
             <Pagination>
               <PaginationContent>
-                {/* Önceki */}
                 {currentPage > 1 && (
                   <PaginationItem>
                     <PaginationPrevious
@@ -133,7 +124,6 @@ export function HotelListWithPagination() {
                   </PaginationItem>
                 )}
 
-                {/* Sayfa numaraları */}
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(
                   (page) => (
                     <PaginationItem key={page}>
@@ -151,7 +141,6 @@ export function HotelListWithPagination() {
                   )
                 )}
 
-                {/* Sonraki */}
                 {currentPage < totalPages && (
                   <PaginationItem>
                     <PaginationNext

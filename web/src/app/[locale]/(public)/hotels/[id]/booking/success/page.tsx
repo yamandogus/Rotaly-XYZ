@@ -9,18 +9,20 @@ import { Rating, RatingButton } from "@/components/ui/shadcn-io/rating";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setStepReset } from "@/store/reservation/reservation-slice";
+import { useTranslations } from "next-intl";
 
 export default function BookingSuccessPage() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const t = useTranslations("HotelDetail.BookingSuccessPage");
 
-  const dispatch = useDispatch()
-  const router = useRouter()
   const handleGoToHomepage = () => {
-      router.push("/")
-      setTimeout(() => { 
-         dispatch(setStepReset())
-      }, 2000);
+    router.push("/");
+    setTimeout(() => {
+      dispatch(setStepReset());
+    }, 2000);
   };
- 
+
   const reservationNumber = Math.floor(Math.random() * 900000) + 100000;
 
   return (
@@ -37,24 +39,23 @@ export default function BookingSuccessPage() {
 
           {/* Rezervasyon Numarası */}
           <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            Rezervasyon No: {reservationNumber}
+            {t("reservationNo")} {reservationNumber}
           </h1>
 
           {/* Başarı Mesajı */}
           <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
-            Tebrikler! {hotelData[0].name} için rezervasyonunuz başarıyla
-            alınmıştır.
+            {t("congratulations", { hotelName: hotelData[0].name })}
           </h2>
 
           {/* Alt Metin */}
           <p className="text-gray-600 dark:text-gray-400 mb-8">
-            Konaklamanızla ilgili tüm detaylar aşağıda yer almaktadır
+            {t("detailsBelow")}
           </p>
 
           {/* Ana Sayfaya Dön Butonu */}
           <Link href="/" onClick={handleGoToHomepage}>
             <Button className="bg-[#2F6FED] hover:bg-[#2F6FED]/90 text-white px-8 py-3 rounded-lg font-medium">
-              Ana sayfaya dön
+              {t("goToHomepage")}
             </Button>
           </Link>
         </div>
@@ -93,7 +94,7 @@ export default function BookingSuccessPage() {
                 </div>
 
                 <span className="text-sm text-gray-600 dark:text-gray-400">
-                  (120)
+                  {t("reviewsCount", { count: 120 })}
                 </span>
               </div>
             </div>
@@ -106,35 +107,38 @@ export default function BookingSuccessPage() {
               {/* Sol Taraf - Rezervasyon Bilgileri */}
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                  Rezervasyon Bilgileri
+                  {t("reservationInfoTitle")}
                 </h3>
                 <div className="space-y-3">
                   <div>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                      Giriş
+                      {t("checkInLabel")}
                     </p>
                     <p className="font-medium text-gray-900 dark:text-gray-100">
                       {bookingData.checkIn}
                     </p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {bookingData.checkInTime}&apos;da giriş
+                      {t("checkInTime", { time: bookingData.checkInTime })}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                      Çıkış
+                      {t("checkOutLabel")}
                     </p>
                     <p className="font-medium text-gray-900 dark:text-gray-100">
                       {bookingData.checkOut}
                     </p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {bookingData.checkOutTime}&apos;da çıkış
+                      {t("checkOutTime", { time: bookingData.checkOutTime })}
                     </p>
                   </div>
                   <div>
                     <p className="font-medium text-gray-900 dark:text-gray-100">
-                      {bookingData.roomType} / {bookingData.nights} gece,{" "}
-                      {bookingData.guests} misafir
+                      {t("roomTypeAndGuests", {
+                        roomType: bookingData.roomType,
+                        nights: bookingData.nights,
+                        guests: bookingData.guests,
+                      })}
                     </p>
                   </div>
                 </div>
@@ -143,12 +147,12 @@ export default function BookingSuccessPage() {
               {/* Sağ Taraf - Ödeme Özeti */}
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                  Ödeme Özeti
+                  {t("paymentSummaryTitle")}
                 </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-gray-600 dark:text-gray-400">
-                      {bookingData.nights} gece
+                      {t("nightsDuration", { nights: bookingData.nights })}
                     </span>
                     <span className="font-medium text-gray-900 dark:text-gray-100">
                       {bookingData.basePrice.toLocaleString("tr-TR")} TL
@@ -156,7 +160,7 @@ export default function BookingSuccessPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600 dark:text-gray-400">
-                      Vergi ve Hizmet Bedeli
+                      {t("taxesAndFees")}
                     </span>
                     <span className="font-medium text-gray-900 dark:text-gray-100">
                       {bookingData.taxesAndFees.toLocaleString("tr-TR")} TL
@@ -165,7 +169,7 @@ export default function BookingSuccessPage() {
                   <div className="border-t pt-3 mt-3">
                     <div className="flex justify-between">
                       <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
-                        Toplam
+                        {t("total")}
                       </span>
                       <span className="text-lg font-bold text-[#2F6FED]">
                         {bookingData.total.toLocaleString("tr-TR")} TL

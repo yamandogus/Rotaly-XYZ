@@ -136,7 +136,7 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
                   d="M9 12l2 2 4-4"
                 />
               </svg>
-              <span className="font-medium">{item.cancelText}</span>
+              <span className="font-medium">{t("cancellationText")}</span>
             </div>
           )}
           {item.breakfastText && (
@@ -154,13 +154,13 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
                   d="M9 12l2 2 4-4"
                 />
               </svg>
-              <span className="font-medium">{item.breakfastText}</span>
+              <span className="font-medium">{t("breakfastText")}</span>
             </div>
           )}
           {item.parkingText && (
             <div className="flex items-center gap-1.5 text-xs text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 px-2.5 py-1.5 rounded-lg border border-blue-100 dark:border-blue-800/30">
               <CarIcon className="w-3 h-3" />
-              <span className="font-medium">{item.parkingText}</span>
+              <span className="font-medium">{t("parkingText")}</span>
             </div>
           )}
         </div>
@@ -175,7 +175,7 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
         </div>
         <Button 
           onClick={() => router.push(`/hotels/${item.id}`)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-6 rounded-xl font-semibold text-sm shadow-sm hover:shadow-md transition-all cursor-pointer"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-semibold text-sm shadow-sm hover:shadow-md transition-all cursor-pointer max-w-[150px]"
         >
           {t("viewDetails")}
         </Button>

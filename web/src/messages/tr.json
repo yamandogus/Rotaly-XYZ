@@ -12,7 +12,12 @@
     "logout": "Çıkış Yap",
     "Hotels Add": "Otel Ekle",
     "profile": "Profil",
-    "contact":"İletişim"
+    "contact":"İletişim",
+    "sheetTitle": "Menü",
+    "sheetDescription": "Uygulama menüsünü görüntüleyin",
+    "live-chat": "Canlı Sohbet",
+    "close": "Kapat",
+    "user": "Kullanıcı"
   },
   "HomePage": {
     "heroHeading": "Hayalinizdeki Konaklama Bir Tık Uzağınızda",
@@ -45,13 +50,154 @@
     "offerMarmaris": "Marmaris",
     "specialOffers": "Özel Teklifler",
     "reviewsCount": "{count} Yorum",
-    "viewDetailsButton": "Detayları Görüntüle"
+    "viewDetailsButton": "Detayları Görüntüle",
+    "bookingSearch": {
+      "hotel": "Otel",
+      "pension": "Pansiyon",
+      "apartment": "Kiralık Daire",
+      "destinationPlaceholder": "Şehir arayın ve seçin",
+      "searchPlaceholder": "Şehir aramaya başlayın...",
+      "checkIn": "Giriş",
+      "checkOut": "Çıkış",
+      "checkInPlaceholder": "Giriş tarihi seçin",
+      "checkOutPlaceholder": "Çıkış tarihi seçin",
+      "guestCount": "Kişi Sayısı",
+      "searchButton": "Ara",
+      "noResults": "Sonuç bulunamadı.",
+      "results": "Sonuçlar",
+      "popularSearches": "Popüler aramalar",
+      "startSearching": "Şehir aramaya başlayın...",
+      "withRotaly": "Rotaly ile",
+      "errors": {
+        "selectCity": "Lütfen bir şehir seçin",
+        "selectCheckIn": "Lütfen giriş tarihi seçin",
+        "selectCheckOut": "Lütfen çıkış tarihi seçin",
+        "selectAdults": "En az 1 yetişkin seçin"
+         }
+    },
+    "guestSelector": {
+      "title": "Kişi Sayısı",
+      "adults": "Yetişkin",
+      "adultsDescription": "13 yaş ve üzeri",
+      "children": "Çocuk",
+      "childrenDescription": "2-12 yaş arası",
+      "confirm": "Tamam",
+      "adultSingular": "Yetişkin",
+      "guestPlural": "Kişi"
+    }
+
+
   },
   "HotelCard": {
-    "discountLabel": "%20 indirim",
-    "nightsFor": "{nights} gece için",
-    "viewDetails": "Detaylı İncele",
-    "reviewsCount": "({count})"
+    "discountLabel": "Fırsat",
+    "reviewsCount": "({count} İnceleme)",
+    "nightsFor": "{nights} Gece İçin",
+    "viewDetails": "Detayları Görüntüle",
+    "cancellationText": "Ücretsiz İptal",
+    "breakfastText": "Kahvaltı Dahil",
+    "parkingText": "Ücretsiz Otopark"
+  },
+  "HotelDetail": {
+    "bookingForm": {
+      "selectDate": "Tarih seç",
+      "checkIn": "Giriş",
+      "checkOut": "Çıkış",
+      "guests": "Kişi",
+      "nights": "Gece",
+      "bookNow": "Rezervasyon yap",
+      "learnMore": "Detaylı bilgi al"
+    },
+    "breadcrumbs": {
+      "homePage": "Anasayfa",
+      "hotel": "Otel"
+    },
+    "hotelInfo": {
+      "title": "Özellikler",
+      "beds": "2 Çift Kişilik Yatak",
+      "seatingArea": "1 Oturma alanı",
+      "bathrooms": "2 Banyo",
+      "minibar": "1 Minibar",
+      "wifi": "Wi Fi",
+      "television": "1 Televizyon"
+    },
+    "hotelTabs": {
+      "descriptionTab": "Açıklama",
+      "reviewsTab": "Değerlendirme",
+      "mapTab": "Harita",
+      "description": {
+        "title": "Marakeş'in Kalbinde Huzurlu Bir Kaçış",
+        "paragraph1": "Marakeş'in kalbinde yer alan Riad Deluxe, geleneksel Fas mimarisiyle modern konforu birleştiriyor. Geniş avlusu, serinletici havuzu ve huzurlu bahçeleriyle şehrin gürültüsünden uzaklaşmak için ideal bir sığınak sunar. Her odası özenle dekore edilmiş olup, Fas el sanatlarının zenginliğini yansıtır.",
+        "paragraph2": "Tüm önemli turistik mekanlara yürüme mesafesinde olan otelimiz, Djemaa el-Fna Meydanı'na ve Medine çarşılarına kolay erişim sağlar. Misafirlerimiz, geleneksel Fas hamamımızda rahatlayabilir veya çatı terasımızda panoramik şehir manzarası eşliğinde nane çayı keyfi yapabilirler.",
+        "roomsAndSuitesTitle": "Odalar ve Süitler",
+        "roomFeature1": "Özenle dekore edilmiş, konforlu odalar ve lüks süitler.",
+        "roomFeature2": "Her odada özel banyo, klima, ücretsiz Wi-Fi ve düz ekran TV.",
+        "roomFeature3": "Geleneksel Fas el sanatları ve modern olanaklar.",
+        "servicesTitle": "Hizmetler",
+        "service1": "24 Saat Resepsiyon",
+        "service2": "Oda Servisi",
+        "service3": "Ücretsiz Wi-Fi",
+        "service4": "Restoran ve Bar",
+        "service5": "Açık Havuz",
+        "service6": "Geleneksel Hamam",
+        "service7": "Çatı Terası",
+        "service8": "Havalimanı Transferi (ek ücretli)",
+        "localTipsTitle": "Yerel İpuçları",
+        "localTip1": "Djemaa el-Fna Meydanı'nı ziyaret edin ve akşam yemeği için yerel yemek tezgahlarını deneyin.",
+        "localTip2": "Medine'nin dar sokaklarında kaybolun ve el yapımı ürünler bulun.",
+        "localTip3": "Jardin Majorelle'i keşfedin.",
+        "localTip4": "Baharat çarşılarını ziyaret edin."
+      },
+      "reviews": {
+        "title": "Misafir Değerlendirmeleri ({count})",
+        "excellent": "Mükemmel",
+        "stars": "{starCount} Yıldız",
+        "user1Name": "Ayşe Yılmaz",
+        "user1Date": "5 gün önce",
+        "user1Comment": "Harika bir deneyimdi! Otelin konumu muhteşem, personel çok ilgili ve odalar tertemizdi. Kesinlikle tekrar kalacağım.",
+        "user2Name": "Mehmet Demir",
+        "user2Date": "2 hafta önce",
+        "user2Comment": "Otel çok şık, Fas atmosferini sonuna kadar yaşatıyor. Kahvaltı biraz daha çeşitli olabilirdi ama genel olarak çok memnun kaldık.",
+        "viewAllReviews": "Tüm Değerlendirmeleri Gör"
+      },
+      "map": {
+        "title": "Otel Konumu",
+        "officeName": "Rotaly Merkez Ofisi",
+        "officeAddress1": "Bertance Bulvarı, Sevin Apartman No:64 D:11",
+        "officeAddress2": "Balmumcu Beşiktaş / İstanbul"
+      }
+    },
+    "recentlyViewedHotels": {
+      "title": "En Son Baktıklarınız",
+      "viewAll": "Tümünü Gör",
+      "hotel1": {
+        "name": "Kiad Deluxe Hotel",
+        "location": "Marakeş, Fas",
+        "cancelText": "Ücretsiz İptal",
+        "breakfastText": "Kahvaltı Dahil",
+        "parkingText": "Ücretsiz Otopark"
+      },
+      "hotel2": {
+        "name": "Riad Resort",
+        "location": "Antalya, Türkiye",
+        "cancelText": "Ücretsiz İptal",
+        "breakfastText": "Kahvaltı Dahil",
+        "parkingText": "Ücretsiz Otopark"
+      },
+      "hotel3": {
+        "name": "Sunset Deluxe Otel",
+        "location": "Antalya, Türkiye",
+        "cancelText": "Ücretsiz İptal",
+        "breakfastText": "Kahvaltı Dahil",
+        "parkingText": "Ücretsiz Otopark"
+      },
+      "hotel4": {
+        "name": "City View Hotel",
+        "location": "Ankara, Türkiye",
+        "cancelText": "Ücretsiz İptal",
+        "breakfastText": "Kahvaltı Dahil",
+        "parkingText": "Ücretsiz Otopark"
+      }
+    }
   },
   "CategoryPage": {
     "resultsFound": "{count} sonuç bulundu"
@@ -152,7 +298,34 @@
     "hotel-profile":"Otel Profili",
     "evaluations":"Değerlendirmeler",
     "reports": "Raporlar",
-    "statistics": "İstatistikler"
+    "statistics": "İstatistikler",
+    "business": "İşletme",
+    "logoutModal": {
+      "title": "Çıkış Yap",
+      "description": "Çıkış yapmak istediğinize emin misiniz?",
+      "cancel": "İptal",
+      "confirm": "Çıkış Yap"
+    },
+    "navUser": {
+      "brandName": "Rotaly",
+      "email": "rotaly@gmail.com"
+    }
+  },
+  "ChartLineLabelCustom": {
+    "months": {
+      "january": "Ocak",
+      "february": "Şubat",
+      "march": "Mart",
+      "april": "Nisan",
+      "may": "Mayıs",
+      "june": "Haziran"
+    },
+    "customerLabel": "Müşteri",
+    "cardTitle": "Müşteri Sayısı",
+    "cardDescription": "Ocak - Haziran 2025",
+    "increaseText": "Müşteri sayısı {percentage}% artış gösterdi",
+    "totalCustomersText": "Son 6 ay için toplam müşteri sayısı",
+    "totalCustomersCount": "Toplam Müşteri Sayısı {count}"
   },
   "Evaluations": {
     "title": "Oda Değerlendirmeleri",
@@ -171,9 +344,33 @@
       "location": "Konum",
       "price": "Fiyat",
       "general": "Genel"
-    }
+    },
 
-
+    
+    "HotelDetail": {
+  "bookingForm": {
+    "selectDate": "Tarih seç",
+    "checkIn": "Giriş",
+    "checkOut": "Çıkış",
+    "guests": "Kişi",
+    "nights": "Gece",
+    "bookNow": "Rezervasyon yap",
+    "learnMore": "Detaylı bilgi al"
+  },
+  "breadcrumbs": {
+    "homePage": "Anasayfa",
+    "hotel": "Otel"
+  },
+  "hotelInfo": {
+    "title": "Özellikler",
+    "beds": "Yataklar",
+    "seatingArea": "Oturma Alanı",
+    "bathrooms": "Banyo",
+    "minibar": "Minibar",
+    "wifi": "WiFi",
+    "television": "Televizyon"
+  }
+}
 
 
   },
@@ -224,36 +421,56 @@
     "confirmPassword": "Şifre Tekrar"
   },
   "AdminProfile": {
-    "title": "Admin Profili",
-    "subtitle": "Profilinizi görüntüleyebilir ve düzenleyebilirsiniz.",
-    "profilePhoto": "Profil Fotoğrafı",
-    "profileInformation": "Profil Bilgileri",
-    "personalInfo": "Kişisel Bilgiler",
-    "name": "Ad",
-    "email": "E-posta",
-    "enterName": "Adınızı girin",
-    "enterEmail": "E-posta adresinizi girin",
-    "password": "Şifre",
-    "confirmPassword": "Şifre Tekrar",
-    "changePassword": "Şifre Değiştir",
-    "newPassword": "Yeni Şifre",
-    "enterNewPassword": "Yeni şifrenizi girin",
-    "confirmNewPassword": "Yeni şifrenizi tekrar girin",
-    "saveChanges": "Değişiklikleri Kaydet",
-    "cancel": "İptal",
-    "fieldRequired": "Bu alan boş bırakılamaz",
-    "invalidEmail": "Lütfen geçerli bir e-posta adresi girin",
-    "passwordHint": "Şifrenizi düzenli aralıklarla değiştirmeniz önerilir.",
-    "invalidPhone": "Lütfen geçerli bir telefon numarası girin: +90 5XX XXX XXXX formatında",
-    "reservationsDescription": "Aktif rezervasyonlarınız burada listelenecek.",
-    "pastReservationsDescription": "Geçmiş rezervasyonlarınız burada listelenecek.",
-    "notifications": "Bildirimler",
-    "notificationsDescription": "Güncel bildirimlerinizi buradan görüntüleyebilirsiniz.",
-    "passwordOperations": "Şifre İşlemleri",
-    "passwordSettingsDescription": "Hesabınızın güvenliği için şifrenizi düzenli olarak güncelleyin.",
-    "currentPassword": "Mevcut Şifre",
-    "passwordsDoNotMatch": "Yeni şifreler eşleşmiyor."
-  },
+  "title": "Admin Profili",
+  "subtitle": "Profilinizi görüntüleyebilir ve düzenleyebilirsiniz.",
+  "profilePhoto": "Profil Fotoğrafı",
+  "profileInformation": "Profil Bilgileri",
+  "personalInfo": "Kişisel Bilgiler",
+  "name": "Ad",
+  "email": "E-posta",
+  "enterName": "Adınızı girin",
+  "enterEmail": "E-posta adresinizi girin",
+  "password": "Şifre",
+  "confirmPassword": "Şifre Tekrar",
+  "changePassword": "Şifre Değiştir",
+  "newPassword": "Yeni Şifre",
+  "enterNewPassword": "Yeni şifrenizi girin",
+  "confirmNewPassword": "Yeni şifrenizi tekrar girin",
+  "saveChanges": "Değişiklikleri Kaydet",
+  "cancel": "İptal",
+  "fieldRequired": "Bu alan boş bırakılamaz",
+  "invalidEmail": "Lütfen geçerli bir e-posta adresi girin",
+  "passwordHint": "Şifrenizi düzenli aralıklarla değiştirmeniz önerilir.",
+  "invalidPhone": "Lütfen geçerli bir telefon numarası girin: +90 5XX XXX XXXX formatında",
+  "reservationsDescription": "Aktif rezervasyonlarınız burada listelenecek.",
+  "pastReservationsDescription": "Geçmiş rezervasyonlarınız burada listelenecek.",
+  "notifications": "Bildirimler",
+  "notificationsDescription": "Güncel bildirimlerinizi buradan görüntüleyebilirsiniz.",
+  "passwordOperations": "Şifre İşlemleri",
+  "passwordSettingsDescription": "Hesabınızın güvenliği için şifrenizi düzenli olarak güncelleyin.",
+  "currentPassword": "Mevcut Şifre",
+  "passwordsDoNotMatch": "Yeni şifreler eşleşmiyor.",
+  "otpConfirm": "Onayla",
+  
+  "otpTitle": "Doğrulama Kodu",
+  "otpDescription": "E-mail adresinize gönderilen 6 haneli kodu giriniz.",
+  "otpPlaceholder": "6 haneli kod",
+  "otpInvalid": "Lütfen 6 haneli kodu giriniz.",
+  "otpVerified": "OTP Doğrulandı",
+  "otpFailed": "OTP Doğrulanamadı",
+  "otpSubmit": "Onayla ve Kaydet",
+  "otpCancel": "Vazgeç",
+  
+  "socialMedia": "Sosyal Medya",
+  "companyInfo": "Şirket Bilgileri",
+  "phone": "Telefon",
+  "website": "Web Sitesi",
+  "facebook": "Facebook",
+  "instagram": "Instagram",
+  "twitter": "Twitter",
+  "linkedin": "LinkedIn"
+},
+
   "AdminSecurity": {
     "title": "Güvenlik Merkezi",
     "subtitle": "Hesap güvenliğinizi yönetin ve güvenlik durumunuzu takip edin",
@@ -321,7 +538,53 @@
     "passwordChanged": "Şifre değiştirildi",
     "failedLoginAttempt": "Başarısız giriş denemesi"
   },
-  "Profile": {
+
+ "AdminStatistics": {
+    "adminStatistics": "Yönetici İstatistikleri",
+    "exportCSV": "CSV Olarak Dışa Aktar",
+    "monthlyRevenue": "Aylık Gelir",
+    "monthlyRevenueSubtitle": "Bu ayın gelir trendi",
+    "bookingSources": "Rezervasyon Kaynakları",
+    "bookingSourcesSubtitle": "Platformlara göre rezervasyon yüzdesi",
+    "quickStats": "Hızlı İstatistikler",
+    "quickStatsSubtitle": "Temel metriklerin genel görünümü",
+    "recentActivities": "Son Aktiviteler",
+    "recentActivitiesSubtitle": "Son rezervasyonlar ve ödemeler",
+    "totalRevenue": "Toplam Gelir",
+    "thisMonth": "Bu Ay",
+    "activeHotels": "Aktif Oteller",
+    "registered": "Kayıtlı",
+    "totalBookings": "Toplam Rezervasyon",
+    "systemStatus": "Sistem Durumu",
+    "systemStatusSubtitle": "Sunucu ve hizmetlerin genel görünümü",
+    "serverUptime": "Sunucu Çalışma Süresi",
+    "apiResponseTime": "API Yanıt Süresi",
+    "databaseStatus": "Veritabanı Durumu",
+    "revenue": "Gelir",
+    "bookings": "Rezervasyonlar",
+    "pendingPayments": "Bekleyen Ödemeler",
+    "thisWeekBookings": "Bu Haftaki Rezervasyonlar",
+    "activeSupportTickets": "Aktif Destek Talepleri",
+    "newHotelApplications": "Yeni Otel Başvuruları",
+    "positiveTrend": "Artış",
+    "negativeTrend": "Azalış",
+    "activityReservation": "Rezervasyon",
+    "activityPayment": "Ödeme",
+    "activityCancellation": "İptal",
+    "title": "Sistem Durumu",
+    "description": "Platform genel durumu",
+    "serverStatus": "Sunucu Durumu",
+    "database": "Veritabanı",
+    "apiStatus": "API Durumu",
+    "lastUpdate": "Son Güncelleme",
+    "active": "Aktif",
+    "connected": "Bağlı",
+    "working": "Çalışıyor",
+    "timeAgo": "{minutes} dk önce"
+  },
+
+
+  "UserProfile": {
     "title": "Profilim",
     "subtitle": "Bilgilerinizi gözden geçirin",
     "personalInfo": "Kişisel Bilgiler",
@@ -364,7 +627,44 @@
     "currentPassword": "Mevcut Şifre",
     "newPassword": "Yeni Şifre",
     "confirmNewPassword": "Yeni Şifre (Tekrar)",
-    "passwordsDoNotMatch": "Yeni şifreler eşleşmiyor."
+    "passwordsDoNotMatch": "Yeni şifreler eşleşmiyor.",
+    "reservationss": {
+      "title": "Rezervasyonlar",
+      "roomNumber": "Oda No: {roomNumber}",
+      "guests": "{guests} Kişilik",
+      "nights": "{nights} Gece",
+      "checkIn": "Giriş: {date}",
+      "checkOut": "Çıkış: {date}",
+      "breakfast": "Kahvaltı",
+      "breakfastIncluded": "Dahil",
+      "breakfastNotIncluded": "Dahil Değil",
+      "parking": "Otopark",
+      "parkingAvailable": "Mevcut",
+      "parkingNotAvailable": "Mevcut Değil",
+      "freeCancellation": "Ücretsiz İptal",
+      "freeCancellationAvailable": "Var",
+      "freeCancellationNotAvailable": "Yok",
+      "cancelReservation": "Rezervasyon İptal",
+      "askHotel": "Otele Sor",
+      "cancelModal": {
+        "title": "Rezervasyon İptali",
+        "description": "Rezervasyonunuzu iptal etmek istediğinize emin misiniz?",
+        "cancel": "Vazgeç",
+        "confirm": "Evet, İptal Et"
+      },
+      "chat": {
+        "placeholder": "Mesajınızı yazın...",
+        "send": "Gönder",
+        "welcomeMessage": "Merhaba, nasıl yardımcı olabilirim?",
+        "defaultMessage": "{hotelName} rezervasyonlarınızda nasıl yardımcı olabilirim?",
+        "botResponse": "Teşekkür ederim. Size nasıl yardımcı olabilirim? Daha detaylı bilgi için canlı destek ile iletişime geçebilirsiniz.",
+        "ourHotel": "Otelimiz"
+      },
+      "toast": {
+        "cancelled": "Rezervasyonunuz iptal edildi."
+      }
+    }
+    
   },
   "Footer": {
     "copyright": "Tüm hakları saklıdır",
@@ -379,7 +679,11 @@
     "cancellation": "İptal ve Değişim",
     "about": "Hakkımızda",
     "privacy": "Gizlilik",
-    "terms": "Şartlar ve Koşullar"
+    "terms": "Şartlar ve Koşullar",
+    "categoriesTitle": "Kategoriler",
+    "supportTitle": "Destek",
+    "exploreUsTitle": "Bizi Keşfet",
+    "followUsTitle": "Bizi Takip Et"
   },
   "contact": {
     "title": "BİZE ULAŞIN",
@@ -431,7 +735,11 @@
     "favoriteHotels": "Favori Oteller",
     "totalComments": "Toplam Yorum",
     "averageRating": "Ortalama Puan",
-    "supportRequests": "Destek Talepleri"
+    "supportRequests": "Destek Talepleri",
+    "deleteTitle": "Kullanıcı Sil",
+    "deleteConfirm": "Kullanıcıyı silmek istediğinize emin misiniz?",
+    "cancel": "İptal",
+    "confirm": "Evet"
   },
   "ResetPassword": {
     "title": "Şifremi Unuttum",
@@ -446,9 +754,9 @@
   },
   
   "Rooms": {
-   "id": "ID",
+  "id": "ID",
   "roomName": "Oda Adı",
-  "room-image":"Oda Görseli",
+
   "roomType": "Oda Türü",
   "roomNumber": "Oda Numarası",
   "floor": "Kat",
@@ -457,14 +765,14 @@
   "price": "Fiyat",
   "capacity": "Kapasite",
   "status": "Durum",
-   "bedCount": "Yatak Sayısı",
+  "bedCount": "Yatak Sayısı",
   "available": "Mevcut",
   "unavailable": "Mevcut Değil",
-  "viewDetails": " Detayları Gör",
+  "viewDetails": "Detayları Gör",
   "edit": "Düzenle",
   "delete": "Sil",
 
- "roomList": "Oda Listesi",
+  "roomList": "Oda Listesi",
   "searchRooms": "Oda Ara...",
   "filter": "Filtre",
   "allStatus": "Tümü",
@@ -500,8 +808,39 @@
   "roomDetails": "Oda Detayları",
   "hotelId": "Otel ID",
   "save": "Kaydet",
-  "editRoom":"Oda Düzenle"
-  },
+  "editRoom": "Oda Düzenle",
+  "manageRoomsInstructions": "Odaları yönetmek için işlemleri kullanın",
+  "manageRooms": "Odaları yönetmek için işlemleri kullanın",
+
+  "averagePrice": "Ortalama Fiyat",
+  "highestPrice": "En Yüksek Fiyat",
+  "lowestPrice": "En Düşük Fiyat",
+  "totalRevenuePotential": "Toplam Gelir Potansiyeli",
+  "totalRevenue": "Toplam Gelir",
+
+  "searchPlaceholder": "Oda adı, numarası, türü...",
+  "noRoomsFound": "Hiç oda bulunamadı",
+  "confirmDelete": "Silmek istediğinizden emin misiniz?",
+  "addRoomTitle": "Yeni Oda Ekle",
+  "editRoomTitle": "Oda Düzenle",
+
+  "roomImage": "Oda Görseli",
+  "roomImageDescription": "Oda görselini yükleyin",
+  "room-image": "Oda Görseli",
+  "roomNamePlaceholder": "Oda adını girin",
+  "roomDescriptionPlaceholder": "Oda açıklamasını girin",
+  "roomTypePlaceholder": "Oda türünü seçin",
+  "maxAdultsPlaceholder": "Maksimum yetişkin sayısı",
+  "maxChildrenPlaceholder": "Maksimum çocuk sayısı",
+  "floorPlaceholder": "Kat numarası",
+  "roomNumberPlaceholder": "Oda numarası",
+  "pricePlaceholder": "Fiyat",
+  "capacityPlaceholder": "Toplam kapasite",
+  "bedCountPlaceholder": "Yatak sayısı",
+  "cancel": "İptal"
+  
+},
+
 
    "Reservations": {
     "title": "Rezervasyonlar",
@@ -531,10 +870,38 @@
     "sortBy": "Sırala",
     "createdAt": "Oluşturulma Tarihi"
   },
-
+ "UserReservations": {
+    "title": "Rezervasyonlar",
+    "roomNumber": "Oda No",
+    "guests": "Kişi",
+    "nights": "Gece",
+    "checkIn": "Giriş",
+    "checkOut": "Çıkış",
+    "breakfast": "Kahvaltı",
+    "parking": "Otopark",
+    "included": "Dahil",
+    "notIncluded": "Dahil Değil",
+    "available": "Mevcut",
+    "notAvailable": "Mevcut Değil",
+    "freeCancellation": "Ücretsiz İptal",
+    "yes": "Var",
+    "no": "Yok",
+    "cancelReservation": "Rezervasyon İptal",
+    "askHotel": "Otele Sor",
+    "messagePlaceholder": "Mesajınızı yazın...",
+    "send": "Gönder",
+    "chatInitialMessage": "{hotelName} rezervasyonlarınızda nasıl yardımcı olabilirim?",
+    "ourHotel": "Otelimize",
+    "chatBotResponse": "Teşekkür ederim. Size nasıl yardımcı olabilirim? Daha detaylı bilgi için canlı destek ile iletişime geçebilirsiniz.",
+    "cancelSuccessToast": "Rezervasyonunuz iptal edildi.",
+    "cancelModalTitle": "Rezervasyon İptali",
+    "cancelModalDescription": "Rezervasyonunuzu iptal etmek istediğinize emin misiniz?",
+    "cancelModalNo": "Vazgeç",
+    "cancelModalYes": "Evet, İptal Et"
+  },
 
   
-  "Statistics": {
+  "HotelStatistics": {
     "title": "Otel İstatistikleri",
     "dateRange": "Son 30 Gün",
     "allRooms": "Tüm Odalar",
@@ -763,9 +1130,85 @@
     "BREAKFAST_INCLUDED": "Kahvaltı Dahil",
     "addHotel": "Otel Ekle",
     "city": "Şehir"
+  },
+
+  "Support": {
+    "title": "Destek Paneli",
+    "liveSupport": "Canlı Destek",
+    "liveSupportDescription": "Canlı destek ile müşteri desteği sağlayabilirsiniz.",
+    "statisticsReports": "İstatistikler & Raporlar",
+    "statisticsReportsDescription": "Rezervasyon istatistikleri ve sistem raporlarını görüntüleyebilirsiniz.",
+    "informationSystemInfo": "Bilgilendirme ve Sistem Bilgileri",
+    "informationSystemInfoDescription": "Bilgilendirme ve sistem bilgilerini görüntüleyebilirsiniz.",
+    "loading": "Yükleniyor..."
+  },
+
+  "Hotel": {
+    "title": "Otel Paneli",
+    "reservationManagement": "Rezervasyon Yönetimi",
+    "reservationManagementDescription": "Gelen rezervasyonları görüntüleyebilir, onaylayabilir ve yönetebilirsiniz.",
+    "roomPriceManagement": "Oda & Fiyat Yönetimi",
+    "roomPriceManagementDescription": "Odalarınızı düzenleyebilir, fiyatlarınızı güncelleyebilir ve müsaitliği ayarlayabilirsiniz.",
+    "hotelProfile": "Otel Profili",
+    "hotelProfileDescription": "Otel bilgilerinizi, fotoğraflarınızı ve hizmet bilgilerinizi güncelleyebilirsiniz.",
+    "statisticsReports": "İstatistikler & Raporlar",
+    "statisticsReportsDescription": "Doluluk oranları, gelir analizleri ve performans raporlarını görüntüleyebilirsiniz.",
+    "guestManagement": "Misafir Yönetimi",
+    "guestManagementDescription": "Misafir bilgilerini görüntüleyebilir ve iletişim geçmişini takip edebilirsiniz.",
+    "evaluations": "Değerlendirmeler",
+    "evaluationsDescription": "Misafir yorumlarını ve değerlendirmelerini görüntüleyebilir ve yanıtlayabilirsiniz.",
+    "liveSupport": "Canlı Destek",
+    "liveSupportDescription": "Canlı destek ile müşteri desteği sağlayabilirsiniz."
+  },
+
+  "HotelProfil": {
+    "title": "Otel Profil Yönetimi",
+    "subtitle": "Otel bilgilerinizi güncelleyin ve yönetin",
+    "hotelImages": "Otel Görselleri",
+    "addImage": "Görsel Ekle",
+    "basicInfo": "Temel Bilgiler",
+    "addressInfo": "Adres Bilgileri",
+    "hotelName": "Otel Adı",
+    "email": "Email Adresi",
+    "phone": "Telefon",
+    "taxId": "Vergi No",
+    "country": "Ülke",
+    "city": "Şehir",
+    "state": "İlçe",
+    "postalCode": "Posta Kodu",
+    "address": "Adres",
+    "selectCountry": "Ülke Seçin",
+    "turkey": "Türkiye 🇹🇷",
+    "unitedStates": "ABD 🇺🇸",
+    "saveChanges": "Değişiklikleri Kaydet",
+    "errors": {
+      "hotelName": "Otel adı zorunludur.",
+      "emailRequired": "Email zorunludur.",
+      "emailInvalid": "Geçerli bir email adresi girin.",
+      "phoneRequired": "Telefon numarası zorunludur.",
+      "phoneInvalid": "Geçerli bir Türkiye telefon numarası girin. (örn: +905551234567 veya 05551234567)",
+      "taxIdRequired": "Vergi numarası zorunludur.",
+      "taxIdInvalid": "Vergi numarası sadece rakamlardan oluşmalıdır.",
+      "countryRequired": "Ülke seçimi zorunludur.",
+      "cityRequired": "Şehir zorunludur.",
+      "stateRequired": "İlçe zorunludur.",
+      "postalCodeRequired": "Posta kodu zorunludur.",
+      "postalCodeInvalid": "Geçerli bir posta kodu girin.",
+      "addressRequired": "Adres zorunludur."
+    }
+  },
+"LoginPage": {
+    "welcome": "Rotaly'ye Hoş Geldiniz!",
+    "subtitle": "E-posta adresinize giriş yapın ve otel rezervasyonlarınızı yönetin",
+    "email": "E-posta Adresi",
+    "password": "Şifre",
+    "forgotPassword": "Şifremi Unuttum",
+    "loginButton": "Giriş Yap",
+    "noAccount": "Hesabınız yok mu?",
+    "register": "Kayıt Ol",
+    "invalidEmail": "Geçersiz e-posta adresi",
+    "invalidPassword": "Geçersiz şifre"
   }
-
-
 
 
 

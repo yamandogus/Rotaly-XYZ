@@ -1,6 +1,8 @@
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { useTranslations } from "next-intl";
 
 const PaymentProcessing = () => {
+  const t = useTranslations("HotelDetail.PaymentProcessing");
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <DotLottieReact
@@ -9,7 +11,7 @@ const PaymentProcessing = () => {
         className="w-full h-full"
         autoplay
       />
-      <p>Ödeme işlemi gerçekleştiriliyor...</p>
+      <p>{t("processingMessage")}</p>
     </div>
   );
 };

@@ -22,18 +22,18 @@ const ResetPassword = () => {
         <form className="my-4" onSubmit={handleSubmit}>
           <div className="mt-4 flex flex-col gap-2">
             <Label htmlFor="email">{t("email")}</Label>
-            <Input type="email" id="email" placeholder={t("email")} />
+            <Input type="email" id="email" placeholder={t("emailPlaceholder")} />
           </div>
           <div className="mt-4 flex flex-col gap-2">
             <Label htmlFor="password">{t("password")}</Label>
-            <Input type="password" id="password" placeholder={t("password")} />
+            <Input type="password" id="password" placeholder={t("passwordPlaceholder")} />
           </div>
           <div className="mt-4 flex flex-col gap-2">
             <Label htmlFor="confirm_password">{t("confirm_password")}</Label>
             <Input
               type="password"
               id="confirm_password"
-              placeholder={t("confirm_password")}
+              placeholder={t("confirmPasswordPlaceholder")}
             />
           </div>
           <button

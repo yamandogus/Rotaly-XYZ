@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { CreditCard, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export interface PaymentFormData {
   expiryDate: string;
@@ -46,6 +47,7 @@ const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
       specialRequest: "",
     },
   });
+  const t = useTranslations("HotelDetail.PaymentForm");
 
   return (
     <Form {...form}>
@@ -64,20 +66,20 @@ const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
                     <div className="flex items-center gap-2">
                       <CreditCard className="w-5 h-5 text-green-600 dark:text-green-400" />
                       <span className="font-medium text-gray-900 dark:text-gray-100">
-                        Yeni Kart
+                        {t("newCard")}
                       </span>
                     </div>
                     <Badge
                       variant="secondary"
                       className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
                     >
-                      Güvenli
+                      {t("secure")}
                     </Badge>
                   </div>
                   <div className="flex items-center gap-2">
                     <Plus className="w-4 h-4 text-green-600 dark:text-green-400 group-hover:scale-110 transition-transform" />
                     <span className="text-sm text-green-600 dark:text-green-400 font-medium">
-                      Kart Bilgilerini Gir
+                      {t("enterCardDetails")}
                     </span>
                   </div>
                 </div>
@@ -91,7 +93,7 @@ const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormLabel className="text-sm">
-                          Son Kullanma Tarihi
+                          {t("expiryDateLabel")}
                         </FormLabel>
                         <FormControl>
                           <Input
@@ -109,7 +111,7 @@ const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
                     name="cvv"
                     render={({ field }) => (
                       <FormItem className="flex-1">
-                        <FormLabel className="text-sm">CVV</FormLabel>
+                        <FormLabel className="text-sm">{t("cvvLabel")}</FormLabel>
                         <FormControl>
                           <Input
                             required
@@ -128,7 +130,7 @@ const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
                   name="cardNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm">Kart Numarası</FormLabel>
+                      <FormLabel className="text-sm">{t("cardNumberLabel")}</FormLabel>
                       <FormControl>
                         <Input
                           required
@@ -150,12 +152,12 @@ const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
             name="address"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm">Adres</FormLabel>
+                <FormLabel className="text-sm">{t("addressLabel")}</FormLabel>
                 <FormControl>
                   <Input
                     required
                     {...field}
-                    placeholder="Adres"
+                    placeholder={t("addressPlaceholder")}
                     className="w-full"
                   />
                 </FormControl>
@@ -169,12 +171,12 @@ const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
             name="country"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm">Ülke/Bölge</FormLabel>
+                <FormLabel className="text-sm">{t("countryLabel")}</FormLabel>
                 <FormControl>
                   <Input
                     required
                     {...field}
-                    placeholder="Ülke/Bölge"
+                    placeholder={t("countryPlaceholder")}
                     className="w-full"
                   />
                 </FormControl>
@@ -188,12 +190,12 @@ const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
             name="phoneNumber"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm">Telefon Numarası</FormLabel>
+                <FormLabel className="text-sm">{t("phoneNumberLabel")}</FormLabel>
                 <FormControl>
                   <Input
                     required
                     {...field}
-                    placeholder="Telefon Numarası"
+                    placeholder={t("phoneNumberPlaceholder")}
                     className="w-full"
                   />
                 </FormControl>
@@ -207,12 +209,12 @@ const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
             name="specialRequest"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm">Özel İstek</FormLabel>
+                <FormLabel className="text-sm">{t("specialRequestLabel")}</FormLabel>
                 <FormControl>
                   <Textarea
                     required
                     {...field}
-                    placeholder="Özel İstek"
+                    placeholder={t("specialRequestPlaceholder")}
                     className="w-full"
                   />
                 </FormControl>
@@ -230,13 +232,13 @@ const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
               }}
               type="button"
             >
-              <p className="text-sm">Geri</p>
+              <p className="text-sm">{t("back")}</p>
             </Button>
             <Button
               type="submit"
               className="bg-[#2F6FED] text-white hover:bg-[#2F6FED]/90 transition-all duration-300"
             >
-              <p className="text-sm">Ödeme işlemini tamamla</p>
+              <p className="text-sm">{t("completePayment")}</p>
             </Button>
           </div>
         </div>

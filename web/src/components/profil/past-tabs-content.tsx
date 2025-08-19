@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 
 export default function PastReservations() {
-  const t = useTranslations("Profile");
+  const t = useTranslations("UserProfile");
 
   return (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
