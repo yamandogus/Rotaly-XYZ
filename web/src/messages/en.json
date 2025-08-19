@@ -77,7 +77,18 @@
         "selectCheckOut": "Please select check-out date",
         "selectAdults": "Please select at least 1 adult"
       }
+      
     },
+    "dateRangeCalendar": {
+      "heading": "Select check-in and check-out dates",
+      "monthFormat": "long year",
+      "months": [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ]
+    },
+
+
        "guestSelector": {
       "title": "Guests",
       "adults": "Adults",
@@ -89,6 +100,47 @@
       "guestPlural": "Guests"
     }
   },
+    "ChatWidget": {
+    "welcome": "Welcome!",
+  "assistantIntro": "Your Rotaly Hotel Assistant is here to help you.",
+  "bookRoom": "Book a Room",
+  "viewReservation": "View My Reservation",
+  "liveSupport": "Chat with Live Support",
+  "botDefaultMessage": "Thank you. How can I assist you? For more details, you can contact live support.",
+  "liveSupportMessage": "You want to connect with live support. Click the button below to reach our live support team.",
+  "assistantTitle": "AI Assistant",
+  "inputPlaceholder": "Type your message..."
+  },
+
+  "LiveChat":{
+  "systemWelcome": "Hello! Welcome to Rotaly support team. How can I assist you?",
+  "exampleUserMessage": "I want to cancel my reservation",
+  "supportReply": "I can help you cancel your reservation. Please provide your reservation number.",
+  "systemInfo": "You want to connect with live support. Our team will respond shortly.",
+  "supportUnit": "Rotaly Support Team",
+  "online": "Online",
+  "expertTeam": "Expert Support Team",
+  "responseTime": "Response time: ~2 min",
+  "supportTitle": "Rotaly Support",
+  "typeMessage": "Type your message..."
+},
+
+"Notifications":{
+  "title": "Notifications",
+  "newReservation": "New Reservation",
+  "reservationConfirmed": "Your hotel reservation has been confirmed",
+  "twoHoursAgo": "2 hours ago",
+  "paymentSuccess": "Payment Successful",
+  "paymentReceived": "Your payment has been received successfully",
+  "oneDayAgo": "1 day ago",
+  "systemUpdate": "System Update",
+  "newFeaturesAdded": "New features added",
+  "threeDaysAgo": "3 days ago",
+  "viewAll": "View all notifications"
+},
+
+
+
   "HotelCard": {
     "discountLabel": "20% off",
     "nightsFor": "for {nights} nights",
@@ -239,14 +291,32 @@
       "step3": "Reservation Confirmation",
       "loading": "Loading..."
     },
-    "BookingInformationPage": {
-      "nameLabel": "Your Name",
-      "surnameLabel": "Your Surname",
+       "BookingInformationPage":  
+     {
+      "nameLabel": "Name",
+      "surnameLabel": "Surname",
       "emailLabel": "Email",
-      "countryLabel": "Country/Region",
-      "phoneLabel": "Phone Number",
-      "specialRequestLabel": "Special Request",
-      "proceedToPaymentButton": "Proceed to Payment"
+      "countryLabel": "Country",
+      "phoneLabel": "Phone",
+      "specialRequestLabel": "Special Requests",
+      "specialRequestPlaceholder": "Write your requests here...",
+      "proceedToPaymentButton": "Continue to Payment"
+    },
+      "HotelSummary": {
+      "reviewsCount": "{count} Reviews",
+      "freeCancellation": "Free Cancellation",
+      "breakfastIncluded": "Breakfast Included",
+      "parking": "Free Parking",
+      "reservationInformation": "Reservation Information",
+      "checkIn": "Check-in",
+      "checkOut": "Check-out",
+      "checkInTime": "Check-in time: {time}",
+      "checkOutTime": "Check-out time: {time}",
+      "roomDetails": "{roomType}, {nights} Nights, {guests} Guests",
+      "paymentSummary": "Payment Summary",
+      "nights": "{nights} Nights",
+      "taxesAndServiceFee": "Taxes & Service Fee",
+      "total": "Total"
     },
     "BookingPaymentPage": {
       "paymentOptionsTitle": "Payment Options"
@@ -267,6 +337,7 @@
       "expiryDateLabel": "Expiry Date",
       "cvvLabel": "CVV"
     },
+    
     "PaymentForm": {
       "newCard": "New Card",
       "secure": "Secure",
