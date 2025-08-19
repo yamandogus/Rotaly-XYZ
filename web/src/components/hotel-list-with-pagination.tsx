@@ -60,15 +60,18 @@ export function HotelListWithPagination() {
 
   return (
     <div className="bg-background">
-      <div className="px-6 flex justify-between items-center">
-        <h2 className="text-xl font-bold text-foreground">
-          {filteredHotels.length} sonuç bulundu
+      <div className="px-6 flex flex-col gap-2 md:flex-row justify-between items-center">
+        <div className="flex flex-col md:flex-row gap-2 items-center">
+        <h2 className="text-base md:text-xl font-bold text-foreground">
           {city && (
-            <span className="text-sm text-muted-foreground ml-2">
-              &quot;{city}&quot; için
+            <span className="text-sm md:text-base text-muted-foreground ml-2">
+              &quot;{city}&quot; için {" "}
             </span>
           )}
+          
         </h2>
+        <span>{filteredHotels.length} sonuç bulundu</span>
+        </div>
         <div>
           <Button variant="outline" onClick={() => {
             dispatch(clearSearch());
