@@ -7,17 +7,18 @@ import { Check } from 'lucide-react'
 import BookingSuccessPage from './success/page'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
+import { useTranslations } from 'next-intl'
 
 function BookingContent() {
     const step = useSelector((state: RootState) => state.step);
     const currentStep = step.step;
+    const t = useTranslations("HotelDetail.bookingProcess");
   
-
-  const steps = [
-    { id: 1, title: 'Konaklama Bilgileri' },
-    { id: 2, title: 'Ödeme Bilgileri' },
-    { id: 3, title: 'Rezervasyon Onayı' }
-  ]
+    const steps = [
+      { id: 1, title: t('step1') },
+      { id: 2, title: t('step2') },
+      { id: 3, title: t('step3') }
+    ]
 
   return (
     <div className='min-h-screen bg-background'>
@@ -91,12 +92,13 @@ function BookingContent() {
 }
 
 export default function BookingPage() {
+  const t = useTranslations("HotelDetail.bookingProcess");
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Yükleniyor...</p>
+          <p className="text-gray-600 dark:text-gray-400">{t("loading")}</p>
         </div>
       </div>
     }>

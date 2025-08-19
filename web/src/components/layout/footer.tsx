@@ -10,7 +10,7 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Kategoriler */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Kategoriler</h3>
+            <h3 className="text-lg font-semibold">{t("categoriesTitle")}</h3>
             <nav className="flex flex-col space-y-2">
               <Link
                 href="/categories/hotel"
@@ -53,20 +53,20 @@ export function Footer() {
 
           {/* Destek */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Destek</h3>
+            <h3 className="text-lg font-semibold">{t("supportTitle")}</h3>
             <nav className="flex flex-col space-y-2">
               <Link
 
                 href="/support"
                 className="text-sm text-blue-100 hover:text-white"
               >
-                Canlı Destek
+                {t("live-chat")}
               </Link>
               <Link
                 href="/support/faq"
                 className="text-sm text-blue-100 hover:text-white dark:text-blue-200 dark:hover:text-white"
               >
-                Sıkça Sorulan Sorular
+                {t("faq")}
               </Link>
               <Link
                 href="/support/cancellation"
@@ -80,7 +80,7 @@ export function Footer() {
 
           {/* Bizi Keşfet */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Bizi Keşfet</h3>
+            <h3 className="text-lg font-semibold">{t("exploreUsTitle")}</h3>
             <nav className="flex flex-col space-y-2">
               <Link
                 href="/about"
@@ -105,7 +105,7 @@ export function Footer() {
 
           {/* Bizi Takip Et */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Bizi Takip Et</h3>
+            <h3 className="text-lg font-semibold">{t("followUsTitle")}</h3>
             <div className="flex space-x-4">
               <Link
                 href="https://www.instagram.com/rotaly_xyz/"

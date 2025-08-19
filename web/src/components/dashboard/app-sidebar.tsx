@@ -191,7 +191,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   height={40}
                 />
                 <a href="#">
-                  <span className="text-xl font-bold ">Rotaly {userRole === "hotel" ? "Business" : ""} </span>
+                  <span className="text-xl font-bold ">Rotaly {userRole === "hotel" ? t("business") : ""} </span>
                 </a>
               </div>
             </SidebarMenuButton>

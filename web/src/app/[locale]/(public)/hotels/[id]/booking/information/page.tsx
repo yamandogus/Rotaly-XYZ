@@ -9,9 +9,11 @@ import HotelSummary from "@/components/booking/hotel-summary";
 import { bookingData, hotelData } from "@/data/dumy";
 import { useDispatch } from "react-redux";
 import { setStepIncrease } from "@/store/reservation/reservation-slice";
+import { useTranslations } from "next-intl";
 
 export default function BookingInformationPage() {
   const dispatch = useDispatch();
+  const t = useTranslations("HotelDetail.BookingInformationPage");
   const handleNextStep = () => {
     dispatch(setStepIncrease(2)) // 2. adıma (payment sayfasına) geç
   };
@@ -23,7 +25,7 @@ export default function BookingInformationPage() {
           <form action="" className="flex flex-col gap-4 border border-gray-200 dark:border-gray-700 rounded-md p-4 bg-white dark:bg-card">
             <div className="flex flex-row gap-2">
               <div className="flex flex-col gap-2 w-full">
-                <Label htmlFor="name">Adınız</Label>
+                <Label htmlFor="name">{t("name")}</Label>
                 <Input
                   type="text"
                   id="name"
@@ -31,7 +33,7 @@ export default function BookingInformationPage() {
                 />
               </div>
               <div className="flex flex-col gap-2 w-full">
-                <Label htmlFor="surname">Soyadınız</Label>
+                <Label htmlFor="surname">{t("surname")}</Label>
                 <Input
                   type="text"
                   id="surname"
@@ -40,7 +42,7 @@ export default function BookingInformationPage() {
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("email")}</Label>
               <Input
                 type="email"
                 id="email"
@@ -48,7 +50,7 @@ export default function BookingInformationPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="country">Ülke/Bölge</Label>
+              <Label htmlFor="country">{t("country")}</Label>
               <Input
                 type="text"
                 id="country"
@@ -56,7 +58,7 @@ export default function BookingInformationPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="phone">Telefon Numarası</Label>
+              <Label htmlFor="phone">{t("phone")}</Label>
               <Input
                 type="text"
                 id="phone"
@@ -64,7 +66,7 @@ export default function BookingInformationPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label>Özel İstek</Label>
+              <Label>{t("specialRequest")}</Label>
               <Textarea
                 id="message"
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 h-24 bg-white dark:bg-gray-800"
@@ -75,7 +77,7 @@ export default function BookingInformationPage() {
                 onClick={handleNextStep}
                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
               >
-                Ödeme ile devam et
+                {t("continueWithPayment")}
               </Button>
             </div>
           </form>

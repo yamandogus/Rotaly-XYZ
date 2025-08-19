@@ -109,7 +109,7 @@ const StatsCard: React.FC<StatsCardProps> = ({ title, value, subtitle, icon, tre
 
 // Aylık gelir ve rezervasyon trendi grafiği - LineChart kullanıyor
 const RevenueChart = () => {
-  const t = useTranslations("Statistics");
+  const t = useTranslations("HotelStatistics");
   return (
     <Card className="col-span-2 h-full flex flex-col">
       <CardHeader>
@@ -135,7 +135,7 @@ const RevenueChart = () => {
 
 // Oda türleri dağılımı grafiği - PieChart kullanıyor
 const RoomTypeDistribution = () => {
-  const t = useTranslations("Statistics");
+  const t = useTranslations("HotelStatistics");
   return (
     <Card className="col-span-1 h-full flex flex-col">
       <CardHeader>
@@ -177,7 +177,7 @@ const RoomTypeDistribution = () => {
 
 // Haftalık doluluk ve gelir grafiği - AreaChart kullanıyor
 const WeeklyOccupancyChart = () => {
-  const t = useTranslations("Statistics");
+  const t = useTranslations("HotelStatistics");
   return (
     <Card className="col-span-1 h-full flex flex-col">
       <CardHeader>
@@ -203,7 +203,7 @@ const WeeklyOccupancyChart = () => {
 
 // Müşteri memnuniyeti bileşeni - Progress bar'lar ile kategori bazında değerlendirmeler
 const CustomerSatisfaction = () => {
-  const t = useTranslations("Statistics");
+  const t = useTranslations("HotelStatistics");
   return (
     <Card className="col-span-1 h-full flex flex-col">
       <CardHeader>
@@ -238,7 +238,7 @@ const CustomerSatisfaction = () => {
 
 // En popüler odalar tablosu - Gradient arka planlı kartlar ile sıralama
 const TopRooms = () => {
-  const t = useTranslations("Statistics");
+  const t = useTranslations("HotelStatistics");
   return (
     <Card className="col-span-1 h-full flex flex-col">
       <CardHeader>
@@ -280,7 +280,7 @@ const TopRooms = () => {
 
 // Ana istatistik sayfası bileşeni - Tüm grafikleri ve tabloları birleştiriyor
 const StatisticPage = () => {
-  const t = useTranslations("Statistics");
+  const t = useTranslations("HotelStatistics");
   return (
 <div className="flex-1 space-y-6 p-8 pt-6 dark:bg-card">
       <div className="flex items-center justify-between space-y-2">

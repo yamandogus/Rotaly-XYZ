@@ -1,5 +1,7 @@
 "use client";
+
 import React from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,7 +27,7 @@ import {
   Activity,
 } from "lucide-react";
 
-// Dummy data for admin statistics - Tüm aylar
+// Dummy data for admin statistics
 const monthlyRevenueData = [
   { month: "Ocak", revenue: 45000, bookings: 120 },
   { month: "Şubat", revenue: 52000, bookings: 135 },
@@ -84,11 +86,13 @@ const MetricCard: React.FC<MetricCardProps> = ({ title, value, subtitle, icon, t
 );
 
 const RevenueChartCard = () => {
+  const t = useTranslations("AdminStatistics");
+
   return (
     <Card className="col-span-2 h-full">
       <CardHeader>
-        <CardTitle className="text-sm font-medium">Aylık Gelir Trendi</CardTitle>
-        <p className="text-xs text-muted-foreground">Tüm aylar gelir ve rezervasyon sayısı</p>
+        <CardTitle className="text-sm font-medium">{t("monthlyRevenue")}</CardTitle>
+        <p className="text-xs text-muted-foreground">{t("monthlyRevenueSubtitle")}</p>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
@@ -98,8 +102,8 @@ const RevenueChartCard = () => {
             <YAxis yAxisId="left" />
             <YAxis yAxisId="right" orientation="right" />
             <Tooltip />
-            <Line yAxisId="left" type="monotone" dataKey="revenue" stroke="#8884d8" strokeWidth={2} name="Gelir (₺)" />
-            <Line yAxisId="right" type="monotone" dataKey="bookings" stroke="#82ca9d" strokeWidth={2} name="Rezervasyon" />
+            <Line yAxisId="left" type="monotone" dataKey="revenue" stroke="#8884d8" strokeWidth={2} name={t("revenue")} />
+            <Line yAxisId="right" type="monotone" dataKey="bookings" stroke="#82ca9d" strokeWidth={2} name={t("bookings")} />
           </LineChart>
         </ResponsiveContainer>
       </CardContent>
@@ -108,11 +112,13 @@ const RevenueChartCard = () => {
 };
 
 const BookingSourceCard = () => {
+  const t = useTranslations("AdminStatistics");
+
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="text-sm font-medium">Rezervasyon Kaynakları</CardTitle>
-        <p className="text-xs text-muted-foreground">Rezervasyonların kaynak dağılımı</p>
+        <CardTitle className="text-sm font-medium">{t("bookingSources")}</CardTitle>
+        <p className="text-xs text-muted-foreground">{t("bookingSourcesSubtitle")}</p>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={250}>
@@ -148,28 +154,30 @@ const BookingSourceCard = () => {
 };
 
 const QuickStatsCard = () => {
+  const t = useTranslations("AdminStatistics");
+
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="text-sm font-medium">Hızlı İstatistikler</CardTitle>
-        <p className="text-xs text-muted-foreground">Önemli metrikler</p>
+        <CardTitle className="text-sm font-medium">{t("quickStats")}</CardTitle>
+        <p className="text-xs text-muted-foreground">{t("quickStatsSubtitle")}</p>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <span className="text-sm">Bekleyen Ödemeler</span>
+            <span className="text-sm">{t("pendingPayments")}</span>
             <Badge variant="secondary">₺45,200</Badge>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm">Bu Hafta Rezervasyon</span>
+            <span className="text-sm">{t("thisWeekBookings")}</span>
             <Badge variant="outline">156</Badge>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm">Aktif Destek Talepleri</span>
+            <span className="text-sm">{t("activeSupportTickets")}</span>
             <Badge variant="destructive">8</Badge>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm">Yeni Otel Başvuruları</span>
+            <span className="text-sm">{t("newHotelApplications")}</span>
             <Badge variant="default">3</Badge>
           </div>
         </div>
@@ -179,6 +187,8 @@ const QuickStatsCard = () => {
 };
 
 const RecentActivityCard = () => {
+  const t = useTranslations("AdminStatistics");
+
   const activities = [
     { type: "rezervasyon", message: "Yeni rezervasyon: Antalya Resort", time: "2 dk önce", amount: "₺2,500" },
     { type: "ödeme", message: "Ödeme alındı: İstanbul Hotel", time: "15 dk önce", amount: "₺1,800" },
@@ -198,8 +208,8 @@ const RecentActivityCard = () => {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="text-sm font-medium">Son Aktiviteler</CardTitle>
-        <p className="text-xs text-muted-foreground">Sistemdeki son işlemler</p>
+        <CardTitle className="text-sm font-medium">{t("recentActivities")}</CardTitle>
+        <p className="text-xs text-muted-foreground">{t("recentActivitiesSubtitle")}</p>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
@@ -222,12 +232,14 @@ const RecentActivityCard = () => {
 };
 
 const StatisticPage = () => {
+  const t = useTranslations("AdminStatistics");
+
   const exportToCSV = () => {
     const csvContent = "data:text/csv;charset=utf-8," + 
-      "Aylık Gelir Verileri\n" +
+      `${t("monthlyRevenue")}\n` +
       "Ay,Gelir,Rezervasyon\n" +
       monthlyRevenueData.map(row => `${row.month},${row.revenue},${row.bookings}`).join("\n") +
-      "\n\nRezervasyon Kaynakları\n" +
+      `\n\n${t("bookingSources")}\n` +
       "Kaynak,Yüzde\n" +
       bookingSourceData.map(row => `${row.name},${row.value}%`).join("\n");
 
@@ -243,73 +255,69 @@ const StatisticPage = () => {
   return (
     <div className="flex-1 space-y-6 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Admin İstatistikleri</h2>
+        <h2 className="text-3xl font-bold tracking-tight">{t("adminStatistics")}</h2>
         <div className="flex items-center space-x-2">
           <Button onClick={exportToCSV} variant="outline">
             <Download className="h-4 w-4 mr-1" />
-            CSV Dışa Aktar
+            {t("exportCSV")}
           </Button>
         </div>
       </div>
 
-      {/* 5 Card Layout - 3x2 Grid with one 2-span card */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* İstatistik Kartları (3 adet) */}
         <MetricCard
-          title="Toplam Gelir"
+          title={t("totalRevenue")}
           value="₺289,000"
-          subtitle="Bu ay"
+          subtitle={t("thisMonth")}
           icon={<DollarSign className="h-4 w-4 text-green-500" />}
           trend={{ value: 12.5, isPositive: true }}
         />
         <MetricCard
-          title="Aktif Oteller"
+          title={t("activeHotels")}
           value="24"
-          subtitle="Sistemde kayıtlı"
+          subtitle={t("registered")}
           icon={<Building2 className="h-4 w-4 text-blue-500" />}
           trend={{ value: 8.3, isPositive: true }}
         />
         <MetricCard
-          title="Toplam Rezervasyon"
+          title={t("totalBookings")}
           value="810"
-          subtitle="Bu ay"
+          subtitle={t("thisMonth")}
           icon={<Calendar className="h-4 w-4 text-purple-500" />}
           trend={{ value: 15.2, isPositive: true }}
         />
 
-        {/* Aylık Gelir Trendi (2'lik yer kaplıyor) */}
         <RevenueChartCard />
-
-        {/* Diğer Kartlar */}
         <BookingSourceCard />
         <QuickStatsCard />
         <RecentActivityCard />
-        <Card className="h-full">
-          <CardHeader>
-            <CardTitle className="text-sm font-medium">Sistem Durumu</CardTitle>
-            <p className="text-xs text-muted-foreground">Platform genel durumu</p>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Sunucu Durumu</span>
-                <Badge variant="default" className="bg-green-500">Aktif</Badge>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Veritabanı</span>
-                <Badge variant="default" className="bg-green-500">Bağlı</Badge>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">API Durumu</span>
-                <Badge variant="default" className="bg-green-500">Çalışıyor</Badge>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Son Güncelleme</span>
-                <Badge variant="outline">2 dk önce</Badge>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+
+       <Card className="h-full">
+      <CardHeader>
+        <CardTitle className="text-sm font-medium">{t("title")}</CardTitle>
+        <p className="text-xs text-muted-foreground">{t("description")}</p>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <span className="text-sm">{t("serverStatus")}</span>
+            <Badge variant="default" className="bg-green-500">{t("active")}</Badge>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm">{t("database")}</span>
+            <Badge variant="default" className="bg-green-500">{t("connected")}</Badge>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm">{t("apiStatus")}</span>
+            <Badge variant="default" className="bg-green-500">{t("working")}</Badge>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm">{t("lastUpdate")}</span>
+            <Badge variant="outline">{t("timeAgo", { minutes: 2 })}</Badge>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
       </div>
     </div>
   );

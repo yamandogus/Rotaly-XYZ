@@ -30,6 +30,7 @@ export interface ToastOptions {
                 onClick={() => toast.dismiss(toastId.id)}
               >
                 <X className="w-4 h-4" />
+                {t("close")}
               </button>
             </span>
           ));
@@ -46,6 +47,7 @@ export interface ToastOptions {
                 onClick={() => toast.dismiss(toastId.id)}
               >
                 <X className="w-4 h-4" />
+                {t("close")}
               </button>
             </span>
           ));

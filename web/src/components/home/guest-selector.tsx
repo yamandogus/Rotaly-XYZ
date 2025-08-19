@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Users, Minus, Plus } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 interface GuestSelectorProps {
   guests: { adults: number; children: number }
@@ -12,6 +13,7 @@ interface GuestSelectorProps {
 
 export function GuestSelector({ guests, onGuestsChange }: GuestSelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const t = useTranslations("HomePage.guestSelector") // JSON’da HomePage.guestSelector namespace
 
   const updateGuests = (type: "adults" | "children", operation: "increment" | "decrement") => {
     const newGuests = { ...guests }
@@ -19,7 +21,7 @@ export function GuestSelector({ guests, onGuestsChange }: GuestSelectorProps) {
     if (operation === "increment") {
       newGuests[type]++
     } else if (operation === "decrement" && newGuests[type] > 0) {
-      if (type === "adults" && newGuests[type] === 1) return // At least 1 adult required
+      if (type === "adults" && newGuests[type] === 1) return // en az 1 yetişkin
       newGuests[type]--
     }
 
@@ -27,7 +29,9 @@ export function GuestSelector({ guests, onGuestsChange }: GuestSelectorProps) {
   }
 
   const totalGuests = guests.adults + guests.children
-  const guestText = `${totalGuests} ${totalGuests === 1 ? "Yetişkin" : "Kişi"}`
+  const guestText = `${totalGuests} ${
+    totalGuests === 1 ? t("adultSingular") : t("guestPlural")
+  }`
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -40,15 +44,24 @@ export function GuestSelector({ guests, onGuestsChange }: GuestSelectorProps) {
           {guestText}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700" align="start">
+      <PopoverContent
+        className="w-80 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+        align="start"
+      >
         <div className="space-y-4">
-          <h3 className="text-black dark:text-white font-medium">Kişi Sayısı</h3>
+          <h3 className="text-black dark:text-white font-medium">
+            {t("title")}
+          </h3>
 
           {/* Adults */}
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-black dark:text-white font-medium">Yetişkin</div>
-              <div className="text-gray-500 dark:text-gray-400 text-sm">13 yaş ve üzeri</div>
+              <div className="text-black dark:text-white font-medium">
+                {t("adults")}
+              </div>
+              <div className="text-gray-500 dark:text-gray-400 text-sm">
+                {t("adultsDescription")}
+              </div>
             </div>
             <div className="flex items-center space-x-2">
               <Button
@@ -60,7 +73,9 @@ export function GuestSelector({ guests, onGuestsChange }: GuestSelectorProps) {
               >
                 <Minus className="h-4 w-4" />
               </Button>
-              <span className="text-black dark:text-white w-8 text-center">{guests.adults}</span>
+              <span className="text-black dark:text-white w-8 text-center">
+                {guests.adults}
+              </span>
               <Button
                 variant="outline"
                 size="sm"
@@ -75,8 +90,12 @@ export function GuestSelector({ guests, onGuestsChange }: GuestSelectorProps) {
           {/* Children */}
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-black dark:text-white font-medium">Çocuk</div>
-              <div className="text-gray-500 dark:text-gray-400 text-sm">2-12 yaş arası</div>
+              <div className="text-black dark:text-white font-medium">
+                {t("children")}
+              </div>
+              <div className="text-gray-500 dark:text-gray-400 text-sm">
+                {t("childrenDescription")}
+              </div>
             </div>
             <div className="flex items-center space-x-2">
               <Button
@@ -88,7 +107,9 @@ export function GuestSelector({ guests, onGuestsChange }: GuestSelectorProps) {
               >
                 <Minus className="h-4 w-4" />
               </Button>
-              <span className="text-black dark:text-white w-8 text-center">{guests.children}</span>
+              <span className="text-black dark:text-white w-8 text-center">
+                {guests.children}
+              </span>
               <Button
                 variant="outline"
                 size="sm"
@@ -100,8 +121,11 @@ export function GuestSelector({ guests, onGuestsChange }: GuestSelectorProps) {
             </div>
           </div>
 
-          <Button onClick={() => setIsOpen(false)} className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-            Tamam
+          <Button
+            onClick={() => setIsOpen(false)}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            {t("confirm")}
           </Button>
         </div>
       </PopoverContent>
