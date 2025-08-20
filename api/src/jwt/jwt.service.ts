@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import * as jwt from "jsonwebtoken";
 import { TokenPayload } from "../types/express";
+import { AppError } from "../utils/appError";
 
 export class JwtService {
   private prisma: PrismaClient;
@@ -90,34 +91,44 @@ export class JwtService {
     }
   }
 
-  async logout(authorizationHeader: string) {
-    const refreshToken = this.extractTokenFromHeader(authorizationHeader);
+  async logout(token: string, secret: string): Promise<{ message: string }> {
+    try {
+      // Token'ı decode et
+      const decoded = jwt.verify(token, secret) as TokenPayload;
 
-    const decoded = this.verifyToken(
-      refreshToken,
-      process.env.JWT_REFRESH_SECRET || "secret_refresh_token"
-    );
+      if (!decoded) {
+        throw new AppError("Invalid token", 401);
+      }
 
-    if (!decoded.jti) {
-      const error = new Error("Invalid token");
-      error.name = "UnauthorizedError";
-      throw error;
+      // Kullanıcının tüm tokenlarını iptal et
+      await this.prisma.token.updateMany({
+        where: {
+          userId: decoded.userId,
+          revokedAt: null,
+        },
+        data: {
+          revokedAt: new Date(),
+        },
+      });
+
+      // Yeni bir revoke kaydı oluştur
+      await this.prisma.token.create({
+        data: {
+          userId: decoded.userId,
+          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 saat
+          revokedAt: new Date(),
+        },
+      });
+
+      return {
+        message: "Logged out successfully",
+      };
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      }
+      throw new AppError("Invalid token", 401);
     }
-
-    const token = await this.checkToken(decoded.jti);
-
-    await this.prisma.token.update({
-      where: {
-        id: token.id,
-      },
-      data: {
-        revokedAt: new Date(),
-      },
-    });
-
-    return {
-      message: "Logged out successfully",
-    };
   }
 
   async refresh(authorizationHeader: string) {

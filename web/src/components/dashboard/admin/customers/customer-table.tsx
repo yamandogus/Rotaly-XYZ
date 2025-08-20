@@ -282,18 +282,19 @@ const CustomerTable = ({
         </TableBody>
       </Table>
       {/*Delet Dialog */}
-      <Dialog open={openDelete} onOpenChange={setOpenDelete}>
-        <DialogContent>
-          <DialogTitle>Kullanıcı Sil</DialogTitle>
-          <p>Kullanıcıyı silmek istediğinize emin misiniz?</p>
-          <DialogFooter>
-          <DialogClose asChild>
-  <Button variant="outline">İptal</Button>
-</DialogClose>
-            <Button onClick={()=>setOpenDelete(false)}>Evet</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+    <Dialog open={openDelete} onOpenChange={setOpenDelete}>
+  <DialogContent>
+    <DialogTitle>{t("deleteTitle")}</DialogTitle>
+    <p>{t("deleteConfirm")}</p>
+    <DialogFooter>
+      <DialogClose asChild>
+        <Button variant="outline">{t("cancel")}</Button>
+      </DialogClose>
+      <Button onClick={() => setOpenDelete(false)}>{t("confirm")}</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
       ;
     </div>
   );

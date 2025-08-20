@@ -32,12 +32,7 @@ import {
 } from "@/components/ui/input-otp";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import {
-  Instagram,
-  Phone,
-  Mail,
-  Globe,
-} from "lucide-react";
+import { Instagram, Phone, Mail, Globe } from "lucide-react";
 
 export default function AdminProfilePage() {
   const t = useTranslations("AdminProfile");
@@ -52,7 +47,7 @@ export default function AdminProfilePage() {
       confirmPassword: z.string().min(8, { message: t("passwordHint") }),
     })
     .refine((data) => data.password === data.confirmPassword, {
-      message: t("passwordsDoNotMatch") || "Passwords do not match",
+      message: t("passwordsDoNotMatch"),
       path: ["confirmPassword"],
     });
 
@@ -66,34 +61,33 @@ export default function AdminProfilePage() {
     },
   });
 
-  // İlk aşama: Formu validate et ve OTP dialog aç
+  // Şifre kontrol -> OTP aç
   const handleOpenOtp = () => {
     const isValid = form.trigger(["password", "confirmPassword"]);
     isValid.then((valid) => {
       if (valid) {
         setOpen(true);
       } else {
-        toast.error("Lütfen şifreleri doğru şekilde giriniz.");
+        toast.error(t("formErrorPassword"));
       }
     });
   };
 
-  // İkinci aşama: OTP doğrula ve form submit et
+  // OTP doğrulama
   const otpSubmit = () => {
     if (otp.length !== 6) {
-      toast.error("Lütfen 6 haneli kodu giriniz.");
+      toast.error(t("otpErrorLength"));
       return;
     }
 
-    // Örnek OTP kontrol
     if (otp === "123456") {
-      toast.success("OTP Doğrulandı");
+      toast.success(t("otpSuccess"));
 
       const formData = form.getValues();
       console.log("Form Data:", formData);
       console.log("OTP:", otp);
 
-      // Burada backend'e gönder
+      // backend isteği
       // await updatePassword(formData, otp);
 
       setTimeout(() => {
@@ -102,19 +96,18 @@ export default function AdminProfilePage() {
         form.reset();
       }, 1000);
     } else {
-      toast.error("OTP Doğrulanamadı");
+      toast.error(t("otpErrorInvalid"));
     }
   };
 
   return (
-    <div className="w-full bg-gray-50 min-h-screen">
+    <div className="w-full min-h-screen">
       <div className="w-full max-w-6xl mx-auto p-6">
         <div className="grid grid-cols-12 gap-8">
-          {/* Profile Image & Company Info */}
+          {/* Profile Image */}
           <div className="col-span-12 lg:col-span-4">
             <Card className="h-full">
               <CardContent className="flex flex-col items-center py-6 space-y-6">
-                {/* Logo */}
                 <Image
                   src="/images/logo3.PNG"
                   alt="Admin Profile"
@@ -162,7 +155,7 @@ export default function AdminProfilePage() {
                       />
                     </div>
 
-                    {/* Password Fields */}
+                    {/* Passwords */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <FormField
                         control={form.control}
@@ -195,10 +188,10 @@ export default function AdminProfilePage() {
                     {/* Buttons */}
                     <div className="flex justify-end gap-4 border-t pt-4">
                       <Button type="button" variant="outline">
-                        {t("cancel") || "Cancel"}
+                        {t("cancel")}
                       </Button>
                       <Button type="button" onClick={handleOpenOtp}>
-                        Şifreyi Değiştir
+                        {t("changePassword")}
                       </Button>
                     </div>
                   </form>
@@ -207,9 +200,10 @@ export default function AdminProfilePage() {
             </Card>
           </div>
         </div>
+
+        {/* Footer: Company Info + Social */}
         <Card className="bg-card mt-16">
           <div className="grid grid-cols-12 gap-6">
-            {/* Company Name */}
             <div className="col-span-12 md:col-span-4">
               <div className="text-center space-y-1">
                 <h2 className="text-xl font-semibold text-gray-900">
@@ -218,14 +212,12 @@ export default function AdminProfilePage() {
                 <p className="text-sm text-gray-600">Seyahat ve Turizm</p>
               </div>
             </div>
-
-            {/* Social Media Links */}
             <div className="col-span-12 md:col-span-4">
               <div className="flex flex-col items-center space-y-3">
                 <h3 className="text-sm font-medium text-gray-700">
-                  Sosyal Medya
+                  {t("socialMedia")}
                 </h3>
-                <div className="flex justify-center space-x-4">
+                  <div className="flex justify-center space-x-4">
                   <a
                     href="https://instagram.com/rotaly.xyz"
                     target="_blank"
@@ -265,12 +257,10 @@ export default function AdminProfilePage() {
                 </div>
               </div>
             </div>
-
-            {/* Company Details */}
             <div className="col-span-12 md:col-span-4">
               <div className="w-full space-y-4">
                 <h3 className="text-sm font-medium text-gray-700 text-center">
-                  Şirket Bilgileri
+                  {t("companyInfo")}
                 </h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 text-sm">
@@ -304,10 +294,10 @@ export default function AdminProfilePage() {
         <DialogContent className="max-w-md w-full rounded-2xl p-6 space-y-6">
           <DialogHeader className="text-center space-y-2">
             <DialogTitle className="text-2xl font-semibold">
-              Doğrulama Kodu
+              {t("otpTitle")}
             </DialogTitle>
             <DialogDescription className="text-gray-500">
-              E-mail adresinize gönderilen 6 haneli kodu giriniz.
+              {t("otpDescription")}
             </DialogDescription>
           </DialogHeader>
 
@@ -315,21 +305,13 @@ export default function AdminProfilePage() {
             <InputOTP maxLength={6} value={otp} onChange={setOtp}>
               <InputOTPGroup>
                 {[0, 1, 2].map((i) => (
-                  <InputOTPSlot
-                    key={i}
-                    index={i}
-                    className="w-12 h-12 rounded-lg text-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all"
-                  />
+                  <InputOTPSlot key={i} index={i} className="w-12 h-12 ..." />
                 ))}
               </InputOTPGroup>
               <InputOTPSeparator />
               <InputOTPGroup>
                 {[3, 4, 5].map((i) => (
-                  <InputOTPSlot
-                    key={i}
-                    index={i}
-                    className="w-12 h-12 rounded-lg text-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all"
-                  />
+                  <InputOTPSlot key={i} index={i} className="w-12 h-12 ..." />
                 ))}
               </InputOTPGroup>
             </InputOTP>
@@ -337,10 +319,10 @@ export default function AdminProfilePage() {
 
           <DialogFooter className="flex justify-center gap-4">
             <DialogClose asChild>
-              <Button variant="outline">Vazgeç</Button>
+              <Button variant="outline">{t("otpCancel")}</Button>
             </DialogClose>
             <Button onClick={otpSubmit} className="bg-primary text-white">
-              Onayla ve Kaydet
+              {t("otpConfirm")}
             </Button>
           </DialogFooter>
         </DialogContent>

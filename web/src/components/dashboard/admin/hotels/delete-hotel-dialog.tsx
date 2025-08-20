@@ -2,13 +2,13 @@ import { Button } from '@/components/ui/button';
 import { DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Dialog } from '@/components/ui/dialog';
 import React from 'react'
-import { Hotel } from '@/types/hotel';
+import { HotelNew } from '@/types/hotel';
 
 interface DeleteHotelDialogProps {
   isDeleteDialogOpen: boolean;
   setIsDeleteDialogOpen: (open: boolean) => void;
   t: (key: string) => string;
-  selectedHotel: Hotel;
+  selectedHotel: HotelNew;
   confirmDelete: () => void;
 }
 

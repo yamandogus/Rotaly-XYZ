@@ -4,15 +4,18 @@ import storage from "redux-persist/lib/storage";
 import authReducer from "./auth/auth-slice";
 import searchReducer from "./search/search-slice";
 import testUserReducer from "./testUser/test-user-slice";
+import dashboardReducer from "./dashboard/dashboard-slice";
+import bookingReducer from "./booking/booking-slice";
+import stepReducer from "./step/step-slice";
+import favoriteReducer from "./favorite/favorite-slice"; 
 
-import stepReducer from "./reservation/reservation-slice";
 
 
 // Persist config
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["testUser", "auth", "search", "booking", "step"], // Sadece bu reducer'ları persist et
+  whitelist: ["testUser", "auth", "search", "booking", "step", "dashboard", "favorite"], // ✅ favorites da persist ediliyor
 };
 
 // Root reducer
@@ -20,8 +23,10 @@ const rootReducer = combineReducers({
   auth: authReducer,
   search: searchReducer,
   testUser: testUserReducer,
-
+  dashboard: dashboardReducer,
+  booking: bookingReducer,
   step: stepReducer,
+  favorite: favoriteReducer, // ✅ burada reducer'ı ekledik
 });
 
 // Persisted reducer

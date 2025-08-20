@@ -6,8 +6,10 @@ import { PlusIcon, CreditCard } from "lucide-react";
 import AddCardDialog from "./add-card-dialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations } from "next-intl";
 
 const PaymentMethodSelector = () => {
+  const t = useTranslations("HotelDetail.PaymentMethodSelector");
   return (
     <Accordion
       type="single"
@@ -21,15 +23,15 @@ const PaymentMethodSelector = () => {
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <span className="font-medium text-gray-900 dark:text-gray-100">Kartlarım</span>
+                <span className="font-medium text-gray-900 dark:text-gray-100">{t("cardsTitle")}</span>
               </div>
               <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-                {paymentMethods.length} kart
+                {t("cardCount", { count: paymentMethods.length })}
               </Badge>
             </div>
             <div className="flex items-center gap-2">
               <PlusIcon className="w-4 h-4 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform" />
-              <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">Yeni Kart Ekle</span>
+              <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">{t("addNewCard")}</span>
             </div>
           </div>
         </AccordionTrigger>
@@ -58,7 +60,7 @@ const PaymentMethodSelector = () => {
                         href="#"
                         className="text-sm hover:border-b hover:border-gray-500 dark:hover:border-gray-400 transition-all duration-300"
                       >
-                        Düzenle
+                        {t("edit")}
                       </a>
                     </p>
                   </div>
@@ -84,7 +86,7 @@ const PaymentMethodSelector = () => {
                 color="blue"
                 className="w-4 h-4 border border-blue-500 rounded-sm mt-1"
               />
-              <p className="text-sm">Ekle</p>
+              <p className="text-sm">{t("add")}</p>
             </Button>
           </AddCardDialog>
         </div>

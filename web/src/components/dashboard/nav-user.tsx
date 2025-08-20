@@ -48,9 +48,9 @@ export function NavUser({
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">Rotaly</span>
+                <span className="truncate font-medium">{t("navUser.brandName")}</span>
                 <span className="text-muted-foreground truncate text-xs">
-                  rotaly@gmail.com
+                  {t("navUser.email")}
                 </span>
               </div>
             
@@ -69,9 +69,9 @@ export function NavUser({
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">Rotaly</span>
+                  <span className="truncate font-medium">{t("navUser.brandName")}</span>
                   <span className="text-muted-foreground truncate text-xs">
-                    rotaly@gmail.com
+                    {t("navUser.email")}
                   </span>
                 </div>
               </div>

@@ -1,4 +1,3 @@
-import { verificationEmailSchema } from "src/dto/email";
 import Prisma from "../../config/db";
 import { RegisterSchemaType, UpdateUserSchemaType } from "../../dto/auth";
 
@@ -14,6 +13,20 @@ export class UserRepository {
     return Prisma.user.findUnique({
       where: {
         email,
+        deletedAt: null,
+      },
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+        phone: true,
+        role: true,
+        isVerified: true,
+        createdAt: true,
+        updatedAt: true,
+        deletedAt: true,
+        hashedPassword: true,
       },
     });
   }
@@ -28,13 +41,12 @@ export class UserRepository {
         surname: true,
         email: true,
         phone: true,
-        isVerified: true,
-        deletedAt: true,
-        images: true,
         role: true,
+        deletedAt: true,
+        isVerified: true,
+        verificationOTP: true,
+        images: true,
         paymentCards: true,
-        hashedPassword: true,
-        verificationOTP:true
       },
     });
   }
@@ -43,20 +55,38 @@ export class UserRepository {
       where: {
         phone,
       },
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+        phone: true,
+        role: true,
+        deletedAt: true,
+        isVerified: true,
+        verificationOTP: true,
+        images: true,
+        paymentCards: true,
+      },
     });
   }
-  static async create(data: RegisterSchemaType) {
-    // confirmPassword alanını ve hashlenmemiş password'u kaydetmemeliyiz
-    const { name, surname, email, phone, password } = data;
-    // Burada password'ü hashlemeniz gerekir, örneğin bcrypt ile hashleyebilirsiniz.
-    // Şimdilik hashedPassword alanını doğrudan password olarak atıyoruz, gerçek uygulamada hash kullanmalısınız.
+  static async create(data: RegisterSchemaType & { password: string }) {
+    const { password, confirmPassword, ...userData } = data;
     return Prisma.user.create({
       data: {
-        name,
-        surname,
-        email,
-        phone,
+        ...userData,
         hashedPassword: password,
+      },
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+        phone: true,
+        role: true,
+        isVerified: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
   }
@@ -75,6 +105,37 @@ export class UserRepository {
         id,
       },
       data: { deletedAt: new Date() },
+    });
+  }
+
+  // auth işlemleri için prisma işlemleri
+
+  // resendVerificationEmail,register ve forgotPassword için
+  static async updateVerificationOTP(id: string, otp: string) {
+    return Prisma.user.update({
+      where: { id },
+      data: {
+        verificationOTP: otp,
+        verificationOTPExpires: new Date(Date.now() + 10 * 60 * 1000),
+      },
+    });
+  }
+  // email doğrulama için
+  static async verifyEmail(id: string) {
+    return Prisma.user.update({
+      where: { id },
+      data: {
+        isVerified: true,
+        verificationOTP: null,
+        verificationOTPExpires: null,
+      },
+    });
+  }
+  // forgotPassword ve changePassword için
+  static async updatePassword(id: string, hashedPassword: string) {
+    return Prisma.user.update({
+      where: { id },
+      data: { hashedPassword },
     });
   }
 }

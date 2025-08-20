@@ -16,21 +16,21 @@ import {
   DollarSign,
   Building,
 } from "lucide-react";
-import { hotelsData } from "@/data/dumy";
+import hotelsData from "@/data/hotelsData.json";
 import Image from "next/image";
-import { Hotel } from "@/types/hotel";
+import {HotelNew } from "@/types/hotel";
 
 
 export default function HotelDetailPage() {
   const t = useTranslations("Hotels");
   const params = useParams();
   const router = useRouter();
-  const [hotel, setHotel] = useState<Hotel | null>(null);
+  const [hotel, setHotel] = useState<HotelNew | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // otel bilgisini al
-    const foundHotel = hotelsData.find((h: Hotel) => h.id === params.id);
+    const foundHotel = hotelsData.find((h: HotelNew) => h.id === params.id);
     if (foundHotel) {
       setHotel(foundHotel);
     }
@@ -43,7 +43,7 @@ export default function HotelDetailPage() {
   };
 
   // otel tipini belirle
-  const getHotelType = (hotel: Hotel) => {
+  const getHotelType = (hotel: HotelNew) => {
     return hotel.type;
   };
 
@@ -101,14 +101,14 @@ export default function HotelDetailPage() {
           </div>
           <div className="flex items-center gap-2">
             <Badge
-              variant={hotel.status === "Active" ? "default" : "secondary"}
+              variant={hotel.isActive ? "default" : "secondary"}
               className={
-                hotel.status === "Active"
+                hotel.isActive
                   ? "bg-green-100 text-green-800 hover:bg-green-100"
                   : "bg-red-100 text-red-800 hover:bg-red-100"
               }
             >
-              {hotel.status === "Active" ? t("active") : t("inactive")}
+              {hotel.isActive ? t("active") : t("inactive")}
             </Badge>
           </div>
         </div>
@@ -119,7 +119,7 @@ export default function HotelDetailPage() {
             <Card className="w-full h-auto p-0">
               <CardContent className="p-0">
                 <Image
-                  src={hotel.image}
+                  src={hotel.images[0]?.url || '/images/hotel-placeholder.jpg'}
                   alt={hotel.name}
                   width={1000}
                   height={1000}
@@ -140,18 +140,18 @@ export default function HotelDetailPage() {
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                   <span className="font-medium">{hotel.rating}</span>
                   <span className="text-muted-foreground">
-                    ({hotel.totalBookings} {t("reviews")})
+                    ({hotel.totalBookings || 0} {t("reviews")})
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-medium">{hotel.price}</span>
+                  <span className="font-medium">{hotel.price || 'N/A'}</span>
                   <span className="text-muted-foreground">/ {t("night")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4 text-muted-foreground" />
                   <span>
-                    {hotel.totalBookings} {t("totalBookings")}
+                    {hotel.totalBookings || 0} {t("totalBookings")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -181,7 +181,7 @@ export default function HotelDetailPage() {
         <Card className="w-full h-auto py-0">
           <CardContent className="p-0">
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 bg-blue-500">
+              <TabsList className="grid w-full grid-cols-3 bg-blue-500 dark:bg-card">
                 <TabsTrigger value="overview">{t("overview")}</TabsTrigger>
                 <TabsTrigger value="rooms">{t("rooms")}</TabsTrigger>
                 <TabsTrigger value="bookings">{t("bookings")}</TabsTrigger>
@@ -228,10 +228,10 @@ export default function HotelDetailPage() {
                         </span>
                         <Badge
                           variant={
-                            hotel.status === "Active" ? "default" : "secondary"
+                            hotel.isActive ? "default" : "secondary"
                           }
                         >
-                          {hotel.status === "Active"
+                          {hotel.isActive
                             ? t("active")
                             : t("inactive")}
                         </Badge>
@@ -246,7 +246,7 @@ export default function HotelDetailPage() {
                         <span className="text-muted-foreground">
                           {t("lastBooking")}
                         </span>
-                        <span className="font-medium">{hotel.lastBooking}</span>
+                        <span className="font-medium">{hotel.lastBooking || 'N/A'}</span>
                       </div>
                     </div>
                   </div>
@@ -261,7 +261,7 @@ export default function HotelDetailPage() {
                           {t("totalRevenue")}
                         </span>
                         <span className="font-medium text-green-600">
-                          {hotel.revenue}
+                          {hotel.revenue || 'N/A'}
                         </span>
                       </div>
                       <div className="flex justify-between">
@@ -269,21 +269,21 @@ export default function HotelDetailPage() {
                           {t("totalBookings")}
                         </span>
                         <span className="font-medium">
-                          {hotel.totalBookings}
+                          {hotel.totalBookings || 0}
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">
                           {t("averagePrice")}
                         </span>
-                        <span className="font-medium">{hotel.price}</span>
+                        <span className="font-medium">{hotel.price || 'N/A'}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">
                           {t("roomCount")}
                         </span>
                         <span className="font-medium">
-                          {10}
+                          {hotel.rooms?.length || 0}
                         </span>
                       </div>
                     </div>
@@ -295,6 +295,16 @@ export default function HotelDetailPage() {
                 <div className="text-center py-8">
                   <Building className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">{t("rooms")}</h3>
+                  {hotel.rooms?.map((room) => (
+                    <Card key={room.id} className="w-full h-auto p-0">
+                      <CardHeader>
+                        <CardTitle className="text-lg">{room.name}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-0">
+                        <p className="text-muted-foreground">{room.description}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
                   <p className="text-muted-foreground">
                     {t("roomInformationComingSoon")}
                   </p>

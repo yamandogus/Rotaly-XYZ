@@ -10,7 +10,7 @@ type Notification = {
 };
 
 export default function Notifications() {
-  const t = useTranslations("Profile");
+  const t = useTranslations("UserProfile");
 
   // notifications verisi burada direkt tanımlı
   const notifications: Notification[] = [

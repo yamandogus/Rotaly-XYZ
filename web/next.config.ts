@@ -5,7 +5,27 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['localhost', 'vercel.app', 'media.istockphoto.com', 'images.unsplash.com', "imagedelivery.net","encrypted-tbn0.gstatic.com","encrypted-tbn0.gstatic.com","www.asortie.com"],
+    domains: [
+      'localhost', 
+      'vercel.app', 
+      'media.istockphoto.com', 
+      'images.unsplash.com', 
+      'imagedelivery.net',
+      'encrypted-tbn0.gstatic.com',
+      'www.asortie.com',
+      'www.swissotel.com',
+      'www.peninsula.com',
+      'dq5r178u4t83b.cloudfront.net',
+      'www.fourseasons.com',
+      'pix4.agoda.net',
+      'pix1.agoda.net',
+      'pix2.agoda.net',
+      'pix3.agoda.net',
+      'pix5.agoda.net',
+      'pix6.agoda.net',
+      'pix7.agoda.net',
+      'pix8.agoda.net',
+    ],
     unoptimized: false,
     formats: ['image/webp', 'image/avif'],
   },

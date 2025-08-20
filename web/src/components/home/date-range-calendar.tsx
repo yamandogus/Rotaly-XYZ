@@ -5,6 +5,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { DateRange } from "react-day-picker"
+import { useTranslations } from "next-intl"
 
 interface DateRangeCalendarProps {
   checkIn?: Date
@@ -13,6 +14,7 @@ interface DateRangeCalendarProps {
 }
 
 export function DateRangeCalendar({ checkIn, checkOut, onDateRangeChange }: DateRangeCalendarProps) {
+  const t = useTranslations("HomePage.dateRangeCalendar") // dil desteği
   const [currentMonth, setCurrentMonth] = useState(new Date(2025, 7)) // August 2025
 
   const dateRange: DateRange | undefined =
@@ -43,7 +45,7 @@ export function DateRangeCalendar({ checkIn, checkOut, onDateRangeChange }: Date
   return (
     <div className="bg-white dark:bg-card text-black dark:text-white rounded-lg overflow-hidden">
       <div className="bg-white dark:bg-card p-4 text-center">
-        <h2 className="text-lg font-medium text-black dark:text-white">Giriş ve çıkış tarihi seçiniz</h2>
+        <h2 className="text-lg font-medium text-black dark:text-white">{t("heading")}</h2>
       </div>
 
       <div className="flex items-center justify-between p-4 border-b border-gray-300 dark:border-gray-700">

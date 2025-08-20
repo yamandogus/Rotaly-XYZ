@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Rating, RatingButton } from "@/components/ui/shadcn-io/rating";
 import { Car, Camera, UtensilsCrossed } from "lucide-react";
 import { hotelData } from "@/data/dumy";
+import { useTranslations } from "next-intl";
 
 interface HotelSummaryProps {
   hotel: {
@@ -34,6 +35,8 @@ interface HotelSummaryProps {
 }
 
 const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
+  const t = useTranslations("HotelDetail.HotelSummary");
+
   return (
     <div className="flex flex-col gap-2">
       {/* Hotel Bilgileri Kartı */}
@@ -71,7 +74,7 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
               ))}
             </Rating>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              ({hotel.ratingCount})
+              {t("reviewsCount", { count: hotel.ratingCount })}
             </p>
           </div>
         </div>
@@ -84,7 +87,7 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
               variant="outline"
             >
               <Camera className="w-4 h-4" />
-              Ücretsiz İptal
+              {t("freeCancellation")}
             </Button>
           )}
           {hotel.features?.breakfast && (
@@ -94,7 +97,7 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
               variant="outline"
             >
               <UtensilsCrossed className="w-4 h-4" />
-              Kahvaltı dahil
+              {t("breakfastIncluded")}
             </Button>
           )}
           {hotel.features?.parking && (
@@ -104,7 +107,7 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
               variant="outline"
             >
               <Car className="w-4 h-4" />
-              Otopark
+              {t("parking")}
             </Button>
           )}
         </div>
@@ -114,31 +117,31 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
       <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 mt-4 bg-white dark:bg-card">
         {/* Rezervasyon Bilgileri Başlığı */}
         <h3 className="text-xl font-semibold mb-6 text-gray-900 dark:text-gray-100">
-          Rezervasyon Bilgileri
+          {t("reservationInformation")}
         </h3>
 
         {/* Giriş - Çıkış Tarihleri */}
         <div className="grid grid-cols-2 gap-8 mb-6">
           <div>
             <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
-              Giriş
+              {t("checkIn")}
             </p>
             <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
               {booking.checkIn}
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {booking.checkInTime}&apos;dan itibaren
+              {t("checkInTime", { time: booking.checkInTime })}
             </p>
           </div>
           <div>
             <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
-              Çıkış
+              {t("checkOut")}
             </p>
             <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
               {booking.checkOut}
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {booking.checkOutTime}&apos;a kadar
+              {t("checkOutTime", { time: booking.checkOutTime })}
             </p>
           </div>
         </div>
@@ -146,7 +149,11 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
         {/* Oda Bilgisi */}
         <div className="mb-8">
           <p className="text-base font-medium text-gray-900 dark:text-gray-100">
-            {booking.roomType} / {booking.nights} gece, {booking.guests} misafir
+            {t("roomDetails", {
+              roomType: booking.roomType,
+              nights: booking.nights,
+              guests: booking.guests,
+            })}
           </p>
         </div>
 
@@ -155,14 +162,14 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
         {/* Ödeme Özeti */}
         <div>
           <h4 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
-            Ödeme Özeti
+            {t("paymentSummary")}
           </h4>
 
           {/* Fiyat Detayları */}
           <div className="space-y-3 mb-4">
             <div className="flex justify-between items-center">
               <span className="text-gray-700 dark:text-gray-300">
-                {booking.nights} gece
+                {t("nights", { nights: booking.nights })}
               </span>
               <span className="text-gray-900 dark:text-gray-100 font-medium">
                 {booking.basePrice.toLocaleString("tr-TR")} TL
@@ -170,7 +177,7 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-700 dark:text-gray-300">
-                Vergiler ve Hizmet Bedeli
+                {t("taxesAndServiceFee")}
               </span>
               <span className="text-gray-900 dark:text-gray-100 font-medium">
                 {booking.taxesAndFees.toLocaleString("tr-TR")} TL
@@ -183,7 +190,7 @@ const HotelSummary: React.FC<HotelSummaryProps> = ({ hotel, booking }) => {
           {/* Toplam */}
           <div className="flex justify-between items-center">
             <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-              Toplam
+              {t("total")}
             </span>
             <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
               {booking.total.toLocaleString("tr-TR")} TL

@@ -12,6 +12,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { BookingSearch } from "@/components/home/booking-search";
+import { useRouter } from "next/navigation";
 
 const images = [
   "/images/Istanbul.jpg",
@@ -22,6 +23,13 @@ const images = [
 
 export default function HomePage() {
   const t = useTranslations("HomePage");
+  const router = useRouter();
+
+  const handleSearch = () => {
+    // BookingSearch component'i kendi validation'ını yapacak ve store'a kaydetecek
+    // Başarılı olursa categories sayfasına yönlendir
+    router.push(`/categories`);
+  };
 
   const categories = [
     { name: t("categoryDaire"), label: "Daire", icon: "/icons/daire.svg" },
@@ -172,7 +180,7 @@ export default function HomePage() {
           <h1 className="text-2xl md:text-4xl font-bold mb-4">
             {t("heroHeading")}
           </h1>
-          <p className="text-base md:text-lg max-w-2xl mb-8 text-gray-400 font-medium">
+          <p className="text-base md:text-lg max-w-2xl mb-8 text-gray-400 dark:text-gray-300 font-medium">
             {t("heroSubheading")}
           </p>
         </div>
@@ -207,7 +215,7 @@ export default function HomePage() {
         </div>
 
         <div className="relative z-40 w-full max-w-6xl -mt-20 px-4 mb-12">
-          <BookingSearch />
+          <BookingSearch handleSearch={handleSearch} />
         </div>
 
         {/* Categories Section */}
@@ -219,7 +227,7 @@ export default function HomePage() {
             {categories.map((category) => (
               <div
                 key={category.name}
-                className="w-full max-w-[160px] flex items-center justify-center space-x-3 p-4 rounded-full bg-gray-100 shadow-sm cursor-pointer hover:bg-gray-200 transition-colors duration-200 border border-gray-300 dark:bg-gray-800 dark:border-gray-700"
+                className="w-full max-w-[160px] flex items-center justify-center space-x-3 p-4 rounded-full bg-gray-100 shadow-sm cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 border border-gray-300 dark:bg-gray-800 dark:border-gray-700"
               >
                 <div className="w-10 h-8 flex items-center justify-center rounded-full">
                   <Image
@@ -287,9 +295,15 @@ export default function HomePage() {
                   key={offer.id}
                   item={{
                     ...offer,
+                    price: Number(offer.price.replace(" TL", "").replace(".", "")), // Fiyatı number'a dönüştür
                     cancelText,
                     breakfastText,
                     parkingText,
+                    isDiscounted: false, // Varsayılan değerler eklendi
+                    checkIn: "12:00",
+                    checkOut: "14:00",
+                    ownerId: "",
+                    isActive: true,
                   }}
                 />
               );

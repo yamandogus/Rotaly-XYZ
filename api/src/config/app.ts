@@ -12,6 +12,9 @@ import emailRoutes from "../modules/email/route";
 import messageRoutes from "../modules/message/route";
 import supportRoutes from "../modules/support/route";
 import adminRoutes from "../modules/admin/route";
+import hotelRoutes from "../modules/hotel/route";
+import roomRoutes from "../modules/room/route";
+import reservationRoutes from "../modules/reservation/route";
 
 const app = express();
 
@@ -36,6 +39,9 @@ app.use("/api/email", emailRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/support", supportRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/hotels", hotelRoutes);
+app.use("/api/rooms", roomRoutes);
+app.use("/api/reservations", reservationRoutes);
 
 // error handler has to come after all other routes
 app.use(errorHandler);

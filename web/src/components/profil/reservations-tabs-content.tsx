@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import {
   Dialog,
@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { MessageSquareIcon, XIcon } from "lucide-react";
 import { Rating, RatingButton } from "@/components/ui/shadcn-io/rating";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 const initialReservationsData = [
   {
@@ -66,6 +67,7 @@ const initialReservationsData = [
 ];
 
 export default function ReservationsContent() {
+  const t = useTranslations("UserProfile.reservationss");
   const [reservations, setReservations] = useState(initialReservationsData);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [currentHotel, setCurrentHotel] = useState({
@@ -77,9 +79,9 @@ export default function ReservationsContent() {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [selectedReservationId, setSelectedReservationId] = useState<number | null>(null);
 
-  const defaultMessage = (hotelName: string) => [
-    { id: 1, message: `${hotelName} rezervasyonlarınızda nasıl yardımcı olabilirim?`, sender: "bot" },
-  ];
+  const defaultMessage = useCallback((hotelName: string) => [
+    { id: 1, message: `Welcome to ${hotelName}! How can I assist you with your reservation?`, sender: "bot" },
+  ], []);
 
   const [messages, setMessages] = useState(defaultMessage(currentHotel.name));
   const [message, setMessage] = useState("");
@@ -87,9 +89,9 @@ export default function ReservationsContent() {
 
   useEffect(() => {
     if (isChatOpen) {
-      setMessages(defaultMessage(currentHotel.name || "Otelimize"));
+      setMessages(defaultMessage(currentHotel.name || t("chat.ourHotel")));
     }
-  }, [isChatOpen, currentHotel.name]);
+  }, [isChatOpen, currentHotel.name, defaultMessage, t]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -105,8 +107,7 @@ export default function ReservationsContent() {
     };
     const botResponse = {
       id: Date.now() + 1,
-      message:
-        "Teşekkür ederim. Size nasıl yardımcı olabilirim? Daha detaylı bilgi için canlı destek ile iletişime geçebilirsiniz.",
+      message: t("chat.botResponse"),
       sender: "bot",
     };
 
@@ -135,7 +136,7 @@ export default function ReservationsContent() {
       
 
       <h2 className="text-3xl font-semibold mb-6 -mt-6 text-gray-900 dark:text-white">
-        Rezervasyonlar
+        {t("title")}
       </h2>
 
       <div className="space-y-6">
@@ -160,10 +161,10 @@ export default function ReservationsContent() {
                 <h3 className="text-xl font-semibold text-foreground mb-1">{res.hotelName}</h3>
                 <p className="text-muted-foreground text-sm mb-3 ml-1">{res.location}</p>
                 <p className="text-muted-foreground text-sm mb-1">
-                  Oda No: {res.roomNumber} • {res.guests} Kişilik • {res.nights} Gece
+                  {t("roomNumber", { roomNumber: res.roomNumber })} • {t("guests", { guests: res.guests })} • {t("nights", { nights: res.nights })}
                 </p>
                 <p className="text-muted-foreground text-sm mb-3">
-                  Giriş: {res.checkIn} • Çıkış: {res.checkOut}
+                  {t("checkIn", { date: res.checkIn })} • {t("checkOut", { date: res.checkOut })}
                 </p>
 
                 <div className="flex flex-wrap gap-2 text-sm">
@@ -174,7 +175,7 @@ export default function ReservationsContent() {
                         : "bg-gray-100 text-gray-400 border border-gray-200"
                     }`}
                   >
-                    Kahvaltı: {res.breakfast ? "Dahil" : "Dahil Değil"}
+                    {t("breakfast")}: {res.breakfast ? t("breakfastIncluded") : t("breakfastNotIncluded")}
                   </span>
 
                   <span
@@ -184,7 +185,7 @@ export default function ReservationsContent() {
                         : "bg-gray-100 text-gray-400 border border-gray-200"
                     }`}
                   >
-                    Otopark: {res.parking ? "Mevcut" : "Mevcut Değil"}
+                    {t("parking")}: {res.parking ? t("parkingAvailable") : t("parkingNotAvailable")}
                   </span>
 
                   <span
@@ -194,7 +195,7 @@ export default function ReservationsContent() {
                         : "bg-gray-100 text-gray-400 border border-gray-200"
                     }`}
                   >
-                    Ücretsiz İptal: {res.cancel ? "Var" : "Yok"}
+                    {t("freeCancellation")}: {res.cancel ? t("freeCancellationAvailable") : t("freeCancellationNotAvailable")}
                   </span>
                 </div>
               </div>
@@ -217,7 +218,7 @@ export default function ReservationsContent() {
                     onClick={() => openCancelModal(res.id)}
                   >
                     <XIcon className="w-5 h-5" />
-                    Rezervasyon İptal
+                    {t("cancelReservation")}
                   </button>
 
                   <button
@@ -229,12 +230,12 @@ export default function ReservationsContent() {
                         image: res.image || "/images/opportunity1.jpg",
                       });
                       setIsChatOpen(true);
-                      setMessages([{ id: 1, message: "Merhaba, nasıl yardımcı olabilirim?", sender: "bot" }]);
+                      setMessages([{ id: 1, message: t("chat.welcomeMessage"), sender: "bot" }]);
                       setMessage("");
                     }}
                   >
                     <MessageSquareIcon className="w-5 h-5" />
-                    Otele Sor
+                    {t("askHotel")}
                   </button>
                 </div>
               </div>
@@ -295,7 +296,7 @@ export default function ReservationsContent() {
 
           <div className="p-4 border-t flex gap-2 items-center bg-white dark:bg-gray-900">
             <Input
-              placeholder="Mesajınızı yazın..."
+              placeholder={t("chat.placeholder")}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
@@ -306,7 +307,7 @@ export default function ReservationsContent() {
               disabled={!message.trim()}
               className="bg-blue-600 hover:bg-blue-700 text-white"
             >
-              Gönder
+              {t("chat.send")}
             </Button>
           </div>
         </DialogContent>
@@ -316,15 +317,15 @@ export default function ReservationsContent() {
       <Dialog open={isCancelModalOpen} onOpenChange={setIsCancelModalOpen}>
         <DialogContent className="sm:max-w-[400px] p-6">
           <DialogHeader>
-            <DialogTitle>Rezervasyon İptali</DialogTitle>
-            <DialogDescription>Rezervasyonunuzu iptal etmek istediğinize emin misiniz?</DialogDescription>
+            <DialogTitle>{t("cancelModal.title")}</DialogTitle>
+            <DialogDescription>{t("cancelModal.description")}</DialogDescription>
           </DialogHeader>
           <div className="mt-6 flex justify-end gap-4">
             <Button variant="outline" onClick={() => setIsCancelModalOpen(false)}>
-              Vazgeç
+              {t("cancelModal.cancel")}
             </Button>
             <Button className="bg-red-600 hover:bg-red-700 text-white" onClick={confirmCancelReservation}>
-              Evet, İptal Et
+              {t("cancelModal.confirm")}
             </Button>
           </div>
         </DialogContent>

@@ -7,6 +7,8 @@ import Breadcrumbs from "@/components/hotel/bread-crumbs";
 import ImageGallery from "@/components/hotel/image-gallery";
 import HotelInfo from "@/components/hotel/hotel-info";
 import BookingForm from "@/components/hotel/booking-form";
+import { singleHotelData } from "@/data/dumy";
+
 
 const HotelDetailPageContent = () => {
   const [checkInDate, setCheckInDate] = React.useState<Date | undefined>(new Date());
@@ -48,6 +50,8 @@ const HotelDetailPageContent = () => {
             setAdults={setAdults}
             numberOfNights={numberOfNights}
             price={40500}
+            hotelName={singleHotelData.name}
+            hotelLocation={singleHotelData.location}
           />
 
           <HotelInfo />
