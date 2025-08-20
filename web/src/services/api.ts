@@ -1,4 +1,6 @@
+
 // web/src/services/api.ts
+
 import axios from "axios";
 
 // API temel URL'i - environment variable'dan alır, yoksa localhost kullanır
@@ -11,6 +13,7 @@ export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
+
   },
 });
 
@@ -43,51 +46,10 @@ apiClient.interceptors.response.use(
   }
 );
 
-// API servisleri
-export const api = {
-  async register(userData: {
-    name: string;
-    surname: string;
-    email: string;
-    phone: string;
-    password: string;
-    confirmPassword: string;
-  }) {
-    const response = await apiClient.post(
-      `/auth/register`,
-      userData
-    );
-    return response.data;
-  },
+// KULLANIM FAYDALARI:
+// 1. Merkezi Konfigürasyon: Tüm API çağrıları için tek yerden ayar
+// 2. Otomatik Token Ekleme: Her istekte manuel token eklemeye gerek yok
+// 3. Hata Yönetimi: 401 hatalarında otomatik logout
+// 4. Kod Tekrarını Önleme: Her serviste aynı axios konfigürasyonu yazmaya gerek yok
+// 5. Bakım Kolaylığı: API URL değişikliklerinde tek yerden güncelleme
 
-  async login(data: { email: string; password: string }) {
-    const response = await apiClient.post(`/auth/login`, data);
-    console.log("giriş isteği verisi:", data);
-    console.log("giriş yanıtı verisi:", response.data);
-    const accessToken = response.data?.data?.accessToken;
-    console.log(accessToken);
-    if (response.data?.data?.accessToken) {
-      localStorage.setItem("access_token", response.data?.accessToken);
-      console.log("if içi");
-    }
-    return response.data;
-  },
-
-  async Logout() {
-    const response = await apiClient.post(`/auth/logout`);
-    return response.data;
-  },
-
-  async getUserProfile() {
-    const response = await apiClient.get(`/auth/profile`);
-    return response.data;
-  },
-
-  async toggleFavorite(hotelId: string) {
-    const response = await apiClient.post(
-      `/favorite/toggle`,
-      { hotelId }
-    );
-    return response.data;
-  },
-};

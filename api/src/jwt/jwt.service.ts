@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import * as jwt from "jsonwebtoken";
 import { TokenPayload } from "../types/express";
+import { AppError } from "../utils/appError";
 
 export class JwtService {
   private prisma: PrismaClient;
@@ -98,13 +99,23 @@ export class JwtService {
       process.env.JWT_REFRESH_SECRET || "secret_refresh_token"
     );
 
-    if (!decoded.jti) {
-      const error = new Error("Invalid token");
-      error.name = "UnauthorizedError";
-      throw error;
+    const token = await this.prisma.token.findUnique({
+      where: {
+        id: decoded.jti,
+      },
+    });
+
+    if (!token) {
+      throw new AppError("Invalid token", 401);
     }
 
-    const token = await this.checkToken(decoded.jti);
+    if (token.expiresAt < new Date()) {
+      throw new AppError("Token expired", 401);
+    }
+
+    if (token.revokedAt) {
+      throw new AppError("Token has been revoked", 401);
+    }
 
     await this.prisma.token.update({
       where: {

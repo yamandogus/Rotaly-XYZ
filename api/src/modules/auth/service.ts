@@ -20,7 +20,6 @@ export class AuthService {
     this.jwtService = new JwtService();
   }
 
-  //
   async register(data: RegisterSchemaType) {
     const user = await UserService.add(data);
     const otp = generateOTP();
@@ -32,10 +31,18 @@ export class AuthService {
     return {
       message:
         "Registration successful. Please check your email for verification.",
+      user: {
+        id: user.id,
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
     };
   }
-
-  //
 
   async login(data: LoginSchemaType) {
     const user = await UserService.getByEmail(data.email);
@@ -58,17 +65,17 @@ export class AuthService {
     return {
       accessToken,
       refreshToken,
+      user: {
+        id: user.id,
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        role: user.role,
+      },
     };
   }
 
-  //
-
-  async logout(authorizationHeader: string) {
-    await this.jwtService.logout(authorizationHeader);
-    return {
-      message: "Logged out successfully",
-    };
-  }
+  async logout(authorizationHeader: string) {}
 
   async verifyEmail(userId: string | undefined, verificationOTP: string) {
     if (!userId) {
@@ -105,7 +112,6 @@ export class AuthService {
     };
   }
 
-  //TODO
   async updateProfile(userId: string, data: UpdateUserSchemaType) {
     const user = await UserService.getById(userId);
     if (data.email && data.email !== user.email) {
@@ -129,8 +135,6 @@ export class AuthService {
     };
   }
 
-  //
-
   async forgotPassword(email: string) {
     const user = await UserService.getByEmail(email);
 
@@ -142,8 +146,6 @@ export class AuthService {
       message: "Reset password email sent",
     };
   }
-
-  //
 
   async changePassword(userId: string, data: ChangePasswordSchemaType) {
     const user = await UserService.getById(userId);
@@ -163,8 +165,6 @@ export class AuthService {
       message: "Password changed successfully",
     };
   }
-
-  //
 
   async deleteAccount(userId: string) {
     const user = await UserService.getById(userId);

@@ -27,11 +27,11 @@ export class AuthController {
         password,
         confirmPassword,
       };
-      await this.authService.register(userData);
+      const result = await this.authService.register(userData);
       res.status(201).json({
         success: true,
         message: "Kullanıcı başarıyla oluşturuldu",
-        data: userData,
+        data: result.user,
       });
     } catch (error) {
       if (error instanceof AppError) {
@@ -52,14 +52,14 @@ export class AuthController {
     try {
       const { email, password } = req.body;
       const userData: LoginSchemaType = { email, password };
-      const tokens = await this.authService.login({ email, password });
+      const result = await this.authService.login({ email, password });
       res.status(200).json({
         success: true,
         message: "Giriş başarılı",
         data: {
-          accessToken: tokens.accessToken,
-          refreshToken: tokens.refreshToken,
-          userData,
+          accessToken: result.accessToken,
+          refreshToken: result.refreshToken,
+          user: result.user,
         },
       });
     } catch (error) {
@@ -111,7 +111,7 @@ export class AuthController {
       const { verificationOTP } = req.body;
       const userId = req.user?.userId;
       console.log(userId);
-      
+
       if (!userId) {
         throw new AppError("User ID not found", 401);
       }
