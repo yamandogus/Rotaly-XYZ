@@ -25,6 +25,7 @@ const nextConfig: NextConfig = {
       'pix6.agoda.net',
       'pix7.agoda.net',
       'pix8.agoda.net',
+      'images.odamax.com',
     ],
     unoptimized: false,
     formats: ['image/webp', 'image/avif'],

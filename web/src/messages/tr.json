@@ -85,6 +85,14 @@
         "search": "Ara"
       }
     },
+    "dateRangeCalendar": {
+      "heading": "Giriş ve çıkış tarihlerini seçin",
+      "monthFormat": "long year",
+      "months": [
+        "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
+        "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
+      ]
+    },
     "guestSelector": {
       "title": "Kişi Sayısı",
       "adults": "Yetişkin",
