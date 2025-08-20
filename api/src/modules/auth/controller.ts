@@ -80,7 +80,7 @@ export class AuthController {
   async logOut(req: Request, res: Response): Promise<void> {
     try {
       const authorizationHeader = req.headers.authorization;
-      if (!authorizationHeader) {
+      if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
         throw new AppError("Unauthorized", 401);
       }
       await this.authService.logout(authorizationHeader);
