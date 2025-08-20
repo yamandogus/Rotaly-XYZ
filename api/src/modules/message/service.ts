@@ -320,4 +320,14 @@ export class MessageService {
       }
     }
   }
+
+  // Check AI service status
+  async checkAIServiceStatus(): Promise<boolean> {
+    try {
+      return await this.supportService.isAIServiceAvailable();
+    } catch (error) {
+      console.error("AI service availability check failed:", error);
+      return false;
+    }
+  }
 }

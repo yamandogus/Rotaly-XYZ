@@ -48,4 +48,6 @@ router.put(
   messageController.editMessage
 );
 
+router.get("/ai/status", messageController.checkAIStatus);
+
 export default router;

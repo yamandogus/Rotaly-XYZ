@@ -6,7 +6,6 @@ import {
   CreateSupportSchema,
   GetSupportListSchema,
   CloseSupportSchema,
-  AIChatSchema,
 } from "../../dto/support";
 import { AppError } from "../../utils/appError";
 
@@ -149,41 +148,6 @@ export class SupportController {
     }
   };
 
-  // Handle AI chat (with automatic ticket creation when needed)
-  handleAIChat = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
-    try {
-      const userId = req.user?.userId;
-      if (!userId) {
-        throw new AppError("User not authenticated", 401);
-      }
-
-      const validatedData = AIChatSchema.parse(req.body);
-
-      const result = await this.supportService.handleAIChatWithAutoTicket(
-        userId,
-        validatedData.message,
-        validatedData.conversationHistory
-      );
-
-      res.status(200).json({
-        success: true,
-        data: {
-          message: result.response,
-          timestamp: new Date(),
-          isFromAI: true,
-          ticketCreated: result.ticketCreated,
-          supportId: result.supportId,
-        },
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
-
   // get support reps statistics (admin only)
   getSupportRepStatistics = async (
     req: Request,
@@ -213,27 +177,6 @@ export class SupportController {
                   )
                 : 0,
           },
-        },
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  // Check AI service status
-  checkAIServiceStatus = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
-    try {
-      const isAvailable = await this.supportService.isAIServiceAvailable();
-
-      res.status(200).json({
-        success: true,
-        data: {
-          aiServiceAvailable: isAvailable,
-          timestamp: new Date(),
         },
       });
     } catch (error) {

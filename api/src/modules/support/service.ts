@@ -96,33 +96,6 @@ export class SupportService {
     return this.supportRepository.getSupportRepStatistics();
   }
 
-  async handleAIChat(userId: string, message: string): Promise<string> {
-    try {
-      // for AI chat, we don't store conversation history in DB
-      const aiResponse = await this.aiService.generateResponse(message);
-      return aiResponse.content;
-    } catch (error) {
-      console.error("Error handling AI chat:", error);
-      throw new AppError("Failed to get AI response", 500);
-    }
-  }
-
-  async handleAIChatWithContext(
-    userId: string,
-    message: string,
-    conversationHistory: { role: "user" | "assistant"; content: string }[]
-  ): Promise<string> {
-    try {
-      const aiResponse = await this.aiService.generateResponse(message, {
-        conversationHistory,
-      });
-      return aiResponse.content;
-    } catch (error) {
-      console.error("Error handling AI chat with context:", error);
-      throw new AppError("Failed to get AI response", 500);
-    }
-  }
-
   async handleAIChatWithAutoTicket(
     userId: string,
     message: string,

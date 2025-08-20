@@ -28,9 +28,4 @@ router.get(
   supportController.getSupportRepStatistics
 );
 
-// AI chat routes
-router.post("/ai/chat", supportController.handleAIChat);
-
-router.get("/ai/status", supportController.checkAIServiceStatus);
-
 export default router;
