@@ -4,7 +4,7 @@ import axios from "axios";
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
 
-const token = "fasfas";
+const token = typeof window !== 'undefined' ? localStorage.getItem("access_token") : null;
 export const api = {
   async register(userData: {
     name: string;
@@ -25,8 +25,8 @@ export const api = {
   async login(data: { email: string; password: string }) {
     const response = await axios.post(`${API_BASE_URL}/auth/login`, data);
 
-    console.log("login request data:", data);
-    console.log("login response data:", response.data);
+    console.log("giriş isteği verisi:", data);
+    console.log("giriş yanıtı verisi:", response.data);
 
     const accessToken = response.data?.data?.accessToken;
     console.log(accessToken);
@@ -51,6 +51,19 @@ export const api = {
         Authorization: `Bearer ${token}`,
       },
     });
+    return response.data;
+  },
+
+  async toggleFavorite(hotelId: string) {
+    const response = await axios.post(
+      `${API_BASE_URL}/favorites/toggle`,
+      { hotelId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   },
 };
