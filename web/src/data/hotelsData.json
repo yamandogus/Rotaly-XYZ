@@ -2198,7 +2198,7 @@
         "images": [
           {
             "id": "img-006",
-            "url": "https://images.unsplash.com/photo-1597252812804-6a0d0bdcb562?w=1200&h=800&fit=crop",
+            "url": "https://images.odamax.com/img/1024x768/odamax/image/upload/ZmlsZU5hbWU9YW5hLXNheWZhYQ_20221206113428.jpg",
             "hotelId": "550e8400-e29b-41d4-a716-446655440007",
             "createdAt": "2024-01-08T05:56:54.816Z",
             "deletedAt": null
@@ -4050,7 +4050,7 @@
           },
           {
             "id": "img-051-4",
-            "url": "https://images.unsplash.com/photo-1597252812804-6a0d0bdcb562?w=1200&h=800&fit=crop",
+            "url": "https://images.odamax.com/img/1024x768/odamax/image/upload/ZmlsZU5hbWU9YW5hLXNheWZhYQ_20221206113428.jpg",
             "hotelId": "550e8400-e29b-41d4-a716-446655440051",
             "createdAt": "2024-01-22T17:23:11.660Z",
             "deletedAt": null
@@ -8583,7 +8583,7 @@
           },
           {
             "id": "img-009-5",
-            "url": "https://images.unsplash.com/photo-1597252812804-6a0d0bdcb562?w=1200&h=800&fit=crop",
+            "url": "https://images.odamax.com/img/1024x768/odamax/image/upload/ZmlsZU5hbWU9YW5hLXNheWZhYQ_20221206113428.jpg",
             "hotelId": "550e8400-e29b-41d4-a716-446655440009",
             "createdAt": "2024-05-16T04:24:16.521Z",
             "deletedAt": null

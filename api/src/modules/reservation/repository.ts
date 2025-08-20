@@ -106,7 +106,7 @@ export class ReservationRepository {
     });
   }
 
-  // Oda için çakışan rezervasyon var mı? 
+  // Oda için çakışan rezervasyon var mı? (tarih aralığı çakışması)
   static async existsOverlap(params: {
     roomId: string;
     startDate: Date;

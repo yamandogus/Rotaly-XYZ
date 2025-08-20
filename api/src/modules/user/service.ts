@@ -46,12 +46,11 @@ export class UserService {
     }
   }
 
-  //TODO select email ve role
   static async add(data: RegisterSchemaType) {
     await this.checkEmailUnique(data.email);
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
-
+    console.log(data);
     return UserRepository.create({
       ...data,
       password: hashedPassword,

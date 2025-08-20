@@ -43,11 +43,12 @@ export class UserRepository {
       },
     });
   }
-  static async create(data: RegisterSchemaType) {
+  static async create(data: RegisterSchemaType & { password: string }) {
+    const { password, confirmPassword, ...userData } = data;
     return Prisma.user.create({
       data: {
-        ...data,
-        hashedPassword: data.password,
+        ...userData,
+        hashedPassword: password,
       },
       select: {
         id: true,

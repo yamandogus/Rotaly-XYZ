@@ -7,7 +7,7 @@ export class UserController {
   static async index(req: Request, res: Response): Promise<void> {
     try {
       const userRole = req.user?.role;
-      if (userRole !== "ADMİN") {
+      if (userRole !== "ADMIN") {
         throw new AppError("You are not authorized for this transaction.", 403);
       }
       const users = await UserService.getAll();
@@ -95,7 +95,7 @@ export class UserController {
   static async ByPhone(req: Request, res: Response): Promise<void> {
     try {
       const userRole = req.user?.role;
-      if (userRole !== "ADMİN") {
+      if (userRole !== "ADMIN") {
         throw new AppError(
           "You do not have access to this user's information.",
           403
