@@ -120,22 +120,25 @@ export class SupportRepository {
   ) {
     const whereClause: any = {};
 
+    // status-based filtering
     if (data.status === "open") {
       whereClause.closedAt = null;
     } else if (data.status === "closed") {
       whereClause.closedAt = { not: null };
     }
 
+    // category-based filtering
     if (data.category) {
       whereClause.category = data.category;
     }
 
+    // role-based access
     if (userRole === "CUSTOMER") {
       whereClause.userId = userId;
     } else if (userRole === "SUPPORT") {
       whereClause.supportRepId = userId;
     }
-    // ADMIN can see all support requests (no additional filter needed)
+    // ADMIN can see all support reqs (no additional filter needed)
 
     const [supports, total] = await Promise.all([
       this.prisma.support.findMany({
@@ -245,19 +248,56 @@ export class SupportRepository {
     });
   }
 
-  async getSupportRepWorkload(supportRepId: string) {
-    const workload = await this.prisma.support.groupBy({
-      by: ["supportRepId"],
+  async getSupportRepStatistics() {
+    // get all support representatives with their ticket statistics
+    const supportReps = await this.prisma.user.findMany({
       where: {
-        supportRepId,
-        closedAt: null,
+        role: "SUPPORT",
+        deletedAt: null,
       },
-      _count: {
+      select: {
         id: true,
+        name: true,
+        surname: true,
+        email: true,
+        _count: {
+          select: {
+            handledSupports: {
+              where: {
+                closedAt: null, // open tickets
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        handledSupports: {
+          _count: "desc", // sort by most busy first
+        },
       },
     });
 
-    return workload[0]?._count?.id || 0;
+    // get total ticket counts for each rep
+    const supportRepsWithTotals = await Promise.all(
+      supportReps.map(async (rep) => {
+        const totalTickets = await this.prisma.support.count({
+          where: {
+            supportRepId: rep.id,
+          },
+        });
+
+        return {
+          id: rep.id,
+          name: rep.name,
+          surname: rep.surname,
+          email: rep.email,
+          openTickets: rep._count.handledSupports,
+          totalTickets,
+        };
+      })
+    );
+
+    return supportRepsWithTotals;
   }
 
   private async findAvailableSupportRep() {

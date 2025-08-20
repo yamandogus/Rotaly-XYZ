@@ -41,89 +41,13 @@ export class AIService {
 
   async generateResponse(
     userMessage: string,
-    context?: string
-  ): Promise<string> {
-    try {
-      if (!this.openai) {
-        return this.getFallbackResponse(userMessage);
-      }
-
-      const systemPrompt = this.buildSystemPrompt();
-      const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
-        { role: "system", content: systemPrompt },
-      ];
-
-      if (context) {
-        messages.push({ role: "assistant", content: `Context: ${context}` });
-      }
-
-      messages.push({ role: "user", content: userMessage });
-
-      const completion = await this.openai.chat.completions.create({
-        model: this.config.model,
-        messages,
-        max_tokens: this.config.maxTokens,
-        temperature: this.config.temperature,
-      });
-
-      const response = completion.choices[0]?.message?.content;
-      if (!response) {
-        throw new Error("No response generated from AI");
-      }
-
-      return response.trim();
-    } catch (error) {
-      console.error("Error generating AI response:", error);
-
-      // fallback to basic responses if AI fails
-      return this.getFallbackResponse(userMessage);
+    options?: {
+      context?: string;
+      conversationHistory?: { role: "user" | "assistant"; content: string }[];
     }
-  }
-
-  async generateResponseWithHistory(
-    userMessage: string,
-    conversationHistory: { role: "user" | "assistant"; content: string }[] = []
-  ): Promise<string> {
-    try {
-      if (!this.openai) {
-        return this.getFallbackResponse(userMessage);
-      }
-
-      const systemPrompt = this.buildSystemPrompt();
-      const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
-        { role: "system", content: systemPrompt },
-      ];
-
-      // add conversation history (limit to last 10 messages to avoid token limits)
-      const recentHistory = conversationHistory.slice(-10);
-      messages.push(...recentHistory);
-
-      // add current user message
-      messages.push({ role: "user", content: userMessage });
-
-      const completion = await this.openai.chat.completions.create({
-        model: this.config.model,
-        messages,
-        max_tokens: this.config.maxTokens,
-        temperature: this.config.temperature,
-      });
-
-      const response = completion.choices[0]?.message?.content;
-      if (!response) {
-        throw new Error("No response generated from AI");
-      }
-
-      return response.trim();
-    } catch (error) {
-      console.error("Error generating AI response with history:", error);
-      return this.getFallbackResponse(userMessage);
-    }
-  }
-
-  async generateEnhancedResponse(
-    userMessage: string,
-    conversationHistory: { role: "user" | "assistant"; content: string }[] = []
   ): Promise<AIResponse> {
+    const { context, conversationHistory = [] } = options || {};
+
     try {
       if (!this.openai) {
         const fallbackResponse = this.getFallbackResponse(userMessage);
@@ -139,14 +63,20 @@ export class AIService {
         };
       }
 
-      const systemPrompt = this.buildEnhancedSystemPrompt();
+      const systemPrompt = this.buildSystemPrompt();
       const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
         { role: "system", content: systemPrompt },
       ];
 
+      if (context) {
+        messages.push({ role: "assistant", content: `Context: ${context}` });
+      }
+
       // add conversation history (limit to last 10 messages to avoid token limits)
-      const recentHistory = conversationHistory.slice(-10);
-      messages.push(...recentHistory);
+      if (conversationHistory.length > 0) {
+        const recentHistory = conversationHistory.slice(-10);
+        messages.push(...recentHistory);
+      }
 
       // add current user message
       messages.push({ role: "user", content: userMessage });
@@ -163,12 +93,13 @@ export class AIService {
         throw new Error("No response generated from AI");
       }
 
-      // parse the structured res
+      // parse the structured response
       const aiResponse = this.parseAIResponse(response.trim(), userMessage);
       return aiResponse;
     } catch (error) {
-      console.error("Error generating enhanced AI response:", error);
+      console.error("Error generating AI response:", error);
       const fallbackResponse = this.getFallbackResponse(userMessage);
+
       const shouldEscalate = this.shouldEscalateToHuman(
         userMessage,
         fallbackResponse
@@ -183,34 +114,7 @@ export class AIService {
   }
 
   private buildSystemPrompt(): string {
-    return `You are a helpful customer support assistant for Rotaly-XYZ, a hotel booking and reservation platform. 
-
-Your role is to:
-- Help users with hotel bookings, reservations, and account issues
-- Provide information about available hotels, rooms, and amenities
-- Assist with booking modifications and cancellations
-- Answer questions about pricing, policies, and payment methods
-- Direct users to human support when necessary for complex issues
-
-Guidelines:
-- Be friendly, professional, and helpful
-- Keep responses concise but informative
-- If you cannot help with something, politely direct the user to contact human support
-- Always maintain user privacy and do not ask for sensitive information like passwords or payment details
-- Focus on hotel and booking-related topics
-
-If a user needs help with:
-- Technical issues with the website/app
-- Payment problems or refunds
-- Complex booking modifications
-- Complaints that require investigation
-- Account security issues
-
-Please suggest they contact our human support team for personalized assistance.`;
-  }
-
-  private buildEnhancedSystemPrompt(): string {
-    return `You are a helpful customer support assistant for Rotaly-XYZ, a hotel booking and reservation platform. 
+    return `You are a helpful customer support assistant for Rotaly-XYZ, a hotel booking and reservation platform.
 
 Your role is to:
 - Help users with hotel bookings, reservations, and account issues
@@ -223,13 +127,10 @@ Guidelines:
 - Be friendly, professional, and helpful
 - Keep responses concise but informative
 - NEVER include literal \\n or \\n\\n in your responses - use proper formatting
-- If you cannot help with something, escalate to human support
 - Always maintain user privacy and do not ask for sensitive information like passwords or payment details
 - Focus on hotel and booking-related topics
 
-CRITICAL: You MUST escalate the following issues immediately by using the ESCALATE format:
-
-ALWAYS ESCALATE for:
+CRITICAL: You MUST escalate the following issues immediately:
 - Account security issues (hacked accounts, unauthorized bookings, suspicious activity)
 - Payment issues (refunds, double charges, billing problems)
 - Booking cancellations (flight cancellations, emergency cancellations, urgent changes)
@@ -237,22 +138,27 @@ ALWAYS ESCALATE for:
 - Customer complaints (poor service, cleanliness issues, bad experiences)
 - Any complex issue that requires human investigation
 
-Format your escalation response EXACTLY like this:
+When you escalate:
+1. Output an escalation marker in this exact format on the first line:
 ESCALATE: [CATEGORY] | [REASON]
-[Your helpful response to the user without any \\n characters]
+
+2. After the marker, respond to the user with a **single short message** that:
+- Politely explains you cannot assist further with this type of issue
+- States clearly that you are directing them to a human support representative
+- Does NOT offer additional self-help or next steps
 
 Categories:
 - TECHNICAL: Technical issues with the website/app
-- BILLING: Payment problems or refunds  
+- BILLING: Payment problems or refunds
 - RESERVATION: Booking cancellations, modifications, or urgent changes
 - COMPLAINT: Complaints requiring investigation
 - OTHER: Account security issues or other complex matters
 
 Example:
 ESCALATE: BILLING | User needs refund for double charge
-I'm sorry to hear about the double charge. I'll connect you with our billing team who can process the refund for you immediately.
+I’m unable to assist with billing issues directly. I’m connecting you with our billing support team who can resolve this for you.
 
-NEVER include \\n or \\n\\n in your responses. Use natural paragraph breaks instead.`;
+If escalation is not required, just respond normally to the user.`;
   }
 
   private parseAIResponse(response: string, userMessage: string): AIResponse {
@@ -280,7 +186,7 @@ NEVER include \\n or \\n\\n in your responses. Use natural paragraph breaks inst
       return {
         content:
           userResponse ||
-          "I'll create a support ticket for you to get personalized assistance.",
+          "I'm unable to assist with this request directly. I'm creating a support ticket to connect you with a specialist who can help you.",
         shouldCreateTicket: true,
         suggestedCategory: this.mapCategoryToEnum(category),
         escalationReason: reason,
@@ -467,7 +373,7 @@ NEVER include \\n or \\n\\n in your responses. Use natural paragraph breaks inst
     }
 
     if (lowerMessage.includes("cancel") || lowerMessage.includes("refund")) {
-      return "For cancellations and refunds, I recommend contacting our human support team who can review your specific booking details and assist you with the cancellation process according to our policies.";
+      return "I'm unable to assist with cancellations and refunds directly. I'm connecting you with our human support team who can review your specific booking details and assist you with the cancellation process according to our policies.";
     }
 
     if (
@@ -475,7 +381,7 @@ NEVER include \\n or \\n\\n in your responses. Use natural paragraph breaks inst
       lowerMessage.includes("card") ||
       lowerMessage.includes("charge")
     ) {
-      return "For payment-related inquiries, please contact our human support team. They can securely review your payment information and help resolve any billing questions you may have.";
+      return "I'm unable to handle payment-related inquiries directly. I'm connecting you with our human support team who can securely review your payment information and help resolve any billing questions you may have.";
     }
 
     if (
@@ -483,7 +389,7 @@ NEVER include \\n or \\n\\n in your responses. Use natural paragraph breaks inst
       lowerMessage.includes("profile") ||
       lowerMessage.includes("login")
     ) {
-      return "I can help with general account questions! For account security issues or login problems, please contact our human support team for personalized assistance.";
+      return "I'm unable to assist with account-related issues directly. I'm connecting you with our human support team who can help with account security issues, login problems, and other account-related concerns.";
     }
 
     if (lowerMessage.includes("help") || lowerMessage.includes("support")) {

@@ -2,13 +2,7 @@ import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
 import { SupportController } from "./controller";
 import { authenticateToken } from "../../middleware/jwt.middleware";
-import { verifiedUser } from "../../middleware/auth.middleware";
-import { validateBody } from "../../middleware/validate.middleware";
-import {
-  CreateSupportSchema,
-  GetSupportListSchema,
-  CloseSupportSchema,
-} from "../../dto/support";
+import { verifiedUser, isAdmin } from "../../middleware/auth.middleware";
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -19,11 +13,7 @@ router.use(authenticateToken);
 router.use(verifiedUser);
 
 // support req routes
-router.post(
-  "/",
-  validateBody(CreateSupportSchema),
-  supportController.createSupportRequest
-);
+router.post("/", supportController.createSupportRequest);
 
 router.get("/", supportController.getSupportList);
 
@@ -31,10 +21,11 @@ router.get("/:supportId", supportController.getSupportById);
 
 router.patch("/:supportId/close", supportController.closeSupportRequest);
 
-// admin only routes
+// admin only - get statistics for all support representatives
 router.get(
-  "/rep/:supportRepId/workload",
-  supportController.getSupportRepWorkload
+  "/statistics/reps",
+  isAdmin,
+  supportController.getSupportRepStatistics
 );
 
 // AI chat routes

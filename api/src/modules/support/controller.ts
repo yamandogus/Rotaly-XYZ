@@ -6,6 +6,7 @@ import {
   CreateSupportSchema,
   GetSupportListSchema,
   CloseSupportSchema,
+  AIChatSchema,
 } from "../../dto/support";
 import { AppError } from "../../utils/appError";
 
@@ -35,7 +36,7 @@ export class SupportController {
         throw new AppError("User not authenticated", 401);
       }
 
-      const validatedData = req.body;
+      const validatedData = CreateSupportSchema.parse(req.body);
       const support = await this.supportService.createSupportRequest(
         userId,
         validatedData
@@ -160,16 +161,12 @@ export class SupportController {
         throw new AppError("User not authenticated", 401);
       }
 
-      const { message, conversationHistory } = req.body;
-
-      if (!message) {
-        throw new AppError("Message is required", 400);
-      }
+      const validatedData = AIChatSchema.parse(req.body);
 
       const result = await this.supportService.handleAIChatWithAutoTicket(
         userId,
-        message,
-        conversationHistory || []
+        validatedData.message,
+        validatedData.conversationHistory
       );
 
       res.status(200).json({
@@ -187,26 +184,36 @@ export class SupportController {
     }
   };
 
-  // Get support representative workload (admin/support only)
-  getSupportRepWorkload = async (
+  // get support reps statistics (admin only)
+  getSupportRepStatistics = async (
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
     try {
-      const userRole = req.user?.role;
-      if (!userRole || !["ADMIN", "SUPPORT"].includes(userRole)) {
-        throw new AppError("Access denied", 403);
-      }
-
-      const { supportRepId } = req.params;
-      const workload = await this.supportService.getSupportRepWorkload(
-        supportRepId
-      );
+      const statistics = await this.supportService.getSupportRepStatistics();
 
       res.status(200).json({
         success: true,
-        data: { supportRepId, openTickets: workload },
+        data: {
+          supportReps: statistics,
+          summary: {
+            totalReps: statistics.length,
+            totalOpenTickets: statistics.reduce(
+              (sum: number, rep: any) => sum + rep.openTickets,
+              0
+            ),
+            averageTicketsPerRep:
+              statistics.length > 0
+                ? Math.round(
+                    statistics.reduce(
+                      (sum: number, rep: any) => sum + rep.openTickets,
+                      0
+                    ) / statistics.length
+                  )
+                : 0,
+          },
+        },
       });
     } catch (error) {
       next(error);

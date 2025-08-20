@@ -7,7 +7,7 @@ import {
   SupportResponseDto,
   SupportListResponseDto,
 } from "../../dto/support";
-import { AIService } from "../../services/ai.service";
+import { AIService, AIResponse } from "../../services/ai.service";
 import { AppError } from "../../utils/appError";
 
 export class SupportService {
@@ -83,15 +83,24 @@ export class SupportService {
     return this.formatSupportResponse(support);
   }
 
-  async getSupportRepWorkload(supportRepId: string): Promise<number> {
-    return this.supportRepository.getSupportRepWorkload(supportRepId);
+  async getSupportRepStatistics(): Promise<
+    Array<{
+      id: string;
+      name: string;
+      surname: string;
+      email: string;
+      openTickets: number;
+      totalTickets: number;
+    }>
+  > {
+    return this.supportRepository.getSupportRepStatistics();
   }
 
   async handleAIChat(userId: string, message: string): Promise<string> {
     try {
       // for AI chat, we don't store conversation history in DB
       const aiResponse = await this.aiService.generateResponse(message);
-      return aiResponse;
+      return aiResponse.content;
     } catch (error) {
       console.error("Error handling AI chat:", error);
       throw new AppError("Failed to get AI response", 500);
@@ -104,11 +113,10 @@ export class SupportService {
     conversationHistory: { role: "user" | "assistant"; content: string }[]
   ): Promise<string> {
     try {
-      const aiResponse = await this.aiService.generateResponseWithHistory(
-        message,
-        conversationHistory
-      );
-      return aiResponse;
+      const aiResponse = await this.aiService.generateResponse(message, {
+        conversationHistory,
+      });
+      return aiResponse.content;
     } catch (error) {
       console.error("Error handling AI chat with context:", error);
       throw new AppError("Failed to get AI response", 500);
@@ -125,10 +133,9 @@ export class SupportService {
     supportId?: string;
   }> {
     try {
-      const aiResponse = await this.aiService.generateEnhancedResponse(
-        message,
-        conversationHistory
-      );
+      const aiResponse = await this.aiService.generateResponse(message, {
+        conversationHistory,
+      });
 
       let supportId: string | undefined;
 

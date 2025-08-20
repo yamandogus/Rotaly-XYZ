@@ -255,7 +255,7 @@ export class MessageService {
           content: msg.content,
         }));
 
-      // generate enhanced AI response with auto-ticket creation capability
+      // generate AI response with auto-ticket creation capability
       const result = await this.supportService.handleAIChatWithAutoTicket(
         userId,
         userMessage,
