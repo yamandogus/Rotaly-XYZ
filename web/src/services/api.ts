@@ -1,5 +1,4 @@
 
-// web/src/services/api.ts
 
 import axios from "axios";
 
@@ -52,4 +51,5 @@ apiClient.interceptors.response.use(
 // 3. Hata Yönetimi: 401 hatalarında otomatik logout
 // 4. Kod Tekrarını Önleme: Her serviste aynı axios konfigürasyonu yazmaya gerek yok
 // 5. Bakım Kolaylığı: API URL değişikliklerinde tek yerden güncelleme
+
 

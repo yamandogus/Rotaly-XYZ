@@ -1,32 +1,24 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import HotelCard from "@/components/hotelCard";
 import { Search as SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useTranslations } from "next-intl";
+import {  useSelector } from "react-redux";
+import { selectFavorites } from "@/store/favorite/favorite-slice";
+
 
 export default function FavoritesPage() {
   const t = useTranslations("Favorites");
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [favorites, setFavorites] = useState<any[]>([]);
+
+  const favorites = useSelector(selectFavorites);
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    const stored = localStorage.getItem("favorites");
-    if (stored) {
-      setFavorites(JSON.parse(stored));
-    }
-  }, []);
 
-  const handleToggleFavorite = (id: number | string) => {
-    const updated = favorites.filter((fav) => fav.id !== id);
-    setFavorites(updated);
-    localStorage.setItem("favorites", JSON.stringify(updated));
-  };
 
   const filteredFavorites = favorites.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    item.hotel.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -58,8 +50,7 @@ export default function FavoritesPage() {
           {filteredFavorites.map((item) => (
             <HotelCard
               key={item.id}
-              item={item}
-              onToggleFavorite={() => handleToggleFavorite(item.id)}
+              item={item.hotel}
             />
           ))}
         </div>
