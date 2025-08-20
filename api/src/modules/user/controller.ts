@@ -36,7 +36,7 @@ export class UserController {
       const userRole = req.user?.role;
       const { id } = req.params;
 
-      if (userId !== id && userRole !== "ADMİN") {
+      if (userId !== id && userRole !== "ADMIN") {
         throw new AppError(
           "You do not have access to this user's information.",
           403
@@ -66,7 +66,7 @@ export class UserController {
       const userRole = req.user?.role;
       const { email } = req.params;
 
-      if (!req.path.includes("/auth") && userRole !== "ADMİN") {
+      if (!req.path.includes("/auth") && userRole !== "ADMIN") {
         throw new AppError(
           "You do not have access to this user's information.",
           403
@@ -150,7 +150,7 @@ export class UserController {
       const userRole = req.user?.role;
       const { id } = req.params;
 
-      if (userId !== id && userRole !== "ADMİN") {
+      if (userId !== id && userRole !== "ADMIN") {
         throw new AppError(
           "You do not have access to this user's information.",
           403
@@ -184,7 +184,7 @@ export class UserController {
       const userRole = req.user?.role;
       const { id } = req.params;
 
-      if (userId !== id && userRole !== "ADMİN") {
+      if (userId !== id && userRole !== "ADMIN") {
         throw new AppError(
           "You do not have access to this user's information.",
           403

@@ -75,7 +75,22 @@ export class AuthService {
     };
   }
 
-  async logout(authorizationHeader: string) {}
+  async logout(authorizationHeader: string) {
+    const token = this.jwtService.extractTokenFromHeader(authorizationHeader);
+    try {
+      // Önce access token olarak dene
+      return await this.jwtService.logout(
+        token,
+        process.env.JWT_ACCESS_SECRET || "secret_access_token"
+      );
+    } catch (error) {
+      // Access token başarısız olursa refresh token olarak dene
+      return await this.jwtService.logout(
+        token,
+        process.env.JWT_REFRESH_SECRET || "secret_refresh_token"
+      );
+    }
+  }
 
   async verifyEmail(userId: string | undefined, verificationOTP: string) {
     if (!userId) {
@@ -98,7 +113,6 @@ export class AuthService {
     };
   }
 
-  //
   async resendVerificationEmail(email: string) {
     const user = await UserService.getByEmail(email);
     if (user.isVerified) {

@@ -13,6 +13,20 @@ export class UserRepository {
     return Prisma.user.findUnique({
       where: {
         email,
+        deletedAt: null,
+      },
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+        phone: true,
+        role: true,
+        isVerified: true,
+        createdAt: true,
+        updatedAt: true,
+        deletedAt: true,
+        hashedPassword: true,
       },
     });
   }
@@ -40,6 +54,19 @@ export class UserRepository {
     return Prisma.user.findUnique({
       where: {
         phone,
+      },
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+        phone: true,
+        role: true,
+        deletedAt: true,
+        isVerified: true,
+        verificationOTP: true,
+        images: true,
+        paymentCards: true,
       },
     });
   }
