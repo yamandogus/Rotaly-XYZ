@@ -1,4 +1,4 @@
-// web/src/lib/api.ts
+// web/src/services/api.ts
 import axios from "axios";
 
 // API temel URL'i - environment variable'dan alır, yoksa localhost kullanır
