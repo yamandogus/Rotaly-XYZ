@@ -866,7 +866,7 @@
     "averageRating": "Ortalama Puan",
     "supportRequests": "Destek Talepleri",
     "deleteTitle": "Kullanıcı Sil",
-    "deleteConfirmMessage": "Kullanıcıyı silmek istediğinize emin misiniz?",
+    "deleteConfirm": "Kullanıcıyı silmek istediğinize emin misiniz?",
     "cancel": "İptal",
     "confirm": "Evet"
   },

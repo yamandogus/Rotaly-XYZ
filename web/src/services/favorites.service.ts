@@ -1,5 +1,8 @@
-// Favorites service
+import { apiClient } from "./api";
 
 export const favoritesService = {
-  // Favorites service methods will be added here
+  toggleFavorite: async (hotelId: string) => {
+    const response = await apiClient.post(`/favorites/toggle/${hotelId}`);
+    return response.data;
+  },
 };

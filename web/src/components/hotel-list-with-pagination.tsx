@@ -100,11 +100,20 @@ export function HotelListWithPagination() {
                   name: hotel.name,
                   location: hotel.location,
                   rating: hotel.rating,
-                  price: hotel.rooms[0]?.price.toString() || "0",
+                  price: hotel.rooms[0]?.price || 0, // Number olarak gönder
                   image: hotel.images[0]?.url || "/images/hotel-placeholder.jpg",
                   cancelText,
                   breakfastText,
                   parkingText,
+                  checkIn: hotel.checkIn || "12:00",
+                  checkOut: hotel.checkOut || "14:00",
+                  discountRate: hotel.discountRate ?? undefined, // null olması durumunda undefined olarak ayarla
+                  isDiscounted: hotel.isDiscounted || false,
+                 discountStartDate: hotel.discountStartDate ?? undefined,
+                 discountEndDate: hotel.discountEndDate ?? undefined,
+                  type: hotel.type,
+                  ownerId: hotel.ownerId,
+                  isActive: hotel.isActive,
                 }}
               />
             );

@@ -295,9 +295,15 @@ export default function HomePage() {
                   key={offer.id}
                   item={{
                     ...offer,
+                    price: Number(offer.price.replace(" TL", "").replace(".", "")), // Fiyatı number'a dönüştür
                     cancelText,
                     breakfastText,
                     parkingText,
+                    isDiscounted: false, // Varsayılan değerler eklendi
+                    checkIn: "12:00",
+                    checkOut: "14:00",
+                    ownerId: "",
+                    isActive: true,
                   }}
                 />
               );

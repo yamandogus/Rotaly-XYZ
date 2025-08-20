@@ -67,11 +67,17 @@ const RecentlyViewedHotels = () => {
           {t("viewAll")} <ArrowRightIcon className="w-4 h-4" />
         </Link>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {recentlyViewedHotels.map((item) => (
-          <HotelCard key={item.id} item={item} />
-        ))}
-      </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  {recentlyViewedHotels.map((item) => (
+    <HotelCard
+      key={item.id}
+      item={{
+        ...item,
+        price: Number(item.price), // string → number dönüşümü
+      }}
+    />
+  ))}
+</div>
     </div>
   );
 };

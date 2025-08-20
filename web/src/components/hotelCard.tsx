@@ -18,9 +18,9 @@ interface HotelCardProps {
     id: number | string;
     name: string;
     location: string;
-    rating: number;
-    price: string;
-    image: string;
+    rating?: number; // Opsiyonel hale getirildi
+    price?: number; // String'den number'a ve opsiyonel hale getirildi
+    image?: string; // Opsiyonel hale getirildi
     cancelText?: string;
     breakfastText?: string;
     parkingText?: string;
@@ -29,6 +29,14 @@ interface HotelCardProps {
     city?: string;
     country?: string;
     type?: string;
+    checkIn?: string;
+    checkOut?: string;
+    discountRate?: number;
+    isDiscounted?: boolean;
+    discountStartDate?: string;
+    discountEndDate?: string;
+    ownerId?: string;
+    isActive?: boolean;
     images?: { id: string; url: string }[];
   };
   onToggleFavorite?: () => void; // Favoriler sayfasından kaldırınca yeniden render için
@@ -60,12 +68,20 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
         id: String(item.id),
         name: item.name,
         location: item.location,
-        address: item.address || "", // Mevcut değilse varsayılan değer sağla
-        city: item.city || "", // Mevcut değilse varsayılan değer sağla
-        country: item.country || "", // Mevcut değilse varsayılan değer sağla
+        address: item.address || "",
+        city: item.city || "",
+        country: item.country || "",
         rating: item.rating,
-        type: item.type || "", // Mevcut değilse varsayılan değer sağla
-        images: item.images || [], // Mevcut değilse varsayılan değer sağla
+        checkIn: item.checkIn || "12:00",
+        checkOut: item.checkOut || "14:00",
+        discountRate: item.discountRate,
+        isDiscounted: item.isDiscounted || false,
+        discountStartDate: item.discountStartDate,
+        discountEndDate: item.discountEndDate,
+        type: item.type || "",
+        ownerId: item.ownerId || "",
+        isActive: item.isActive || true,
+        images: item.images || [],
       },
       userId: currentUser.id,
     }));
@@ -94,7 +110,7 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
       <CardHeader className="relative p-0">
         <div className="relative h-52 w-full">
           <Image
-            src={item.image || "/images/opportunity1.jpg"}
+            src={item.images && item.images.length > 0 ? item.images[0].url : item.image || "/images/opportunity1.jpg"}
             alt={item.name}
             fill
             className="object-cover rounded-2xl p-1"
@@ -137,9 +153,9 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
           </div>
           <div className="flex items-center gap-1">
             <span className="text-[12px] font-semibold text-foreground">
-              {item.rating.toFixed(1)}
+              {item.rating?.toFixed(1) || "N/A"}
             </span>
-            <Rating defaultValue={item.rating} readOnly>
+            <Rating defaultValue={item.rating || 0} readOnly>
               {Array.from({ length: 5 }).map((_, index) => (
                 <RatingButton
                   key={index}
@@ -203,7 +219,7 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
           <span className="text-sm text-muted-foreground mb-1">
             {t("nightsFor", { nights: item.nights || 1 })}
           </span>
-          <span className="text-xl font-bold text-blue-600">{item.price} ₺</span>
+          <span className="text-xl font-bold text-blue-600">{item.price?.toLocaleString() || "0"} ₺</span>
         </div>
         <Button 
           onClick={() => router.push(`/hotels/${item.id}`)}
