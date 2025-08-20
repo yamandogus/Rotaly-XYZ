@@ -48,8 +48,8 @@ export function SingleDatePicker({
   }
 
   const buttonClassName = date
-    ? "w-full h-12 justify-start text-left bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-white dark:hover:bg-gray-800"
-    : "w-full h-12 justify-start text-left bg-white dark:bg-gray-800/50 border-gray-300 dark:border-gray-600 text-black dark:text-white hover:bg-white dark:hover:bg-gray-700/50"
+    ? "w-full h-12 justify-start text-left bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-800"
+    : "w-full h-12 justify-start text-left bg-white dark:bg-gray-800/50 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-700/50"
 
   const displayText = date 
   ? formatDate(date) 
