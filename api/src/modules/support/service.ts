@@ -83,16 +83,8 @@ export class SupportService {
     return this.formatSupportResponse(support);
   }
 
-  async assignSupportRep(
-    supportId: string,
-    supportRepId: string
-  ): Promise<SupportResponseDto> {
-    const support = await this.supportRepository.assignSupportRep(
-      supportId,
-      supportRepId
-    );
-
-    return this.formatSupportResponse(support);
+  async getSupportRepWorkload(supportRepId: string): Promise<number> {
+    return this.supportRepository.getSupportRepWorkload(supportRepId);
   }
 
   async handleAIChat(userId: string, message: string): Promise<string> {
@@ -200,14 +192,6 @@ A support representative will assist you shortly.`;
 
     // return the mapped category or default to GENERAL
     return categoryMap[category || ""] || "GENERAL";
-  }
-
-  async getSupportRepWorkload(supportRepId: string): Promise<number> {
-    return this.supportRepository.getSupportRepWorkload(supportRepId);
-  }
-
-  async reassignOrphanedSupports(): Promise<number> {
-    return this.supportRepository.reassignOrphanedSupports();
   }
 
   // method to generate room ID for support chat

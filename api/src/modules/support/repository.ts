@@ -245,40 +245,19 @@ export class SupportRepository {
     });
   }
 
-  async assignSupportRep(supportId: string, supportRepId: string) {
-    // verify the support rep exists and has the correct role
-    const supportRep = await this.prisma.user.findFirst({
+  async getSupportRepWorkload(supportRepId: string) {
+    const workload = await this.prisma.support.groupBy({
+      by: ["supportRepId"],
       where: {
-        id: supportRepId,
-        role: "SUPPORT",
+        supportRepId,
+        closedAt: null,
+      },
+      _count: {
+        id: true,
       },
     });
 
-    if (!supportRep) {
-      throw new AppError("Support representative not found", 404);
-    }
-
-    return this.prisma.support.update({
-      where: { id: supportId },
-      data: { supportRepId },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            surname: true,
-            email: true,
-          },
-        },
-        supportRep: {
-          select: {
-            id: true,
-            name: true,
-            surname: true,
-          },
-        },
-      },
-    });
+    return workload[0]?._count?.id || 0;
   }
 
   private async findAvailableSupportRep() {
@@ -305,42 +284,5 @@ export class SupportRepository {
 
     // return the support rep with the least current workload
     return supportReps[0] || null;
-  }
-
-  async getSupportRepWorkload(supportRepId: string) {
-    const workload = await this.prisma.support.groupBy({
-      by: ["supportRepId"],
-      where: {
-        supportRepId,
-        closedAt: null,
-      },
-      _count: {
-        id: true,
-      },
-    });
-
-    return workload[0]?._count?.id || 0;
-  }
-
-  async reassignOrphanedSupports() {
-    // find support requests without assigned representatives
-    const orphanedSupports = await this.prisma.support.findMany({
-      where: {
-        supportRepId: null,
-        closedAt: null,
-      },
-    });
-
-    for (const support of orphanedSupports) {
-      const availableRep = await this.findAvailableSupportRep();
-      if (availableRep) {
-        await this.prisma.support.update({
-          where: { id: support.id },
-          data: { supportRepId: availableRep.id },
-        });
-      }
-    }
-
-    return orphanedSupports.length;
   }
 }

@@ -148,40 +148,6 @@ export class SupportController {
     }
   };
 
-  // Assign support representative (admin only)
-  assignSupportRep = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
-    try {
-      const userRole = req.user?.role;
-      if (userRole !== "ADMIN") {
-        throw new AppError("Access denied. Admin rights required.", 403);
-      }
-
-      const { supportId } = req.params;
-      const { supportRepId } = req.body;
-
-      if (!supportRepId) {
-        throw new AppError("Support representative ID is required", 400);
-      }
-
-      const support = await this.supportService.assignSupportRep(
-        supportId,
-        supportRepId
-      );
-
-      res.status(200).json({
-        success: true,
-        message: "Support representative assigned successfully",
-        data: support,
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
-
   // Handle AI chat (with automatic ticket creation when needed)
   handleAIChat = async (
     req: Request,
@@ -241,31 +207,6 @@ export class SupportController {
       res.status(200).json({
         success: true,
         data: { supportRepId, openTickets: workload },
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  // Reassign orphaned support requests (admin only)
-  reassignOrphanedSupports = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
-    try {
-      const userRole = req.user?.role;
-      if (userRole !== "ADMIN") {
-        throw new AppError("Access denied. Admin rights required.", 403);
-      }
-
-      const reassignedCount =
-        await this.supportService.reassignOrphanedSupports();
-
-      res.status(200).json({
-        success: true,
-        message: `${reassignedCount} orphaned support requests reassigned`,
-        data: { reassignedCount },
       });
     } catch (error) {
       next(error);

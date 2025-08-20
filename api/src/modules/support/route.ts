@@ -32,14 +32,10 @@ router.get("/:supportId", supportController.getSupportById);
 router.patch("/:supportId/close", supportController.closeSupportRequest);
 
 // admin only routes
-router.patch("/:supportId/assign", supportController.assignSupportRep);
-
 router.get(
   "/rep/:supportRepId/workload",
   supportController.getSupportRepWorkload
 );
-
-router.post("/reassign-orphaned", supportController.reassignOrphanedSupports);
 
 // AI chat routes
 router.post("/ai/chat", supportController.handleAIChat);
