@@ -26,7 +26,7 @@ export class MessageRepository {
           email: `${aiId}@ai`,
           phone: `+1-AI-${aiId.replace("ai", "")}`,
           isVerified: true,
-          role: "SUPPORT", // NOTE: might create a special AI role if needed
+          role: "AI",
         },
       });
     }
@@ -38,7 +38,7 @@ export class MessageRepository {
     // for AI messages, we need to handle the receiver differently
     // since the schema requires receiverId to be a valid User ID,
     // we'll need to create a special AI user
-    const isAIReceiver = data.receiverId.startsWith("ai");
+    const isAIReceiver = data.receiverId.startsWith("ai-assistant");
 
     if (isAIReceiver) {
       // create or get AI bot user in the database
@@ -49,7 +49,6 @@ export class MessageRepository {
           content: data.content,
           senderId,
           receiverId: aiUser.id,
-          supportId: data.supportId,
         },
         include: {
           sender: {
@@ -98,7 +97,7 @@ export class MessageRepository {
   }
 
   async getMessages(userId: string, data: GetMessagesDto) {
-    const isAIConversation = data.receiverId.startsWith("ai");
+    const isAIConversation = data.receiverId.startsWith("ai-assistant");
     let actualReceiverId = data.receiverId;
 
     if (isAIConversation) {
@@ -118,7 +117,10 @@ export class MessageRepository {
           receiverId: userId,
         },
       ],
-      ...(data.supportId && { supportId: data.supportId }),
+      // only apply supportId filter for human conversations
+      ...(data.supportId && !isAIConversation && { supportId: data.supportId }),
+      // AI conversations should not have supportId
+      ...(isAIConversation && { supportId: null }),
       deletedAt: null,
     };
 
@@ -197,7 +199,7 @@ export class MessageRepository {
       if (!partnerId) return; // skip if partnerId is null
 
       if (!conversationMap.has(partnerId)) {
-        const isAI = partnerId.startsWith("ai");
+        const isAI = partnerId.startsWith("ai-assistant");
         const partnerInfo =
           message.senderId === userId ? message.receiver : message.sender;
 

@@ -195,4 +195,24 @@ export class MessageController {
       next(error);
     }
   };
+
+  checkAIStatus = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const isAvailable = await this.messageService.checkAIServiceStatus();
+
+      res.status(200).json({
+        success: true,
+        data: {
+          aiServiceAvailable: isAvailable,
+          timestamp: new Date(),
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

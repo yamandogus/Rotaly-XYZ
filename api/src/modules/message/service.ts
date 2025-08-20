@@ -9,20 +9,50 @@ import {
   MessagesListResponseDto,
   ConversationResponseDto,
 } from "../../dto/message";
+import { AIService } from "../../services/ai.service";
+import { SupportService } from "../support/service";
 import { AppError } from "../../utils/appError";
+
+interface SocketEmitter {
+  emitAIResponse?: (userId: string, message: any) => void;
+  emitNewMessage?: (data: any) => void;
+}
 
 export class MessageService {
   private messageRepository: MessageRepository;
+  private aiService: AIService;
+  private supportService: SupportService;
+  private socketEmitter?: SocketEmitter;
 
-  constructor(private prisma: PrismaClient) {
+  constructor(
+    private prisma: PrismaClient,
+    aiService?: AIService,
+    socketEmitter?: SocketEmitter
+  ) {
     this.messageRepository = new MessageRepository(prisma);
+    this.socketEmitter = socketEmitter;
+
+    if (aiService) {
+      this.aiService = aiService;
+    } else {
+      // create AI service
+      this.aiService = new AIService({
+        apiKey: process.env.OPENAI_API_KEY || "",
+        model: process.env.OPENAI_MODEL || "gpt-3.5-turbo",
+        maxTokens: parseInt(process.env.OPENAI_MAX_TOKENS || "1000"),
+        temperature: parseFloat(process.env.OPENAI_TEMPERATURE || "0.7"),
+      });
+    }
+
+    // Initialize support service for auto-ticket creation
+    this.supportService = new SupportService(prisma, this.aiService);
   }
 
   async sendMessage(
     senderId: string,
     data: SendMessageDto
   ): Promise<MessageResponseDto> {
-    const isAIReceiver = data.receiverId.startsWith("ai");
+    const isAIReceiver = data.receiverId.startsWith("ai-assistant");
 
     // validating receiver exists (only for humans)
     if (!isAIReceiver) {
@@ -36,8 +66,8 @@ export class MessageService {
       }
     }
 
-    // if supportId is provided, validate it exists and user has access
-    if (data.supportId) {
+    // if supportId is provided, validate it exists and user has access (only for human messages)
+    if (data.supportId && !isAIReceiver) {
       const support = await this.prisma.support.findFirst({
         where: {
           id: data.supportId,
@@ -52,14 +82,12 @@ export class MessageService {
 
     const message = await this.messageRepository.sendMessage(senderId, data);
 
-    // TODO: implement AI response generation
+    // AI response generation for AI receivers
     if (isAIReceiver) {
-      // TODO: queue AI response generation
-      this.generateAIResponse(
-        senderId,
-        data.receiverId,
-        data.content,
-        data.supportId
+      this.generateAIResponse(senderId, data.receiverId, data.content).catch(
+        (error) => {
+          console.error("Error generating AI response:", error);
+        }
       );
     }
 
@@ -70,7 +98,7 @@ export class MessageService {
     userId: string,
     data: GetMessagesDto
   ): Promise<MessagesListResponseDto> {
-    const isAIConversation = data.receiverId.startsWith("ai");
+    const isAIConversation = data.receiverId.startsWith("ai-assistant");
 
     // validating receiver exists (only for humans)
     if (!isAIConversation) {
@@ -147,7 +175,8 @@ export class MessageService {
         data
       );
 
-      const isAIReceiver = editedMessage.receiverId?.startsWith("ai") || false;
+      const isAIReceiver =
+        editedMessage.receiverId?.startsWith("ai-assistant") || false;
       return this.formatMessageResponse(editedMessage, isAIReceiver);
     } catch (error: any) {
       if (error.code === "P2025") {
@@ -165,14 +194,14 @@ export class MessageService {
     message: any,
     isAIConversation: boolean = false
   ): MessageResponseDto {
-    const isFromAI = message.senderId.startsWith("ai");
+    const isFromAI = message.senderId.startsWith("ai-assistant");
 
     return {
       id: message.id,
       content: message.content,
       senderId: message.senderId,
       receiverId: message.receiverId,
-      supportId: message.supportId,
+      supportId: isFromAI ? undefined : message.supportId, // AI messages don't have supportId
       createdAt: message.createdAt,
       readAt: message.readAt,
       isFromAI,
@@ -187,46 +216,118 @@ export class MessageService {
     };
   }
 
-  // TODO: implement AI Response Generation
+  // AI Response Generation Implementation
   private async generateAIResponse(
     userId: string,
     aiId: string,
-    userMessage: string,
-    supportId?: string
+    userMessage: string
   ): Promise<void> {
     try {
-      // TODO: implement AI response generation
+      // get recent conversation history for AI context
+      let conversationHistory: {
+        role: "user" | "assistant";
+        content: string;
+      }[] = [];
+
+      // get or create AI user to get its actual UUID
+      const aiUser = await this.messageRepository.ensureAIUserExists(aiId);
+
+      const recentMessages = await this.prisma.message.findMany({
+        where: {
+          OR: [
+            { senderId: userId, receiverId: aiUser.id },
+            { senderId: aiUser.id, receiverId: userId },
+          ],
+          supportId: null, // only get AI conversation messages (not support messages)
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 10,
+      });
+
+      conversationHistory = recentMessages
+        .reverse() // reversing to get chronologically
+        .map((msg) => ({
+          role: msg.senderId.startsWith("ai-assistant")
+            ? "assistant"
+            : ("user" as "user" | "assistant"),
+          content: msg.content,
+        }));
+
+      // generate AI response with auto-ticket creation capability
+      const result = await this.supportService.handleAIChatWithAutoTicket(
+        userId,
+        userMessage,
+        conversationHistory
+      );
+
+      let responseContent = result.response;
+
+      // If a ticket was created, append notification to the response
+      if (result.ticketCreated && result.supportId) {
+        responseContent += `\n\nI've created a support ticket (#${result.supportId.slice(
+          -8
+        )}) for you. A human support representative will assist you soon.`;
+      }
+
+      // send AI response back to user
+      const aiMessage = await this.prisma.message.create({
+        data: {
+          content: responseContent,
+          senderId: aiUser.id,
+          receiverId: userId,
+          // AI messages don't have supportId, even when they create tickets
+        },
+      });
+
+      // emit socket event for real-time delivery (if socket service is available)
+      if (this.socketEmitter?.emitAIResponse) {
+        this.socketEmitter.emitAIResponse(userId, {
+          id: aiMessage.id,
+          content: responseContent,
+          senderId: aiUser.id,
+          receiverId: userId,
+          createdAt: aiMessage.createdAt,
+          isFromAI: true,
+          ticketCreated: result.ticketCreated,
+          supportId: result.supportId,
+        });
+      }
+
+      console.log(
+        `AI response sent: ${aiMessage.id}${
+          result.ticketCreated ? " (ticket created)" : ""
+        }`
+      );
     } catch (error) {
       console.error("Error generating AI response:", error);
-      // send err
+
+      // send fallback message
+      try {
+        const aiUser = await this.messageRepository.ensureAIUserExists(aiId);
+        await this.prisma.message.create({
+          data: {
+            content:
+              "I apologize, but I'm having trouble responding right now. Please try again or contact our human support team for assistance.",
+            senderId: aiUser.id,
+            receiverId: userId,
+            // AI messages don't have supportId
+          },
+        });
+      } catch (fallbackError) {
+        console.error("Error sending fallback AI message:", fallbackError);
+      }
     }
   }
 
-  private async getAIResponse(userMessage: string): Promise<string> {
-    // mock AI responses
-    const responses = [
-      "I understand your question. Let me help you with that.",
-      "That's an interesting point. Here's what I think...",
-      "Based on what you've told me, I'd suggest...",
-      "I'm here to help! Could you provide a bit more detail?",
-      "Thank you for your message. I'm processing your request...",
-    ];
-
-    if (userMessage.toLowerCase().includes("hotel")) {
-      return "I can help you with hotel-related questions! What specific information do you need about hotels?";
+  // Check AI service status
+  async checkAIServiceStatus(): Promise<boolean> {
+    try {
+      return await this.supportService.isAIServiceAvailable();
+    } catch (error) {
+      console.error("AI service availability check failed:", error);
+      return false;
     }
-
-    if (userMessage.toLowerCase().includes("reservation")) {
-      return "I can assist you with reservations. Are you looking to make a new reservation or modify an existing one?";
-    }
-
-    if (
-      userMessage.toLowerCase().includes("support") ||
-      userMessage.toLowerCase().includes("help")
-    ) {
-      return "I'm here to provide support! Please describe the issue you're experiencing and I'll do my best to help.";
-    }
-
-    return responses[Math.floor(Math.random() * responses.length)];
   }
 }
