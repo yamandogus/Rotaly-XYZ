@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { useTranslations } from "next-intl";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { customersData } from "@/data/dumy";
-import { CustomerFilters, CustomerTable, CustomerMobilCard } from "@/components/dashboard/hotel/customers";
+import { useState } from "react"
+import { useTranslations } from "next-intl"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { customersData } from "@/data/dumy"
+import { CustomerFilters, CustomerTable, CustomerMobilCard } from "@/components/dashboard/hotel/customers"
 
 export default function CustomersPage() {
-  const t = useTranslations("Customers");
-  const hotelCustomers = customersData.filter(customer => customer.hotelId === "H001");
+  const t = useTranslations("Customers")
+  const hotelCustomers = customersData.filter((customer) => customer.hotelId === "H001")
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredCustomers, setFilteredCustomers] = useState(hotelCustomers);
+  const [searchTerm, setSearchTerm] = useState("")
+  const [filteredCustomers, setFilteredCustomers] = useState(hotelCustomers)
 
   const statsData = [
     {
@@ -21,7 +21,7 @@ export default function CustomersPage() {
     },
     {
       title: t("joinedThisMonth"),
-      value: hotelCustomers.filter(c => new Date(c.createdAt).getMonth() === new Date().getMonth()).length.toString(),
+      value: hotelCustomers.filter((c) => new Date(c.createdAt).getMonth() === new Date().getMonth()).length.toString(),
       subtitle: "",
     },
     {
@@ -31,57 +31,60 @@ export default function CustomersPage() {
     },
     {
       title: t("inactiveFor90Days"),
-      value: (
-        (hotelCustomers.filter(c => {
-          const lastRes = new Date(c.lastReservation);
-          const diffDays = (new Date().getTime() - lastRes.getTime()) / (1000 * 3600 * 24);
-          return diffDays > 90;
-        }).length / hotelCustomers.length) * 100
-      ).toFixed(1) + "%",
+      value:
+        (
+          (hotelCustomers.filter((c) => {
+            const lastRes = new Date(c.lastReservation)
+            const diffDays = (new Date().getTime() - lastRes.getTime()) / (1000 * 3600 * 24)
+            return diffDays > 90
+          }).length /
+            hotelCustomers.length) *
+          100
+        ).toFixed(1) + "%",
       subtitle: "",
     },
-  ];
+  ]
 
   const handleSearch = (value: string) => {
-    setSearchTerm(value);
+    setSearchTerm(value)
     const filtered = hotelCustomers.filter(
       (customer) =>
         customer.name.toLowerCase().includes(value.toLowerCase()) ||
         customer.surname.toLowerCase().includes(value.toLowerCase()) ||
         customer.email.toLowerCase().includes(value.toLowerCase()) ||
-        customer.phone.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredCustomers(filtered);
-  };
+        customer.phone.toLowerCase().includes(value.toLowerCase()),
+    )
+    setFilteredCustomers(filtered)
+  }
 
   const activeFilter = (value: string) => {
     if (value === "all") {
-      setFilteredCustomers(hotelCustomers);
+      setFilteredCustomers(hotelCustomers)
     } else if (value === "verified") {
-      setFilteredCustomers(hotelCustomers.filter((customer) => customer.isVerified === true));
+      setFilteredCustomers(hotelCustomers.filter((customer) => customer.isVerified === true))
     } else if (value === "unverified") {
-      setFilteredCustomers(hotelCustomers.filter((customer) => customer.isVerified === false));
+      setFilteredCustomers(hotelCustomers.filter((customer) => customer.isVerified === false))
     }
-  };
+  }
 
   const shortBy = (short: string) => {
     const sortedCustomers = [...filteredCustomers].sort((a, b) => {
-      if (short === "name") return a.name.localeCompare(b.name);
-      if (short === "name-desc") return b.name.localeCompare(a.name);
-      if (short === "email") return a.email.localeCompare(b.email);
-      if (short === "email-desc") return b.email.localeCompare(a.email);
-      if (short === "phone") return a.phone.localeCompare(b.phone);
-      if (short === "phone-desc") return b.phone.localeCompare(a.phone);
-      if (short === "createdAt") return a.createdAt.localeCompare(b.createdAt);
-      if (short === "createdAt-desc") return b.createdAt.localeCompare(a.createdAt);
-      if (short === "lastReservation") return a.lastReservation.localeCompare(b.lastReservation);
-      if (short === "lastReservation-desc") return b.lastReservation.localeCompare(a.lastReservation);
-      if (short === "totalSpent") return a.totalSpent - b.totalSpent;
-      if (short === "totalSpent-desc") return b.totalSpent - a.totalSpent;
-      return 0;
-    });
-    setFilteredCustomers(sortedCustomers);
-  };
+      if (short === "name") return a.name.localeCompare(b.name)
+      if (short === "name-desc") return b.name.localeCompare(a.name)
+      if (short === "email") return a.email.localeCompare(b.email)
+      if (short === "email-desc") return b.email.localeCompare(a.email)
+      if (short === "phone") return a.phone.localeCompare(b.phone)
+      if (short === "phone-desc") return b.phone.localeCompare(a.phone)
+      if (short === "createdAt") return a.createdAt.localeCompare(b.createdAt)
+      if (short === "createdAt-desc") return b.createdAt.localeCompare(a.createdAt)
+      if (short === "lastReservation") return a.lastReservation.localeCompare(b.lastReservation)
+      if (short === "lastReservation-desc") return b.lastReservation.localeCompare(a.lastReservation)
+      if (short === "totalSpent") return a.totalSpent - b.totalSpent
+      if (short === "totalSpent-desc") return b.totalSpent - a.totalSpent
+      return 0
+    })
+    setFilteredCustomers(sortedCustomers)
+  }
 
   return (
     <div className="p-4 md:p-6 lg:p-8 space-y-6">
@@ -92,9 +95,7 @@ export default function CustomersPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">{statsData[0].title}</p>
-                  <p className="text-2xl font-bold text-green-600 dark:text-green-400">
-                    {statsData[0].value}
-                  </p>
+                  <p className="text-2xl font-bold text-green-600 dark:text-green-400">{statsData[0].value}</p>
                 </div>
                 <div className="h-8 w-8 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center">
                   <span className="text-green-600 dark:text-green-400 text-sm font-bold">👥</span>
@@ -108,9 +109,7 @@ export default function CustomersPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">{statsData[1].title}</p>
-                  <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                    {statsData[1].value}
-                  </p>
+                  <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{statsData[1].value}</p>
                 </div>
                 <div className="h-8 w-8 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
                   <span className="text-blue-600 dark:text-blue-400 text-sm font-bold">📅</span>
@@ -124,9 +123,7 @@ export default function CustomersPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">{statsData[2].title}</p>
-                  <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">
-                    {statsData[2].value}
-                  </p>
+                  <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{statsData[2].value}</p>
                 </div>
                 <div className="h-8 w-8 bg-orange-100 dark:bg-orange-900/50 rounded-full flex items-center justify-center">
                   <span className="text-orange-600 dark:text-orange-400 text-sm font-bold">🛒</span>
@@ -140,9 +137,7 @@ export default function CustomersPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">{statsData[3].title}</p>
-                  <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                    {statsData[3].value}
-                  </p>
+                  <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">{statsData[3].value}</p>
                 </div>
                 <div className="h-8 w-8 bg-purple-100 dark:bg-purple-900/50 rounded-full flex items-center justify-center">
                   <span className="text-purple-600 dark:text-purple-400 text-sm font-bold">⏰</span>
@@ -163,24 +158,28 @@ export default function CustomersPage() {
           </CardHeader>
 
           <CardContent className="p-0">
-            <CustomerTable
-              filteredCustomers={filteredCustomers}
-              activeFilter={activeFilter}
-              shortBy={shortBy}
-              handleViewDetails={(customer) => console.log("View details:", customer.id)}
-              handleEdit={(customer) => console.log("Edit:", customer.id)}
-              handleDelete={(customer) => console.log("Delete:", customer.id)}
-            />
+            <div className="hidden md:block">
+              <CustomerTable
+                filteredCustomers={filteredCustomers}
+                activeFilter={activeFilter}
+                shortBy={shortBy}
+                handleViewDetails={(customer) => console.log("View details:", customer.id)}
+                handleEdit={(customer) => console.log("Edit:", customer.id)}
+                handleDelete={(customer) => console.log("Delete:", customer.id)}
+              />
+            </div>
 
-            <CustomerMobilCard
-              filteredCustomers={filteredCustomers}
-              handleViewDetails={(customer) => console.log("View details:", customer.id)}
-              handleEdit={(customer) => console.log("Edit:", customer.id)}
-              handleDelete={(customer) => console.log("Delete:", customer.id)}
-            />
+            <div className="block md:hidden">
+              <CustomerMobilCard
+                filteredCustomers={filteredCustomers}
+                handleViewDetails={(customer) => console.log("View details:", customer.id)}
+                handleEdit={(customer) => console.log("Edit:", customer.id)}
+                handleDelete={(customer) => console.log("Delete:", customer.id)}
+              />
+            </div>
           </CardContent>
         </Card>
       </div>
     </div>
-  );
+  )
 }

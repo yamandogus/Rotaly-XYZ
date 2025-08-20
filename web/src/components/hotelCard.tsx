@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
 import Image from "next/image";
 import { Sparkles, HeartIcon, LocateIcon, CarIcon } from "lucide-react";
@@ -8,6 +8,10 @@ import { Rating, RatingButton } from "./ui/shadcn-io/rating";
 import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFavoriteAsync, selectIsFavorite } from "@/store/favorite/favorite-slice";
+import { selectCurrentUser } from "@/store/auth/auth-slice";
+import { AppDispatch, RootState } from "@/store/store";
 
 interface HotelCardProps {
   item: {
@@ -21,33 +25,60 @@ interface HotelCardProps {
     breakfastText?: string;
     parkingText?: string;
     nights?: number;
+    address?: string;
+    city?: string;
+    country?: string;
+    type?: string;
+    images?: { id: string; url: string }[];
   };
-  onToggleFavorite?: () => void; // favoriler sayfasından kaldırınca yeniden render için
+  onToggleFavorite?: () => void; // Favoriler sayfasından kaldırınca yeniden render için
 }
 
 const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
   const t = useTranslations("HotelCard");
   const router = useRouter();
-  const [isFavorite, setIsFavorite] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
+  const currentUser = useSelector((state: RootState) => selectCurrentUser(state));
+  const isFavorite = useSelector(selectIsFavorite(String(item.id)));
 
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("favorites") || "[]");
-    const exists = stored.some((fav: { id: number | string }) => fav.id === item.id);
-    setIsFavorite(exists);
+    // Favori durumu artık Redux tarafından yönetiliyor, useEffect içinde localStorage'a gerek yok
+    // const stored = JSON.parse(localStorage.getItem("favorites") || "[]");
+    // const exists = stored.some((fav: { id: number | string }) => fav.id === item.id);
+    // setIsFavorite(exists);
   }, [item.id]);
 
   const toggleFavorite = () => {
-    const stored = JSON.parse(localStorage.getItem("favorites") || "[]");
-    let updated;
-
-    if (isFavorite) {
-      updated = stored.filter((fav: { id: number | string }) => fav.id !== item.id);
-    } else {
-      updated = [...stored, item];
+    if (!currentUser) {
+      // Kimliği doğrulanmamış kullanıcıyı ele al, örn: giriş sayfasına yönlendir
+      router.push("/login");
+      return;
     }
+    dispatch(toggleFavoriteAsync({
+      hotelId: String(item.id),
+      hotel: {
+        id: String(item.id),
+        name: item.name,
+        location: item.location,
+        address: item.address || "", // Mevcut değilse varsayılan değer sağla
+        city: item.city || "", // Mevcut değilse varsayılan değer sağla
+        country: item.country || "", // Mevcut değilse varsayılan değer sağla
+        rating: item.rating,
+        type: item.type || "", // Mevcut değilse varsayılan değer sağla
+        images: item.images || [], // Mevcut değilse varsayılan değer sağla
+      },
+      userId: currentUser.id,
+    }));
 
-    localStorage.setItem("favorites", JSON.stringify(updated));
-    setIsFavorite(!isFavorite);
+    // Artık doğrudan localStorage üzerinde işlem yapmıyoruz
+    // if (isFavorite) {
+    //   updated = stored.filter((fav: { id: number | string }) => fav.id !== item.id);
+    // } else {
+    //   updated = [...stored, item];
+    // }
+
+    // localStorage.setItem("favorites", JSON.stringify(updated));
+    // setIsFavorite(!isFavorite);
 
     // Favoriler sayfasındaysan kartı hemen sil
     if (isFavorite && onToggleFavorite) {

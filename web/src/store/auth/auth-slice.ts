@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState } from "./auth-types";
 
-// Basit User interface
+// Basit Kullanıcı arayüzü
 interface User {
   id: string;
   name: string;
@@ -24,14 +24,14 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    // User bilgisini set et
+    // Kullanıcı bilgisini ayarla
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
       state.isAuthenticated = true;
       state.error = null;
     },
 
-    // User'ı temizle (logout için)
+    // Kullanıcıyı temizle (çıkış için)
     clearUser: (state) => {
       state.user = null;
       state.isAuthenticated = false;
@@ -41,7 +41,7 @@ const authSlice = createSlice({
       state.error = null;
     },
 
-    // Token'ları set et
+    // Token'ları ayarla
     setTokens: (state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) => {
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
@@ -55,18 +55,18 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
     },
 
-    // Loading durumu
+    // Yükleme durumu
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
 
-    // Error set et
+    // Hata ayarla
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
       state.isLoading = false;
     },
 
-    // Error temizle
+    // Hatayı temizle
     clearError: (state) => {
       state.error = null;
     },
@@ -84,3 +84,6 @@ export const {
 } = authSlice.actions;
 
 export default authSlice.reducer;
+
+// Mevcut kullanıcıyı almak için seçici
+export const selectCurrentUser = (state: { auth: AuthState }) => state.auth.user;
