@@ -102,6 +102,9 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
     }
   };
 
+
+
+
   return (
     <Card
       key={item.id}
