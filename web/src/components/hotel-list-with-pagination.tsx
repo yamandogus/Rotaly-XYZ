@@ -100,7 +100,7 @@ export function HotelListWithPagination() {
                   name: hotel.name,
                   location: hotel.location,
                   rating: hotel.rating,
-                  price: hotel.price || "Fiyat belirtilmemiş",
+                  price: hotel.rooms[0]?.price.toString() || "0",
                   image: hotel.images[0]?.url || "/images/hotel-placeholder.jpg",
                   cancelText,
                   breakfastText,

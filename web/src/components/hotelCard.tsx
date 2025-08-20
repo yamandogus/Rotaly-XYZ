@@ -69,26 +69,27 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
             className="object-cover rounded-2xl p-1"
             priority
           />
-          <div className="absolute top-3 left-3">
+          <div className="absolute top-3 left-1">
             <div className="bg-[#4E946C] text-white px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-sm">
               <Sparkles className="w-3 h-3" />
               <span className="text-xs font-semibold">{t("discountLabel")}</span>
             </div>
           </div>
           <div className="absolute top-3 right-3">
-            <button
+            <Button
+              variant="ghost"
               onClick={(e) => {
                 e.preventDefault();
                 toggleFavorite();
               }}
-              className="bg-white p-1.5 rounded-full"
+              className="bg-white rounded-full hover:bg-gray-100 cursor-pointer w-6 h-6"
             >
               <HeartIcon
                 className={`w-4 h-4 transition-all ${
                   isFavorite ? "text-red-500 fill-red-500" : "text-gray-400"
                 }`}
               />
-            </button>
+            </Button>
           </div>
         </div>
       </CardHeader>
@@ -101,22 +102,22 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-1 text-muted-foreground">
             <LocateIcon className="w-4 h-4" />
-            <span className="text-sm">{item.location}</span>
+            <span className="text-xs md:text-sm">{item.location}</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-sm font-semibold text-foreground">
+            <span className="text-[12px] font-semibold text-foreground">
               {item.rating.toFixed(1)}
             </span>
             <Rating defaultValue={item.rating} readOnly>
               {Array.from({ length: 5 }).map((_, index) => (
                 <RatingButton
                   key={index}
-                  size={14}
+                  size={12}
                   className="text-yellow-500"
                 />
               ))}
             </Rating>
-            <span className="text-xs text-muted-foreground ml-1">{t("reviewsCount", { count: 120 })}</span>
+            <span className="text-xs text-muted-foreground ml-1">(120)</span>
           </div>
         </div>
 
@@ -171,7 +172,7 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
           <span className="text-sm text-muted-foreground mb-1">
             {t("nightsFor", { nights: item.nights || 1 })}
           </span>
-          <span className="text-xl font-bold text-blue-600">{item.price}</span>
+          <span className="text-xl font-bold text-blue-600">{item.price} ₺</span>
         </div>
         <Button 
           onClick={() => router.push(`/hotels/${item.id}`)}

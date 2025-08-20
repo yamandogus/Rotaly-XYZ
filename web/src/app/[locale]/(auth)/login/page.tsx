@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { Link, useRouter } from "@/i18n/routing";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -22,12 +22,21 @@ import {
 import { useDispatch } from "react-redux";
 import { setUserRole } from "@/store/testUser/test-user-slice";
 import { useTranslations } from "next-intl";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
+import { Button } from "@/components/ui/button";
+import { toast } from "react-hot-toast";
+import { authService } from "@/services/auth.service";
+import { userService } from "@/services/user.service";
+import { setUser } from "@/store/auth/auth-slice";
 
 export default function LoginPage() {
   const t = useTranslations("LoginPage");
   const router = useRouter();
   const dispatch = useDispatch();
   const { loginSuccess, loginError } = useToastMessages();
+  const [open, setOpen] = useState(false);
+  const [otp, setOtp] = useState("");
 
   const loginSchema = z.object({
     email: z.string().email({ message: t("invalidEmail") }),
@@ -72,6 +81,63 @@ export default function LoginPage() {
   const handleLogin = async (data: LoginFormData) => {
     console.log("login data", data);
 
+    try {
+      // Önce API ile login dene
+      const response = await authService.login(data);
+      console.log("login response", response);
+
+      if (response.success) {
+        // API login başarılı - kullanıcı profilini al
+        const userResponse = await userService.getUserProfile();
+        console.log("user response", userResponse);
+        
+        if (userResponse.data.isVerified === false) {
+          setOpen(true);
+        } else {
+          // Kullanıcı doğrulanmış - role göre yönlendir
+          switch (userResponse.data.role) {
+            case 'ADMIN':
+              localStorage.setItem("userRole", "admin");
+              loginSuccess("admin");
+              dispatch(setUser(userResponse.data));
+              router.push("/dashboard/admin");
+              break;
+            case 'OWNER':
+              localStorage.setItem("userRole", "hotel");
+              loginSuccess("hotel");
+              dispatch(setUser(userResponse.data));
+              router.push("/dashboard/hotel");
+              break;
+            case 'SUPPORT':
+              localStorage.setItem("userRole", "support");
+              loginSuccess("support");
+              dispatch(setUser(userResponse.data));
+              router.push("/dashboard/support");
+              break;
+            case 'CUSTOMER':
+              localStorage.setItem("userRole", "user");
+              loginSuccess("user");
+              dispatch(setUser(userResponse.data));
+              router.push("/");
+              break;
+            default:
+              router.push("/");
+              loginError();
+          }
+        }
+      } else {
+        // API login başarısız - test kullanıcılarını kontrol et
+        handleTestUserLogin(data);
+      }
+    } catch (error) {
+      console.error("API login error:", error);
+      // API hatası - test kullanıcılarını kontrol et
+      handleTestUserLogin(data);
+    }
+  };
+
+  // Test kullanıcıları için ayrı fonksiyon
+  const handleTestUserLogin = (data: LoginFormData) => {
     // Normal kullanıcı girişi
     if (data.email === testUser.email && data.password === testUser.password) {
       localStorage.setItem("userRole", "user");
@@ -80,30 +146,21 @@ export default function LoginPage() {
       router.push("/");
     }
     // Otel girişi
-    else if (
-      data.email === testHotel.email &&
-      data.password === testHotel.password
-    ) {
+    else if (data.email === testHotel.email && data.password === testHotel.password) {
       localStorage.setItem("userRole", "hotel");
       dispatch(setUserRole(testHotel.role));
       loginSuccess("hotel");
       router.push("/dashboard");
     }
     // Admin girişi
-    else if (
-      data.email === testAdmin.email &&
-      data.password === testAdmin.password
-    ) {
+    else if (data.email === testAdmin.email && data.password === testAdmin.password) {
       localStorage.setItem("userRole", "admin");
       dispatch(setUserRole(testAdmin.role));
       loginSuccess("admin");
       router.push("/dashboard");
     }
     // Support girişi
-    else if (
-      data.email === testSupport.email &&
-      data.password === testSupport.password
-    ) {
+    else if (data.email === testSupport.email && data.password === testSupport.password) {
       localStorage.setItem("userRole", "support");
       dispatch(setUserRole(testSupport.role));
       loginSuccess("support");
@@ -114,6 +171,32 @@ export default function LoginPage() {
       loginError();
     }
   };
+
+  const otpSubmit = async () => {
+    if (otp.length !== 6) {
+      toast.error("Doğrulama kodu 6 haneli olmalıdır.");
+      setOpen(false);
+      setOtp("");
+      form.reset();
+      return;
+    }else{
+      const response = await authService.verifyEmail(otp);
+      console.log("verify email response", response);
+    
+
+      if(response.success){
+        toast.success("Hesabınız doğrulandı.");
+      }else{
+        toast.error("Doğrulama kodu geçersiz.");
+      }
+    }
+
+
+    setOpen(false);
+    setOtp("");
+    form.reset();
+  };
+
 
   return (
     <div>
@@ -137,7 +220,10 @@ export default function LoginPage() {
                       <FormItem>
                         <FormLabel>{t("email")}</FormLabel>
                         <FormControl>
-                          <Input placeholder={t("emailPlaceholder")} {...field} />
+                          <Input
+                            placeholder={t("emailPlaceholder")}
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -195,6 +281,52 @@ export default function LoginPage() {
               </div>
             </form>
           </Form>
+
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent className="max-w-md w-full rounded-2xl p-6 space-y-6">
+              <DialogHeader className="text-center space-y-2">
+                <DialogTitle className="text-2xl font-semibold">
+                  Hesabı Doğrula
+                </DialogTitle>
+                <DialogDescription className="text-gray-500">
+                  Lütfen doğrulama kodunu giriniz.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="flex justify-center">
+                <InputOTP maxLength={6} value={otp} onChange={setOtp}>
+                  <InputOTPGroup>
+                    {[0, 1, 2].map((i) => (
+                      <InputOTPSlot
+                        key={i}
+                        index={i}
+                        className="w-12 h-12 ..."
+                      />
+                    ))}
+                  </InputOTPGroup>
+                  <InputOTPSeparator />
+                  <InputOTPGroup>
+                    {[3, 4, 5].map((i) => (
+                      <InputOTPSlot
+                        key={i}
+                        index={i}
+                        className="w-12 h-12 ..."
+                      />
+                    ))}
+                  </InputOTPGroup>
+                </InputOTP>
+              </div>
+
+              <DialogFooter className="flex justify-center gap-4">
+                <DialogClose asChild>
+                  <Button variant="outline">İptal</Button>
+                </DialogClose>
+                <Button onClick={otpSubmit} className="bg-primary text-white">
+                  Hesabı Doğrula
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>

@@ -128,7 +128,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
                       />
                     </div>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[400px] p-0 bg-card border-gray-300 dark:border-gray-600" align="center">
+                  <PopoverContent className="w-[380px] md:w-[400px] p-0 bg-card border-gray-300 dark:border-gray-600" align="center">
                     <div className="p-2">
                       {/* Results */}
                       <div className="max-h-80 overflow-y-auto p-2 overflow-hidden">
@@ -177,9 +177,10 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
                               )}
                               <CommandSeparator />
                             </CommandList>
-                            <CommandList>
-                              <CommandGroup>
-                                <div className="px-2 py-1 text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                            {filteredHotels.length === 0 && (
+                              <CommandList>
+                                <CommandGroup>
+                                  <div className="px-2 py-1 text-sm font-semibold text-gray-700 uppercase tracking-wide">
                                   {t("search.popularSearches")}
                                 </div>
                                 {popularHotels.map((hotel) => (
@@ -206,6 +207,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
 
                               <CommandSeparator />
                             </CommandList>
+                            )}
                           </Command>
                         </div>
                       </div>
