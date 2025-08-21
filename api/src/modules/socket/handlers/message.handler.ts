@@ -133,42 +133,21 @@ export class MessageHandler {
     }
   }
 
-  // AI chat specific methods
-  handleJoinAIChatRoom(socket: AuthenticatedSocket): void {
-    const aiChatRoom = `ai-chat:${socket.userId}`;
-    console.log(`User ${socket.id} joining AI chat room: ${aiChatRoom}`);
-
-    socket.join(aiChatRoom);
-
-    console.log(`User ${socket.id} joined AI chat room ${aiChatRoom}`);
-  }
-
-  handleLeaveAIChatRoom(socket: AuthenticatedSocket): void {
-    const aiChatRoom = `ai-chat:${socket.userId}`;
-    console.log(`User ${socket.id} leaving AI chat room: ${aiChatRoom}`);
-
-    socket.leave(aiChatRoom);
-
-    console.log(`User ${socket.id} left AI chat room ${aiChatRoom}`);
-  }
-
   // method to emit AI response to user
   emitAIResponse(userId: string, message: any): void {
     const aiChatRoom = `ai-chat:${userId}`;
     const userRoom = `user:${userId}`;
 
-    // emit to both AI chat room and user's personal room
-    this.io.to(aiChatRoom).emit("aiResponse", {
+    // using standard NEW_MESSAGE event for AI responses
+    const aiMessage = {
       ...message,
       isFromAI: true,
       timestamp: new Date(),
-    });
+    };
 
-    this.io.to(userRoom).emit("newMessage", {
-      ...message,
-      isFromAI: true,
-      timestamp: new Date(),
-    });
+    // emit to both AI chat room and user's personal room using standard event
+    this.io.to(aiChatRoom).emit("newMessage", aiMessage);
+    this.io.to(userRoom).emit("newMessage", aiMessage);
   }
 
   // method to emit support assignment notification

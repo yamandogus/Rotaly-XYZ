@@ -55,15 +55,6 @@ export const SOCKET_EVENTS = {
   SUPPORT_ASSIGNED: "support_assigned",
   SUPPORT_RESOLVED: "support_resolved", // Instead of "closed" - indicates resolution but chat remains accessible
 
-  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
-  //    AI Chat events
-  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
-
-  AI_CHAT_MESSAGE: "ai_chat_message",
-  AI_RESPONSE: "ai_response",
-  JOIN_AI_CHAT_ROOM: "join_ai_chat_room",
-  LEAVE_AI_CHAT_ROOM: "leave_ai_chat_room",
-
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
   //    Notification events
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅

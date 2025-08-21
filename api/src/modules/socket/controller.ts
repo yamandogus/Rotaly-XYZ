@@ -116,27 +116,6 @@ export class SocketController {
           this.supportHandler.handleSupportResolved(socket, data);
         });
 
-        // AI chat room events
-        socket.on("joinAIChatRoom", () => {
-          if (!this.requireAuth(socket, "join AI chat")) return;
-          this.messageHandler.handleJoinAIChatRoom(socket);
-        });
-
-        socket.on("leaveAIChatRoom", () => {
-          if (!this.requireAuth(socket, "leave AI chat")) return;
-          this.messageHandler.handleLeaveAIChatRoom(socket);
-        });
-
-        // AI chat message event
-        socket.on("aiChatMessage", (data) => {
-          if (!this.requireAuth(socket, "send AI message")) return;
-          this.messageHandler.handleNewMessage(socket, {
-            ...data,
-            receiverId: data.receiverId || "ai-assistant",
-            isAIMessage: true,
-          });
-        });
-
         // message events
         socket.on(SOCKET_EVENTS.NEW_MESSAGE, (data) => {
           if (!this.requireAuth(socket, "send message")) return;
