@@ -11,89 +11,89 @@ export const SOCKET_EVENTS = {
   //     User presence events
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
 
-  ONLINE_USERS_COUNT: "onlineUsersCount",
-  USER_ONLINE: "userOnline",
-  USER_OFFLINE: "userOffline",
+  ONLINE_USERS_COUNT: "online_users_count",
+  USER_ONLINE: "user_online",
+  USER_OFFLINE: "user_offline",
 
-  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
+  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
   //     Room events
-  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
+  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
 
-  JOIN_ROOM: "joinRoom",
-  LEAVE_ROOM: "leaveRoom",
-  USER_JOINED_ROOM: "userJoinedRoom",
-  USER_LEFT_ROOM: "userLeftRoom",
+  JOIN_ROOM: "join_room",
+  LEAVE_ROOM: "leave_room",
+  USER_JOINED_ROOM: "user_joined_room",
+  USER_LEFT_ROOM: "user_left_room",
 
-  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
+  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
   //    Message events
-  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
+  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
 
-  NEW_MESSAGE: "newMessage",
-  MESSAGE_SENT: "messageSent",
-  MESSAGE_RECEIVED: "messageReceived",
-  MESSAGE_READ: "messageRead",
-  MESSAGES_READ: "messagesRead",
-  MESSAGE_DELETE: "messageDelete",
-  MESSAGE_DELETED: "messageDeleted",
-  MESSAGE_EDIT: "messageEdit",
-  MESSAGE_EDITED: "messageEdited",
+  NEW_MESSAGE: "new_message",
+  MESSAGE_SENT: "message_sent",
+  MESSAGE_RECEIVED: "message_received",
+  MESSAGE_READ: "message_read",
+  MESSAGES_READ: "messages_read",
+  MESSAGE_DELETE: "message_delete",
+  MESSAGE_DELETED: "message_deleted",
+  MESSAGE_EDIT: "message_edit",
+  MESSAGE_EDITED: "message_edited",
 
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
   //    Typing events
-  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
+  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
 
-  START_TYPING: "startTyping",
-  STOP_TYPING: "stopTyping",
-  USER_STARTED_TYPING: "userStartedTyping",
-  USER_STOPPED_TYPING: "userStoppedTyping",
+  START_TYPING: "start_typing",
+  STOP_TYPING: "stop_typing",
+  USER_STARTED_TYPING: "user_started_typing",
+  USER_STOPPED_TYPING: "user_stopped_typing",
 
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
   //    Support events
-  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
+  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
 
-  SUPPORT_REQUEST: "supportRequest",
-  SUPPORT_RESPONSE: "supportResponse",
-  SUPPORT_ASSIGNED: "supportAssigned",
-  SUPPORT_CLOSED: "supportClosed",
-  JOIN_SUPPORT_ROOM: "joinSupportRoom",
-  LEAVE_SUPPORT_ROOM: "leaveSupportRoom",
-  USER_JOINED_SUPPORT_ROOM: "userJoinedSupportRoom",
-  USER_LEFT_SUPPORT_ROOM: "userLeftSupportRoom",
+  SUPPORT_REQUEST: "support_request",
+  SUPPORT_RESPONSE: "support_response",
+  SUPPORT_ASSIGNED: "support_assigned",
+  SUPPORT_CLOSED: "support_closed",
+  JOIN_SUPPORT_ROOM: "join_support_room",
+  LEAVE_SUPPORT_ROOM: "leave_support_room",
+  USER_JOINED_SUPPORT_ROOM: "user_joined_support_room",
+  USER_LEFT_SUPPORT_ROOM: "user_left_support_room",
 
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
   //    AI Chat events
-  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
+  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
 
-  AI_CHAT_MESSAGE: "aiChatMessage",
-  AI_RESPONSE: "aiResponse",
-  JOIN_AI_CHAT_ROOM: "joinAIChatRoom",
-  LEAVE_AI_CHAT_ROOM: "leaveAIChatRoom",
+  AI_CHAT_MESSAGE: "ai_chat_message",
+  AI_RESPONSE: "ai_response",
+  JOIN_AI_CHAT_ROOM: "join_ai_chat_room",
+  LEAVE_AI_CHAT_ROOM: "leave_ai_chat_room",
 
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
   //    Notification events
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
 
   NOTIFICATION: "notification",
-  SEND_NOTIFICATION: "sendNotification",
-  BROADCAST_NOTIFICATION: "broadcastNotification",
-  HOTEL_NOTIFICATION: "hotelNotification",
-  MARK_NOTIFICATION_READ: "markNotificationRead",
-  NOTIFICATION_READ: "notificationRead",
+  SEND_NOTIFICATION: "send_notification",
+  BROADCAST_NOTIFICATION: "broadcast_notification",
+  HOTEL_NOTIFICATION: "hotel_notification",
+  MARK_NOTIFICATION_READ: "mark_notification_read",
+  NOTIFICATION_READ: "notification_read",
 
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
   //     Reservation events
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
 
-  RESERVATION_CREATED: "reservationCreated",
-  RESERVATION_UPDATED: "reservationUpdated",
-  RESERVATION_CANCELLED: "reservationCancelled",
+  RESERVATION_CREATED: "reservation_created",
+  RESERVATION_UPDATED: "reservation_updated",
+  RESERVATION_CANCELLED: "reservation_cancelled",
 
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
   //     Hotel events
-  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
+  // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
 
-  HOTEL_STATUS_CHANGED: "hotelStatusChanged",
-  ROOM_AVAILABILITY_CHANGED: "roomAvailabilityChanged",
+  HOTEL_STATUS_CHANGED: "hotel_status_changed",
+  ROOM_AVAILABILITY_CHANGED: "room_availability_changed",
 } as const;
 
 export type SocketEvent = (typeof SOCKET_EVENTS)[keyof typeof SOCKET_EVENTS];
