@@ -8,4 +8,4 @@ export * from "./update-hotel.dto";
 export * from "./query-hotel.dto";
 
 // Response Hotel DTO
-export * from "./response-hotel.dto"; 
+export * from "./response-hotel.dto";
