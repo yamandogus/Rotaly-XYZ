@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CreateHotelInput } from "@api/dto/hotel";
+import { CreateHotelInput, QueryHotelInput, UpdateHotelInput } from "@api/dto/hotel";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
@@ -27,7 +27,7 @@ export const hotelService = {
     return response.data;
   },
 
-  async updateHotel(hotelId: string, hotelData: any) {
+  async updateHotel(hotelId: string, hotelData: UpdateHotelInput) {
     const response = await axios.put(
       `${API_BASE_URL}/hotels/${hotelId}`,
       hotelData,
@@ -52,7 +52,7 @@ export const hotelService = {
     return response.data;
   },
 
-  async getHotels(queryParams: any) {
+  async getHotels(queryParams: QueryHotelInput) {
     const response = await axios.get(`${API_BASE_URL}/hotels`, {
       params: queryParams,
       headers: {

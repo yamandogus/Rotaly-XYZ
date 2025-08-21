@@ -100,10 +100,10 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
   return (
     <div className="relative">
       {/* Search Form */}
-      <div className="relative z-10 flex items-center justify-center p-4">
+      <div className="relative z-10 flex items-center justify-center p-2 sm:p-4">
         <div className="w-full max-w-6xl">
-          <div className="bg-card border border-gray-200 dark:border-gray-600 rounded-2xl p-6 md:p-8 shadow-lg dark:shadow-none">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+          <div className="bg-card border border-gray-200 dark:border-gray-600 rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg dark:shadow-none">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 items-end">
               {/* Destination */}
               <div className="lg:col-span-1">
                 <Label className="text-black dark:text-white text-sm font-medium mb-2 block">
@@ -124,7 +124,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
                           setDestination(e.target.value)
                           setIsOpen(true)
                         }}
-                        className="pl-10 pr-10 bg-white dark:bg-gray-800/50 border-gray-300 dark:border-gray-600 text-black dark:text-white placeholder:text-gray-400 h-12 cursor-pointer"
+                        className="pl-10 pr-10 bg-white dark:bg-gray-800/50 border-gray-300 dark:border-gray-600 text-black dark:text-white placeholder:text-gray-400 h-10 sm:h-12 cursor-pointer"
                       />
                     </div>
                   </PopoverTrigger>
@@ -260,7 +260,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
               <div className="col-span-full lg:col-span-1">
                 <Button
                   onClick={handleSearchClick}
-                  className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg"
+                  className="w-full h-10 sm:h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg"
                 >
                   <Search className="h-4 w-4 mr-2" />
                   {t("buttons.search")}
