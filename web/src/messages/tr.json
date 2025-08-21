@@ -20,6 +20,7 @@
     "user": "Kullanıcı"
   },
   "HomePage": {
+    "withRotaly": "Rotaly ile",
     "heroHeading": "Hayalinizdeki Konaklama Bir Tık Uzağınızda",
     "heroSubheading": "Sevdiğiniz destinasyonlarda, en cazip fiyatlarla konaklama seçeneklerini keşfedin.",
     "cityPlaceholder": "Şehir",
@@ -605,7 +606,11 @@
   "facebook": "Facebook",
   "instagram": "Instagram",
   "twitter": "Twitter",
-  "linkedin": "LinkedIn"
+  "linkedin": "LinkedIn",
+  "formErrorPassword": "Şifre alanlarında hata var. Lütfen kontrol edin.",
+  "otpErrorLength": "Lütfen 6 haneli kodu tam olarak girin.",
+  "otpSuccess": "Şifreniz başarıyla güncellendi!",
+  "otpErrorInvalid": "Geçersiz doğrulama kodu. Lütfen tekrar deneyin."
 },
 
   "AdminSecurity": {
