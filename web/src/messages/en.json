@@ -23,6 +23,7 @@
     "user": "User"
   },
   "HomePage": {
+    "withRotaly": "With Rotaly",
     "heroHeading": "Your Dream Stay is Just a Click Away",
     "heroSubheading": "Discover the best stays in your favorite destinations at the most attractive prices.",
     "cityPlaceholder": "City",
@@ -590,7 +591,11 @@
       "instagram": "Instagram",
       "twitter": "Twitter",
       "linkedin": "LinkedIn",
-      "otpConfirm": "Confirm" 
+      "otpConfirm": "Confirm",
+      "formErrorPassword": "There are errors in password fields. Please check.",
+      "otpErrorLength": "Please enter the complete 6-digit code.",
+      "otpSuccess": "Your password has been successfully updated!",
+      "otpErrorInvalid": "Invalid verification code. Please try again."
     },
 
   "AdminSecurity": {

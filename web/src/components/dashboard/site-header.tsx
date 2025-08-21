@@ -17,6 +17,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { setPageTitle } from "@/store/dashboard/dashboard-slice";
+import { authService } from "@/services";
+import { clearUser } from "@/store/auth/auth-slice";
 
 export function SiteHeader() {
   const router = useRouter();
@@ -33,11 +35,22 @@ export function SiteHeader() {
     }
   }, [pageTitle, dispatch, t]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("userRole");
-    localStorage.removeItem("hotelName");
-    dispatch(setPageTitle(t("WelcamePage")));
-    router.push("/login");
+  const handleLogout = async() => {
+    try {
+      const response = await authService.logout();
+      console.log("logout response", response);
+      
+      // Redux state'i temizle
+      dispatch(clearUser()); // Ana auth slice'dan
+      dispatch(setPageTitle(t("WelcamePage")));
+      
+      router.push("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Hata olsa bile state'i temizle
+      dispatch(clearUser());
+      router.push("/login");
+    }
   };
 
   return (
