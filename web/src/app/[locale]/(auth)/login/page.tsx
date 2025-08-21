@@ -12,6 +12,7 @@ import LoginForm from "@/components/auth/login-form";
 import OTPVerificationDialog from "@/components/auth/otp-verification-dialog";
 import CloseVerificationDialog from "@/components/auth/close-verification-dialog";
 import { createLoginLogic } from "@/components/auth/login-logic";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const t = useTranslations("LoginPage");
@@ -49,13 +50,8 @@ export default function LoginPage() {
 
   // Timer bittiğinde çağrılacak fonksiyon
   const handleTimeUp = () => {
-    setOpen(false);
-    setOpenControl(false);
-    setOtp("");
-    form.reset();
-    import("react-hot-toast").then(({ toast }) => {
-      toast.error("Doğrulama süresi doldu. Lütfen tekrar giriş yapın.");
-    });
+    // Modal kapatılmasın, sadece mesaj göster
+    toast.error("Doğrulama süresi doldu. Şifre yenile butonunu kullanabilirsiniz.");
   };
 
   // OTP submit fonksiyonu
@@ -69,7 +65,7 @@ export default function LoginPage() {
   };
 
   return (
-      <div className="min-h-screen flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
       <LoginForm
         form={form}
         onSubmit={handleLogin}
@@ -86,6 +82,7 @@ export default function LoginPage() {
         onTimeUp={handleTimeUp}
         title="Hesabı Doğrula"
         description="Lütfen doğrulama kodunu giriniz. Doğrulama kodu 6 haneli olmalıdır."
+        email={form.getValues("email")}
       />
 
       {/* Test için dialog */}
@@ -107,9 +104,9 @@ export default function LoginPage() {
         open={closeVerify}
         onOpenChange={setCloseVerify}
         onConfirm={() => {
-                    setCloseVerify(false);
-                    setOpenControl(false);
-                    // Timer'ı sıfırlamıyoruz, sadece dialog'ları kapatıyoruz
+          setCloseVerify(false);
+          setOpenControl(false);
+          // Timer'ı sıfırlamıyoruz, sadece dialog'ları kapatıyoruz
         }}
         onCancel={() => setCloseVerify(false)}
       />

@@ -176,16 +176,16 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="relative z-10 w-full flex flex-col items-center justify-center pt-12 pb-12 px-4 text-center">
-          <h1 className="text-2xl md:text-4xl font-bold mb-4">
+        <div className="relative z-10 w-full flex flex-col items-center justify-center pt-8 sm:pt-10 md:pt-12 pb-8 sm:pb-10 md:pb-12 px-4 text-center">
+          <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 sm:mb-4">
             {t("heroHeading")}
           </h1>
-          <p className="text-base md:text-lg max-w-2xl mb-8 text-gray-400 dark:text-gray-300 font-medium">
+          <p className="text-sm sm:text-base md:text-lg max-w-2xl mb-6 sm:mb-8 text-gray-400 dark:text-gray-300 font-medium">
             {t("heroSubheading")}
           </p>
         </div>
 
-        <div className="relative w-full h-[60vh] -mt-12 z-20">
+        <div className="relative w-full h-[40vh] sm:h-[50vh] md:h-[60vh] -mt-8 sm:-mt-10 md:-mt-12 z-20">
           <Swiper
             modules={[Autoplay]}
             spaceBetween={0}
@@ -214,7 +214,7 @@ export default function HomePage() {
           </Swiper>
         </div>
 
-        <div className="relative z-40 w-full max-w-6xl -mt-20 px-4 mb-12">
+        <div className="relative z-40 w-full max-w-6xl -mt-36 sm:-mt-18 md:-mt-20 px-4 mb-8 sm:mb-10 md:mb-12">
           <BookingSearch handleSearch={handleSearch} />
         </div>
 
