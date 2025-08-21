@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Link } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { Heart, LogOut } from "lucide-react";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -22,19 +22,36 @@ import Notification from "../../notifications/page";
 import { RootState } from "@/store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@/store/testUser/test-user-slice";
+import { authService } from "@/services/auth.service";
+import { clearUser } from "@/store/auth/auth-slice";
 
 const UserActions = () => {
   const t = useTranslations("Navigation");
   const dispatch = useDispatch();
-  const { role, email } = useSelector((state: RootState) => state.testUser);
+  const user = useSelector((state: RootState) => state.auth.user);
+  const router = useRouter();
 
-  const handleLogout = () => {
-    dispatch(logout());
+
+  const handleLogout = async () => {
+    try {
+      const response = await authService.logout();
+      console.log("logout response", response);
+      // Redux state'i temizle
+      dispatch(clearUser()); // Ana auth slice'dan
+      dispatch(logout()); // Test user slice'dan
+      router.push("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Hata olsa bile state'i temizle
+      dispatch(clearUser());
+      dispatch(logout());
+      router.push("/");
+    }
   };
 
   return (
     <div className="hidden md:flex flex-1 items-center justify-end space-x-2">
-      {role === "user" ? (
+      {user?.role === "CUSTOMER" ? (
         <React.Fragment>
           <Link href="/favorites">
             <Button
@@ -67,7 +84,7 @@ const UserActions = () => {
                 <div className="flex flex-col space-y-1 leading-none">
                   <p className="font-medium">{t("user")}</p>
                   <p className="w-[200px] truncate text-sm text-muted-foreground">
-                    {email || "user@example.com"}
+                    {user?.email}
                   </p>
                 </div>
               </div>

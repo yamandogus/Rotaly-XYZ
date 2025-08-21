@@ -1,56 +1,55 @@
-// web/src/lib/api.ts
+
+
 import axios from "axios";
 
+// API temel URL'i - environment variable'dan alır, yoksa localhost kullanır
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
 
-const token = "fasfas";
-export const api = {
-  async register(userData: {
-    name: string;
-    surname: string;
-    email: string;
-    phone: string;
-    password: string;
-    confirmPassword: string;
-  }) {
-    const response = await axios.post(
-      `${API_BASE_URL}/auth/register`,
-      userData
-    );
+// Axios instance oluşturma - tüm API çağrıları için merkezi konfigürasyon
+// Bu sayede her serviste ayrı ayrı axios import etmeye gerek kalmaz
+export const apiClient = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
 
-    return response.data;
   },
+});
 
-  async login(data: { email: string; password: string }) {
-    const response = await axios.post(`${API_BASE_URL}/auth/login`, data);
-
-    console.log("login request data:", data);
-    console.log("login response data:", response.data);
-
-    const accessToken = response.data?.data?.accessToken;
-    console.log(accessToken);
-    
-
-    if (response.data?.data?.accessToken) {
-      localStorage.setItem("access_token", response.data?.accessToken);
-      console.log("if içi");
+// Request interceptor - her API isteğinde otomatik olarak auth token ekler
+// Bu sayede her serviste manuel olarak token eklemeye gerek kalmaz
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-
-    return response.data;
+    return config;
   },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
-  async Logout() {
-    const response = await axios.post(`${API_BASE_URL}/auth/logout`);
-    return response.data;
-  },
+// Response interceptor - API yanıtlarında hata yönetimi yapar
+// 401 hatası durumunda otomatik olarak token'ı siler ve kullanıcıyı logout yapar
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("access_token");
+      // Burada login sayfasına yönlendirme yapılabilir
+      // window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
 
-  async getUserProfile() {
-    const response = await axios.get(`${API_BASE_URL}/auth/profile`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  },
-};
+// KULLANIM FAYDALARI:
+// 1. Merkezi Konfigürasyon: Tüm API çağrıları için tek yerden ayar
+// 2. Otomatik Token Ekleme: Her istekte manuel token eklemeye gerek yok
+// 3. Hata Yönetimi: 401 hatalarında otomatik logout
+// 4. Kod Tekrarını Önleme: Her serviste aynı axios konfigürasyonu yazmaya gerek yok
+// 5. Bakım Kolaylığı: API URL değişikliklerinde tek yerden güncelleme
+
+

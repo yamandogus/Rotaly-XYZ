@@ -13,6 +13,20 @@ export class UserRepository {
     return Prisma.user.findUnique({
       where: {
         email,
+        deletedAt: null,
+      },
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+        phone: true,
+        role: true,
+        isVerified: true,
+        createdAt: true,
+        updatedAt: true,
+        deletedAt: true,
+        hashedPassword: true,
       },
     });
   }
@@ -33,6 +47,7 @@ export class UserRepository {
         verificationOTP: true,
         images: true,
         paymentCards: true,
+        hashedPassword: true,
       },
     });
   }
@@ -41,13 +56,27 @@ export class UserRepository {
       where: {
         phone,
       },
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+        phone: true,
+        role: true,
+        deletedAt: true,
+        isVerified: true,
+        verificationOTP: true,
+        images: true,
+        paymentCards: true,
+      },
     });
   }
-  static async create(data: RegisterSchemaType) {
+  static async create(data: RegisterSchemaType & { password: string }) {
+    const { password, confirmPassword, ...userData } = data;
     return Prisma.user.create({
       data: {
-        ...data,
-        hashedPassword: data.password,
+        ...userData,
+        hashedPassword: password,
       },
       select: {
         id: true,

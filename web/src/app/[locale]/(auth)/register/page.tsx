@@ -7,10 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { api } from "@/services/api";
 import { useToastMessages } from "@/hooks/toast-messages";
 import { useTranslations } from "next-intl";
 import { BottomGradient, LabelInputContainer } from "@/components/auth/auth-components";
+import { authService } from "@/services/auth.service";
 
 export default function RegisterPage() {
   const t = useTranslations("Register");
@@ -49,7 +49,7 @@ export default function RegisterPage() {
   const handleSubmit =  async (data: RegisterFormData) => { 
     setIsLoading(true);
     try {
-      const response = await api.register({
+      const response = await authService.register({
         name: data.firstname,
         surname: data.lastname,
         email: data.email,
@@ -137,8 +137,8 @@ export default function RegisterPage() {
                   <FormLabel>{t("phone")}</FormLabel>
                   <FormControl>
                     <Input placeholder={t("phonePlaceholder")} {...field} 
-                    type="tel"
-                    pattern="^\\+90\\s?5\\d{2}\\s?\\d{3}\\s?\\d{2}\\s?\\d{2}$"
+                    type="number"
+                    // pattern="^\\+90\\s?5\\d{2}\\s?\\d{3}\\s?\\d{2}\\s?\\d{2}$"
                     title={t("phoneFormatHint")}
                     />
                   </FormControl>

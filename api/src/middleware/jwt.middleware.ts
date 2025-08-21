@@ -1,10 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { JwtService } from "../jwt/jwt.service";
-
+import { PrismaClient } from "@prisma/client";
 
 const jwtService = new JwtService();
+const prisma = new PrismaClient();
+
 // Token doğrulama middleware'i
-export const authenticateToken = (
+export const authenticateToken = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -24,6 +26,30 @@ export const authenticateToken = (
       process.env.JWT_ACCESS_SECRET || "secret_access_token"
     );
 
+    // Kullanıcının revoked tokenlarını kontrol et
+    const revokedTokens = await prisma.token.findMany({
+      where: {
+        userId: decoded.userId,
+        revokedAt: { not: null },
+      },
+      orderBy: { revokedAt: "desc" },
+      take: 1,
+    });
+
+    // Eğer revoked token varsa ve token oluşturma zamanından sonra revoke edilmişse
+    if (revokedTokens.length > 0) {
+      const tokenTimestamp = decoded.iat ? decoded.iat * 1000 : 0;
+      if (
+        revokedTokens[0].revokedAt &&
+        revokedTokens[0].revokedAt.getTime() > tokenTimestamp
+      ) {
+        return res.status(401).json({
+          status: "error",
+          message: "Token has been revoked",
+        });
+      }
+    }
+
     req.user = decoded;
     return next();
   } catch (error) {
@@ -41,7 +67,7 @@ export const authenticateToken = (
 };
 
 // İsteğe bağlı token doğrulama
-export const optionalAuthenticateToken = (
+export const optionalAuthenticateToken = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -57,6 +83,30 @@ export const optionalAuthenticateToken = (
       token,
       process.env.JWT_ACCESS_SECRET || "secret_access_token"
     );
+
+    // Kullanıcının revoked tokenlarını kontrol et
+    const revokedTokens = await prisma.token.findMany({
+      where: {
+        userId: decoded.userId,
+        revokedAt: { not: null },
+      },
+      orderBy: { revokedAt: "desc" },
+      take: 1,
+    });
+
+    // Eğer revoked token varsa ve token oluşturma zamanından sonra revoke edilmişse
+    if (revokedTokens.length > 0) {
+      const tokenTimestamp = decoded.iat ? decoded.iat * 1000 : 0;
+      if (
+        revokedTokens[0].revokedAt &&
+        revokedTokens[0].revokedAt.getTime() > tokenTimestamp
+      ) {
+        return res.status(401).json({
+          status: "error",
+          message: "Token has been revoked",
+        });
+      }
+    }
 
     req.user = decoded;
     return next();

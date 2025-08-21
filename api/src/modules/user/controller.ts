@@ -7,7 +7,7 @@ export class UserController {
   static async index(req: Request, res: Response): Promise<void> {
     try {
       const userRole = req.user?.role;
-      if (userRole !== "ADMİN") {
+      if (userRole !== "ADMIN") {
         throw new AppError("You are not authorized for this transaction.", 403);
       }
       const users = await UserService.getAll();
@@ -36,7 +36,7 @@ export class UserController {
       const userRole = req.user?.role;
       const { id } = req.params;
 
-      if (userId !== id && userRole !== "ADMİN") {
+      if (userId !== id && userRole !== "ADMIN") {
         throw new AppError(
           "You do not have access to this user's information.",
           403
@@ -66,7 +66,7 @@ export class UserController {
       const userRole = req.user?.role;
       const { email } = req.params;
 
-      if (!req.path.includes("/auth") && userRole !== "ADMİN") {
+      if (!req.path.includes("/auth") && userRole !== "ADMIN") {
         throw new AppError(
           "You do not have access to this user's information.",
           403
@@ -95,7 +95,7 @@ export class UserController {
   static async ByPhone(req: Request, res: Response): Promise<void> {
     try {
       const userRole = req.user?.role;
-      if (userRole !== "ADMİN") {
+      if (userRole !== "ADMIN") {
         throw new AppError(
           "You do not have access to this user's information.",
           403
@@ -150,7 +150,7 @@ export class UserController {
       const userRole = req.user?.role;
       const { id } = req.params;
 
-      if (userId !== id && userRole !== "ADMİN") {
+      if (userId !== id && userRole !== "ADMIN") {
         throw new AppError(
           "You do not have access to this user's information.",
           403
@@ -184,7 +184,7 @@ export class UserController {
       const userRole = req.user?.role;
       const { id } = req.params;
 
-      if (userId !== id && userRole !== "ADMİN") {
+      if (userId !== id && userRole !== "ADMIN") {
         throw new AppError(
           "You do not have access to this user's information.",
           403

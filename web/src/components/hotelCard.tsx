@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
 import Image from "next/image";
 import { Sparkles, HeartIcon, LocateIcon, CarIcon } from "lucide-react";
@@ -8,52 +8,102 @@ import { Rating, RatingButton } from "./ui/shadcn-io/rating";
 import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFavoriteAsync, selectIsFavorite } from "@/store/favorite/favorite-slice";
+import { selectCurrentUser } from "@/store/auth/auth-slice";
+import { AppDispatch, RootState } from "@/store/store";
 
 interface HotelCardProps {
   item: {
     id: number | string;
     name: string;
     location: string;
-    rating: number;
-    price: string;
-    image: string;
+    rating?: number; // Opsiyonel hale getirildi
+    price?: number; // String'den number'a ve opsiyonel hale getirildi
+    image?: string; // Opsiyonel hale getirildi
     cancelText?: string;
     breakfastText?: string;
     parkingText?: string;
     nights?: number;
+    address?: string;
+    city?: string;
+    country?: string;
+    type?: string;
+    checkIn?: string;
+    checkOut?: string;
+    discountRate?: number;
+    isDiscounted?: boolean;
+    discountStartDate?: string;
+    discountEndDate?: string;
+    ownerId?: string;
+    isActive?: boolean;
+    images?: { id: string; url: string }[];
   };
-  onToggleFavorite?: () => void; // favoriler sayfasından kaldırınca yeniden render için
+  onToggleFavorite?: () => void; // Favoriler sayfasından kaldırınca yeniden render için
 }
 
 const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
   const t = useTranslations("HotelCard");
   const router = useRouter();
-  const [isFavorite, setIsFavorite] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
+  const currentUser = useSelector((state: RootState) => selectCurrentUser(state));
+  const isFavorite = useSelector(selectIsFavorite(String(item.id)));
 
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("favorites") || "[]");
-    const exists = stored.some((fav: { id: number | string }) => fav.id === item.id);
-    setIsFavorite(exists);
+    // Favori durumu artık Redux tarafından yönetiliyor, useEffect içinde localStorage'a gerek yok
+    // const stored = JSON.parse(localStorage.getItem("favorites") || "[]");
+    // const exists = stored.some((fav: { id: number | string }) => fav.id === item.id);
+    // setIsFavorite(exists);
   }, [item.id]);
 
   const toggleFavorite = () => {
-    const stored = JSON.parse(localStorage.getItem("favorites") || "[]");
-    let updated;
-
-    if (isFavorite) {
-      updated = stored.filter((fav: { id: number | string }) => fav.id !== item.id);
-    } else {
-      updated = [...stored, item];
+    if (!currentUser) {
+      // Kimliği doğrulanmamış kullanıcıyı ele al, örn: giriş sayfasına yönlendir
+      router.push("/login");
+      return;
     }
+    dispatch(toggleFavoriteAsync({
+      hotelId: String(item.id),
+      hotel: {
+        id: String(item.id),
+        name: item.name,
+        location: item.location,
+        address: item.address || "",
+        city: item.city || "",
+        country: item.country || "",
+        rating: item.rating,
+        checkIn: item.checkIn || "12:00",
+        checkOut: item.checkOut || "14:00",
+        discountRate: item.discountRate,
+        isDiscounted: item.isDiscounted || false,
+        discountStartDate: item.discountStartDate,
+        discountEndDate: item.discountEndDate,
+        type: item.type || "",
+        ownerId: item.ownerId || "",
+        isActive: item.isActive || true,
+        images: item.images || [],
+      },
+      userId: currentUser.id,
+    }));
 
-    localStorage.setItem("favorites", JSON.stringify(updated));
-    setIsFavorite(!isFavorite);
+    // Artık doğrudan localStorage üzerinde işlem yapmıyoruz
+    // if (isFavorite) {
+    //   updated = stored.filter((fav: { id: number | string }) => fav.id !== item.id);
+    // } else {
+    //   updated = [...stored, item];
+    // }
+
+    // localStorage.setItem("favorites", JSON.stringify(updated));
+    // setIsFavorite(!isFavorite);
 
     // Favoriler sayfasındaysan kartı hemen sil
     if (isFavorite && onToggleFavorite) {
       onToggleFavorite();
     }
   };
+
+
+
 
   return (
     <Card
@@ -63,32 +113,33 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
       <CardHeader className="relative p-0">
         <div className="relative h-52 w-full">
           <Image
-            src={item.image || "/images/opportunity1.jpg"}
+            src={item.images && item.images.length > 0 ? item.images[0].url : item.image || "/images/opportunity1.jpg"}
             alt={item.name}
             fill
             className="object-cover rounded-2xl p-1"
             priority
           />
-          <div className="absolute top-3 left-3">
+          <div className="absolute top-3 left-1">
             <div className="bg-[#4E946C] text-white px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-sm">
               <Sparkles className="w-3 h-3" />
               <span className="text-xs font-semibold">{t("discountLabel")}</span>
             </div>
           </div>
           <div className="absolute top-3 right-3">
-            <button
+            <Button
+              variant="ghost"
               onClick={(e) => {
                 e.preventDefault();
                 toggleFavorite();
               }}
-              className="bg-white p-1.5 rounded-full"
+              className="bg-white rounded-full hover:bg-gray-100 cursor-pointer w-6 h-6"
             >
               <HeartIcon
                 className={`w-4 h-4 transition-all ${
                   isFavorite ? "text-red-500 fill-red-500" : "text-gray-400"
                 }`}
               />
-            </button>
+            </Button>
           </div>
         </div>
       </CardHeader>
@@ -101,22 +152,22 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-1 text-muted-foreground">
             <LocateIcon className="w-4 h-4" />
-            <span className="text-sm">{item.location}</span>
+            <span className="text-xs md:text-sm">{item.location}</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-sm font-semibold text-foreground">
-              {item.rating.toFixed(1)}
+            <span className="text-[12px] font-semibold text-foreground">
+              {item.rating?.toFixed(1) || "N/A"}
             </span>
-            <Rating defaultValue={item.rating} readOnly>
+            <Rating defaultValue={item.rating || 0} readOnly>
               {Array.from({ length: 5 }).map((_, index) => (
                 <RatingButton
                   key={index}
-                  size={14}
+                  size={12}
                   className="text-yellow-500"
                 />
               ))}
             </Rating>
-            <span className="text-xs text-muted-foreground ml-1">{t("reviewsCount", { count: 120 })}</span>
+            <span className="text-xs text-muted-foreground ml-1">(120)</span>
           </div>
         </div>
 
@@ -171,7 +222,7 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
           <span className="text-sm text-muted-foreground mb-1">
             {t("nightsFor", { nights: item.nights || 1 })}
           </span>
-          <span className="text-xl font-bold text-blue-600">{item.price}</span>
+          <span className="text-xl font-bold text-blue-600">{item.price?.toLocaleString() || "0"} ₺</span>
         </div>
         <Button 
           onClick={() => router.push(`/hotels/${item.id}`)}

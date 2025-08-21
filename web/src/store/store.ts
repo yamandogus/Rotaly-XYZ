@@ -7,12 +7,15 @@ import testUserReducer from "./testUser/test-user-slice";
 import dashboardReducer from "./dashboard/dashboard-slice";
 import bookingReducer from "./booking/booking-slice";
 import stepReducer from "./step/step-slice";
+import favoriteReducer from "./favorite/favorite-slice";
+import hotelReducer from "./hotel/hotel-slice"; // ✅ Otel reducer'ını import ettik
+
 
 // Persist config
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["testUser", "auth", "search", "booking", "step", "dashboard"], // Sadece bu reducer'ları persist et
+  whitelist: ["testUser", "auth", "search", "booking", "step", "dashboard", "favorite", "hotel"], // ✅ hotel da persist ediliyor
 };
 
 // Root reducer
@@ -23,6 +26,8 @@ const rootReducer = combineReducers({
   dashboard: dashboardReducer,
   booking: bookingReducer,
   step: stepReducer,
+  favorite: favoriteReducer, // ✅ burada reducer'ı ekledik
+  hotel: hotelReducer, // ✅ burada hotel reducer'ı ekledik
 });
 
 // Persisted reducer

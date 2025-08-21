@@ -12,6 +12,7 @@ enum Role {
   OWNER
   ADMIN
   SUPPORT
+  AI
 }
 
 enum RoomFeature {
@@ -64,6 +65,7 @@ enum SupportCategory {
   GENERAL
   COMPLAINT
   FEATURE_REQUEST
+  SECURITY
   OTHER
 }
 

@@ -13,7 +13,7 @@ export default function ProfilePage() {
     <div className="min-h-screen p-6 md:p-10 max-w-7xl mx-auto">
       <Tabs defaultValue="profile" className="flex flex-col md:flex-row gap-8">
         <div className="w-full md:w-80">
-          <TabsList className="flex flex-col gap-3 self-start mt-18 ml-4 w-full bg-transparent p-6">
+          <TabsList className="flex flex-col gap-3 self-start ml-4 w-full bg-transparent p-6">
             {[
               { value: "profile", label: t("title"), icon: "👤" },
               { value: "reservations", label: t("reservations"), icon: "📅" },

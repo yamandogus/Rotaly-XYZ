@@ -23,7 +23,7 @@ export function HotelListWithPagination() {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   // Store'dan search verilerini al
-  const { city, guests } = useSelector((state: RootState) => state.search);
+  const { city, guests, checkIn, checkOut } = useSelector((state: RootState) => state.search);
 
   // Filtrelenmiş oteller - search kriterlerine göre
   const filteredHotels = useMemo(() => {
@@ -58,17 +58,30 @@ export function HotelListWithPagination() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const totalDate = new Date(checkOut).getTime() - new Date(checkIn).getTime();
+  const totalDays = Math.ceil(totalDate / (1000 * 60 * 60 * 24));
+  console.log("totalDays", totalDays);
+
+  const totalPrice = filteredHotels.reduce((acc, hotel) => {
+    return acc + hotel.rooms[0]?.price * totalDays;
+  }, 0);
+
+  console.log("totalPrice", totalPrice);
+
   return (
     <div className="bg-background">
-      <div className="px-6 flex justify-between items-center">
-        <h2 className="text-xl font-bold text-foreground">
-          {filteredHotels.length} sonuç bulundu
+      <div className="px-6 flex flex-col gap-2 md:flex-row justify-between items-center">
+        <div className="flex flex-col md:flex-row gap-2 items-center">
+        <h2 className="text-base md:text-xl font-bold text-foreground">
           {city && (
-            <span className="text-sm text-muted-foreground ml-2">
-              &quot;{city}&quot; için
+            <span className="text-sm md:text-base text-muted-foreground ml-2">
+              &quot;{city}&quot; için {" "}
             </span>
           )}
+          
         </h2>
+        <span>{filteredHotels.length} sonuç bulundu</span>
+        </div>
         <div>
           <Button variant="outline" onClick={() => {
             dispatch(clearSearch());
@@ -97,11 +110,21 @@ export function HotelListWithPagination() {
                   name: hotel.name,
                   location: hotel.location,
                   rating: hotel.rating,
-                  price: hotel.price || "Fiyat belirtilmemiş",
+                  price: hotel.rooms[0]?.price || 0, // Number olarak gönder
                   image: hotel.images[0]?.url || "/images/hotel-placeholder.jpg",
+                  nights: totalDays,
                   cancelText,
                   breakfastText,
                   parkingText,
+                  checkIn: hotel.checkIn || "12:00",
+                  checkOut: hotel.checkOut || "14:00",
+                  discountRate: hotel.discountRate ?? undefined, // null olması durumunda undefined olarak ayarla
+                  isDiscounted: hotel.isDiscounted || false,
+                 discountStartDate: hotel.discountStartDate ?? undefined,
+                 discountEndDate: hotel.discountEndDate ?? undefined,
+                  type: hotel.type,
+                  ownerId: hotel.ownerId,
+                  isActive: hotel.isActive,
                 }}
               />
             );

@@ -2,6 +2,7 @@ export interface TokenPayload {
   userId: string;
   role?: string;
   jti?: string;
+  iat?: number;
 }
 
 declare global {
