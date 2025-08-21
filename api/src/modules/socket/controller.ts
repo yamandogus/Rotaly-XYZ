@@ -5,6 +5,7 @@ import { ConnectionHandler } from "./handlers/connection.handler";
 import { MessageHandler } from "./handlers/message.handler";
 import { TypingHandler } from "./handlers/typing.handler";
 import { NotificationHandler } from "./handlers/notification.handler";
+import { SupportHandler } from "./handlers/support.handler";
 import { SOCKET_EVENTS } from "./events/socket.events";
 import { JwtService } from "../../jwt/jwt.service";
 
@@ -16,6 +17,7 @@ export class SocketController {
   private messageHandler: MessageHandler;
   private typingHandler: TypingHandler;
   private notificationHandler: NotificationHandler;
+  private supportHandler: SupportHandler;
   private jwtService: JwtService;
 
   constructor(server: HttpServer) {
@@ -34,6 +36,7 @@ export class SocketController {
     this.messageHandler = new MessageHandler(this.io);
     this.typingHandler = new TypingHandler(this.io);
     this.notificationHandler = new NotificationHandler(this.io);
+    this.supportHandler = new SupportHandler(this.io);
     this.jwtService = new JwtService();
 
     this.initializeSocketEvents();
@@ -83,20 +86,34 @@ export class SocketController {
           this.messageHandler.handleJoinRoom(socket, data);
         });
 
-        socket.on(SOCKET_EVENTS.LEAVE_ROOM, (roomId) => {
+        socket.on(SOCKET_EVENTS.LEAVE_ROOM, (data) => {
           if (!this.requireAuth(socket, "leave room")) return;
-          this.messageHandler.handleLeaveRoom(socket, roomId);
+          // handle both string roomId and object with roomId property
+          const roomId = typeof data === "string" ? data : data?.roomId;
+          if (roomId) {
+            this.messageHandler.handleLeaveRoom(socket, roomId);
+          } else {
+            console.error(
+              "Invalid room data received in LEAVE_ROOM event:",
+              data
+            );
+          }
         });
 
-        // support room events
-        socket.on("joinSupportRoom", (supportId) => {
-          if (!this.requireAuth(socket, "join support room")) return;
-          this.messageHandler.handleJoinSupportRoom(socket, supportId);
+        // support workflow events
+        socket.on(SOCKET_EVENTS.SUPPORT_REQUEST_CREATED, (data) => {
+          if (!this.requireAuth(socket, "create support request")) return;
+          this.supportHandler.handleSupportRequestCreated(socket, data);
         });
 
-        socket.on("leaveSupportRoom", (supportId) => {
-          if (!this.requireAuth(socket, "leave support room")) return;
-          this.messageHandler.handleLeaveSupportRoom(socket, supportId);
+        socket.on(SOCKET_EVENTS.SUPPORT_ASSIGNED, (data) => {
+          if (!this.requireAuth(socket, "assign support")) return;
+          this.supportHandler.handleSupportAssignment(socket, data);
+        });
+
+        socket.on(SOCKET_EVENTS.SUPPORT_RESOLVED, (data) => {
+          if (!this.requireAuth(socket, "resolve support")) return;
+          this.supportHandler.handleSupportResolved(socket, data);
         });
 
         // AI chat room events
@@ -272,6 +289,15 @@ export class SocketController {
 
   public getTypingUsersInRoom(roomId: string): string[] {
     return this.typingHandler.getTypingUsersInRoom(roomId);
+  }
+
+  // support handler public methods for services
+  public emitSupportRequestCreated(data: any): void {
+    this.supportHandler.emitSupportRequestCreated(data);
+  }
+
+  public emitSupportAssignment(data: any): void {
+    this.supportHandler.emitSupportAssignment(data);
   }
 
   // utility methods

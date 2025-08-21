@@ -25,7 +25,16 @@ export interface SupportEventData {
   supportId: string;
   userId: string;
   supportRepId?: string;
+  subject?: string;
+  category?: string;
+  status?: "open" | "closed";
   message?: string;
+}
+
+export interface SupportAssignmentData {
+  supportId: string;
+  supportRepId: string;
+  userId: string;
 }
 
 export interface AIChatEventData {

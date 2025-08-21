@@ -28,6 +28,17 @@ export class MessageHandler {
   }
 
   handleLeaveRoom(socket: AuthenticatedSocket, roomId: string): void {
+    console.log(`🚪 LEAVE_ROOM Event received:`);
+    console.log(`   - Socket ID: ${socket.id}`);
+    console.log(`   - Socket userId: ${socket.userId}`);
+    console.log(`   - Room ID: ${roomId}`);
+    console.log(`   - Room ID type: ${typeof roomId}`);
+
+    if (!roomId || typeof roomId !== "string") {
+      console.error(`❌ Invalid roomId received:`, roomId);
+      return;
+    }
+
     console.log(`User ${socket.id} leaving room: ${roomId}`);
 
     socket.leave(roomId);
@@ -37,7 +48,7 @@ export class MessageHandler {
       timestamp: new Date(),
     });
 
-    console.log(`User ${socket.id} left room ${roomId}`);
+    console.log(`✅ User ${socket.id} left room ${roomId}`);
   }
 
   handleNewMessage(socket: AuthenticatedSocket, data: MessageEventData): void {
@@ -63,7 +74,7 @@ export class MessageHandler {
       });
     }
 
-    // Handle AI chat messages
+    // handle AI chat messages
     if (data.receiverId && data.receiverId.startsWith("ai-assistant")) {
       const aiChatRoom = `ai-chat:${socket.userId}`;
       socket.to(aiChatRoom).emit("newMessage", {
@@ -73,7 +84,7 @@ export class MessageHandler {
       });
     }
 
-    // Handle general room messages
+    // handle general room messages
     if (data.roomId) {
       socket.to(data.roomId).emit("newMessage", {
         ...data,
@@ -120,37 +131,6 @@ export class MessageHandler {
         timestamp: new Date(),
       });
     }
-  }
-
-  // support-specific methods
-  handleJoinSupportRoom(socket: AuthenticatedSocket, supportId: string): void {
-    const supportRoom = `support:${supportId}`;
-    console.log(`User ${socket.id} joining support room: ${supportRoom}`);
-
-    socket.join(supportRoom);
-    socket.to(supportRoom).emit("userJoinedSupportRoom", {
-      userId: socket.userId,
-      supportId,
-      socketId: socket.id,
-      timestamp: new Date(),
-    });
-
-    console.log(`User ${socket.id} joined support room ${supportRoom}`);
-  }
-
-  handleLeaveSupportRoom(socket: AuthenticatedSocket, supportId: string): void {
-    const supportRoom = `support:${supportId}`;
-    console.log(`User ${socket.id} leaving support room: ${supportRoom}`);
-
-    socket.leave(supportRoom);
-    socket.to(supportRoom).emit("userLeftSupportRoom", {
-      userId: socket.userId,
-      supportId,
-      socketId: socket.id,
-      timestamp: new Date(),
-    });
-
-    console.log(`User ${socket.id} left support room ${supportRoom}`);
   }
 
   // AI chat specific methods
@@ -209,12 +189,6 @@ export class MessageHandler {
     this.io.to(`user:${userId}`).emit("supportRepAssigned", {
       supportId,
       supportRepId,
-      timestamp: new Date(),
-    });
-
-    this.io.to(`user:${supportRepId}`).emit("newSupportAssignment", {
-      supportId,
-      userId,
       timestamp: new Date(),
     });
   }

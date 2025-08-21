@@ -51,14 +51,9 @@ export const SOCKET_EVENTS = {
   //    Support events
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
 
-  SUPPORT_REQUEST: "support_request",
-  SUPPORT_RESPONSE: "support_response",
+  SUPPORT_REQUEST_CREATED: "support_request_created",
   SUPPORT_ASSIGNED: "support_assigned",
-  SUPPORT_CLOSED: "support_closed",
-  JOIN_SUPPORT_ROOM: "join_support_room",
-  LEAVE_SUPPORT_ROOM: "leave_support_room",
-  USER_JOINED_SUPPORT_ROOM: "user_joined_support_room",
-  USER_LEFT_SUPPORT_ROOM: "user_left_support_room",
+  SUPPORT_RESOLVED: "support_resolved", // Instead of "closed" - indicates resolution but chat remains accessible
 
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅
   //    AI Chat events
