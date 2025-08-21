@@ -30,7 +30,9 @@ export class ConnectionHandler {
     if (socket.userId) {
       // join user's personal room
       socket.join(`user:${socket.userId}`);
-      console.log(`User ${socket.userId} joined personal room`);
+      console.log(
+        `User ${socket.userId} joined personal room. This is for direct messages.`
+      );
 
       // join user to their hotels (for hotel owners and staff)
       if (socket.role === "OWNER" || socket.role === "ADMIN") {
