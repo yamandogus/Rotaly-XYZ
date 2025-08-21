@@ -33,8 +33,8 @@ export class SocketController {
 
     // initialize handlers
     this.connectionHandler = new ConnectionHandler();
-    this.messageHandler = new MessageHandler(this.io);
     this.typingHandler = new TypingHandler(this.io);
+    this.messageHandler = new MessageHandler(this.io, this.typingHandler);
     this.notificationHandler = new NotificationHandler(this.io);
     this.supportHandler = new SupportHandler(this.io);
     this.jwtService = new JwtService();
@@ -268,6 +268,14 @@ export class SocketController {
 
   public getTypingUsersInRoom(roomId: string): string[] {
     return this.typingHandler.getTypingUsersInRoom(roomId);
+  }
+
+  public getTypingUsersDetails(roomId: string): any[] {
+    return this.typingHandler.getTypingUsersDetails(roomId);
+  }
+
+  public getAllTypingStatus(): Record<string, string[]> {
+    return this.typingHandler.getAllTypingStatus();
   }
 
   // support handler public methods for services

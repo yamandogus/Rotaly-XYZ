@@ -53,7 +53,7 @@ export const SOCKET_EVENTS = {
 
   SUPPORT_REQUEST_CREATED: "support_request_created",
   SUPPORT_ASSIGNED: "support_assigned",
-  SUPPORT_RESOLVED: "support_resolved", // Instead of "closed" - indicates resolution but chat remains accessible
+  SUPPORT_RESOLVED: "support_resolved",
 
   // ⋅.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅ॱ˙˙ॱᐧ.˳˳.⋅ॱ˙˙ॱ⋅.˳˳.⋅
   //    Notification events

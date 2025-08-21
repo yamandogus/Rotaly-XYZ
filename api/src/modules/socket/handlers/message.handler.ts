@@ -3,10 +3,15 @@ import {
   AuthenticatedSocket,
   MessageEventData,
   JoinRoomData,
+  TypingEventData,
 } from "../types/socket.types";
+import { TypingHandler } from "./typing.handler";
 
 export class MessageHandler {
-  constructor(private io: SocketServer) {}
+  constructor(
+    private io: SocketServer,
+    private typingHandler?: TypingHandler
+  ) {}
 
   handleJoinRoom(socket: AuthenticatedSocket, data: JoinRoomData): void {
     console.log(`🏠 JOIN_ROOM Event received:`);
@@ -52,7 +57,39 @@ export class MessageHandler {
   }
 
   handleNewMessage(socket: AuthenticatedSocket, data: MessageEventData): void {
-    console.log(`New message from ${socket.id}:`, data);
+    console.log(`📨 New message from ${socket.id}:`, data);
+
+    // auto-stop typing when message is sent
+    if (this.typingHandler && socket.userId) {
+      // stop typing in support room if it's a support message
+      if (data.supportId) {
+        const supportRoom = `support:${data.supportId}`;
+        this.typingHandler.handleStopTyping(socket, {
+          roomId: supportRoom,
+          userId: socket.userId,
+          isTyping: false,
+        });
+      }
+
+      // stop typing in general room if specified
+      if (data.roomId) {
+        this.typingHandler.handleStopTyping(socket, {
+          roomId: data.roomId,
+          userId: socket.userId,
+          isTyping: false,
+        });
+      }
+
+      // stop typing in AI chat room if it's an AI message
+      if (data.receiverId && data.receiverId.startsWith("ai-assistant")) {
+        const aiChatRoom = `ai-chat:${socket.userId}`;
+        this.typingHandler.handleStopTyping(socket, {
+          roomId: aiChatRoom,
+          userId: socket.userId,
+          isTyping: false,
+        });
+      }
+    }
 
     // handle support room messages
     if (data.supportId) {
@@ -93,7 +130,7 @@ export class MessageHandler {
       });
     }
 
-    console.log(`Message sent from ${socket.id}`);
+    console.log(`✅ Message sent from ${socket.id}`);
   }
 
   handleMessageRead(
