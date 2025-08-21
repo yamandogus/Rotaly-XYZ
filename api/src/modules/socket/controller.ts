@@ -43,11 +43,29 @@ export class SocketController {
     // apply authentication middleware globally
     this.io.use(this.authenticateSocket.bind(this));
 
+    this.io.on("connection_error", (error) => {
+      console.log("🚫 Connection failed:", error.message);
+    });
+
     this.io.on(
       SOCKET_EVENTS.CONNECTION,
       async (socket: AuthenticatedSocket) => {
         // handle connection
         await this.connectionHandler.handleConnection(socket);
+
+        // emit authentication status to client
+        if (socket.userId) {
+          socket.emit("auth_success", {
+            userId: socket.userId,
+            role: socket.role,
+            message: "Successfully authenticated",
+          });
+        } else {
+          socket.emit("auth_warning", {
+            message:
+              "Connected without authentication - some features may be limited",
+          });
+        }
 
         // connection events
         socket.on(SOCKET_EVENTS.DISCONNECT, (reason) => {
@@ -61,33 +79,40 @@ export class SocketController {
 
         // room events
         socket.on(SOCKET_EVENTS.JOIN_ROOM, (data) => {
+          if (!this.requireAuth(socket, "join room")) return;
           this.messageHandler.handleJoinRoom(socket, data);
         });
 
         socket.on(SOCKET_EVENTS.LEAVE_ROOM, (roomId) => {
+          if (!this.requireAuth(socket, "leave room")) return;
           this.messageHandler.handleLeaveRoom(socket, roomId);
         });
 
         // support room events
         socket.on("joinSupportRoom", (supportId) => {
+          if (!this.requireAuth(socket, "join support room")) return;
           this.messageHandler.handleJoinSupportRoom(socket, supportId);
         });
 
         socket.on("leaveSupportRoom", (supportId) => {
+          if (!this.requireAuth(socket, "leave support room")) return;
           this.messageHandler.handleLeaveSupportRoom(socket, supportId);
         });
 
         // AI chat room events
         socket.on("joinAIChatRoom", () => {
+          if (!this.requireAuth(socket, "join AI chat")) return;
           this.messageHandler.handleJoinAIChatRoom(socket);
         });
 
         socket.on("leaveAIChatRoom", () => {
+          if (!this.requireAuth(socket, "leave AI chat")) return;
           this.messageHandler.handleLeaveAIChatRoom(socket);
         });
 
         // AI chat message event
         socket.on("aiChatMessage", (data) => {
+          if (!this.requireAuth(socket, "send AI message")) return;
           this.messageHandler.handleNewMessage(socket, {
             ...data,
             receiverId: data.receiverId || "ai-assistant",
@@ -97,23 +122,28 @@ export class SocketController {
 
         // message events
         socket.on(SOCKET_EVENTS.NEW_MESSAGE, (data) => {
+          if (!this.requireAuth(socket, "send message")) return;
           this.messageHandler.handleNewMessage(socket, data);
         });
 
         socket.on(SOCKET_EVENTS.MESSAGE_READ, (data) => {
+          if (!this.requireAuth(socket, "mark message as read")) return;
           this.messageHandler.handleMessageRead(socket, data);
         });
 
         socket.on(SOCKET_EVENTS.MESSAGE_DELETE, (data) => {
+          if (!this.requireAuth(socket, "delete message")) return;
           this.messageHandler.handleMessageDelete(socket, data);
         });
 
         // typing events
         socket.on(SOCKET_EVENTS.START_TYPING, (data) => {
+          if (!this.requireAuth(socket, "start typing")) return;
           this.typingHandler.handleStartTyping(socket, data);
         });
 
         socket.on(SOCKET_EVENTS.STOP_TYPING, (data) => {
+          if (!this.requireAuth(socket, "stop typing")) return;
           this.typingHandler.handleStopTyping(socket, data);
         });
 
@@ -147,8 +177,11 @@ export class SocketController {
         socket.handshake.auth.token || socket.handshake.headers.authorization;
 
       if (!token) {
-        // allow connection but mark as unauthenticated
+        console.log(
+          "⚠️  No authentication token provided - allowing anonymous connection"
+        );
         socket.userId = undefined;
+        socket.role = "ANONYMOUS";
         return next();
       }
 
@@ -169,13 +202,59 @@ export class SocketController {
       socket.userId = decoded.userId;
       socket.role = decoded.role;
 
+      console.log(
+        `✅ User authenticated successfully - ID: ${socket.userId}, Role: ${socket.role}`
+      );
       next();
     } catch (error) {
-      console.error("Socket authentication error:", error);
-      // allow connection but without authentication
-      socket.userId = undefined;
-      next();
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown authentication error";
+      console.error(`❌ Authentication failed:`, errorMessage);
+
+      if (errorMessage.includes("expired")) {
+        console.log("🕐 Token has expired - rejecting connection");
+        // NOTE: We can't emit to socket before connection is established
+        return next(
+          new Error(
+            "TOKEN_EXPIRED: Your session has expired. Please login again."
+          )
+        );
+      }
+
+      if (
+        errorMessage.includes("invalid") ||
+        errorMessage.includes("malformed")
+      ) {
+        console.log("🚫 Invalid token format - rejecting connection");
+        return next(
+          new Error("INVALID_TOKEN: Invalid authentication token format.")
+        );
+      }
+
+      // for other auth errors, reject the connection
+      console.log("🚫 Authentication error - rejecting connection");
+      return next(
+        new Error(
+          "AUTHENTICATION_FAILED: Authentication failed. Please try again."
+        )
+      );
     }
+  }
+
+  // authentication helper method
+  private requireAuth(socket: AuthenticatedSocket, action: string): boolean {
+    if (!socket.userId) {
+      console.log(
+        `🚫 Unauthorized attempt to ${action} by socket ${socket.id}`
+      );
+      socket.emit("auth_required", {
+        action,
+        message: `Authentication required to ${action}`,
+        code: "AUTH_REQUIRED",
+      });
+      return false;
+    }
+    return true;
   }
 
   // public methods

@@ -22,7 +22,6 @@ export class ConnectionHandler {
 
     this.onlineUsers.set(socket.id, onlineUser);
     console.log(`User ${socket.id} added to online users`);
-    console.log(`Total online users: ${this.onlineUsers.size}`);
 
     socket.broadcast.emit("onlineUsersCount", this.onlineUsers.size);
     socket.emit("onlineUsersCount", this.onlineUsers.size);

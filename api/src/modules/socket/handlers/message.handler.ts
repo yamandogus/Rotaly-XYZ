@@ -9,16 +9,22 @@ export class MessageHandler {
   constructor(private io: SocketServer) {}
 
   handleJoinRoom(socket: AuthenticatedSocket, data: JoinRoomData): void {
-    console.log(`User ${socket.id} joining room: ${data.roomId}`);
+    console.log(`🏠 JOIN_ROOM Event received:`);
+    console.log(`   - Socket ID: ${socket.id}`);
+    console.log(`   - Socket userId: ${socket.userId}`);
+    console.log(`   - Data:`, data);
+    console.log(`   - Room ID: ${data.roomId}`);
 
     socket.join(data.roomId);
+
+    console.log(`User ${socket.id} joined room: ${data.roomId}`);
     socket.to(data.roomId).emit("userJoinedRoom", {
       userId: data.userId,
       socketId: socket.id,
       timestamp: new Date(),
     });
 
-    console.log(`User ${socket.id} joined room ${data.roomId}`);
+    console.log(`✅ User ${socket.id} successfully joined room ${data.roomId}`);
   }
 
   handleLeaveRoom(socket: AuthenticatedSocket, roomId: string): void {
