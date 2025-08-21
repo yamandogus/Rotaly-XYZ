@@ -23,7 +23,7 @@ export function HotelListWithPagination() {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   // Store'dan search verilerini al
-  const { city, guests } = useSelector((state: RootState) => state.search);
+  const { city, guests, checkIn, checkOut } = useSelector((state: RootState) => state.search);
 
   // Filtrelenmiş oteller - search kriterlerine göre
   const filteredHotels = useMemo(() => {
@@ -57,6 +57,16 @@ export function HotelListWithPagination() {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const totalDate = new Date(checkOut).getTime() - new Date(checkIn).getTime();
+  const totalDays = Math.ceil(totalDate / (1000 * 60 * 60 * 24));
+  console.log("totalDays", totalDays);
+
+  const totalPrice = filteredHotels.reduce((acc, hotel) => {
+    return acc + hotel.rooms[0]?.price * totalDays;
+  }, 0);
+
+  console.log("totalPrice", totalPrice);
 
   return (
     <div className="bg-background">
@@ -102,6 +112,7 @@ export function HotelListWithPagination() {
                   rating: hotel.rating,
                   price: hotel.rooms[0]?.price || 0, // Number olarak gönder
                   image: hotel.images[0]?.url || "/images/hotel-placeholder.jpg",
+                  nights: totalDays,
                   cancelText,
                   breakfastText,
                   parkingText,

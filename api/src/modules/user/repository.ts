@@ -47,6 +47,7 @@ export class UserRepository {
         verificationOTP: true,
         images: true,
         paymentCards: true,
+        hashedPassword: true,
       },
     });
   }

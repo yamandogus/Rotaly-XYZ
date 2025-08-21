@@ -23,6 +23,7 @@ import { RootState } from "@/store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@/store/testUser/test-user-slice";
 import { authService } from "@/services/auth.service";
+import { clearUser } from "@/store/auth/auth-slice";
 
 const UserActions = () => {
   const t = useTranslations("Navigation");
@@ -32,9 +33,17 @@ const UserActions = () => {
 
 
   const handleLogout = async () => {
-    const response = await authService.logout();
-    console.log("logout response", response);
-    if(response.success){
+    try {
+      const response = await authService.logout();
+      console.log("logout response", response);
+      // Redux state'i temizle
+      dispatch(clearUser()); // Ana auth slice'dan
+      dispatch(logout()); // Test user slice'dan
+      router.push("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Hata olsa bile state'i temizle
+      dispatch(clearUser());
       dispatch(logout());
       router.push("/");
     }

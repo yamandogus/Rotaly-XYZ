@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import AdminDashboard from "./admin/page";
 import HotelDashboard from "./hotel/page";
+import SupportDashboard from "./support/page";
 
-type UserRole = "admin" | "hotel" | "user" | null;
+type UserRole = "admin" | "hotel" | "support" | null;
 
 export default function Page() {
   const t = useTranslations("Support");
@@ -35,6 +36,8 @@ export default function Page() {
         return <AdminDashboard />;
       case "hotel":
         return <HotelDashboard />;
+      case "support":
+        return <SupportDashboard />;
       default:
         return (
           <div className="flex flex-1 flex-col">

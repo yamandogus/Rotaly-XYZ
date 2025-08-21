@@ -43,12 +43,28 @@ export const authService = {
   },
 
   async logout() {
-    const response = await axios.post(`${API_BASE_URL}/auth/logout`, {}, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("refresh_token")}`,
-      },
-    });
-    return response.data;
+    try {
+      const response = await axios.post(`${API_BASE_URL}/auth/logout`, {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+      
+      // LocalStorage'ı temizle
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("hotelName");
+      
+      return response.data;
+    } catch (error) {
+      // Hata olsa bile localStorage'ı temizle
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("hotelName");
+      throw error;
+    }
   },
 
   async getUserProfile() {
