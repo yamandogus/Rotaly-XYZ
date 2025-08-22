@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { createServer } from "http";
 import app from "./src/config/app";
 import { SocketController } from "./src/modules/socket/controller";

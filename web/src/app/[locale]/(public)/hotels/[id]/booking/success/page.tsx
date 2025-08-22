@@ -8,7 +8,7 @@ import Image from "next/image";
 import { Rating, RatingButton } from "@/components/ui/shadcn-io/rating";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { setStepReset } from "@/store/reservation/reservation-slice";
+import { resetStep } from "@/store/step/step-slice";
 import { useTranslations } from "next-intl";
 
 export default function BookingSuccessPage() {
@@ -19,7 +19,7 @@ export default function BookingSuccessPage() {
   const handleGoToHomepage = () => {
     router.push("/");
     setTimeout(() => {
-      dispatch(setStepReset());
+      dispatch(resetStep());
     }, 2000);
   };
 

@@ -15,7 +15,7 @@ import hotelReducer from "./hotel/hotel-slice"; // ✅ Otel reducer'ını import
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["testUser", "auth", "search", "booking", "step", "dashboard", "favorite", "hotel"], // ✅ hotel da persist ediliyor
+  whitelist: ["testUser", "auth", "search", "booking", "step", "dashboard", "favorite", "hotel"], // ✅ reservationStep kaldırıldı
 };
 
 // Root reducer

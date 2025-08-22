@@ -11,7 +11,6 @@ router.post("", UserController.add);
 router.get(
   "/me/profile",
   authenticateToken,
-  verifiedUser,
   UserController.getProfile
 );
 router.get("/", authenticateToken, verifiedUser, UserController.index);

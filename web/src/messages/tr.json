@@ -266,14 +266,14 @@
     },
 
     "BookingInformationPage":{
-      "nameLabel": "Name",
-      "surnameLabel": "Surname",
-      "emailLabel": "Email",
-      "countryLabel": "Country",
-      "phoneLabel": "Phone",
-      "specialRequestLabel": "Special Requests",
-      "specialRequestPlaceholder": "Write your requests here...",
-      "proceedToPaymentButton": "Continue to Payment"
+      "nameLabel": "Ad",
+      "surnameLabel": "Soyad",
+      "emailLabel": "E-posta",
+      "countryLabel": "Ülke",
+      "phoneLabel": "Telefon",
+      "specialRequestLabel": "Özel Talepler",
+      "specialRequestPlaceholder": "Taleplerinizi buraya yazın...",
+      "proceedToPaymentButton": "Ödemeye Geç"
     },
       "HotelSummary": {
       "reviewsCount": "{count} Yorum",
@@ -331,6 +331,23 @@
     },
     "PaymentProcessing": {
       "processingMessage": "Ödeme işleniyor..."
+    },
+    "BookingSuccessPage": {
+      "reservationNo": "Rezervasyon No:",
+      "congratulations": "Tebrikler! {hotelName} için rezervasyonunuz başarıyla tamamlandı.",
+      "detailsBelow": "Rezervasyon detaylarınız aşağıda yer almaktadır.",
+      "goToHomepage": "Ana Sayfaya Dön",
+      "reservationInfoTitle": "Rezervasyon Bilgileri",
+      "checkInLabel": "Giriş Tarihi",
+      "checkOutLabel": "Çıkış Tarihi",
+      "checkInTime": "Giriş saati: {time}",
+      "checkOutTime": "Çıkış saati: {time}",
+      "roomTypeAndGuests": "{roomType}, {nights} Gece, {guests} Kişi",
+      "paymentSummaryTitle": "Ödeme Özeti",
+      "nightsDuration": "{nights} Gece",
+      "taxesAndFees": "Vergi ve Hizmet Ücreti",
+      "total": "Toplam",
+      "reviewsCount": "{count} Yorum"
     }
   },
 

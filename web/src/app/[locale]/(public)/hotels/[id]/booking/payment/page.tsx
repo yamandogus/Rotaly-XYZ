@@ -4,25 +4,33 @@ import { bookingData, hotelData } from "@/data/dumy";
 import HotelSummary from "@/components/booking/hotel-summary";
 import React, { useState } from "react";
 import PaymentMethodSelector from "@/components/booking/payment/payment-method-selector";
-import PaymentForm, { PaymentFormData } from "@/components/booking/payment/payment-form";
+import PaymentForm, {
+  PaymentFormData,
+} from "@/components/booking/payment/payment-form";
 import PaymentProcessing from "@/components/booking/payment/payment-processing";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { setStepIncrease } from "@/store/reservation/reservation-slice";
-import { useTranslations } from 'next-intl';
+import { nextStep } from "@/store/step/step-slice";
+import { useTranslations } from "next-intl";
 
 export default function BookingPaymentPage() {
-  const [isPaymentControl, setIsPaymentControl] = useState(true);
-  const dispatch = useDispatch()
+  const [isPaymentControl, setIsPaymentControl] = useState(false);
+  const dispatch = useDispatch();
   const router = useRouter();
   const t = useTranslations("HotelDetail.BookingPaymentPage");
+
   const handleNextStep = () => {
-      dispatch(setStepIncrease(3)) // 3. adıma (success sayfasına) geç
-    };
+    dispatch(nextStep());
+  };
 
   const onSubmit = (data: PaymentFormData) => {
     console.log("Payment form data:", data);
-    setIsPaymentControl(false);
+    setIsPaymentControl(true);
+    setTimeout(() => {
+      document
+        .querySelector(".payment-processing")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
     setTimeout(() => {
       if (
         data.cardNumber &&
@@ -33,24 +41,29 @@ export default function BookingPaymentPage() {
         data.phoneNumber &&
         data.specialRequest
       ) {
-        handleNextStep()
+        handleNextStep();
       }
-    }, 6000);
+    }, 3000);
   };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20">
-      <div className="flex flex-col gap-4 border border-gray-200 dark:border-gray-700 rounded-md p-4 bg-white dark:bg-card">
-        <h1 className="text-2xl font-semibold">{t("paymentOptionsTitle")}</h1>
-        
-        <PaymentMethodSelector />
-
+      <div className="flex flex-col gap-4 border border-gray-200 dark:border-gray-700 rounded-md p-4 bg-white dark:bg-card payment-processing">
         <div>
-          {isPaymentControl ? (
-            <PaymentForm
-              onSubmit={onSubmit}
-              setCurrentStep={(s) => router.push(`?step=${s}`, { scroll: false })}
-            />
+          {!isPaymentControl ? (
+            <div className="flex flex-col gap-4">
+              <h1 className="text-2xl font-semibold">
+                {t("paymentOptionsTitle")}
+              </h1>
+              <PaymentMethodSelector />
+
+              <PaymentForm
+                onSubmit={onSubmit}
+                setCurrentStep={(s) =>
+                  router.push(`?step=${s}`, { scroll: false })
+                }
+              />
+            </div>
           ) : (
             <PaymentProcessing />
           )}

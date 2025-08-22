@@ -29,7 +29,7 @@ export default function TenMinuteTimer({ onTimeUp, isActive, shouldReset = false
       if (savedEndTime) {
         setEndTime(Number(savedEndTime));
       } else {
-        const newEndTime = Date.now() + 1 * 60 * 1000; // 1 dk sonrası (test için)
+        const newEndTime = Date.now() + 30 * 60 * 1000; // 30 dk sonrası (test için)
         localStorage.setItem("endTime", newEndTime.toString());
         setEndTime(newEndTime);
       }
@@ -51,7 +51,7 @@ export default function TenMinuteTimer({ onTimeUp, isActive, shouldReset = false
       
       // Kısa bir gecikme sonrası yeni timer başlat
       setTimeout(() => {
-        const newEndTime = Date.now() + 1 * 60 * 1000; // 1 dk sonrası (test için)
+        const newEndTime = Date.now() + 30 * 60 * 1000; // 30 dk sonrası (test için)
         localStorage.setItem("endTime", newEndTime.toString());
         setEndTime(newEndTime);
         setKey(prev => prev + 1); // Component'ı yeniden render et

@@ -46,7 +46,7 @@ export const HotelResponseSchema = z.object({
   averagePrice: z.number().optional(), // Ortalama oda fiyatı
   owner: z.object({
     id: z.string(),
-    name: true,
+    name: z.string(),
     surname: z.string(),
     email: z.string(),
   }).optional(),
