@@ -4,6 +4,7 @@ const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
 
 export const authService = {
+  // kayıt işlemleri
   async register(userData: {
     name: string;
     surname: string;
@@ -19,7 +20,7 @@ export const authService = {
 
     return response.data;
   },
-
+  // giriş işlemleri
   async login(data: { email: string; password: string }) {
     const response = await axios.post(`${API_BASE_URL}/auth/login`, data);
 
@@ -41,7 +42,7 @@ export const authService = {
 
     return response.data;
   },
-
+  // çıkış işlemleri
   async logout() {
     try {
       const response = await axios.post(`${API_BASE_URL}/auth/logout`, {}, {
@@ -66,7 +67,7 @@ export const authService = {
       throw error;
     }
   },
-
+  // profile işlemleri
   async getUserProfile() {
     const token = localStorage.getItem("access_token");
     const response = await axios.get(`${API_BASE_URL}/auth/profile`, {
@@ -76,7 +77,7 @@ export const authService = {
     });
     return response.data;
   },
-
+  // email doğrulama işlemleri
   async verifyEmail(verificationOTP: string) {
     console.log("verify email request data:", verificationOTP);
     console.log("verify email request token:", localStorage.getItem("access_token"));
@@ -86,6 +87,60 @@ export const authService = {
       },
     });
     return response.data;
-  }
+  },
+  // email doğrulama işlemleri
+  async resendVerificationEmail(email: string) {
+    const response = await axios.post(`${API_BASE_URL}/auth/resend-verification-email`, { email });
+    return response.data;
+  },
+  // profil resmi güncelleme işlemleri
+  async updateProfileImage(image: string) {
+    const response = await axios.put(`${API_BASE_URL}/auth/update-profile-image`, {image}, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+    return response.data;
+  },
+  // profil güncelleme işlemleri
+  async updateProfile(userData: {
+    name: string;
+    surname: string;
+    email: string;
+    phone: string;
+  }) {
+    const response = await axios.put(`${API_BASE_URL}/auth/update-profile`, userData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+    return response.data;
+  },
+  // hesap silme işlemleri
+  async deleteAccount() {
+    const response = await axios.delete(`${API_BASE_URL}/auth/delete-account`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+    return response.data;
+  },
+  // şifremi unuttum işlemleri
+  async forgotPassword(email: string) {
+    const response = await axios.post(`${API_BASE_URL}/auth/forgot-password`, { email });
+    return response.data;
+  },
+  // şifre değiştirme işlemleri
+  async changePassword(data: {
+    currentPassword: string;
+    newPassword: string;
+  }) {
+    const response = await axios.post(`${API_BASE_URL}/auth/change-password`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+    return response.data;
+  },
 };
 

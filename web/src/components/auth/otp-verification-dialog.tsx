@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -29,6 +29,7 @@ interface OTPVerificationDialogProps {
   description?: string;
   showCancelButton?: boolean;
   onCancel?: () => void;
+  email?: string;
 }
 
 export default function OTPVerificationDialog({
@@ -42,7 +43,16 @@ export default function OTPVerificationDialog({
   description = "Lütfen doğrulama kodunu giriniz. Doğrulama kodu 6 haneli olmalıdır.",
   showCancelButton = false,
   onCancel,
+  email,
 }: OTPVerificationDialogProps) {
+  const [isTimerCompleted, setIsTimerCompleted] = useState(false);
+
+  // Dialog açıldığında timer durumunu sıfırla
+  useEffect(() => {
+    if (open) {
+      setIsTimerCompleted(false);
+    }
+  }, [open]);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
@@ -59,7 +69,7 @@ export default function OTPVerificationDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex justify-center">
+        <div className="flex flex-col items-center justify-center">
           <InputOTP maxLength={6} value={otp} onChange={onOtpChange}>
             <InputOTPGroup>
               {[0, 1, 2].map((i) => (
@@ -81,10 +91,22 @@ export default function OTPVerificationDialog({
               ))}
             </InputOTPGroup>
           </InputOTP>
+          {isTimerCompleted && (
+          <div className="flex justify-center items-center mt-2">
+            <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+              Süre doldu. Şifre yenileme butonuna tıklayın.
+            </p>
+          </div>
+        )}
         </div>
-
+       
         <DialogFooter className="flex justify-center items-center gap-4">
-          <TenMinuteTimer onTimeUp={onTimeUp} isActive={open} />
+          <TenMinuteTimer 
+            onTimeUp={onTimeUp} 
+            isActive={open} 
+            email={email || ""} 
+            onTimerStatusChange={setIsTimerCompleted}
+          />
           {showCancelButton && onCancel && (
             <Button
               variant="outline"
@@ -94,12 +116,14 @@ export default function OTPVerificationDialog({
               İptal
             </Button>
           )}
-          <Button
-            onClick={onSubmit}
-            className="bg-primary text-white dark:bg-gray-200 dark:text-black"
-          >
-            Hesabı Doğrula
-          </Button>
+          {!isTimerCompleted && (
+            <Button
+              onClick={onSubmit}
+              className="bg-primary text-white dark:bg-gray-200 dark:text-black"
+            >
+              Hesabı Doğrula
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

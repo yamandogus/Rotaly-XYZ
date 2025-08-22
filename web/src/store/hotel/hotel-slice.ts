@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { hotelService } from "../../services/hotel.service";
-import { CreateHotelInput } from "@api/dto/hotel";
+import { CreateHotelInput, QueryHotelInput } from "@api/dto/hotel";
 
 // Tip tanımlamaları
 export interface Hotel {
@@ -43,12 +43,13 @@ const initialState: HotelState = {
 // Asenkron thunk'lar
 export const fetchHotels = createAsyncThunk(
   "hotel/fetchHotels",
-  async (queryParams: any, { rejectWithValue }) => {
+  async (queryParams: QueryHotelInput, { rejectWithValue }) => {
     try {
       const response = await hotelService.getHotels(queryParams);
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response.data.message || error.message);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Bilinmeyen hata';
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -59,8 +60,9 @@ export const createHotel = createAsyncThunk(
     try {
       const response = await hotelService.createHotel(hotelData);
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response.data.message || error.message);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Bilinmeyen hata';
+      return rejectWithValue(errorMessage);
     }
   }
 );
