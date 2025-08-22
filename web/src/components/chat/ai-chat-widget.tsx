@@ -1,23 +1,38 @@
-"use client"
+"use client";
 
-import React, { useEffect, useRef, useState } from "react"
-import { MessageCircleIcon, SendIcon, UserIcon, XIcon, RefreshCcwIcon, AlertCircleIcon, CheckCircleIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Input } from "@/components/ui/input"
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { useTranslations } from "next-intl"
-import { aiChatService, AIChatState } from "@/services/ai-chat.service"
-import { ChatMessage } from "@/types/chat"
-import { useRouter } from "next/navigation"
+import React, { useEffect, useRef, useState } from "react";
+import {
+  MessageCircleIcon,
+  SendIcon,
+  UserIcon,
+  XIcon,
+  RefreshCcwIcon,
+  AlertCircleIcon,
+  CheckCircleIcon,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { useTranslations } from "next-intl";
+import { aiChatService, AIChatState } from "@/services/ai-chat.service";
+import { ChatMessage } from "@/types/chat";
+import { useRouter } from "next/navigation";
 
 interface AIStatusIndicatorProps {
   isAvailable: boolean;
   isConnected: boolean;
 }
 
-const AIStatusIndicator: React.FC<AIStatusIndicatorProps> = ({ isAvailable, isConnected }) => {
+const AIStatusIndicator: React.FC<AIStatusIndicatorProps> = ({
+  isAvailable,
+  isConnected,
+}) => {
   if (!isConnected) {
     return (
       <Badge variant="destructive" className="text-xs">
@@ -26,7 +41,7 @@ const AIStatusIndicator: React.FC<AIStatusIndicatorProps> = ({ isAvailable, isCo
       </Badge>
     );
   }
-  
+
   if (!isAvailable) {
     return (
       <Badge variant="secondary" className="text-xs">
@@ -35,7 +50,7 @@ const AIStatusIndicator: React.FC<AIStatusIndicatorProps> = ({ isAvailable, isCo
       </Badge>
     );
   }
-  
+
   return (
     <Badge variant="default" className="text-xs bg-green-500">
       <CheckCircleIcon className="w-3 h-3 mr-1" />
@@ -49,25 +64,32 @@ interface MessageBubbleProps {
   onSupportRedirect?: (supportId: string) => void;
 }
 
-const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onSupportRedirect }) => {
+const MessageBubble: React.FC<MessageBubbleProps> = ({
+  message,
+  onSupportRedirect,
+}) => {
   const t = useTranslations("ChatWidget");
-  
+
   const formatTime = (date: Date) => {
-    return new Intl.DateTimeFormat('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
+    return new Intl.DateTimeFormat("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
     }).format(new Date(date));
   };
 
   return (
-    <div className={`flex gap-2 ${message.isFromAI ? "justify-start" : "justify-end"}`}>
+    <div
+      className={`flex gap-2 ${
+        message.isFromAI ? "justify-start" : "justify-end"
+      }`}
+    >
       {message.isFromAI && (
         <Avatar className="w-6 h-6 flex-shrink-0">
-          <AvatarImage src="/images/logo.png" alt="AI Assistant" />
+          <AvatarImage src="/images/logo3.png" alt="AI Assistant" />
         </Avatar>
       )}
-      
+
       <div className="flex flex-col max-w-[80%]">
         <div
           className={`p-3 rounded-lg text-sm ${
@@ -77,7 +99,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onSupportRedirec
           }`}
         >
           <div className="whitespace-pre-wrap">{message.content}</div>
-          
+
           {/* Support ticket notification */}
           {message.ticketCreated && message.supportId && onSupportRedirect && (
             <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs">
@@ -95,15 +117,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onSupportRedirec
             </div>
           )}
         </div>
-        
-        <div className={`text-xs text-gray-500 mt-1 ${message.isFromAI ? 'text-left' : 'text-right'}`}>
+
+        <div
+          className={`text-xs text-gray-500 mt-1 ${
+            message.isFromAI ? "text-left" : "text-right"
+          }`}
+        >
           {formatTime(message.createdAt)}
           {!message.isFromAI && message.readAt && (
             <span className="ml-1">✓</span>
           )}
         </div>
       </div>
-      
+
       {!message.isFromAI && (
         <Avatar className="w-6 h-6 flex-shrink-0">
           <div className="w-full h-full bg-blue-500 rounded-full flex items-center justify-center">
@@ -115,42 +141,32 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onSupportRedirec
   );
 };
 
-const WelcomeMessage: React.FC<{ t: (key: string) => string; isAuthenticated: boolean }> = ({ t, isAuthenticated }) => (
+const WelcomeMessage: React.FC<{ t: (key: string) => string }> = ({ t }) => (
   <div className="flex justify-start mb-4">
     <Avatar className="w-6 h-6 flex-shrink-0 mr-2">
-      <AvatarImage src="/images/logo.png" alt="AI Assistant" />
+      <AvatarImage src="/images/logo3.png" alt="AI Assistant" />
     </Avatar>
-    
+
     <div className="max-w-sm w-full bg-card shadow-lg rounded-xl overflow-hidden">
       <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-4 text-white">
         <h2 className="text-lg font-semibold">🏨 {t("welcome")}</h2>
         <p className="text-sm opacity-90">{t("assistantIntro")}</p>
       </div>
       <div className="grid grid-cols-1 gap-3 px-6 pb-6 mt-4">
-        {isAuthenticated ? (
-          <>
-            <div className="text-sm text-gray-600 mb-2">
-              You can ask me about:
-            </div>
-            <div className="space-y-2 text-xs text-gray-500">
-              <div>• Hotel bookings and reservations</div>
-              <div>• Room availability and amenities</div>
-              <div>• Pricing and policies</div>
-              <div>• Account management</div>
-              <div>• Technical support</div>
-            </div>
-          </>
-        ) : (
-          <div className="text-sm text-gray-600">
-            Please log in to chat with our AI assistant and get personalized help with your bookings and account.
-          </div>
-        )}
+        <div className="text-sm text-gray-600 mb-2">You can ask me about:</div>
+        <div className="space-y-2 text-xs text-gray-500">
+          <div>• Hotel bookings and reservations</div>
+          <div>• Room availability and amenities</div>
+          <div>• Pricing and policies</div>
+          <div>• Account management</div>
+          <div>• Technical support</div>
+        </div>
       </div>
     </div>
   </div>
 );
 
-export default function ChatWidget() {
+export default function AIChatWidget() {
   const t = useTranslations("ChatWidget");
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -162,7 +178,7 @@ export default function ChatWidget() {
     isAIAvailable: false,
   });
   const [showWelcome, setShowWelcome] = useState(true);
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -185,45 +201,23 @@ export default function ChatWidget() {
     return unsubscribe;
   }, []);
 
-  useEffect(() => {
-    const openChat = () => setIsOpen(true)
-    window.addEventListener("open-chat-widget", openChat)
-    return () => window.removeEventListener("open-chat-widget", openChat)
-  }, [])
-
-  const isAuthenticated = () => {
-    return typeof window !== 'undefined' && localStorage.getItem('access_token') !== null;
-  };
-
   // Initialize when opened
   useEffect(() => {
-    if (isOpen && !chatState.isConnected && isAuthenticated()) {
+    if (isOpen && !chatState.isConnected) {
       initializeChat();
     }
   }, [isOpen]);
 
   const initializeChat = async () => {
-    if (!isAuthenticated()) {
-      console.warn('User not authenticated, cannot initialize AI chat');
-      setShowWelcome(true);
-      return;
-    }
-
     try {
       await aiChatService.initialize();
     } catch (error) {
-      console.error('Failed to initialize AI chat:', error);
+      console.error("Failed to initialize AI chat:", error);
     }
   };
 
   const handleSendMessage = async () => {
     if (!message.trim() || chatState.isLoading) return;
-    
-    if (!isAuthenticated()) {
-      // Redirect to login page
-      router.push('/login');
-      return;
-    }
 
     const messageToSend = message.trim();
     setMessage("");
@@ -232,7 +226,7 @@ export default function ChatWidget() {
     try {
       await aiChatService.sendMessage(messageToSend);
     } catch (error) {
-      console.error('Failed to send message:', error);
+      console.error("Failed to send message:", error);
       // You might want to show an error toast here
     }
   };
@@ -247,13 +241,11 @@ export default function ChatWidget() {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
   };
-
-  const authenticated = isAuthenticated();
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
@@ -267,15 +259,17 @@ export default function ChatWidget() {
             <MessageCircleIcon className="w-10 h-10 text-white" />
             {/* AI status indicator on the chat button */}
             <div className="absolute -top-1 -right-1">
-              <div className={`w-3 h-3 rounded-full ${
-                authenticated && chatState.isAIAvailable && chatState.isConnected 
-                  ? 'bg-green-500' 
-                  : 'bg-red-500'
-              }`} />
+              <div
+                className={`w-3 h-3 rounded-full ${
+                  chatState.isAIAvailable && chatState.isConnected
+                    ? "bg-green-500"
+                    : "bg-red-500"
+                }`}
+              />
             </div>
           </Button>
         </PopoverTrigger>
-        
+
         <PopoverContent
           className="md:w-80 md:h-[550px] md:p-0 flex flex-col transition-all duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out overflow-hidden"
           align="end"
@@ -285,16 +279,14 @@ export default function ChatWidget() {
             <div className="px-4 py-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <h4 className="font-medium">{t("assistantTitle")}</h4>
-                {authenticated && (
-                  <AIStatusIndicator 
-                    isAvailable={chatState.isAIAvailable} 
-                    isConnected={chatState.isConnected} 
-                  />
-                )}
+                <AIStatusIndicator
+                  isAvailable={chatState.isAIAvailable}
+                  isConnected={chatState.isConnected}
+                />
               </div>
-              
+
               <div className="flex items-center gap-2">
-                {authenticated && !chatState.isConnected && (
+                {!chatState.isConnected && (
                   <Button
                     variant="outline"
                     size="sm"
@@ -306,7 +298,7 @@ export default function ChatWidget() {
                     Retry
                   </Button>
                 )}
-                
+
                 <Button
                   variant="outline"
                   size="sm"
@@ -324,9 +316,9 @@ export default function ChatWidget() {
             <div className="flex flex-col gap-4 scrollbar-hide">
               {/* Welcome message */}
               {showWelcome && chatState.messages.length === 0 && (
-                <WelcomeMessage t={t} isAuthenticated={authenticated} />
+                <WelcomeMessage t={t} />
               )}
-              
+
               {/* Chat messages */}
               {chatState.messages.map((msg) => (
                 <MessageBubble
@@ -335,74 +327,78 @@ export default function ChatWidget() {
                   onSupportRedirect={handleSupportRedirect}
                 />
               ))}
-              
+
               {/* Loading indicator */}
               {chatState.isLoading && (
                 <div className="flex justify-start">
                   <div className="flex items-center gap-2 text-gray-500 text-sm">
                     <Avatar className="w-6 h-6 flex-shrink-0">
-                      <AvatarImage src="/images/logo.png" alt="AI Assistant" />
+                      <AvatarImage src="/images/logo3.png" alt="AI Assistant" />
                     </Avatar>
                     <div className="bg-gray-100 rounded-lg px-3 py-2">
                       <div className="flex gap-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                        <div
+                          className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                          style={{ animationDelay: "0ms" }}
+                        />
+                        <div
+                          className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                          style={{ animationDelay: "150ms" }}
+                        />
+                        <div
+                          className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                          style={{ animationDelay: "300ms" }}
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
               )}
-              
+
               <div ref={messagesEndRef} />
             </div>
           </div>
 
           {/* Footer */}
           <div className="border-t p-3 flex-shrink-0">
-            {authenticated && !chatState.isConnected && (
+            {!chatState.isConnected && (
               <div className="mb-2 p-2 bg-red-50 border border-red-200 rounded text-xs text-red-700">
                 ⚠️ Connection lost. Click Retry to reconnect.
               </div>
             )}
-            
-            {!authenticated && (
-              <div className="mb-2 p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-700">
-                🔐 Please log in to chat with our AI assistant.
-              </div>
-            )}
-            
+
             <div className="flex items-center gap-2">
               <Input
                 type="text"
                 placeholder={
-                  authenticated 
-                    ? (chatState.isConnected ? t("inputPlaceholder") : "Connecting...")
-                    : "Please log in to chat..."
+                  chatState.isConnected
+                    ? t("inputPlaceholder")
+                    : "Connecting..."
                 }
                 className="flex-1 h-8 text-sm"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
-                disabled={!authenticated || (!chatState.isConnected && authenticated) || chatState.isLoading}
+                disabled={!chatState.isConnected || chatState.isLoading}
               />
               <Button
                 size="sm"
                 className="h-8 px-3 bg-blue-500 hover:bg-blue-600"
                 onClick={handleSendMessage}
-                disabled={!message.trim() || (!authenticated || (!chatState.isConnected && authenticated) || chatState.isLoading)}
+                disabled={
+                  !message.trim() ||
+                  !chatState.isConnected ||
+                  chatState.isLoading
+                }
               >
                 <SendIcon className="w-3 h-3" />
               </Button>
             </div>
-            
+
             <div className="text-xs text-gray-500 mt-2 text-center">
-              {authenticated 
-                ? (chatState.isAIAvailable 
-                    ? "Powered by AI • Real-time responses" 
-                    : "AI temporarily unavailable")
-                : "Login required for AI chat"
-              }
+              {chatState.isAIAvailable
+                ? "Powered by AI • Real-time responses"
+                : "AI temporarily unavailable"}
             </div>
           </div>
         </PopoverContent>
