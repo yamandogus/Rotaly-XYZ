@@ -370,6 +370,23 @@
     },
     "PaymentProcessing": {
       "processingMessage": "Payment is being processed..."
+    },
+    "BookingSuccessPage": {
+      "reservationNo": "Reservation No:",
+      "congratulations": "Congratulations! Your reservation for {hotelName} has been successfully completed.",
+      "detailsBelow": "Your reservation details are shown below.",
+      "goToHomepage": "Go to Homepage",
+      "reservationInfoTitle": "Reservation Information",
+      "checkInLabel": "Check-in Date",
+      "checkOutLabel": "Check-out Date",
+      "checkInTime": "Check-in time: {time}",
+      "checkOutTime": "Check-out time: {time}",
+      "roomTypeAndGuests": "{roomType}, {nights} Nights, {guests} Guests",
+      "paymentSummaryTitle": "Payment Summary",
+      "nightsDuration": "{nights} Nights",
+      "taxesAndFees": "Taxes & Service Fee",
+      "total": "Total",
+      "reviewsCount": "{count} Reviews"
     }
   },
   "CategoryPage": {

@@ -7,12 +7,17 @@ import {
   GetSupportListSchema,
   CloseSupportSchema,
 } from "../../dto/support";
+import { AIChatSchema } from "../../dto/support/ai-chat.dto";
 import { AppError } from "../../utils/appError";
 
 export class SupportController {
   private supportService: SupportService;
 
   constructor(private prisma: PrismaClient) {
+    console.log("🔧 SupportController initializing...");
+    console.log("🔑 OPENAI_API_KEY exists:", !!process.env.OPENAI_API_KEY);
+    console.log("🤖 OPENAI_MODEL:", process.env.OPENAI_MODEL || "gpt-3.5-turbo");
+    
     const aiService = new AIService({
       apiKey: process.env.OPENAI_API_KEY || "",
       model: process.env.OPENAI_MODEL || "gpt-3.5-turbo",
@@ -178,6 +183,59 @@ export class SupportController {
                 : 0,
           },
         },
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  // AI Chat endpoint
+  handleAIChat = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      console.log("🤖 AI Chat request received:", req.body);
+      
+      const userId = req.user?.userId;
+      if (!userId) {
+        throw new AppError("User not authenticated", 401);
+      }
+
+      const validatedData = AIChatSchema.parse(req.body);
+      console.log("✅ Data validated:", validatedData);
+      
+      const result = await this.supportService.handleAIChatWithAutoTicket(
+        userId,
+        validatedData.message,
+        validatedData.conversationHistory
+      );
+
+      console.log("🎯 AI Response:", result);
+
+      res.status(200).json({
+        success: true,
+        data: result,
+      });
+    } catch (error) {
+      console.error("❌ AI Chat error:", error);
+      next(error);
+    }
+  };
+
+  // utility method to check if AI service is available
+  isAIServiceAvailable = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const isAvailable = await this.supportService.isAIServiceAvailable();
+      
+      res.status(200).json({
+        success: true,
+        data: { available: isAvailable },
       });
     } catch (error) {
       next(error);
