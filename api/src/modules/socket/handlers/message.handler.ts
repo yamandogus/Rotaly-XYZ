@@ -173,7 +173,6 @@ export class MessageHandler {
   // method to emit AI response to user
   emitAIResponse(userId: string, message: any): void {
     const aiChatRoom = `ai-chat:${userId}`;
-    const userRoom = `user:${userId}`;
 
     // using standard NEW_MESSAGE event for AI responses
     const aiMessage = {
@@ -182,9 +181,14 @@ export class MessageHandler {
       timestamp: new Date(),
     };
 
-    // emit to both AI chat room and user's personal room using standard event
+    console.log(`Emitting AI response to room: ${aiChatRoom}`);
+    console.log(`AI message content:`, {
+      id: aiMessage.id,
+      content: aiMessage.content?.substring(0, 50) + "...",
+    });
+
+    // emit only to AI chat room to avoid duplicates
     this.io.to(aiChatRoom).emit("newMessage", aiMessage);
-    this.io.to(userRoom).emit("newMessage", aiMessage);
   }
 
   // method to emit support assignment notification

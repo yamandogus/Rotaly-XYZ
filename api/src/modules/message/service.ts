@@ -282,7 +282,14 @@ export class MessageService {
       });
 
       // emit socket event for real-time delivery (if socket service is available)
+      console.log(`Socket emitter available: ${!!this.socketEmitter}`);
+      console.log(
+        `Socket emitter has emitAIResponse: ${!!this.socketEmitter
+          ?.emitAIResponse}`
+      );
+
       if (this.socketEmitter?.emitAIResponse) {
+        console.log(`Emitting AI response via socket for user: ${userId}`);
         this.socketEmitter.emitAIResponse(userId, {
           id: aiMessage.id,
           content: responseContent,
@@ -293,6 +300,10 @@ export class MessageService {
           ticketCreated: result.ticketCreated,
           supportId: result.supportId,
         });
+      } else {
+        console.log(
+          `Socket emitter not available - AI response will not be emitted in real-time`
+        );
       }
 
       console.log(

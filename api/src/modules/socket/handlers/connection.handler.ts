@@ -34,6 +34,12 @@ export class ConnectionHandler {
         `User ${socket.userId} joined personal room. This is for direct messages.`
       );
 
+      // join user's AI chat room automatically
+      socket.join(`ai-chat:${socket.userId}`);
+      console.log(
+        `User ${socket.userId} joined AI chat room: ai-chat:${socket.userId}`
+      );
+
       // join user to their hotels (for hotel owners and staff)
       if (socket.role === "OWNER" || socket.role === "ADMIN") {
         try {

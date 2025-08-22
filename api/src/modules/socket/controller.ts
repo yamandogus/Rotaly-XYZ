@@ -270,6 +270,10 @@ export class SocketController {
     return this.typingHandler.getTypingUsersInRoom(roomId);
   }
 
+  public getMessageHandler(): MessageHandler {
+    return this.messageHandler;
+  }
+
   public getTypingUsersDetails(roomId: string): any[] {
     return this.typingHandler.getTypingUsersDetails(roomId);
   }
