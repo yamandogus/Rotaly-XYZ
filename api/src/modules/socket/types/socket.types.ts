@@ -18,20 +18,23 @@ export interface MessageEventData {
   receiverId: string;
   supportId?: string;
   roomId?: string;
-  isAIMessage?: boolean;
+  // AI messages are just regular messages with receiverId starting with "ai-assistant"
 }
 
 export interface SupportEventData {
   supportId: string;
   userId: string;
   supportRepId?: string;
+  subject?: string;
+  category?: string;
+  status?: "open" | "closed";
   message?: string;
 }
 
-export interface AIChatEventData {
-  message: string;
+export interface SupportAssignmentData {
+  supportId: string;
+  supportRepId: string;
   userId: string;
-  conversationHistory?: { role: "user" | "assistant"; content: string }[];
 }
 
 export interface JoinRoomData {

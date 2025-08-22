@@ -117,7 +117,7 @@ export class UserRepository {
       where: { id },
       data: {
         verificationOTP: otp,
-        verificationOTPExpires: new Date(Date.now() + 10 * 60 * 1000),
+        verificationOTPExpires: new Date(Date.now() + 30 * 60 * 1000),
       },
     });
   }

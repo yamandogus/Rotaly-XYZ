@@ -8,16 +8,44 @@ import {
   EditMessageSchema,
 } from "../../dto/message";
 import { TokenPayload } from "../../types/express";
+import { MessageHandler } from "../socket/handlers/message.handler";
 
 interface AuthenticatedRequest extends Request {
   user?: TokenPayload;
 }
 
+interface SocketEmitter {
+  emitAIResponse?: (userId: string, message: any) => void;
+  emitNewMessage?: (data: any) => void;
+}
+
 export class MessageController {
   private messageService: MessageService;
 
-  constructor() {
-    this.messageService = new MessageService(prisma);
+  constructor(messageHandler?: MessageHandler) {
+    console.log(
+      `🔧 MessageController constructor - messageHandler provided: ${!!messageHandler}`
+    );
+
+    // creates socket emitter if messageHandler is provided
+    const socketEmitter: SocketEmitter | undefined = messageHandler
+      ? {
+          emitAIResponse: (userId: string, message: any) => {
+            console.log(
+              `SocketEmitter.emitAIResponse called for user: ${userId}`
+            );
+            messageHandler.emitAIResponse(userId, message);
+          },
+          emitNewMessage: (data: any) => {
+            // might need this
+          },
+        }
+      : undefined;
+
+    console.log(
+      `MessageController constructor - socketEmitter created: ${!!socketEmitter}`
+    );
+    this.messageService = new MessageService(prisma, undefined, socketEmitter);
   }
 
   sendMessage = async (

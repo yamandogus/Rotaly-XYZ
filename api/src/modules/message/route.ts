@@ -14,7 +14,24 @@ import {
 } from "../../dto/message";
 
 const router = Router();
-const messageController = new MessageController();
+
+// get the socket controller from global (if available)
+let messageController: MessageController;
+console.log(
+  `Global socketController available: ${!!(global as any).socketController}`
+);
+
+if ((global as any).socketController) {
+  console.log(`🔧 Creating MessageController with socket handler`);
+  const messageHandler = (global as any).socketController.getMessageHandler();
+  messageController = new MessageController(messageHandler);
+} else {
+  console.log(
+    `Creating MessageController without socket handler - real-time features may not work`
+  );
+  // fallback for cases where socket controller is not available
+  messageController = new MessageController();
+}
 
 // all message routes require auth and email verification
 router.use(authenticateToken);
