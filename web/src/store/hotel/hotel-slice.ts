@@ -1,30 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { hotelService } from "../../services/hotel.service";
-import { CreateHotelInput, QueryHotelInput } from "@api/dto/hotel";
+import { CreateHotelInput, QueryHotelInput, Hotel } from "@/types/hotel";
 
 // Tip tanımlamaları
-export interface Hotel {
-  id: string;
-  name: string;
-  description?: string;
-  checkIn: string;
-  checkOut: string;
-  location: string;
-  address: string;
-  city: string;
-  country: string;
-  rating?: number;
-  discountRate?: number;
-  isDiscounted: boolean;
-  discountStartDate?: string;
-  discountEndDate?: string;
-  type: string; // HotelType enum'ı yerine şimdilik string
-  ownerId: string;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt?: string;
-}
 
 interface HotelState {
   hotels: Hotel[];

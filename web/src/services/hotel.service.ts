@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CreateHotelInput, QueryHotelInput, UpdateHotelInput } from "@api/dto/hotel";
+import { CreateHotelInput, QueryHotelInput, UpdateHotelInput } from "@/types/hotel";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
