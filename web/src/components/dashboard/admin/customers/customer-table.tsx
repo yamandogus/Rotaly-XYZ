@@ -27,6 +27,14 @@ import {
   DialogFooter,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { 
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 interface CustomerTableProps {
   filteredCustomers: Customer[];
@@ -35,16 +43,28 @@ interface CustomerTableProps {
   handleViewDetails: (customer: Customer) => void;
   handleEdit: (customer: Customer) => void;
   handleDelete: (customer: Customer) => void;
+  page: number;
+  totalPages: number;
+  setPage: (page: number) => void;
 }
 
 const CustomerTable = ({
   filteredCustomers,
   activeFilter,
   shortBy,
+  handleViewDetails,
+  handleEdit,
+  handleDelete,
+  page,
+  totalPages,
+  setPage,
 }: CustomerTableProps) => {
   const t = useTranslations("Customers");
 
   const [openDelete, setOpenDelete] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
+    null
+  );
 
   return (
     <div className="hidden lg:block">
@@ -268,7 +288,50 @@ const CustomerTable = ({
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem
-                      onClick={() => setOpenDelete(true)}
+                      onClick={() => handleViewDetails(customer)}
+                    >
+                      <svg
+                        className="h-4 w-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        />
+                      </svg>
+                      {t("viewDetails")}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleEdit(customer)}>
+                      <svg
+                        className="h-4 w-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        />
+                      </svg>
+                      {t("edit")}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setSelectedCustomer(customer);
+                        setOpenDelete(true);
+                      }}
                       className="text-red-600 focus:text-red-600"
                     >
                       <Trash className="h-4 w-4 mr-2" />
@@ -281,27 +344,71 @@ const CustomerTable = ({
           ))}
         </TableBody>
       </Table>
+      {/* Pagination */}
+      <div className="mt-4">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious 
+                onClick={() => page > 1 && setPage(page - 1)}
+                className={page <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+              />
+            </PaginationItem>
+            
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+              <PaginationItem key={pageNum}>
+                <PaginationLink
+                  onClick={() => setPage(pageNum)}
+                  isActive={page === pageNum}
+                  className="cursor-pointer"
+                >
+                  {pageNum}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            
+            <PaginationItem>
+              <PaginationNext 
+                onClick={() => page < totalPages && setPage(page + 1)}
+                className={page >= totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
       {/*Delet Dialog */}
-    <Dialog open={openDelete} onOpenChange={setOpenDelete}>
-  <DialogContent>
-    <DialogTitle>{t("deleteTitle")}</DialogTitle>
-    <p>{t("deleteConfirm")}</p>
-    <DialogFooter>
-      <DialogClose asChild>
-        <Button variant="outline">{t("cancel")}</Button>
-      </DialogClose>
-      <Button onClick={() => setOpenDelete(false)}>{t("confirm")}</Button>
-    </DialogFooter>
-  </DialogContent>
-</Dialog>
-
-      ;
+      <Dialog
+        open={openDelete}
+        onOpenChange={(open) => {
+          setOpenDelete(open);
+          if (!open) setSelectedCustomer(null);
+        }}
+      >
+        <DialogContent>
+          <DialogTitle>{t("deleteTitle")}</DialogTitle>
+          <p>{t("deleteConfirm")}</p>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">{t("cancel")}</Button>
+            </DialogClose>
+            <Button
+              onClick={() => {
+                if (selectedCustomer) {
+                  handleDelete(selectedCustomer);
+                }
+                setOpenDelete(false);
+                setSelectedCustomer(null);
+              }}
+            >
+              {t("confirm")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
 
-<Dialog>
-  <DialogContent>test</DialogContent>
-</Dialog>;
+
 
 export default CustomerTable;

@@ -61,4 +61,14 @@ export const adminService = {
     const response = await axios.get(`${API_BASE_URL}/admin/dashboard/hotels`, getAuthHeaders());
     return response.data;
   },
+
+  async getAllUsers() {
+    const response = await axios.get(`${API_BASE_URL}/users`, getAuthHeaders());
+    return response.data;
+  },
+
+  async getUserById(id: string) {
+    const response = await axios.get(`${API_BASE_URL}/users/${id}`, getAuthHeaders());
+    return response.data;
+  },
 };

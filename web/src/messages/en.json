@@ -446,6 +446,7 @@
   },
   "Dashboard": {
     "title": "Dashboard",
+    "dashboard": "Dashboard",
     "bookings": "Bookings",
     "hotels": "My Hotels",
     "profile": "Profile",
@@ -870,6 +871,7 @@
   },
 
   "Customers": {
+    "customerManagement": "Customer Management",
     "allRegisteredUsers": "All registered users",
     "joinedThisMonth": "Joined this month",
     "purchasedIn30Days": "Purchased in 30 days",

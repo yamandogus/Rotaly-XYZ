@@ -16,20 +16,25 @@ const dashboardSlice = createSlice({
   name: "dashboard",
   initialState,
   reducers: {
-    setPageTitle: (state, acition: PayloadAction<string>) => {
-      state.pageTitle = acition.payload;
+    setPageTitle: (state, action: PayloadAction<string>) => {
+      state.pageTitle = action.payload;
     },
-    setUserRole: (state, acition: PayloadAction<string>) => {
-      state.userRole = acition.payload;
+    setUserRole: (state, action: PayloadAction<string>) => {
+      state.userRole = action.payload;
     },
     setHotelName: (state, action: PayloadAction<string>) => {
       state.hotelName = action.payload;
     },
-    clearPageTitle: (state)=>{
-        state.pageTitle = ""
+    clearPageTitle: (state) => {
+      state.pageTitle = "";
+    },
+    clearDashboard: (state) => {
+      state.pageTitle = "";
+      state.userRole = "";
+      state.hotelName = "";
     }
   },
 });
 
-export const {setHotelName, setPageTitle, setUserRole, clearPageTitle} = dashboardSlice.actions
-export default dashboardSlice.reducer
+export const { setHotelName, setPageTitle, setUserRole, clearPageTitle, clearDashboard } = dashboardSlice.actions;
+export default dashboardSlice.reducer;

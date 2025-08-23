@@ -411,6 +411,7 @@
   },
   "Dashboard": {
     "title": "Panel",
+    "dashboard": "Panel",
     "bookings": "Rezervasyonlar",
     "hotels": "Otellerim",
     "profile": "Profil",
@@ -862,6 +863,7 @@
   
 
   "Customers": {
+    "customerManagement": "Müşteri Yönetimi",
     "allRegisteredUsers": "Tüm kayıtlı kullanıcılar",
     "joinedThisMonth": "Bu ay katılanlar",
     "purchasedIn30Days": "30 gün içinde satın alanlar", 

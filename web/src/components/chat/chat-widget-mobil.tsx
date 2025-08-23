@@ -128,9 +128,9 @@ export default function ChatWidgetMobile() {
         </SheetTrigger>
         <SheetContent
           side="bottom"
-          className="h-screen w-full p-0 flex flex-col data-[state=open]:animate-slideInUp 
+          className="h-[calc(100vh-72px)] w-full p-0 flex flex-col data-[state=open]:animate-slideInUp 
   data-[state=closed]:animate-slideOutDown
-  duration-500"
+  duration-500 top-[72px]"
         >
           {/* Header */}
           <div className="relative overflow-hidden text-gray-900 dark:text-gray-200 border-b border-b-blue-500 flex-shrink-0">
