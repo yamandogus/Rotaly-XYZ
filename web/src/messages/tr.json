@@ -540,6 +540,7 @@
     "billingAddress": "Fatura adresi",
     "country": "Ülke",
     "address": "Adres",
+    "fullAddress": "Tam Adres",
     "city": "Şehir",
     "state": "İl/Eyalet",
     "postalCode": "Posta kodu",

@@ -18,9 +18,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { UploadIcon, SaveIcon } from "lucide-react";
 import Image from "next/image";
 import { toast } from "react-hot-toast";
+import { adminService } from "@/services/admin.service";
+import { useEffect, useState } from "react";
 
 interface CompanyFormData {
   companyLogo: string;
@@ -30,35 +33,135 @@ interface CompanyFormData {
   taxNumber: string;
   taxOffice: string;
   country: string;
-  address: string;
+  fullAddress: string;
   city: string;
   state: string;
   postalCode: string;
 }
 
+interface CompanyProps {
+  companyName: string;
+  companyTaxId: string;
+  country: string;
+  city: string;
+  state: string;
+  postCode: string;
+  fullAddress: string;
+  logo: never[];
+}
+
 export default function CompanyPage() {
   const t = useTranslations();
+  const [profile, setProfile] = useState<CompanyProps | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const form = useForm<CompanyFormData>({
     defaultValues: {
       companyLogo: "/images/logo3.PNG",
-      companyName: "Rotaly XYZ",
-      emailAddress: "info@rotalyxyz.com",
-      companyVatOrTaxId: "1234567890",
-      taxNumber: "1234567890",
-      taxOffice: "İstanbul Vergi Dairesi",
-      country: "turkey",
-      address: "Atatürk Caddesi No: 123",
-      city: "İstanbul",
-      state: "İstanbul",
-      postalCode: "34000",
+      companyName: "",
+      emailAddress: "",
+      companyVatOrTaxId: "",
+      taxNumber: "",
+      taxOffice: "",
+      country: "",
+      fullAddress: "",
+      city: "",
+      state: "",
+      postalCode: "",
     },
   });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await adminService.getUserProfile();
+        console.log("profile", response);
+        
+        if (response.success && response.data) {
+          setProfile(response.data);
+          
+          // Form'u backend verileriyle doldur
+          form.reset({
+            companyLogo: response.data.logo?.[0] || "/images/logo3.PNG",
+            companyName: response.data.companyName || "",
+            emailAddress: "", // Email backend'den gelmiyor, boş bırak
+            companyVatOrTaxId: response.data.companyTaxId || "",
+            taxNumber: response.data.companyTaxId || "",
+            taxOffice: "İstanbul Vergi Dairesi", // Varsayılan değer
+            country: response.data.country || "",
+            fullAddress: response.data.fullAddress || "",
+            city: response.data.city || "",
+            state: response.data.state || "",
+            postalCode: response.data.postCode || "",
+          });
+        }
+      } catch (error) {
+        console.error("Profile fetch error:", error);
+        toast.error("Profil bilgileri yüklenirken hata oluştu");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [form]);
 
   const onSubmit = (data: CompanyFormData) => {
     console.log("Company Data", data);
     toast.success(t("Company.savedSuccessfully") || "Company Data saved successfully");
   };
+
+  if (loading) {
+    return (
+      <div className="p-8">
+        <div className="max-w-5xl mx-auto">
+          <div className="bg-card border border-border rounded-lg shadow-sm p-8">
+            {/* Header Skeleton */}
+            <div className="flex items-center gap-3 mb-6">
+              <Skeleton className="w-16 h-16 rounded-lg" />
+              <div className="space-y-2">
+                <Skeleton className="h-8 w-48" />
+                <Skeleton className="h-4 w-32" />
+              </div>
+            </div>
+
+            {/* Form Fields Skeleton */}
+            <div className="space-y-6">
+              {/* Company Logo Skeleton */}
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-24" />
+                <div className="flex items-center gap-4">
+                  <Skeleton className="w-16 h-16 rounded-lg" />
+                  <Skeleton className="h-9 w-24" />
+                </div>
+              </div>
+
+              {/* Grid Fields Skeleton */}
+              <div className="grid grid-cols-2 gap-4">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <div key={index} className="space-y-2">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-10 w-full" />
+                  </div>
+                ))}
+              </div>
+
+              {/* Full Address Skeleton */}
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+
+              {/* Save Button Skeleton */}
+              <div className="flex justify-end pt-4">
+                <Skeleton className="h-10 w-24" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-8">
@@ -67,7 +170,7 @@ export default function CompanyPage() {
           {/* Header */}
           <div className="flex items-center gap-3 mb-6">
             <Image
-              src="/images/logo3.PNG"
+              src={profile?.logo?.[0] || "/images/logo3.PNG"}
               alt="Company Logo"
               width={64}
               height={64}
@@ -97,7 +200,7 @@ export default function CompanyPage() {
                       <div className="flex items-center gap-4">
                         <div className="w-16 h-16 rounded-lg border-2 border-dashed border-muted-foreground/25 flex items-center justify-center bg-muted/50 overflow-hidden">
                           <Image
-                            src={field.value || "/images/logo3.PNG"}
+                            src={field.value || profile?.logo?.[0] || "/images/logo3.PNG"}
                             alt="Company Logo"
                             width={64}
                             height={64}
@@ -161,7 +264,7 @@ export default function CompanyPage() {
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="taxNumber"
+                  name="companyVatOrTaxId"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-sm font-medium">
@@ -246,15 +349,15 @@ export default function CompanyPage() {
                 {/* Address */}
                 <FormField
                   control={form.control}
-                  name="address"
+                  name="fullAddress"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-sm font-medium">
-                        {t("Company.address")}
+                        {t("Company.fullAddress")}
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder={t("Company.address")}
+                          placeholder={t("Company.fullAddress")}
                           {...field}
                           className="bg-background"
                         />

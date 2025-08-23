@@ -693,6 +693,7 @@
     "billingAddress": "Billing address",
     "country": "Country",
     "address": "Address",
+    "fullAddress": "Full Address",
     "city": "City",
     "state": "State",
     "postalCode": "Postal code",
