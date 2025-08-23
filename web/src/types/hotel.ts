@@ -1,42 +1,58 @@
+// Hotel Types for Web Frontend
+export interface CreateHotelInput {
+  name: string;
+  description?: string;
+  location: string;
+  address: string;
+  city: string;
+  country: string;
+  type: "APARTMENT" | "HOTEL" | "VILLA" | "BUNGALOW" | "ROOM" | "RESORT" | "HOSTEL" | "CAMP";
+  features?: ("WIFI" | "POOL" | "SPA" | "PARKING" | "GYM" | "PET_FRIENDLY" | "RESTAURANT" | "BREAKFAST_INCLUDED")[];
+  discountRate?: number;
+  discountPrice?: number;
+}
+
+export interface UpdateHotelInput extends Partial<CreateHotelInput> {
+  id: string;
+}
+
+export interface QueryHotelInput {
+  page?: number;
+  limit?: number;
+  search?: string;
+  city?: string;
+  country?: string;
+  type?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  features?: string[];
+  checkIn?: string;
+  checkOut?: string;
+  guests?: number;
+}
+
 export interface Hotel {
-    id: string;
-    name: string;
-    description: string;
-    location: string;
-    address: string;
-    city: string;
-    country: string;
-    rating: number;
-    price: string;
-    priceValue: number;
-    status: string;
-    isActive: boolean;
-    type: string;
-    image: string;
-    createdAt: string;
-    updatedAt: string;
-    lastBooking: string;
-    totalBookings: number;
-    revenue: string;
-    owner: string;
-    ownerId: string;
-    email: string;
-    phone: string;
-    // Business/Legal fields
-    taxId: string;
-    taxOffice: string;
-    tradeRegistryNumber: string;
-    businessLicense: string;
-    addressProof: string;
-    taxCertificate: string;
-    // Discount fields
-    discountRate: number;
-    isDiscounted: boolean;
-    discountStartDate: string | null;
-    discountEndDate: string | null;
-    // Features
-    features: string[];
-  }
+  id: string;
+  name: string;
+  description?: string;
+  checkIn?: string;
+  checkOut?: string;
+  location: string;
+  address: string;
+  city: string;
+  country: string;
+  rating?: number;
+  discountRate?: number;
+  isDiscounted: boolean;
+  discountStartDate?: string;
+  discountEndDate?: string;
+  type: string;
+  ownerId: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string;
+}
 
 // Room feature interface - Prisma şemasına uygun
 export interface RoomFeatureStatus {
