@@ -183,3 +183,7 @@ export function HotelListWithPagination() {
     </div>
   );
 }
+
+
+
+export default HotelListWithPagination;

@@ -18,9 +18,8 @@ export default function LoginPage() {
   const t = useTranslations("LoginPage");
   const router = useRouter();
   const dispatch = useDispatch();
-  const { loginSuccess, loginError } = useToastMessages();
+  const { loginSuccess } = useToastMessages();
   const [open, setOpen] = useState(false);
-  const [openControl, setOpenControl] = useState(false);
   const [closeVerify, setCloseVerify] = useState(false);
   const [otp, setOtp] = useState("");
 
@@ -44,21 +43,21 @@ export default function LoginPage() {
     router,
     dispatch,
     loginSuccess,
-    loginError,
     setOpen,
   });
 
   // Timer bittiğinde çağrılacak fonksiyon
   const handleTimeUp = () => {
     // Modal kapatılmasın, sadece mesaj göster
-    toast.error("Doğrulama süresi doldu. Şifre yenile butonunu kullanabilirsiniz.");
+    toast.error(
+      "Doğrulama süresi doldu. Şifre yenile butonunu kullanabilirsiniz."
+    );
   };
 
   // OTP submit fonksiyonu
   const otpSubmit = async () => {
     await handleOtpSubmit(otp, () => {
       setOpen(false);
-      setOpenControl(false);
       setOtp("");
       form.reset();
     });
@@ -66,11 +65,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
-      <LoginForm
-        form={form}
-        onSubmit={handleLogin}
-        onTestDialogOpen={() => setOpenControl(true)}
-      />
+      <LoginForm form={form} onSubmit={handleLogin} />
 
       {/* Gerçek hesap doğrulama dialogu */}
       <OTPVerificationDialog
@@ -85,27 +80,12 @@ export default function LoginPage() {
         email={form.getValues("email")}
       />
 
-      {/* Test için dialog */}
-      <OTPVerificationDialog
-        open={openControl}
-        onOpenChange={setOpenControl}
-        otp={otp}
-        onOtpChange={setOtp}
-        onSubmit={otpSubmit}
-        onTimeUp={handleTimeUp}
-        title="Giriş yapmak için Doğrulama Kodunu Giriniz"
-        description="Lütfen doğrulama kodunu giriniz. Doğrulama kodu 6 haneli olmalıdır."
-        showCancelButton={true}
-        onCancel={() => setCloseVerify(true)}
-      />
-
       {/* Çıkış onay dialogu */}
       <CloseVerificationDialog
         open={closeVerify}
         onOpenChange={setCloseVerify}
         onConfirm={() => {
           setCloseVerify(false);
-          setOpenControl(false);
           // Timer'ı sıfırlamıyoruz, sadece dialog'ları kapatıyoruz
         }}
         onCancel={() => setCloseVerify(false)}

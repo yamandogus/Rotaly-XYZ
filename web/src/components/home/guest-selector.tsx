@@ -38,14 +38,14 @@ export function GuestSelector({ guests, onGuestsChange }: GuestSelectorProps) {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full h-12 justify-start text-left bg-white dark:bg-gray-800/50 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-700/50"
+          className="w-full h-12 justify-start text-left bg-white dark:bg-gray-800/50 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:bg-white dark:hover:bg-card"
         >
           <Users className="mr-2 h-4 w-4 text-gray-400" />
           {guestText}
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-80 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+        className="w-80 bg-white dark:bg-card border-gray-300 dark:border-gray-700"
         align="start"
       >
         <div className="space-y-4">

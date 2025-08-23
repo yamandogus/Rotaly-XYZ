@@ -270,7 +270,7 @@ export default function ChatWidget() {
         <PopoverTrigger asChild className={`${isOpen ? "hidden" : "block"}`}>
           <Button
             variant="outline"
-            className="flex items-center gap-2 rounded-full shadow-lg p-0 cursor-pointer dark:bg-gray-200 dark:hover:bg-gray-300"
+            className="flex items-center gap-2 rounded-full shadow-lg p-0 cursor-pointer dark:bg-gray-200 dark:hover:bg-gray-300 border-2 border-green-200 hover:border-green-300 dark:border-green-200 dark:hover:border-green-300"
             size="lg"
           >
             <Image

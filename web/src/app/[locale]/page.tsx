@@ -166,7 +166,7 @@ export default function HomePage() {
     <main className="flex-1">
       {/* Hero */}
       <section className="relative w-full flex flex-col items-center overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-[400px] flex justify-center items-start pointer-events-none z-0">
+        {/* <div className="absolute top-0 left-0 w-full h-[400px] flex justify-center items-start pointer-events-none z-0">
           <Image
             src="/images/MAPPA.png"
             alt="Mappa Logo"
@@ -174,8 +174,14 @@ export default function HomePage() {
             height={600}
             className="opacity-100 object-contain dark:hidden"
           />
-        </div>
-
+        </div> */}
+        <div
+          className="absolute -top-6 left-0 w-full h-[400px] flex justify-center items-start pointer-events-none z-0 bg-gray-100 dark:bg-gray-800"
+          style={{
+            mask: "url('/images/map.svg') no-repeat center / cover",
+            WebkitMask: "url('/images/map.svg') no-repeat center / cover",
+          }}
+        ></div>
         <div className="relative z-10 w-full flex flex-col items-center justify-center pt-8 sm:pt-10 md:pt-12 pb-8 sm:pb-10 md:pb-12 px-4 text-center">
           <h1 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 sm:mb-4">
             {t("heroHeading")}
@@ -295,7 +301,9 @@ export default function HomePage() {
                   key={offer.id}
                   item={{
                     ...offer,
-                    price: Number(offer.price.replace(" TL", "").replace(".", "")), // Fiyatı number'a dönüştür
+                    price: Number(
+                      offer.price.replace(" TL", "").replace(".", "")
+                    ), // Fiyatı number'a dönüştür
                     cancelText,
                     breakfastText,
                     parkingText,

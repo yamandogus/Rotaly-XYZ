@@ -1,4 +1,5 @@
 import axios from "axios";
+import { startTokenRefresh, stopTokenRefresh } from "./api";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
@@ -34,6 +35,9 @@ export const authService = {
     if (response.data?.data?.accessToken) {
       localStorage.setItem("access_token", response.data?.data?.accessToken);
       console.log("if içi");
+      
+      // ✅ Login sonrası otomatik token refresh'i başlat
+      startTokenRefresh();
     }
 
     if(response.data.data?.refreshToken){
@@ -51,6 +55,9 @@ export const authService = {
         },
       });
       
+      // ✅ Logout sonrası token refresh'i durdur
+      stopTokenRefresh();
+      
       // LocalStorage'ı temizle
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
@@ -60,6 +67,7 @@ export const authService = {
       return response.data;
     } catch (error) {
       // Hata olsa bile localStorage'ı temizle
+      stopTokenRefresh();
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("userRole");
@@ -67,7 +75,7 @@ export const authService = {
       throw error;
     }
   },
-  // profile işlemleri
+
 
   // email doğrulama işlemleri
   async verifyEmail(verificationOTP: string) {
@@ -85,9 +93,6 @@ export const authService = {
     const response = await axios.post(`${API_BASE_URL}/auth/resend-verification-email`, { email });
     return response.data;
   },
-  // profil resmi güncelleme işlemleri
- 
-  // profil güncelleme işlemleri
 
   // hesap silme işlemleri
   async deleteAccount() {
