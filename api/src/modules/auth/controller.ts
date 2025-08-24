@@ -202,16 +202,12 @@ export class AuthController {
     try {
       const authHeader = req.headers.authorization;
       if (!authHeader) {
-        throw new AppError("Authorization header bulunamadı", 401);
+        throw new AppError("Yetkilendirme başlığı eksik", 401);
       }
-      const result = await this.authService.refreshToken(authHeader);
+      await this.authService.refreshToken(authHeader);
       res.status(200).json({
         success: true,
-        message: result.message,
-        data: {
-          accessToken: result.data.accessToken,
-          refreshToken: result.data.refreshToken,
-        },
+        message: "Token yenilendi",
       });
     } catch (error) {
       if (error instanceof AppError) {
@@ -219,15 +215,10 @@ export class AuthController {
           success: false,
           message: error.message,
         });
-      } else if ((error as any).name === "UnauthorizedError") {
-        res.status(401).json({
-          success: false,
-          message: (error as Error).message,
-        });
       } else {
         res.status(500).json({
           success: false,
-          message: "Bir hata oluştu",
+          message: "Token yenileme sırasında bir hata oluştu",
         });
       }
     }
