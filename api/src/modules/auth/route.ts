@@ -6,7 +6,6 @@ import {
   passwordResetLimiter,
   otpLimiter,
 } from "../../middleware/rateLimit";
-import passport from "passport";
 
 const router = Router();
 const authController = new AuthController();
