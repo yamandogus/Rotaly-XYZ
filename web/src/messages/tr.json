@@ -901,7 +901,11 @@
     "deleteTitle": "Kullanıcı Sil",
     "deleteConfirm": "Kullanıcıyı silmek istediğinize emin misiniz?",
     "cancel": "İptal",
-    "confirm": "Evet"
+    "confirm": "Evet",
+    "target": "Hedef",
+    "ofTotal": "toplamdan",
+    "inactiveRate": "inaktif oranı",
+    "thisMonth": "bu ay"
   },
   "ResetPassword": {
     "title": "Şifremi Unuttum",
@@ -1284,7 +1288,10 @@
     "RESTAURANT": "Restoran",
     "BREAKFAST_INCLUDED": "Kahvaltı Dahil",
     "addHotel": "Otel Ekle",
-    "city": "Şehir"
+    "city": "Şehir",
+    "target": "Hedef",
+    "activeRate": "aktif oranı",
+    "thisMonth": "bu ay"
   },
 
   "Support": {

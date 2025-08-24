@@ -27,7 +27,7 @@ export const QueryHotelSchema = z.object({
   search: z.string().min(1).optional(),
 
   page: z.coerce.number().int().min(1).default(1).optional(),
-  limit: z.coerce.number().int().min(1).max(100).default(10).optional(),
+  limit: z.coerce.number().int().min(1).max(500).default(10).optional(),
 
   sortBy: z
     .enum([

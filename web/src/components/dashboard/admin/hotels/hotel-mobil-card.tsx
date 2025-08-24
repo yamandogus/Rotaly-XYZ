@@ -40,7 +40,7 @@ const HotelMobilCard = ({ filteredHotels, getCityFromLocation,handleViewDetails,
                     {hotel.name}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    {hotel.owner}
+                    {hotel.owner ? `${hotel.owner.name} ${hotel.owner.surname}` : 'N/A'}
                   </p>
                 </div>
               </div>

@@ -1,5 +1,4 @@
 import axios from "axios";
-import { startTokenRefresh, stopTokenRefresh } from "./api";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
@@ -35,9 +34,6 @@ export const authService = {
     if (response.data?.data?.accessToken) {
       localStorage.setItem("access_token", response.data?.data?.accessToken);
       console.log("if içi");
-      
-      // ✅ Login sonrası otomatik token refresh'i başlat
-      startTokenRefresh();
     }
 
     if(response.data.data?.refreshToken){
@@ -55,9 +51,6 @@ export const authService = {
         },
       });
       
-      // ✅ Logout sonrası token refresh'i durdur
-      stopTokenRefresh();
-      
       // LocalStorage'ı temizle
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
@@ -67,7 +60,6 @@ export const authService = {
       return response.data;
     } catch (error) {
       // Hata olsa bile localStorage'ı temizle
-      stopTokenRefresh();
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("userRole");
@@ -95,8 +87,8 @@ export const authService = {
   },
 
   // hesap silme işlemleri
-  async deleteAccount() {
-    const response = await axios.delete(`${API_BASE_URL}/auth/delete-account`, {
+  async deleteAccount(id: string) {
+    const response = await axios.delete(`${API_BASE_URL}/auth/delete-account/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
@@ -120,5 +112,6 @@ export const authService = {
     });
     return response.data;
   },
+
 };
 
