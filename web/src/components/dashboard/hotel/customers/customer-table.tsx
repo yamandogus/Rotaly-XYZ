@@ -285,7 +285,7 @@ const CustomerTable = ({
     <Dialog open={openDelete} onOpenChange={setOpenDelete}>
   <DialogContent>
     <DialogTitle>{t("deleteTitle")}</DialogTitle>
-    <p>{t("deleteConfirmMessage")}</p>
+    <p>{t("deleteConfirm")}</p>
     <DialogFooter>
    <DialogClose asChild>
   <Button variant="outline">

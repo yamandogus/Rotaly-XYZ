@@ -407,7 +407,8 @@
       "phoneRequired": "Telefon numarası alanı boş bırakılamaz",
       "passwordMinLength": "Şifre en az 8 karakter olmalıdır",
       "passwordsDoNotMatch": "Şifreler eşleşmiyor"
-    }
+    },
+    "phoneFormatHint": "Telefon numarası formatı: +90 5XX XXX XX XX"
   },
   "Dashboard": {
     "title": "Panel",
