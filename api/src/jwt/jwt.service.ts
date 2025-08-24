@@ -52,7 +52,7 @@ export class JwtService {
       payload,
       process.env.JWT_ACCESS_SECRET || "secret_access_token",
       {
-        expiresIn: "1h",
+        expiresIn: "15m",
       }
     );
   }
