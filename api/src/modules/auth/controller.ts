@@ -200,11 +200,11 @@ export class AuthController {
   }
   async refreshToken(req: Request, res: Response): Promise<void> {
     try {
-      const authorizationHeader = req.headers.authorization;
-      if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
-        throw new AppError("Unauthorized", 401);
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        throw new AppError("Authorization header bulunamadı", 401);
       }
-      const result = await this.authService.refreshToken(authorizationHeader);
+      const result = await this.authService.refreshToken(authHeader);
       res.status(200).json({
         success: true,
         message: result.message,
@@ -218,6 +218,16 @@ export class AuthController {
         res.status(error.statusCode).json({
           success: false,
           message: error.message,
+        });
+      } else if ((error as any).name === "UnauthorizedError") {
+        res.status(401).json({
+          success: false,
+          message: (error as Error).message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Bir hata oluştu",
         });
       }
     }
