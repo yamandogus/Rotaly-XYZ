@@ -198,6 +198,30 @@ export class AuthController {
       }
     }
   }
+  async refreshToken(req: Request, res: Response): Promise<void> {
+    try {
+      const authorizationHeader = req.headers.authorization;
+      if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
+        throw new AppError("Unauthorized", 401);
+      }
+      const result = await this.authService.refreshToken(authorizationHeader);
+      res.status(200).json({
+        success: true,
+        message: result.message,
+        data: {
+          accessToken: result.data.accessToken,
+          refreshToken: result.data.refreshToken,
+        },
+      });
+    } catch (error) {
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+        });
+      }
+    }
+  }
 
   async forgotPassword(req: Request, res: Response): Promise<void> {
     try {

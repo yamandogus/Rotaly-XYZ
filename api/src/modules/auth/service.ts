@@ -148,6 +148,21 @@ export class AuthService {
       updatedUser: updateUser,
     };
   }
+  async refreshToken(authorizationHeader: string) {
+    const authHeader = authorizationHeader;
+    if (!authHeader) {
+      throw new AppError("Authorization header bulunamadı", 401);
+    }
+    const result = await this.jwtService.refresh(authHeader);
+    return {
+      success: true,
+      message: result.message,
+      data: {
+        accessToken: result.accessToken,
+        refreshToken: result.renewedRefreshToken,
+      },
+    };
+  }
 
   async forgotPassword(email: string) {
     const user = await UserService.getByEmail(email);

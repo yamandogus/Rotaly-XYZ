@@ -45,6 +45,11 @@ router.put(
   authenticateToken,
   authController.updateProfile.bind(authController)
 );
+router.post(
+  "/refresh-token",
+  authenticateToken,
+  authController.refreshToken.bind(authController)
+);
 router.put(
   "/change-password",
   authenticateToken,
