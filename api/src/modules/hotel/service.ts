@@ -31,7 +31,9 @@ export const createHotel = async (input: CreateHotelWithOwnerInput) => {
 };
 
 export const getHotels = async (query?: QueryHotelInput) => {
-  const where: any = {};
+  const where: any = {
+    deletedAt: null // Silinmemiş otelleri getir
+  };
   
   // Filtreleme
   if (query?.city) where.city = { contains: query.city, mode: 'insensitive' };

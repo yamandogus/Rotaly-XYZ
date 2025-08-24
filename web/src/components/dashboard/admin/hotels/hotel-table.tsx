@@ -214,7 +214,7 @@ const HotelTable = ({ filteredHotels, getCityFromLocation, getHotelStatus, getSo
         ))}
       </TableBody>
     </Table>
-    <div className="flex items-center justify-between mt-4">
+    <div className="flex items-center justify-between mt-4 px-4">
       <div className="flex items-center space-x-2">
         <p className="text-sm text-muted-foreground">
           Showing {startIndex + 1} to {Math.min(endIndex, filteredHotels.length)} of {filteredHotels.length} results

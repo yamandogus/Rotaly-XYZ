@@ -6,7 +6,7 @@ const PaymentProcessing = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <DotLottieReact
-        src="https://lottie.host/d8c7f93b-58bf-4bdb-8ecb-07e153882885/Zkx3Xbhx2R.lottie"
+        src="https://lottie.host/e837e66a-b157-4633-9758-332486d48d06/ZqA0wj2vcp.lottie"
         loop
         className="w-full h-full"
         autoplay

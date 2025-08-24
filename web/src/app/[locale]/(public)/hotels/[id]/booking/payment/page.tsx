@@ -43,7 +43,7 @@ export default function BookingPaymentPage() {
       ) {
         handleNextStep();
       }
-    }, 3000);
+    }, 8000);
   };
 
   return (

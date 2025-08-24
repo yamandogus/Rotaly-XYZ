@@ -202,7 +202,12 @@ export interface HotelNew {
   lastBooking?: string;
   totalBookings?: number;
   revenue?: string;
-  owner?: string;
+  owner?: {
+    id: string;
+    name: string;
+    surname: string;
+    email: string;
+  };
   email?: string;
   phone?: string;
 }

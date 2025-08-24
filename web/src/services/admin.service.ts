@@ -62,13 +62,31 @@ export const adminService = {
     return response.data;
   },
 
+  // Tüm otelleri getirir (admin paneli için)
+  async getAllHotels() {
+    const response = await axios.get(`${API_BASE_URL}/hotels`, {
+      ...getAuthHeaders(),
+      params: {
+        limit: 500, // Tüm otelleri getirmek için yüksek limit
+        page: 1,
+        isActive: true // Sadece aktif otelleri getir
+      }
+    });
+    return response.data;
+  },
+
   async getAllUsers() {
     const response = await axios.get(`${API_BASE_URL}/users`, getAuthHeaders());
     return response.data;
   },
 
   async getUserById(id: string) {
-    const response = await axios.get(`${API_BASE_URL}/users/${id}`, getAuthHeaders());
+    const response = await axios.get(`${API_BASE_URL}/users/id/${id}`, getAuthHeaders());
     return response.data;
   },
+
+  async deleteUser(id: string) {
+    const response = await axios.delete(`${API_BASE_URL}/admin/users/${id}`, getAuthHeaders());
+    return response.data;
+  }
 };

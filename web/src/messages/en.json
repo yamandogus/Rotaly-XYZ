@@ -909,7 +909,11 @@
     "deleteTitle": "Delete User",
     "deleteConfirm": "Are you sure you want to delete this user?",
     "cancel": "Cancel",
-    "confirm": "Yes"
+    "confirm": "Yes",
+    "target": "Target",
+    "ofTotal": "of total",
+    "inactiveRate": "inactive rate",
+    "thisMonth": "this month"
   },
   "ResetPassword": {
     "title": "Reset Password",
@@ -1193,7 +1197,6 @@
   "AdminHotels": {
     "allRegisteredHotels": "All Registered Hotels",
     "activeHotels": "Active Hotels",
-    "totalBookings": "Total Bookings",
     "totalRevenue": "Total Revenue",
     "hotelList": "Hotel List",
     "searchHotels": "Search hotels...",
@@ -1264,7 +1267,11 @@
     "isDiscounted": "Is Discounted",
     "discountStartDate": "Discount Start Date",
     "discountEndDate": "Discount End Date",
-    "city": "City"
+    "city": "City",
+    "target": "Target",
+    "activeRate": "active rate",
+    "thisMonth": "this month",
+    "totalBookings": "Total Bookings"
   },
 
   "Support": {

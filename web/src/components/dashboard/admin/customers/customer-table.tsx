@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Filter, MoreHorizontal, Trash } from "lucide-react";
+import { ArrowUpDown, Filter, MoreHorizontal, Trash, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -27,14 +27,6 @@ import {
   DialogFooter,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { 
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 
 interface CustomerTableProps {
   filteredCustomers: Customer[];
@@ -345,36 +337,49 @@ const CustomerTable = ({
         </TableBody>
       </Table>
       {/* Pagination */}
-      <div className="mt-4">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious 
-                onClick={() => page > 1 && setPage(page - 1)}
-                className={page <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-              />
-            </PaginationItem>
-            
+      <div className="flex items-center justify-between mt-4 px-4">
+        <div className="flex items-center space-x-2">
+          <p className="text-sm text-muted-foreground">
+            Showing {((page - 1) * 8) + 1} to {Math.min(page * 8, filteredCustomers.length)} of {filteredCustomers.length} results
+          </p>
+        </div>
+        
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => page > 1 && setPage(page - 1)}
+            disabled={page === 1}
+            className="h-8 w-8 p-0"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          
+          {/* Sayfa numaraları */}
+          <div className="flex items-center space-x-1">
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-              <PaginationItem key={pageNum}>
-                <PaginationLink
-                  onClick={() => setPage(pageNum)}
-                  isActive={page === pageNum}
-                  className="cursor-pointer"
-                >
-                  {pageNum}
-                </PaginationLink>
-              </PaginationItem>
+              <Button
+                key={pageNum}
+                variant={page === pageNum ? "default" : "outline"}
+                size="sm"
+                onClick={() => setPage(pageNum)}
+                className="h-8 w-8 p-0"
+              >
+                {pageNum}
+              </Button>
             ))}
-            
-            <PaginationItem>
-              <PaginationNext 
-                onClick={() => page < totalPages && setPage(page + 1)}
-                className={page >= totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+          </div>
+          
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => page < totalPages && setPage(page + 1)}
+            disabled={page === totalPages}
+            className="h-8 w-8 p-0"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
       {/*Delet Dialog */}
       <Dialog
