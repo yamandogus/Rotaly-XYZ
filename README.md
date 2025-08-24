@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="web/public/images/logo3.PNG" alt="Rotaly Logo" width="200" height="80" />
+  <img src="web/public/images/logo3.PNG" alt="Rotaly Logo" width="200" height="200" />
   
   # 🏨 Rotaly - Hotel Reservation System
   
