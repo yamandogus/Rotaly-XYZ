@@ -39,3 +39,5 @@ router.put(
 );
 
 export default router;
+
+// idye göre örnek rezervasyon verisi oluştur
