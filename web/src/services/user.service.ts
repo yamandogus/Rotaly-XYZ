@@ -56,4 +56,13 @@ export const userService = {
     });
     return response.data;
   },
+
+  async getAllCreditCards() {
+    const response = await axios.get(`${API_BASE_URL}/payments/cards`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+    return response.data;
+  },
 };
