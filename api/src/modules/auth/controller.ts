@@ -204,10 +204,14 @@ export class AuthController {
       if (!authHeader) {
         throw new AppError("Yetkilendirme başlığı eksik", 401);
       }
-      await this.authService.refreshToken(authHeader);
+      const result = await this.authService.refreshToken(authHeader);
       res.status(200).json({
         success: true,
         message: "Token yenilendi",
+        data: {
+          accessToken: result.accessToken,
+          refreshToken: result.renewedRefreshToken,
+        },
       });
     } catch (error) {
       if (error instanceof AppError) {
