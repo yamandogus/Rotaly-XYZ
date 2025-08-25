@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { PrismaClient, Role } from "@prisma/client";
 import { SupportService } from "./service";
-import { AIService } from "../../services/ai.service";
+import { AIService } from "../../services/ai";
 import {
   CreateSupportSchema,
   GetSupportListSchema,
@@ -16,8 +16,11 @@ export class SupportController {
   constructor(private prisma: PrismaClient) {
     console.log("🔧 SupportController initializing...");
     console.log("🔑 OPENAI_API_KEY exists:", !!process.env.OPENAI_API_KEY);
-    console.log("🤖 OPENAI_MODEL:", process.env.OPENAI_MODEL || "gpt-3.5-turbo");
-    
+    console.log(
+      "🤖 OPENAI_MODEL:",
+      process.env.OPENAI_MODEL || "gpt-3.5-turbo"
+    );
+
     const aiService = new AIService({
       apiKey: process.env.OPENAI_API_KEY || "",
       model: process.env.OPENAI_MODEL || "gpt-3.5-turbo",
@@ -197,7 +200,7 @@ export class SupportController {
   ): Promise<void> => {
     try {
       console.log("🤖 AI Chat request received:", req.body);
-      
+
       const userId = req.user?.userId;
       if (!userId) {
         throw new AppError("User not authenticated", 401);
@@ -205,7 +208,7 @@ export class SupportController {
 
       const validatedData = AIChatSchema.parse(req.body);
       console.log("✅ Data validated:", validatedData);
-      
+
       const result = await this.supportService.handleAIChatWithAutoTicket(
         userId,
         validatedData.message,
@@ -232,7 +235,7 @@ export class SupportController {
   ): Promise<void> => {
     try {
       const isAvailable = await this.supportService.isAIServiceAvailable();
-      
+
       res.status(200).json({
         success: true,
         data: { available: isAvailable },
