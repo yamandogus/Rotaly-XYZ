@@ -21,6 +21,11 @@ export interface AIResponse {
   supportId?: string;
 }
 
+export interface TypingEvent {
+  isTyping: boolean;
+  userId: string;
+}
+
 class SocketService {
   private socket: any = null;
   private isConnected = false;
@@ -200,40 +205,54 @@ class SocketService {
     }
   }
 
-  onAIResponse(callback: (response: any) => void): void {
+  onAIResponse(callback: (response: AIResponse) => void): void {
     if (this.socket) {
       this.socket.on("aiResponse", callback);
     }
   }
 
-  onNewMessage(callback: (message: any) => void): void {
+  onNewMessage(callback: (message: SocketMessage) => void): void {
     if (this.socket) {
-      console.log("📬 Setting up newMessage listener on socket");
+      this.socket.on("newMessage", callback);
+    }
+  }
 
-      // Remove any existing listeners to avoid duplicates
-      this.socket.off("newMessage");
+  // Typing indicator methods
+  onTyping(callback: (event: TypingEvent) => void): void {
+    if (this.socket) {
+      this.socket.on("typing", callback);
+    }
+  }
 
-      this.socket.on("newMessage", (message: any) => {
-        console.log("📬 Received newMessage event:", message);
-        console.log("📬 Message details:", {
-          id: message.id,
-          content: message.content?.substring(0, 50) + "...",
-          isFromAI: message.isFromAI,
-          senderId: message.senderId,
-          receiverId: message.receiverId,
-        });
-        callback(message);
-      });
-    } else {
-      console.warn(
-        "📬 Cannot set up newMessage listener - socket not connected"
-      );
+  startTyping(roomId: string, userId: string): void {
+    if (this.socket && this.isConnected) {
+      this.socket.emit("startTyping", { roomId, userId });
+    }
+  }
+
+  stopTyping(roomId: string, userId: string): void {
+    if (this.socket && this.isConnected) {
+      this.socket.emit("stopTyping", { roomId, userId });
+    }
+  }
+
+  // Room management methods
+  joinRoom(roomId: string, userId: string): void {
+    if (this.socket && this.isConnected) {
+      this.socket.emit("joinRoom", { roomId, userId });
+    }
+  }
+
+  leaveRoom(roomId: string, userId: string): void {
+    if (this.socket && this.isConnected) {
+      this.socket.emit("leaveRoom", { roomId, userId });
     }
   }
 
   // General message methods
   sendMessage(data: {
-    content: string;
+    message?: string;
+    content?: string;
     receiverId?: string;
     roomId?: string;
     supportId?: string;

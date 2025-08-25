@@ -38,11 +38,12 @@ export const authenticateToken = async (
 
     // Eğer revoked token varsa ve token oluşturma zamanından sonra revoke edilmişse
     if (revokedTokens.length > 0) {
-      const tokenTimestamp = decoded.iat ? decoded.iat * 1000 : 0;
-      if (
-        revokedTokens[0].revokedAt &&
-        revokedTokens[0].revokedAt.getTime() > tokenTimestamp
-      ) {
+      const tokenIat = decoded.iat ?? 0; // iat saniye cinsinden
+      const revokedAtSec = revokedTokens[0].revokedAt
+        ? Math.floor(revokedTokens[0].revokedAt.getTime() / 1000)
+        : 0;
+  
+      if (revokedAtSec > tokenIat) {
         return res.status(401).json({
           status: "error",
           message: "Token has been revoked",
@@ -96,11 +97,12 @@ export const optionalAuthenticateToken = async (
 
     // Eğer revoked token varsa ve token oluşturma zamanından sonra revoke edilmişse
     if (revokedTokens.length > 0) {
-      const tokenTimestamp = decoded.iat ? decoded.iat * 1000 : 0;
-      if (
-        revokedTokens[0].revokedAt &&
-        revokedTokens[0].revokedAt.getTime() > tokenTimestamp
-      ) {
+      const tokenIat = decoded.iat ?? 0; // iat saniye cinsinden
+      const revokedAtSec = revokedTokens[0].revokedAt
+        ? Math.floor(revokedTokens[0].revokedAt.getTime() / 1000)
+        : 0;
+  
+      if (revokedAtSec > tokenIat) {
         return res.status(401).json({
           status: "error",
           message: "Token has been revoked",

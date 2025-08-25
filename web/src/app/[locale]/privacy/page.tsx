@@ -11,7 +11,6 @@ import {
   FileText, 
   Calendar, 
   CheckCircle, 
-  AlertTriangle, 
   Mail,
   Phone,
   MapPin,
@@ -25,110 +24,112 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-6">
-            <div className="relative">
-              <Image
-                src="/images/RT.png"
-                alt="Rotaly Logo"
-                width={80}
-                height={80}
-                className="rounded-lg shadow-lg"
-              />
-              <div className="absolute -top-2 -right-2 bg-green-500 rounded-full p-2">
-                <Shield className="h-6 w-6 text-white" />
+        <Card className="text-center mb-8 sm:mb-12 shadow-lg">
+          <CardContent className="p-6 sm:p-8">
+            <div className="flex justify-center mb-4 sm:mb-6">
+              <div className="relative">
+                <Image
+                  src="/images/logo3.PNG"
+                  alt="Rotaly Logo"
+                  width={60}
+                  height={60}
+                  className="rounded-lg shadow-lg sm:w-16 sm:h-16 md:w-20 md:h-20"
+                />
+                <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-green-500 rounded-full p-1.5 sm:p-2">
+                  <Shield className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-white" />
+                </div>
               </div>
             </div>
-          </div>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Gizlilik Politikası
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Kişisel verilerinizin güvenliği bizim için çok önemli. Bu politika, verilerinizin 
-            nasıl toplandığını, kullanıldığını ve korunduğunu açıklar.
-          </p>
-          <div className="mt-6">
-            <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-4 py-2 text-lg">
-              <CheckCircle className="h-5 w-5 mr-2" />
-              KVKK Uyumlu
-            </Badge>
-          </div>
-        </div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 leading-tight">
+              Gizlilik Politikası
+            </h1>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed px-4">
+              Kişisel verilerinizin güvenliği bizim için çok önemli. Bu politika, verilerinizin 
+              nasıl toplandığını, kullanıldığını ve korunduğunu açıklar.
+            </p>
+            <div className="mt-4 sm:mt-6">
+              <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base">
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                KVKK Uyumlu
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Last Updated */}
-        <Alert className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 mb-8">
+        <Alert className="mb-6 sm:mb-8 shadow-lg">
           <Calendar className="h-4 w-4 text-blue-500" />
-          <AlertDescription className="text-blue-800 dark:text-blue-200">
+          <AlertDescription className="text-blue-800 dark:text-blue-200 text-sm sm:text-base">
             <strong>Son Güncelleme:</strong> 15 Ocak 2024. Bu politika düzenli olarak güncellenir.
           </AlertDescription>
         </Alert>
 
         {/* Data Collection */}
-        <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-lg mb-8">
-          <CardHeader>
-            <div className="flex items-center space-x-3">
-              <Database className="h-8 w-8 text-blue-500" />
+        <Card className="mb-6 sm:mb-8 shadow-lg">
+          <CardHeader className="pb-4 sm:pb-6">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <Database className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500" />
               <div>
-                <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
+                <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                   Topladığımız Veriler
                 </CardTitle>
-                <CardDescription className="text-gray-600 dark:text-gray-300">
+                <CardDescription className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
                   Hizmet kalitemizi artırmak için topladığımız veri türleri
                 </CardDescription>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-                  <Users className="h-5 w-5 text-blue-500 mr-2" />
+          <CardContent className="p-4 sm:p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+              <div className="space-y-3 sm:space-y-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                  <Users className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500 mr-2" />
                   Kişisel Bilgiler
                 </h3>
-                <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                <ul className="space-y-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                   <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                    <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 mr-2" />
                     Ad, soyad ve iletişim bilgileri
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                    <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 mr-2" />
                     Doğum tarihi ve kimlik bilgileri
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Ödeme ve kredi kartı bilgileri
+                    <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 mr-2" />
+                    Ödeme bilgileri (şifrelenmiş)
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Pasaport ve seyahat belgeleri
+                    <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 mr-2" />
+                    Rezervasyon geçmişi
                   </li>
                 </ul>
               </div>
 
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-                  <Eye className="h-5 w-5 text-purple-500 mr-2" />
+              <div className="space-y-3 sm:space-y-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                  <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mr-2" />
                   Kullanım Verileri
                 </h3>
-                <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                <ul className="space-y-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                   <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Web sitesi kullanım istatistikleri
+                    <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 mr-2" />
+                    Site kullanım istatistikleri
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                    <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 mr-2" />
                     Arama geçmişi ve tercihler
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Cihaz ve tarayıcı bilgileri
+                    <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 mr-2" />
+                    Cihaz bilgileri
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Konum verileri (izinle)
+                    <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 mr-2" />
+                    IP adresi ve konum verileri
                   </li>
                 </ul>
               </div>
@@ -137,177 +138,111 @@ export default function PrivacyPage() {
         </Card>
 
         {/* Data Usage */}
-        <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-lg mb-8">
-          <CardHeader>
-            <div className="flex items-center space-x-3">
-              <FileText className="h-8 w-8 text-green-500" />
+        <Card className="mb-6 sm:mb-8 shadow-lg">
+          <CardHeader className="pb-4 sm:pb-6">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-purple-500" />
               <div>
-                <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
-                  Verilerin Kullanım Amacı
+                <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                  Verilerin Kullanımı
                 </CardTitle>
-                <CardDescription className="text-gray-600 dark:text-gray-300">
-                  Kişisel verilerinizi hangi amaçlarla kullanıyoruz
+                <CardDescription className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
+                  Topladığımız verileri nasıl kullandığımız
                 </CardDescription>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-6">
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                  <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Rezervasyon İşlemleri</h4>
-                  <p className="text-sm text-blue-800 dark:text-blue-200">
-                    Otel rezervasyonlarınızı gerçekleştirmek ve yönetmek için
-                  </p>
-                </div>
-                
-                <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <h4 className="font-semibold text-green-900 dark:text-green-100 mb-2">Müşteri Hizmetleri</h4>
-                  <p className="text-sm text-green-800 dark:text-green-200">
-                    Size daha iyi destek hizmeti sunmak için
-                  </p>
-                </div>
-                
-                <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                  <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">Kişiselleştirme</h4>
-                  <p className="text-sm text-purple-800 dark:text-purple-200">
-                    Size özel öneriler ve deneyimler sunmak için
-                  </p>
-                </div>
-                
-                <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                  <h4 className="font-semibold text-orange-900 dark:text-orange-100 mb-2">Güvenlik</h4>
-                  <p className="text-sm text-orange-800 dark:text-orange-200">
-                    Hesabınızı ve verilerinizi korumak için
-                  </p>
-                </div>
+          <CardContent className="p-4 sm:p-6">
+            <div className="space-y-4 sm:space-y-6">
+              <div className="p-3 sm:p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2 text-sm sm:text-base">
+                  Hizmet Sağlama
+                </h3>
+                <p className="text-xs sm:text-sm text-blue-800 dark:text-blue-200">
+                  Rezervasyon işlemlerinizi gerçekleştirmek, hesabınızı yönetmek ve 
+                  müşteri hizmetleri sunmak için verilerinizi kullanırız.
+                </p>
+              </div>
+
+              <div className="p-3 sm:p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <h3 className="font-semibold text-green-900 dark:text-green-100 mb-2 text-sm sm:text-base">
+                  Kişiselleştirme
+                </h3>
+                <p className="text-xs sm:text-sm text-green-800 dark:text-green-200">
+                  Size özel öneriler sunmak ve kullanıcı deneyimini iyileştirmek için 
+                  tercihlerinizi analiz ederiz.
+                </p>
+              </div>
+
+              <div className="p-3 sm:p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-2 text-sm sm:text-base">
+                  İletişim
+                </h3>
+                <p className="text-xs sm:text-sm text-purple-800 dark:text-purple-200">
+                  Rezervasyon onayları, güncellemeler ve önemli bilgilendirmeler için 
+                  sizinle iletişime geçeriz.
+                </p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Data Protection */}
-        <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-lg mb-8">
-          <CardHeader>
-            <div className="flex items-center space-x-3">
-              <Lock className="h-8 w-8 text-red-500" />
+        <Card className="mb-6 sm:mb-8 shadow-lg">
+          <CardHeader className="pb-4 sm:pb-6">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <Lock className="h-6 w-6 sm:h-8 sm:w-8 text-red-500" />
               <div>
-                <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
-                  Veri Koruma Önlemleri
+                <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                  Veri Koruma
                 </CardTitle>
-                <CardDescription className="text-gray-600 dark:text-gray-300">
-                  Verilerinizi korumak için aldığımız güvenlik önlemleri
+                <CardDescription className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
+                  Verilerinizi nasıl koruduğumuz
                 </CardDescription>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Teknik Güvenlik</h3>
-                <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
-                  <li className="flex items-start">
-                    <Shield className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
-                    <span>SSL/TLS şifreleme ile güvenli veri aktarımı</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Shield className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
-                    <span>Güvenli sunucu altyapısı ve düzenli güvenlik güncellemeleri</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Shield className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
-                    <span>Çok faktörlü kimlik doğrulama sistemi</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Shield className="h-5 w-5 text-green-500 mr-2 mt-0.5" />
-                    <span>Düzenli güvenlik denetimleri ve penetrasyon testleri</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Organizasyonel Güvenlik</h3>
-                <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
-                  <li className="flex items-start">
-                    <Users className="h-5 w-5 text-blue-500 mr-2 mt-0.5" />
-                    <span>Çalışanlarımıza düzenli gizlilik eğitimleri</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Users className="h-5 w-5 text-blue-500 mr-2 mt-0.5" />
-                    <span>Veri erişim yetkilerinin sınırlandırılması</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Users className="h-5 w-5 text-blue-500 mr-2 mt-0.5" />
-                    <span>Gizlilik sözleşmeleri ve yasal uyumluluk</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Users className="h-5 w-5 text-blue-500 mr-2 mt-0.5" />
-                    <span>Veri işleme kayıtları ve denetim izleri</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Data Sharing */}
-        <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-lg mb-8">
-          <CardHeader>
-            <div className="flex items-center space-x-3">
-              <AlertTriangle className="h-8 w-8 text-orange-500" />
-              <div>
-                <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
-                  Veri Paylaşımı
-                </CardTitle>
-                <CardDescription className="text-gray-600 dark:text-gray-300">
-                  Verilerinizi kimlerle paylaşıyoruz ve neden
-                </CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="space-y-6">
-              <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border-l-4 border-yellow-400">
-                <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2">
-                  Önemli Not
-                </h4>
-                <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                  Kişisel verilerinizi asla üçüncü taraflarla satmıyor veya kiralıyoruz. 
-                  Sadece hizmet kalitemizi artırmak için gerekli durumlarda paylaşıyoruz.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <h4 className="font-semibold text-gray-900 dark:text-white">Otel Ortaklarımız</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Rezervasyon işlemlerinizi tamamlamak için sadece gerekli bilgileri 
-                    otel ortaklarımızla paylaşırız.
-                  </p>
+          <CardContent className="p-4 sm:p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+              <div className="space-y-3">
+                <div className="flex items-start space-x-2 sm:space-x-3">
+                  <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">SSL Şifreleme</h4>
+                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                      Tüm veri transferleri 256-bit SSL şifreleme ile korunur.
+                    </p>
+                  </div>
                 </div>
-
-                <div className="space-y-3">
-                  <h4 className="font-semibold text-gray-900 dark:text-white">Ödeme Sağlayıcıları</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Güvenli ödeme işlemleri için lisanslı ödeme sağlayıcılarıyla 
-                    çalışırız.
-                  </p>
+                <div className="flex items-start space-x-2 sm:space-x-3">
+                  <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">Güvenli Sunucular</h4>
+                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                      Verileriniz ISO 27001 sertifikalı sunucularda saklanır.
+                    </p>
+                  </div>
                 </div>
+              </div>
 
-                <div className="space-y-3">
-                  <h4 className="font-semibold text-gray-900 dark:text-white">Yasal Zorunluluklar</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Yasal yükümlülüklerimiz gereği yetkili makamlarla veri paylaşımı 
-                    yapabiliriz.
-                  </p>
+              <div className="space-y-3">
+                <div className="flex items-start space-x-2 sm:space-x-3">
+                  <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">KVKK Uyumluluğu</h4>
+                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                      Kişisel Verilerin Korunması Kanunu&apos;na tam uyum.
+                    </p>
+                  </div>
                 </div>
-
-                <div className="space-y-3">
-                  <h4 className="font-semibold text-gray-900 dark:text-white">Analitik Hizmetleri</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Hizmet kalitemizi artırmak için anonim analitik verileri 
-                    kullanırız.
-                  </p>
+                <div className="flex items-start space-x-2 sm:space-x-3">
+                  <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">Düzenli Denetimler</h4>
+                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                      Güvenlik sistemlerimiz sürekli test edilir ve güncellenir.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -315,91 +250,86 @@ export default function PrivacyPage() {
         </Card>
 
         {/* User Rights */}
-        <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-lg mb-8">
-          <CardHeader>
-            <div className="flex items-center space-x-3">
-              <CheckCircle className="h-8 w-8 text-green-500" />
+        <Card className="mb-6 sm:mb-8 shadow-lg">
+          <CardHeader className="pb-4 sm:pb-6">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <Users className="h-6 w-6 sm:h-8 sm:w-8 text-indigo-500" />
               <div>
-                <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
+                <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                   Kullanıcı Hakları
                 </CardTitle>
-                <CardDescription className="text-gray-600 dark:text-gray-300">
+                <CardDescription className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
                   KVKK kapsamında sahip olduğunuz haklar
                 </CardDescription>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Bilgi Alma Hakkı</h3>
-                <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Hangi verilerinizin işlendiğini öğrenme
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Verilerinizin hangi amaçla kullanıldığını öğrenme
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Verilerinizin kimlerle paylaşıldığını öğrenme
-                  </li>
-                </ul>
+          <CardContent className="p-4 sm:p-6">
+            <div className="space-y-3 sm:space-y-4">
+              <div className="flex items-start space-x-2 sm:space-x-3">
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mt-0.5" />
+                <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                  Verilerinize erişim hakkı
+                </span>
               </div>
-
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Müdahale Hakkı</h3>
-                <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Verilerinizin düzeltilmesini isteme
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Verilerinizin silinmesini isteme
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Veri işlemeye itiraz etme
-                  </li>
-                </ul>
+              <div className="flex items-start space-x-2 sm:space-x-3">
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mt-0.5" />
+                <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                  Verilerinizi düzeltme hakkı
+                </span>
+              </div>
+              <div className="flex items-start space-x-2 sm:space-x-3">
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mt-0.5" />
+                <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                  Verilerinizi silme hakkı
+                </span>
+              </div>
+              <div className="flex items-start space-x-2 sm:space-x-3">
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mt-0.5" />
+                <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                  İşlemeye itiraz etme hakkı
+                </span>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Contact Information */}
-        <Card className="bg-gradient-to-r from-green-500 to-emerald-600 text-white border-0 shadow-lg">
-          <CardContent className="p-8">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold mb-2">Gizlilik Sorularınız mı var?</h2>
-              <p className="text-green-100">
-                Gizlilik politikamız hakkında sorularınız için bizimle iletişime geçin
-              </p>
+        <Card className="shadow-lg">
+          <CardHeader className="pb-4 sm:pb-6">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <Mail className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500" />
+              <div>
+                <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                  İletişim Bilgileri
+                </CardTitle>
+                <CardDescription className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
+                  Gizlilik konularında bizimle iletişime geçin
+                </CardDescription>
+              </div>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          </CardHeader>
+          <CardContent className="p-4 sm:p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
               <div className="text-center">
-                <Mail className="h-8 w-8 mx-auto mb-3 text-green-200" />
-                <h3 className="font-semibold mb-1">E-posta</h3>
-                <p className="text-green-100">privacy@rotaly.com</p>
-                <p className="text-xs text-green-200">Gizlilik ekibi</p>
+                <Phone className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 sm:mb-3 text-blue-500" />
+                <h3 className="font-semibold mb-1 text-sm sm:text-base">Telefon</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">0850 XXX XX XX</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">7/24 Hizmet</p>
               </div>
               
               <div className="text-center">
-                <Phone className="h-8 w-8 mx-auto mb-3 text-green-200" />
-                <h3 className="font-semibold mb-1">Telefon</h3>
-                <p className="text-green-100">0850 XXX XX XX</p>
-                <p className="text-xs text-green-200">Gizlilik hattı</p>
+                <Mail className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 sm:mb-3 text-blue-500" />
+                <h3 className="font-semibold mb-1 text-sm sm:text-base">E-posta</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">gizlilik@rotaly.com</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">24 saat içinde yanıt</p>
               </div>
               
               <div className="text-center">
-                <MapPin className="h-8 w-8 mx-auto mb-3 text-green-200" />
-                <h3 className="font-semibold mb-1">Adres</h3>
-                <p className="text-green-100">İstanbul, Türkiye</p>
-                <p className="text-xs text-green-200">Veri Sorumlusu</p>
+                <MapPin className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 sm:mb-3 text-blue-500" />
+                <h3 className="font-semibold mb-1 text-sm sm:text-base">Adres</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">İstanbul, Türkiye</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Merkez Ofis</p>
               </div>
             </div>
           </CardContent>
