@@ -7,6 +7,9 @@
     "seed": "ts-node src/seed.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only ./main.ts",
+    "seed:all": "npm run seed:users && npm run seed:hotels",
+    "seed:users": "ts-node src/scripts/seeds/seed-users.ts",
+    "seed:hotels": "ts-node src/scripts/seeds/seed-hotels.ts",
     "build": "tsc",
     "start": "nodemon api/main.js"
   },
@@ -38,7 +41,6 @@
     "ts-node-dev": "^2.0.0",
     "uuid": "^11.1.0",
     "zod": "^3.20.0"
-    
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
