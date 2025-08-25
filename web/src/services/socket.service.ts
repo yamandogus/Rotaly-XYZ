@@ -3,8 +3,10 @@ import { io, Socket } from 'socket.io-client';
 export interface SocketMessage {
   id: string;
   message: string;
+  content: string;
   senderId: string;
   receiverId?: string;
+  supportId?: string;
   timestamp: Date;
   isAIMessage?: boolean;
 }
