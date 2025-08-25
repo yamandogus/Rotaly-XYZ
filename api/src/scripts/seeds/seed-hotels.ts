@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import * as readline from "readline";
+import { checkOwners } from "./check-owners";
 
 const prisma = new PrismaClient();
 
@@ -277,54 +279,115 @@ const seedHotels: SeedHotel[] = [
   },
 ];
 
-async function createDefaultOwner() {
-  // Check if there's already a user to use as owner
-  const existingUser = await prisma.user.findFirst({
-    where: {
-      role: "OWNER",
-    },
+function createReadlineInterface() {
+  return readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
   });
+}
 
-  if (existingUser) {
-    console.log(`📋 Using existing owner: ${existingUser.email}`);
-    return existingUser.id;
+async function askForHotelDistribution(owners: any[]) {
+  const rl = createReadlineInterface();
+  const distribution: { ownerId: string; hotelCount: number }[] = [];
+
+  console.log(
+    `\n!!! Tüm otelleri eklemek için verdiğiniz sayıların toplamı ${seedHotels.length} olmalı.`
+  );
+
+  for (const owner of owners) {
+    const question = `${owner.name} ${owner.surname} için kaç otel oluşturulsun? `;
+
+    const answer = await new Promise<string>((resolve) => {
+      rl.question(question, resolve);
+    });
+
+    const hotelCount = parseInt(answer.trim());
+
+    if (isNaN(hotelCount) || hotelCount < 0) {
+      console.log("Geçersiz sayı girdiniz. Bu owner için 0 otel atanacak.");
+      distribution.push({ ownerId: owner.id, hotelCount: 0 });
+    } else {
+      distribution.push({ ownerId: owner.id, hotelCount });
+    }
   }
 
-  // Create a default owner for the hotels
-  const defaultOwner = await prisma.user.create({
-    data: {
-      name: "Hotel",
-      surname: "Owner",
-      email: "owner@rotaly.com",
-      phone: "+901234567890",
-      hashedPassword: "hashedPassword123", // In real scenario, this should be properly hashed
-      role: "OWNER",
-      isVerified: true,
-    },
-  });
+  rl.close();
 
-  console.log(`👤 Created default owner: ${defaultOwner.email}`);
-  return defaultOwner.id;
+  // toplam otel sayısını kontrol et
+  const totalAssigned = distribution.reduce((sum, d) => sum + d.hotelCount, 0);
+
+  if (totalAssigned > seedHotels.length) {
+    console.log(
+      `Uyarı: Toplam atanan otel sayısı (${totalAssigned}) mevcut otel sayısından (${seedHotels.length}) fazla!`
+    );
+    console.log("Otel dağılımı mevcut oteller kadar ayarlanacak.");
+  }
+
+  return distribution;
 }
 
 async function seedDatabase() {
   try {
-    console.log("🌱 Starting database seeding...");
+    const owners = await checkOwners();
 
-    // Create or get default owner
-    const ownerId = await createDefaultOwner();
+    if (!owners || owners.length === 0) {
+      console.log("Hiç owner bulunamadı. Önce users seed edin.");
+    } else {
+      // ask for hotel distribution among owners
+      const distribution = await askForHotelDistribution(owners);
 
-    // Optional: Clear existing hotels (comment out if you want to keep existing data)
-    console.log("🧹 Clearing existing hotels...");
-    await prisma.hotel.deleteMany({});
+      // distribute hotels among owners
+      await seedHotelsWithDistribution(distribution);
+    }
+  } catch (error) {
+    console.error("Seed işlemi sırasında hata oluştu:", error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
 
-    console.log("🏨 Creating seed hotels...");
+async function seedHotelsWithDistribution(
+  distribution: { ownerId: string; hotelCount: number }[]
+) {
+  // İsteğe bağlı: Mevcut otelleri temizleyin (mevcut verileri tutmak istiyorsanız yorum satırına yazın)
+  /*   console.log("Mevcut oteller temizleniyor...");
+  await prisma.hotel.deleteMany({}); */
+
+  console.log("Oteller owner'lara dağıtılarak oluşturuluyor...");
+
+  let hotelIndex = 0;
+  let totalSuccessCount = 0;
+  let totalErrorCount = 0;
+
+  for (const dist of distribution) {
+    if (dist.hotelCount === 0) continue;
+
+    const owner = await prisma.user.findUnique({
+      where: { id: dist.ownerId },
+      select: { name: true, surname: true },
+    });
+
+    // oluşturulacak otel sayısını hesapla
+    const actualHotelCount = Math.min(
+      dist.hotelCount,
+      seedHotels.length - hotelIndex
+    );
+
+    console.log(
+      `\n${owner?.name} ${owner?.surname} için ${actualHotelCount} otel oluşturuluyor...`
+    );
 
     let successCount = 0;
     let errorCount = 0;
 
-    // Create hotels one by one to handle potential errors
-    for (const hotelData of seedHotels) {
+    for (
+      let i = 0;
+      i < actualHotelCount && hotelIndex < seedHotels.length;
+      i++, hotelIndex++
+    ) {
+      const hotelData = seedHotels[hotelIndex];
+
       try {
         const hotel = await prisma.hotel.create({
           data: {
@@ -336,69 +399,91 @@ async function seedDatabase() {
             location: hotelData.location,
             rating: hotelData.rating,
             type: hotelData.type,
-            ownerId: ownerId,
+            ownerId: dist.ownerId,
             isActive: true,
           },
         });
 
-        console.log(`✅ Created hotel: ${hotel.name} in ${hotel.city}`);
+        console.log(`  Otel oluşturuldu: ${hotel.name} - ${hotel.city}`);
         successCount++;
+        totalSuccessCount++;
       } catch (error) {
-        console.error(`❌ Error creating hotel ${hotelData.name}:`, error);
+        console.error(`  Otel oluşturulurken hata: ${hotelData.name}:`, error);
         errorCount++;
+        totalErrorCount++;
       }
     }
 
-    // Get statistics
-    const totalHotels = await prisma.hotel.count();
-    const uniqueCities = await prisma.hotel.groupBy({
-      by: ["city"],
-      _count: {
-        city: true,
-      },
-    });
-
-    const uniqueCountries = await prisma.hotel.groupBy({
-      by: ["country"],
-      _count: {
-        country: true,
-      },
-    });
-
-    console.log("\n📊 Seeding Statistics:");
-    console.log(`✅ Successfully created: ${successCount} hotels`);
-    console.log(`❌ Errors: ${errorCount} hotels`);
-    console.log(`📈 Total hotels in database: ${totalHotels}`);
-    console.log(`🏙️ Cities with hotels: ${uniqueCities.length}`);
-    console.log(`🌍 Countries with hotels: ${uniqueCountries.length}`);
-
-    console.log("\n🏙️ Cities:");
-    uniqueCities.forEach((city) => {
-      console.log(`  - ${city.city}: ${city._count.city} hotels`);
-    });
-
-    console.log("\n🌍 Countries:");
-    uniqueCountries.forEach((country) => {
-      console.log(`  - ${country.country}: ${country._count.country} hotels`);
-    });
-
-    console.log("\n🎉 Database seeding completed successfully!");
-    console.log("\n💡 You can now test the AI chat with queries like:");
-    console.log('  - "İstanbul\'da otel arıyorum" (Turkish)');
-    console.log('  - "Looking for hotels in Paris" (English)');
-    console.log('  - "Show me hotels in Dubai"');
-  } catch (error) {
-    console.error("❌ Error during seeding:", error);
-    throw error;
-  } finally {
-    await prisma.$disconnect();
+    console.log(
+      `${owner?.name} ${owner?.surname} için: ${successCount} başarılı, ${errorCount} hata`
+    );
   }
+
+  await printStatistics(totalSuccessCount, totalErrorCount);
 }
 
-// Run the seeding script
+async function printStatistics(successCount: number, errorCount: number) {
+  const totalHotels = await prisma.hotel.count();
+  const uniqueCities = await prisma.hotel.groupBy({
+    by: ["city"],
+    _count: {
+      city: true,
+    },
+  });
+
+  const uniqueCountries = await prisma.hotel.groupBy({
+    by: ["country"],
+    _count: {
+      country: true,
+    },
+  });
+
+  const ownerStats = await prisma.user.findMany({
+    where: { role: "OWNER" },
+    select: {
+      name: true,
+      surname: true,
+      _count: {
+        select: {
+          hotels: true,
+        },
+      },
+    },
+  });
+
+  console.log("\nSeed İstatistikleri:");
+  console.log(`Başarıyla oluşturulan: ${successCount} otel`);
+  console.log(`Hatalar: ${errorCount} otel`);
+  console.log(`Veritabanındaki toplam otel: ${totalHotels}`);
+  console.log(`Otel bulunan şehir sayısı: ${uniqueCities.length}`);
+  console.log(`Otel bulunan ülke sayısı: ${uniqueCountries.length}`);
+
+  console.log("\nOwner'lara göre dağılım:");
+  ownerStats.forEach((owner) => {
+    console.log(
+      `  - ${owner.name} ${owner.surname}: ${owner._count.hotels} otel`
+    );
+  });
+
+  console.log("\nŞehirler:");
+  uniqueCities.forEach((city) => {
+    console.log(`  - ${city.city}: ${city._count.city} otel`);
+  });
+
+  console.log("\nÜlkeler:");
+  uniqueCountries.forEach((country) => {
+    console.log(`  - ${country.country}: ${country._count.country} otel`);
+  });
+
+  console.log("\nAI chat'i şu sorgularla test edebilirsiniz:");
+  console.log('  - "İstanbul\'da otel arıyorum" (Türkçe)');
+  console.log('  - "Looking for hotels in Paris" (İngilizce)');
+  console.log('  - "Show me hotels in Dubai" (İngilizce)\n');
+}
+
 if (require.main === module) {
   seedDatabase().catch((error) => {
-    console.error("Failed to seed database:", error);
+    console.error("Veritabanı seed işlemi başarısız oldu:", error);
     process.exit(1);
   });
 }
