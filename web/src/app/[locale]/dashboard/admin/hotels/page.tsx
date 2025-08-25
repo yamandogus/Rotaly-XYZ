@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import hotelsData from "@/data/hotelsData.json";
 import { HotelNew } from "@/types/hotel";
 import {
   HotelCards,
@@ -15,26 +14,77 @@ import {
   DeleteHotelDialog,
   HotelMobilCard,
 } from "@/components/dashboard/admin/hotels";
+import { Skeleton } from "@/components/ui/skeleton";
+import { adminService } from "@/services";
+
+
+function HotelsLoading() {
+  return (
+    <div className="p-4 md:p-6 lg:p-8 space-y-6">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Stats Cards Skeleton */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => (
+            <Card key={i} className="bg-card border border-border">
+              <CardContent className="p-4">
+                <div className="space-y-2">
+                  <Skeleton className="h-8 w-16 mx-auto" />
+                  <Skeleton className="h-4 w-24 mx-auto" />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Table Skeleton */}
+        <Card className="bg-card border border-border">
+          <CardHeader className="pb-4">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Skeleton className="h-10 w-full sm:w-64" />
+              <Skeleton className="h-10 w-32" />
+              <Skeleton className="h-10 w-32" />
+            </div>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="space-y-4 p-6">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="flex items-center space-x-4">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-4 w-48" />
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-16" />
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
 
 export default function HotelsPage() {
   const t = useTranslations("Hotels");
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredHotels, setFilteredHotels] = useState<HotelNew[]>(hotelsData);
+  const [allHotels, setAllHotels] = useState<HotelNew[]>([]);
+  const [filteredHotels, setFilteredHotels] = useState<HotelNew[]>([]);
   const [selectedHotel, setSelectedHotel] = useState<HotelNew | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isAddHotelDialogOpen, setIsAddHotelDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    const filtered = hotelsData.filter(
+    const filtered = allHotels.filter(
       (hotel: HotelNew) =>
         hotel.name.toLowerCase().includes(value.toLowerCase()) ||
-        hotel.location.toLowerCase().includes(value.toLowerCase()) ||
+        hotel.location?.toLowerCase().includes(value.toLowerCase()) ||
         hotel.id.toLowerCase().includes(value.toLowerCase()) ||
-        hotel.city.toLowerCase().includes(value.toLowerCase()) ||
-        hotel.type.toLowerCase().includes(value.toLowerCase())
+        hotel.city?.toLowerCase().includes(value.toLowerCase()) ||
+        hotel.type?.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredHotels(filtered);
   };
@@ -43,6 +93,29 @@ export default function HotelsPage() {
     // SEO için ayrı sayfaya yönlendirme yapıyoruz
     router.push(`/dashboard/admin/hotels/${hotel.id}`);
   };
+
+  useEffect(() => {
+    const fetchHotels = async () => {
+      try {
+        setLoading(true);
+        const response = await adminService.getAllHotels();
+        
+        if (response.hotels) {
+          // Tüm otelleri sakla
+          setAllHotels(response.hotels);
+          // Aktif olanları filtrele
+          const activeHotels = response.hotels.filter((hotel: HotelNew) => hotel.isActive === true);
+          setFilteredHotels(activeHotels);
+        }
+      } catch (error) {
+        console.error("Otel yüklenirken hata oluştu:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHotels();
+  }, []);
 
   const handleEdit = (hotel: HotelNew) => {
     setSelectedHotel(hotel);
@@ -67,24 +140,23 @@ export default function HotelsPage() {
   };
 
   const getHotelStatus = (status: string) => {
-    const filteredHotelsActive = hotelsData.filter(
-      (hotel: HotelNew) => hotel.isActive === true
-    );
-    const filteredHotelsInactive = hotelsData.filter(
-      (hotel: HotelNew) => hotel.isActive === false
-    );
-    const filteredHotelsAll = hotelsData;
     if (status === "Active") {
-      setFilteredHotels(filteredHotelsActive);
+      const activeHotels = allHotels.filter(
+        (hotel: HotelNew) => hotel.isActive === true
+      );
+      setFilteredHotels(activeHotels);
     } else if (status === "Inactive") {
-      setFilteredHotels(filteredHotelsInactive);
+      const inactiveHotels = allHotels.filter(
+        (hotel: HotelNew) => hotel.isActive === false
+      );
+      setFilteredHotels(inactiveHotels);
     } else {
-      setFilteredHotels(filteredHotelsAll);
+      setFilteredHotels(allHotels);
     }
   };
 
   const getSortBy = (sortBy: string) => {
-    const sortedHotels = [...hotelsData].sort((a, b) => {
+    const sortedHotels = [...allHotels].sort((a, b) => {
       if (sortBy === "name") {
         return a.name.localeCompare(b.name);
       }
@@ -92,16 +164,16 @@ export default function HotelsPage() {
         return b.name.localeCompare(a.name);
       }
       if (sortBy === "rating") {
-        return b.rating - a.rating;
+        return (b.rating || 0) - (a.rating || 0);
       }
       if (sortBy === "rating-desc") {
-        return a.rating - b.rating;
+        return (a.rating || 0) - (b.rating || 0);
       }
       if (sortBy === "type") {
-        return a.type.localeCompare(b.type);
+        return (a.type || '').localeCompare(b.type || '');
       }
       if (sortBy === "type-desc") {
-        return b.type.localeCompare(a.type);
+        return (b.type || '').localeCompare(a.type || '');
       }
       if (sortBy === "createdAt") {
         return (
@@ -117,6 +189,10 @@ export default function HotelsPage() {
     });
     setFilteredHotels(sortedHotels);
   };
+  if (loading) {
+    return <HotelsLoading />;
+  }
+
 
   return (
     <div className="p-4 md:p-6 lg:p-8 space-y-6">

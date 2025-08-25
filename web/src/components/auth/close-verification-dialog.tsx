@@ -36,7 +36,7 @@ export default function CloseVerificationDialog({
             Çıkış Yapmak Üzeresiniz
           </DialogTitle>
           <DialogDescription className="text-center text-sm text-gray-500">
-            Çıkış yaparsanız hesap doğrulama işlemi tekrar başlatılacaktır. 10
+            Çıkış yaparsanız hesap doğrulama işlemi tekrar başlatılacaktır. 30
             dakika sonra tekrar giriş yapabilirsiniz.
           </DialogDescription>
         </DialogHeader>

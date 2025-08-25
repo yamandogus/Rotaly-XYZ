@@ -146,7 +146,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
                             <CommandList className="bg-card">
                               <CommandEmpty>{t("search.noResults")}</CommandEmpty>
                               {filteredHotels.length > 0 ? (
-                                <CommandGroup heading={t("search.results")}>
+                                <CommandGroup heading={t(filteredHotels.length > 1 ? "search.results" : "search.noResults")}>
                                   {filteredHotels.map((hotel) => (
                                     <CommandItem
                                       key={hotel.name}

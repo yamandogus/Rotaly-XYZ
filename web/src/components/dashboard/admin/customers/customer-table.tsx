@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Filter, MoreHorizontal, Trash } from "lucide-react";
+import { ArrowUpDown, Filter, MoreHorizontal, Trash, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -35,16 +35,28 @@ interface CustomerTableProps {
   handleViewDetails: (customer: Customer) => void;
   handleEdit: (customer: Customer) => void;
   handleDelete: (customer: Customer) => void;
+  page: number;
+  totalPages: number;
+  setPage: (page: number) => void;
 }
 
 const CustomerTable = ({
   filteredCustomers,
   activeFilter,
   shortBy,
+  handleViewDetails,
+  handleEdit,
+  handleDelete,
+  page,
+  totalPages,
+  setPage,
 }: CustomerTableProps) => {
   const t = useTranslations("Customers");
 
   const [openDelete, setOpenDelete] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
+    null
+  );
 
   return (
     <div className="hidden lg:block">
@@ -268,7 +280,50 @@ const CustomerTable = ({
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem
-                      onClick={() => setOpenDelete(true)}
+                      onClick={() => handleViewDetails(customer)}
+                    >
+                      <svg
+                        className="h-4 w-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        />
+                      </svg>
+                      {t("viewDetails")}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleEdit(customer)}>
+                      <svg
+                        className="h-4 w-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        />
+                      </svg>
+                      {t("edit")}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setSelectedCustomer(customer);
+                        setOpenDelete(true);
+                      }}
                       className="text-red-600 focus:text-red-600"
                     >
                       <Trash className="h-4 w-4 mr-2" />
@@ -281,27 +336,84 @@ const CustomerTable = ({
           ))}
         </TableBody>
       </Table>
+      {/* Pagination */}
+      <div className="flex items-center justify-between mt-4 px-4">
+        <div className="flex items-center space-x-2">
+          <p className="text-sm text-muted-foreground">
+            Showing {((page - 1) * 8) + 1} to {Math.min(page * 8, filteredCustomers.length)} of {filteredCustomers.length} results
+          </p>
+        </div>
+        
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => page > 1 && setPage(page - 1)}
+            disabled={page === 1}
+            className="h-8 w-8 p-0"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          
+          {/* Sayfa numaraları */}
+          <div className="flex items-center space-x-1">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+              <Button
+                key={pageNum}
+                variant={page === pageNum ? "default" : "outline"}
+                size="sm"
+                onClick={() => setPage(pageNum)}
+                className="h-8 w-8 p-0"
+              >
+                {pageNum}
+              </Button>
+            ))}
+          </div>
+          
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => page < totalPages && setPage(page + 1)}
+            disabled={page === totalPages}
+            className="h-8 w-8 p-0"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
       {/*Delet Dialog */}
-    <Dialog open={openDelete} onOpenChange={setOpenDelete}>
-  <DialogContent>
-    <DialogTitle>{t("deleteTitle")}</DialogTitle>
-    <p>{t("deleteConfirm")}</p>
-    <DialogFooter>
-      <DialogClose asChild>
-        <Button variant="outline">{t("cancel")}</Button>
-      </DialogClose>
-      <Button onClick={() => setOpenDelete(false)}>{t("confirm")}</Button>
-    </DialogFooter>
-  </DialogContent>
-</Dialog>
-
-      ;
+      <Dialog
+        open={openDelete}
+        onOpenChange={(open) => {
+          setOpenDelete(open);
+          if (!open) setSelectedCustomer(null);
+        }}
+      >
+        <DialogContent>
+          <DialogTitle>{t("deleteTitle")}</DialogTitle>
+          <p>{t("deleteConfirm")}</p>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">{t("cancel")}</Button>
+            </DialogClose>
+            <Button
+              onClick={() => {
+                if (selectedCustomer) {
+                  handleDelete(selectedCustomer);
+                }
+                setOpenDelete(false);
+                setSelectedCustomer(null);
+              }}
+            >
+              {t("confirm")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
 
-<Dialog>
-  <DialogContent>test</DialogContent>
-</Dialog>;
+
 
 export default CustomerTable;

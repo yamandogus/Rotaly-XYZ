@@ -26,13 +26,11 @@ interface LoginFormData {
 interface LoginFormProps {
   form: UseFormReturn<LoginFormData>;
   onSubmit: (data: LoginFormData) => void;
-  onTestDialogOpen: () => void;
 }
 
 export default function LoginForm({
   form,
   onSubmit,
-  onTestDialogOpen,
 }: LoginFormProps) {
   const t = useTranslations("LoginPage");
 
@@ -44,7 +42,7 @@ export default function LoginForm({
       <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
         {t("subtitle")}
       </p>
-      <button onClick={onTestDialogOpen}>open control</button>
+      
       
       <Form {...form}>
         <form className="my-8" onSubmit={form.handleSubmit(onSubmit)}>
@@ -60,6 +58,7 @@ export default function LoginForm({
                       <Input
                         placeholder={t("emailPlaceholder")}
                         {...field}
+                        onChange={(e) => field.onChange(e.target.value.trim())} 
                       />
                     </FormControl>
                     <FormMessage />

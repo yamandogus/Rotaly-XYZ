@@ -198,6 +198,31 @@ export class AuthController {
       }
     }
   }
+  async refreshToken(req: Request, res: Response): Promise<void> {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        throw new AppError("Yetkilendirme başlığı eksik", 401);
+      }
+      await this.authService.refreshToken(authHeader);
+      res.status(200).json({
+        success: true,
+        message: "Token yenilendi",
+      });
+    } catch (error) {
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Token yenileme sırasında bir hata oluştu",
+        });
+      }
+    }
+  }
 
   async forgotPassword(req: Request, res: Response): Promise<void> {
     try {

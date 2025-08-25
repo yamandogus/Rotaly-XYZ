@@ -2,8 +2,6 @@ import { toast } from "react-hot-toast";
 import { authService } from "@/services/auth.service";
 import { userService } from "@/services/user.service";
 import { setUser } from "@/store/auth/auth-slice";
-import { setUserRole } from "@/store/testUser/test-user-slice";
-import { testUsers } from "./test-users";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Dispatch } from "redux";
 
@@ -24,7 +22,6 @@ interface LoginLogicProps {
   router: AppRouterInstance;
   dispatch: Dispatch;
   loginSuccess: (userType: 'user' | 'hotel' | 'admin' | 'support') => void;
-  loginError: () => void;
   setOpen: (open: boolean) => void;
 }
 
@@ -32,7 +29,6 @@ export const createLoginLogic = ({
   router,
   dispatch,
   loginSuccess,
-  loginError,
   setOpen,
 }: LoginLogicProps) => {
   const handleLogin = async (data: LoginFormData) => {
@@ -44,24 +40,20 @@ export const createLoginLogic = ({
       console.log("login response", response);
 
       if (response.success) {
-        // API login başarılı - kullanıcı profilini al
         const userResponse = await userService.getUserProfile();
         console.log("user response", userResponse);
 
         if (userResponse.data.isVerified === false) {
           setOpen(true);
         } else {
-          // Kullanıcı doğrulanmış - role göre yönlendir
           handleUserRedirection(userResponse.data, router, dispatch, loginSuccess);
         }
       } else {
-        // API login başarısız - test kullanıcılarını kontrol et
-        handleTestUserLogin(data, router, dispatch, loginSuccess, loginError);
+        toast.error("Hatalı kullanıcı adı veya şifre.");
       }
     } catch (error) {
       console.error("API login error:", error);
-      // API hatası - test kullanıcılarını kontrol et
-      handleTestUserLogin(data, router, dispatch, loginSuccess, loginError);
+      toast.error("Hatalı kullanıcı adı veya şifre.");
     }
   };
 
@@ -131,53 +123,3 @@ const handleUserRedirection = (
   }
 };
 
-// Test kullanıcıları için login
-const handleTestUserLogin = (
-  data: LoginFormData,
-  router: AppRouterInstance,
-  dispatch: Dispatch,
-  loginSuccess: (userType: 'user' | 'hotel' | 'admin' | 'support') => void,
-  loginError: () => void
-) => {
-  // Normal kullanıcı girişi
-  if (data.email === testUsers.user.email && data.password === testUsers.user.password) {
-    localStorage.setItem("userRole", "user");
-    dispatch(setUserRole(testUsers.user.role));
-    loginSuccess("user");
-    router.push("/");
-  }
-  // Otel girişi
-  else if (
-    data.email === testUsers.hotel.email &&
-    data.password === testUsers.hotel.password
-  ) {
-    localStorage.setItem("userRole", "hotel");
-    dispatch(setUserRole(testUsers.hotel.role));
-    loginSuccess("hotel");
-    router.push("/dashboard");
-  }
-  // Admin girişi
-  else if (
-    data.email === testUsers.admin.email &&
-    data.password === testUsers.admin.password
-  ) {
-    localStorage.setItem("userRole", "admin");
-    dispatch(setUserRole(testUsers.admin.role));
-    loginSuccess("admin");
-    router.push("/dashboard");
-  }
-  // Support girişi
-  else if (
-    data.email === testUsers.support.email &&
-    data.password === testUsers.support.password
-  ) {
-    localStorage.setItem("userRole", "support");
-    dispatch(setUserRole(testUsers.support.role));
-    loginSuccess("support");
-    router.push("/dashboard/support");
-  }
-  // Hatalı giriş
-  else {
-    loginError();
-  }
-};

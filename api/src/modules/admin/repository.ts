@@ -24,6 +24,7 @@ export class AdminRepository {
         postCode: true,
         fullAddress: true,
         logo: true,
+        email: true,
       },
     });
   }

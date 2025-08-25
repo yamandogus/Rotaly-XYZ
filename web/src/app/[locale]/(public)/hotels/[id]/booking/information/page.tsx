@@ -8,14 +8,15 @@ import { Button } from "@/components/ui/button";
 import HotelSummary from "@/components/booking/hotel-summary";
 import { bookingData, hotelData } from "@/data/dumy";
 import { useDispatch } from "react-redux";
-import { setStepIncrease } from "@/store/reservation/reservation-slice";
 import { useTranslations } from "next-intl";
+import { nextStep } from "@/store/step/step-slice";
 
 export default function BookingInformationPage() {
   const dispatch = useDispatch();
-  const t = useTranslations("HotelDetail.BookingInformationPage"); // doğru namespace
+  const t = useTranslations("HotelDetail.BookingInformationPage");
+  
   const handleNextStep = () => {
-    dispatch(setStepIncrease(2)); // 2. adıma (payment sayfasına) geç
+    dispatch(nextStep());
   };
 
   return (

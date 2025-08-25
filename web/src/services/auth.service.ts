@@ -67,16 +67,8 @@ export const authService = {
       throw error;
     }
   },
-  // profile işlemleri
-  async getUserProfile() {
-    const token = localStorage.getItem("access_token");
-    const response = await axios.get(`${API_BASE_URL}/auth/profile`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  },
+
+
   // email doğrulama işlemleri
   async verifyEmail(verificationOTP: string) {
     console.log("verify email request data:", verificationOTP);
@@ -93,32 +85,10 @@ export const authService = {
     const response = await axios.post(`${API_BASE_URL}/auth/resend-verification-email`, { email });
     return response.data;
   },
-  // profil resmi güncelleme işlemleri
-  async updateProfileImage(image: string) {
-    const response = await axios.put(`${API_BASE_URL}/auth/update-profile-image`, {image}, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      },
-    });
-    return response.data;
-  },
-  // profil güncelleme işlemleri
-  async updateProfile(userData: {
-    name: string;
-    surname: string;
-    email: string;
-    phone: string;
-  }) {
-    const response = await axios.put(`${API_BASE_URL}/auth/update-profile`, userData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      },
-    });
-    return response.data;
-  },
+
   // hesap silme işlemleri
-  async deleteAccount() {
-    const response = await axios.delete(`${API_BASE_URL}/auth/delete-account`, {
+  async deleteAccount(id: string) {
+    const response = await axios.delete(`${API_BASE_URL}/auth/delete-account/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
@@ -142,5 +112,6 @@ export const authService = {
     });
     return response.data;
   },
+
 };
 

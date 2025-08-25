@@ -148,6 +148,9 @@ export class AuthService {
       updatedUser: updateUser,
     };
   }
+  async refreshToken(authorizationHeader: string) {
+    await this.jwtService.refresh(authorizationHeader);
+  }
 
   async forgotPassword(email: string) {
     const user = await UserService.getByEmail(email);

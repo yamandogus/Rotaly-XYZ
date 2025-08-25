@@ -21,7 +21,7 @@ const CustomerMobilCard = ({ filteredCustomers, handleViewDetails, handleEdit, h
     <div className="lg:hidden space-y-4 p-4">
       {filteredCustomers.map((customer) => (
         <Card key={customer.id} className="border border-border">
-          <CardContent className="p-4">
+          <CardContent className="px-4 py-2">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -40,16 +40,6 @@ const CustomerMobilCard = ({ filteredCustomers, handleViewDetails, handleEdit, h
                     </p>
                   </div>
                 </div>
-                <Badge
-                  variant={customer.isVerified ? "default" : "secondary"}
-                  className={
-                    customer.isVerified
-                      ? "bg-green-100 text-green-800 hover:bg-green-100"
-                      : "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
-                  }
-                >
-                  {customer.isVerified ? t("verified") : t("unverified")}
-                </Badge>
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-sm">
@@ -94,7 +84,7 @@ const CustomerMobilCard = ({ filteredCustomers, handleViewDetails, handleEdit, h
               </div>
 
               {/* Mobile Actions */}
-              <div className="flex gap-2 pt-2">
+              <div className="flex flex-col gap-2 pt-2">
                 <Button
                   variant="outline"
                   size="sm"
@@ -122,6 +112,18 @@ const CustomerMobilCard = ({ filteredCustomers, handleViewDetails, handleEdit, h
                   <Trash className="h-4 w-4 mr-2" />
                   {t("delete")}
                 </Button>
+              </div>
+              <div className="flex justify-end mt-2">
+              <Badge
+                  variant={customer.isVerified ? "default" : "secondary"}
+                  className={
+                    customer.isVerified
+                      ? "bg-green-100 text-green-800 hover:bg-green-100"
+                      : "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+                  }
+                >
+                  {customer.isVerified ? t("verified") : t("unverified")}
+                </Badge>
               </div>
             </div>
           </CardContent>

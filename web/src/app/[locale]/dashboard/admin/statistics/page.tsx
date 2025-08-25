@@ -67,11 +67,11 @@ interface MetricCardProps {
 const MetricCard: React.FC<MetricCardProps> = ({ title, value, subtitle, icon, trend }) => (
   <Card className="h-full">
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-medium">{title}</CardTitle>
-      {icon}
+      <CardTitle className="text-xs sm:text-sm font-medium truncate pr-2">{title}</CardTitle>
+      <div className="flex-shrink-0">{icon}</div>
     </CardHeader>
     <CardContent>
-      <div className="text-2xl font-bold">{value}</div>
+      <div className="text-xl sm:text-2xl font-bold">{value}</div>
       {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
       {trend && (
         <div className="flex items-center mt-2">
@@ -89,18 +89,24 @@ const RevenueChartCard = () => {
   const t = useTranslations("AdminStatistics");
 
   return (
-    <Card className="col-span-2 h-full">
+    <Card className="col-span-1 md:col-span-2 lg:col-span-2 h-full">
       <CardHeader>
         <CardTitle className="text-sm font-medium">{t("monthlyRevenue")}</CardTitle>
         <p className="text-xs text-muted-foreground">{t("monthlyRevenueSubtitle")}</p>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={250}>
           <LineChart data={monthlyRevenueData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis yAxisId="left" />
-            <YAxis yAxisId="right" orientation="right" />
+            <XAxis 
+              dataKey="month" 
+              fontSize={12}
+              angle={-45}
+              textAnchor="end"
+              height={60}
+            />
+            <YAxis yAxisId="left" fontSize={12} />
+            <YAxis yAxisId="right" orientation="right" fontSize={12} />
             <Tooltip />
             <Line yAxisId="left" type="monotone" dataKey="revenue" stroke="#8884d8" strokeWidth={2} name={t("revenue")} />
             <Line yAxisId="right" type="monotone" dataKey="bookings" stroke="#82ca9d" strokeWidth={2} name={t("bookings")} />
@@ -121,14 +127,14 @@ const BookingSourceCard = () => {
         <p className="text-xs text-muted-foreground">{t("bookingSourcesSubtitle")}</p>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={250}>
+        <ResponsiveContainer width="100%" height={200}>
           <PieChart>
             <Pie
               data={bookingSourceData}
               cx="50%"
               cy="50%"
-              innerRadius={40}
-              outerRadius={80}
+              innerRadius={30}
+              outerRadius={70}
               fill="#8884d8"
               paddingAngle={5}
               dataKey="value"
@@ -140,9 +146,9 @@ const BookingSourceCard = () => {
             <Tooltip />
           </PieChart>
         </ResponsiveContainer>
-        <div className="flex flex-wrap justify-center mt-2 text-xs">
+        <div className="flex flex-wrap justify-center mt-2 text-xs gap-2">
           {bookingSourceData.map((item) => (
-            <div key={item.name} className="flex items-center mr-3 mb-1">
+            <div key={item.name} className="flex items-center">
               <span className="h-2 w-2 rounded-full mr-1" style={{ backgroundColor: item.color }} />
               <span className="text-muted-foreground">{item.name} ({item.value}%)</span>
             </div>
@@ -214,13 +220,15 @@ const RecentActivityCard = () => {
       <CardContent>
         <div className="space-y-3">
           {activities.map((activity, index) => (
-            <div key={index} className="flex items-center space-x-3">
-              {getActivityIcon(activity.type)}
+            <div key={index} className="flex items-start space-x-3">
+              <div className="flex-shrink-0 mt-0.5">
+                {getActivityIcon(activity.type)}
+              </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{activity.message}</p>
+                <p className="text-sm font-medium break-words">{activity.message}</p>
                 <p className="text-xs text-muted-foreground">{activity.time}</p>
               </div>
-              <div className="text-right">
+              <div className="text-right flex-shrink-0">
                 <p className="text-sm font-medium">{activity.amount}</p>
               </div>
             </div>
@@ -253,18 +261,19 @@ const StatisticPage = () => {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">{t("adminStatistics")}</h2>
+    <div className="flex-1 space-y-4 sm:space-y-6 p-4 sm:p-6 lg:p-8 pt-4 sm:pt-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">{t("adminStatistics")}</h2>
         <div className="flex items-center space-x-2">
-          <Button onClick={exportToCSV} variant="outline">
+          <Button onClick={exportToCSV} variant="outline" size="sm" className="w-full sm:w-auto">
             <Download className="h-4 w-4 mr-1" />
-            {t("exportCSV")}
+            <span className="hidden sm:inline">{t("exportCSV")}</span>
+            <span className="sm:hidden">Export</span>
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         <MetricCard
           title={t("totalRevenue")}
           value="₺289,000"
@@ -292,32 +301,32 @@ const StatisticPage = () => {
         <QuickStatsCard />
         <RecentActivityCard />
 
-       <Card className="h-full">
-      <CardHeader>
-        <CardTitle className="text-sm font-medium">{t("title")}</CardTitle>
-        <p className="text-xs text-muted-foreground">{t("description")}</p>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <span className="text-sm">{t("serverStatus")}</span>
-            <Badge variant="default" className="bg-green-500">{t("active")}</Badge>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-sm">{t("database")}</span>
-            <Badge variant="default" className="bg-green-500">{t("connected")}</Badge>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-sm">{t("apiStatus")}</span>
-            <Badge variant="default" className="bg-green-500">{t("working")}</Badge>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-sm">{t("lastUpdate")}</span>
-            <Badge variant="outline">{t("timeAgo", { minutes: 2 })}</Badge>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle className="text-sm font-medium">{t("title")}</CardTitle>
+            <p className="text-xs text-muted-foreground">{t("description")}</p>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm">{t("serverStatus")}</span>
+                <Badge variant="default" className="bg-green-500">{t("active")}</Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm">{t("database")}</span>
+                <Badge variant="default" className="bg-green-500">{t("connected")}</Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm">{t("apiStatus")}</span>
+                <Badge variant="default" className="bg-green-500">{t("working")}</Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm">{t("lastUpdate")}</span>
+                <Badge variant="outline">{t("timeAgo", { minutes: 2 })}</Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

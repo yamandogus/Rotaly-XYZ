@@ -266,14 +266,14 @@
     },
 
     "BookingInformationPage":{
-      "nameLabel": "Name",
-      "surnameLabel": "Surname",
-      "emailLabel": "Email",
-      "countryLabel": "Country",
-      "phoneLabel": "Phone",
-      "specialRequestLabel": "Special Requests",
-      "specialRequestPlaceholder": "Write your requests here...",
-      "proceedToPaymentButton": "Continue to Payment"
+      "nameLabel": "Ad",
+      "surnameLabel": "Soyad",
+      "emailLabel": "E-posta",
+      "countryLabel": "Ülke",
+      "phoneLabel": "Telefon",
+      "specialRequestLabel": "Özel Talepler",
+      "specialRequestPlaceholder": "Taleplerinizi buraya yazın...",
+      "proceedToPaymentButton": "Ödemeye Geç"
     },
       "HotelSummary": {
       "reviewsCount": "{count} Yorum",
@@ -331,6 +331,23 @@
     },
     "PaymentProcessing": {
       "processingMessage": "Ödeme işleniyor..."
+    },
+    "BookingSuccessPage": {
+      "reservationNo": "Rezervasyon No:",
+      "congratulations": "Tebrikler! {hotelName} için rezervasyonunuz başarıyla tamamlandı.",
+      "detailsBelow": "Rezervasyon detaylarınız aşağıda yer almaktadır.",
+      "goToHomepage": "Ana Sayfaya Dön",
+      "reservationInfoTitle": "Rezervasyon Bilgileri",
+      "checkInLabel": "Giriş Tarihi",
+      "checkOutLabel": "Çıkış Tarihi",
+      "checkInTime": "Giriş saati: {time}",
+      "checkOutTime": "Çıkış saati: {time}",
+      "roomTypeAndGuests": "{roomType}, {nights} Gece, {guests} Kişi",
+      "paymentSummaryTitle": "Ödeme Özeti",
+      "nightsDuration": "{nights} Gece",
+      "taxesAndFees": "Vergi ve Hizmet Ücreti",
+      "total": "Toplam",
+      "reviewsCount": "{count} Yorum"
     }
   },
 
@@ -390,10 +407,12 @@
       "phoneRequired": "Telefon numarası alanı boş bırakılamaz",
       "passwordMinLength": "Şifre en az 8 karakter olmalıdır",
       "passwordsDoNotMatch": "Şifreler eşleşmiyor"
-    }
+    },
+    "phoneFormatHint": "Telefon numarası formatı: +90 5XX XXX XX XX"
   },
   "Dashboard": {
     "title": "Panel",
+    "dashboard": "Panel",
     "bookings": "Rezervasyonlar",
     "hotels": "Otellerim",
     "profile": "Profil",
@@ -523,6 +542,7 @@
     "billingAddress": "Fatura adresi",
     "country": "Ülke",
     "address": "Adres",
+    "fullAddress": "Tam Adres",
     "city": "Şehir",
     "state": "İl/Eyalet",
     "postalCode": "Posta kodu",
@@ -844,6 +864,7 @@
   
 
   "Customers": {
+    "customerManagement": "Müşteri Yönetimi",
     "allRegisteredUsers": "Tüm kayıtlı kullanıcılar",
     "joinedThisMonth": "Bu ay katılanlar",
     "purchasedIn30Days": "30 gün içinde satın alanlar", 
@@ -881,7 +902,11 @@
     "deleteTitle": "Kullanıcı Sil",
     "deleteConfirm": "Kullanıcıyı silmek istediğinize emin misiniz?",
     "cancel": "İptal",
-    "confirm": "Evet"
+    "confirm": "Evet",
+    "target": "Hedef",
+    "ofTotal": "toplamdan",
+    "inactiveRate": "inaktif oranı",
+    "thisMonth": "bu ay"
   },
   "ResetPassword": {
     "title": "Şifremi Unuttum",
@@ -1264,7 +1289,10 @@
     "RESTAURANT": "Restoran",
     "BREAKFAST_INCLUDED": "Kahvaltı Dahil",
     "addHotel": "Otel Ekle",
-    "city": "Şehir"
+    "city": "Şehir",
+    "target": "Hedef",
+    "activeRate": "aktif oranı",
+    "thisMonth": "bu ay"
   },
 
   "Support": {

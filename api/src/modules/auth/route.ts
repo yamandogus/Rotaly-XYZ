@@ -6,7 +6,6 @@ import {
   passwordResetLimiter,
   otpLimiter,
 } from "../../middleware/rateLimit";
-import passport from "passport";
 
 const router = Router();
 const authController = new AuthController();
@@ -46,6 +45,7 @@ router.put(
   authenticateToken,
   authController.updateProfile.bind(authController)
 );
+router.post("/refresh", authController.refreshToken.bind(authController));
 router.put(
   "/change-password",
   authenticateToken,

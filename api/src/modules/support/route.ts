@@ -8,7 +8,10 @@ const router = Router();
 const prisma = new PrismaClient();
 const supportController = new SupportController(prisma);
 
-// apply auth middleware and email verification to all routes
+// Public endpoint - AI status check (no auth required)
+router.get("/ai-status", supportController.isAIServiceAvailable);
+
+// apply auth middleware and email verification to protected routes
 router.use(authenticateToken);
 router.use(verifiedUser);
 
@@ -27,5 +30,8 @@ router.get(
   isAdmin,
   supportController.getSupportRepStatistics
 );
+
+// AI Chat endpoint (requires auth)
+router.post("/ai-chat", supportController.handleAIChat);
 
 export default router;
