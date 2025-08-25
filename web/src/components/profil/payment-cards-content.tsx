@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, CreditCard, Edit, Trash2, Eye, EyeOff } from "lucide-react";
+import { Plus, CreditCard, Edit, Trash2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -12,28 +12,25 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { useTranslations } from "next-intl";
 import { paymentService } from "@/services";
 import toast from "react-hot-toast";
 
 interface PaymentCard {
   id: string;
-  cardNumber: string;
-  cardHolderName: string;
-  expiryDate: string;
-  cvv: string;
+  brand: string;
+  last4: string;
+  expiresAt: string | Date;
+  createdAt: string | Date;
   [key: string]: unknown;
 }
 
 export default function PaymentCardsContent() {
-  const t = useTranslations("UserProfile");
   const [cards, setCards] = useState<PaymentCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState<PaymentCard | null>(null);
-  const [showCardNumbers, setShowCardNumbers] = useState<Record<string, boolean>>({});
 
   const [cardForm, setCardForm] = useState({
     cardNumber: "",
@@ -51,6 +48,7 @@ export default function PaymentCardsContent() {
         setLoading(true);
         setError(null);
         const cardsData = await paymentService.getUserPaymentCards();
+        console.log("cardsData", cardsData);
         setCards(cardsData || []);
       } catch (error) {
         console.error("Cards fetch error:", error);
@@ -118,10 +116,25 @@ export default function PaymentCardsContent() {
   };
 
   const handleEditCard = async () => {
-    if (!validateForm() || !selectedCard) return;
+    if (!selectedCard) return;
+
+    // Edit modda sadece expiryDate güncellenebilir
+    if (!cardForm.expiryDate.trim()) {
+      setFormErrors({ expiryDate: "Son kullanma tarihi gerekli" });
+      return;
+    }
+    
+    if (!/^(0[1-9]|1[0-2])\/([0-9]{2})$/.test(cardForm.expiryDate)) {
+      setFormErrors({ expiryDate: "MM/YY formatında girin" });
+      return;
+    }
 
     try {
-      const updatedCard = await paymentService.updatePaymentCard(selectedCard.id, cardForm);
+      const updateData = {
+        expiryDate: cardForm.expiryDate,
+      };
+      
+      const updatedCard = await paymentService.updatePaymentCard(selectedCard.id, updateData);
       setCards(cards.map(card => card.id === selectedCard.id ? updatedCard : card));
       setIsEditModalOpen(false);
       setSelectedCard(null);
@@ -146,28 +159,21 @@ export default function PaymentCardsContent() {
     }
   };
 
-  const formatCardNumber = (cardNumber: string, showFull: boolean = false) => {
-    if (showFull) {
-      return cardNumber.replace(/(.{4})/g, '$1 ').trim();
-    }
-    const masked = '**** **** **** ' + cardNumber.slice(-4);
-    return masked;
-  };
-
-  const toggleCardVisibility = (cardId: string) => {
-    setShowCardNumbers(prev => ({
-      ...prev,
-      [cardId]: !prev[cardId]
-    }));
+  const formatCardNumber = (last4: string) => {
+    // Güvenlik gereği API'den sadece son 4 hane geliyor
+    return '**** **** **** ' + last4;
   };
 
   const openEditModal = (card: PaymentCard) => {
     setSelectedCard(card);
     setCardForm({
-      cardNumber: card.cardNumber,
-      cardHolderName: card.cardHolderName,
-      expiryDate: card.expiryDate,
-      cvv: card.cvv,
+      cardNumber: '', // Edit modda kart numarası değiştirilmez
+      cardHolderName: '', // API'de cardHolderName güncellenmesi şu an desteklenmiyor
+      expiryDate: new Date(card.expiresAt).toLocaleDateString('tr-TR', { 
+        month: '2-digit', 
+        year: '2-digit' 
+      }).replace(/\./g, '/'), // MM/YY formatına çevir
+      cvv: '',
     });
     setIsEditModalOpen(true);
   };
@@ -247,12 +253,6 @@ export default function PaymentCardsContent() {
                   <CreditCard className="w-8 h-8" />
                   <div className="flex gap-2">
                     <button
-                      onClick={() => toggleCardVisibility(card.id)}
-                      className="text-white/80 hover:text-white"
-                    >
-                      {showCardNumbers[card.id] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                    <button
                       onClick={() => openEditModal(card)}
                       className="text-white/80 hover:text-white"
                     >
@@ -269,18 +269,23 @@ export default function PaymentCardsContent() {
 
                 <div className="mb-6">
                   <p className="text-lg font-mono tracking-wider">
-                    {formatCardNumber(card.cardNumber, showCardNumbers[card.id])}
+                    {formatCardNumber(card.last4)}
                   </p>
                 </div>
 
                 <div className="flex justify-between items-end">
                   <div>
-                    <p className="text-xs text-white/80 mb-1">KART SAHİBİ</p>
-                    <p className="font-semibold">{card.cardHolderName}</p>
+                    <p className="text-xs text-white/80 mb-1">KART MARKASI</p>
+                    <p className="font-semibold">{card.brand}</p>
                   </div>
                   <div>
                     <p className="text-xs text-white/80 mb-1">SON KULLANMA</p>
-                    <p className="font-semibold">{card.expiryDate}</p>
+                    <p className="font-semibold">
+                      {new Date(card.expiresAt).toLocaleDateString('tr-TR', { 
+                        month: '2-digit', 
+                        year: '2-digit' 
+                      })}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -375,62 +380,24 @@ export default function PaymentCardsContent() {
           </DialogHeader>
 
           <div className="space-y-4 py-4">
-            <div>
-              <Label htmlFor="editCardNumber">Kart Numarası</Label>
-              <Input
-                id="editCardNumber"
-                value={cardForm.cardNumber}
-                onChange={(e) => setCardForm({...cardForm, cardNumber: e.target.value})}
-                placeholder="1234 5678 9012 3456"
-                className={formErrors.cardNumber ? "border-red-500" : ""}
-              />
-              {formErrors.cardNumber && (
-                <p className="text-sm text-red-500 mt-1">{formErrors.cardNumber}</p>
-              )}
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <p className="text-sm text-yellow-800">
+                🔒 Güvenlik gereği sadece son kullanma tarihi güncellenebilir.
+              </p>
             </div>
-
+            
             <div>
-              <Label htmlFor="editCardHolderName">Kart Sahibi Adı</Label>
+              <Label htmlFor="editExpiryDate">Yeni Son Kullanma Tarihi</Label>
               <Input
-                id="editCardHolderName"
-                value={cardForm.cardHolderName}
-                onChange={(e) => setCardForm({...cardForm, cardHolderName: e.target.value})}
-                placeholder="Ahmet Yıldız"
-                className={formErrors.cardHolderName ? "border-red-500" : ""}
+                id="editExpiryDate"
+                value={cardForm.expiryDate}
+                onChange={(e) => setCardForm({...cardForm, expiryDate: e.target.value})}
+                placeholder="MM/YY"
+                className={formErrors.expiryDate ? "border-red-500" : ""}
               />
-              {formErrors.cardHolderName && (
-                <p className="text-sm text-red-500 mt-1">{formErrors.cardHolderName}</p>
+              {formErrors.expiryDate && (
+                <p className="text-sm text-red-500 mt-1">{formErrors.expiryDate}</p>
               )}
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="editExpiryDate">Son Kullanma</Label>
-                <Input
-                  id="editExpiryDate"
-                  value={cardForm.expiryDate}
-                  onChange={(e) => setCardForm({...cardForm, expiryDate: e.target.value})}
-                  placeholder="MM/YY"
-                  className={formErrors.expiryDate ? "border-red-500" : ""}
-                />
-                {formErrors.expiryDate && (
-                  <p className="text-sm text-red-500 mt-1">{formErrors.expiryDate}</p>
-                )}
-              </div>
-
-              <div>
-                <Label htmlFor="editCvv">CVV</Label>
-                <Input
-                  id="editCvv"
-                  value={cardForm.cvv}
-                  onChange={(e) => setCardForm({...cardForm, cvv: e.target.value})}
-                  placeholder="123"
-                  className={formErrors.cvv ? "border-red-500" : ""}
-                />
-                {formErrors.cvv && (
-                  <p className="text-sm text-red-500 mt-1">{formErrors.cvv}</p>
-                )}
-              </div>
             </div>
           </div>
 

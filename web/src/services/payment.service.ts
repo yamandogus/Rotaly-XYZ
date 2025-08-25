@@ -8,12 +8,13 @@ const API_BASE_URL =
 export const paymentService = {
   async getUserPaymentCards() {
     const token = localStorage.getItem("access_token");
-    const response = await axios.get(`${API_BASE_URL}/users/me/profile`, {
+    const response = await axios.get(`${API_BASE_URL}/payments/cards`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data.paymentCards || [];
+    // API response yapısı: { success: true, data: { cards: [], pagination: {} } }
+    return response.data.data?.cards || [];
   },
 
   async addPaymentCard(cardData: {
@@ -23,36 +24,56 @@ export const paymentService = {
     cvv: string;
   }) {
     const token = localStorage.getItem("access_token");
-    const response = await axios.post(`${API_BASE_URL}/payment/cards`, cardData, {
+    const response = await axios.post(`${API_BASE_URL}/payments/cards`, cardData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data;
+    // API response yapısı: { success: true, data: {...} }
+    return response.data.data;
   },
 
   async updatePaymentCard(cardId: string, cardData: {
-    cardNumber?: string;
     cardHolderName?: string;
     expiryDate?: string;
-    cvv?: string;
   }) {
     const token = localStorage.getItem("access_token");
-    const response = await axios.put(`${API_BASE_URL}/payment/cards/${cardId}`, cardData, {
+    const response = await axios.put(`${API_BASE_URL}/payments/cards/${cardId}`, cardData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data;
+    // API response yapısı: { success: true, data: {...} }
+    return response.data.data;
   },
 
   async deletePaymentCard(cardId: string) {
     const token = localStorage.getItem("access_token");
-    const response = await axios.delete(`${API_BASE_URL}/payment/cards/${cardId}`, {
+    const response = await axios.delete(`${API_BASE_URL}/payments/cards/${cardId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
+  },
+
+  async getDefaultPaymentCard() {
+    const token = localStorage.getItem("access_token");
+    const response = await axios.get(`${API_BASE_URL}/payments/cards/default`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.data;
+  },
+
+  async getPaymentCardStats() {
+    const token = localStorage.getItem("access_token");
+    const response = await axios.get(`${API_BASE_URL}/payments/cards/stats`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.data;
   },
 };
