@@ -113,5 +113,26 @@ export const authService = {
     return response.data;
   },
 
+  // refresh token işlemleri
+  async refreshToken() {
+    const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {}, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("refresh_token")}`,
+      },
+    });
+    console.log("refresh token response data:", response.data);
+    const newAccessToken = response.data?.data?.accessToken;
+    const newRefreshToken = response.data?.data?.refreshToken;
+
+    if (response.data?.success && newAccessToken) {
+      localStorage.setItem("access_token", newAccessToken);
+    }
+
+    if (response.data?.success && newRefreshToken) {
+      localStorage.setItem("refresh_token", newRefreshToken);
+    }
+    return response.data;
+  },
+
 };
 

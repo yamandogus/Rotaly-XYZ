@@ -5,9 +5,22 @@ import { useTranslations } from "next-intl";
 import ReservationsContent from "@/components/profil/reservations-tabs-content";
 import PastReservations from "@/components/profil/past-tabs-content";
 import Notifications from "@/components/profil/notifications-tabs-content";
+import { useEffect } from "react";
+import { userService } from "@/services";
 
 export default function ProfilePage() {
   const t = useTranslations("UserProfile");
+useEffect(() => {
+  const refreshToken = async () => {
+    try {
+      await userService.getUserProfile();
+    } catch (error) {
+      console.error("Refresh token error:", error);
+    }
+  };
+  refreshToken();
+}, []);
+
 
   return (
     <div className="min-h-screen p-6 md:p-10 max-w-7xl mx-auto ">

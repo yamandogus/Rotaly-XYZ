@@ -3,7 +3,7 @@
 import React from "react";
 import { Link, useRouter } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Heart, LogOut } from "lucide-react";
+import { Heart, LayoutDashboard, LogOut } from "lucide-react";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ModeToggle } from "@/components/mode-toggle";
 import {
@@ -31,6 +31,21 @@ const UserActions = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const router = useRouter();
 
+  // Kullanıcı rolüne göre dashboard URL'ini belirle
+  const getDashboardUrl = () => {
+    switch (user?.role) {
+      case "ADMIN":
+        return "/dashboard/admin";
+      case "OWNER":
+        return "/dashboard/hotel";
+      case "SUPPORT":
+        return "/dashboard/support";
+      case "CUSTOMER":
+        return "/dashboard";
+      default:
+        return "/dashboard";
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -51,21 +66,37 @@ const UserActions = () => {
 
   return (
     <div className="hidden md:flex flex-1 items-center justify-end space-x-2">
-      {user?.role === "CUSTOMER" ? (
+      {user ? (
         <React.Fragment>
-          <Link href="/favorites">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="relative cursor-pointer"
-            >
-              <Heart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-[#ed2f2f] text-white rounded-full text-xs w-4 h-4 flex items-center justify-center text-[10px] font-medium">
-                3
-              </span>
-            </Button>
-          </Link>
-          <Notification />
+          {/* CUSTOMER rolü için favorites ve notification */}
+          {user.role === "CUSTOMER" ? (
+            <>
+              <Link href="/favorites">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="relative cursor-pointer"
+                >
+                  <Heart className="h-5 w-5" />
+                  <span className="absolute -top-1 -right-1 bg-[#ed2f2f] text-white rounded-full text-xs w-4 h-4 flex items-center justify-center text-[10px] font-medium">
+                    3
+                  </span>
+                </Button>
+              </Link>
+              <Notification />
+            </>
+          ):(
+            <>
+             <Link href={getDashboardUrl()}>
+                <Button variant="outline" size="sm" className="relative cursor-pointer">
+                  <LayoutDashboard className="h-5 w-5" />
+                  {t("dashboard")}
+                </Button>
+                </Link>
+            </>
+          )}
+
+          
           <LanguageSwitcher />
           <ModeToggle />
 
@@ -89,30 +120,39 @@ const UserActions = () => {
                 </div>
               </div>
               <DropdownMenuSeparator />
+              
+              {/* Tüm roller için dashboard butonu */}
               <DropdownMenuItem asChild>
-                <Link href="/dashboard">
+                <Link href={getDashboardUrl()}>
                   <Settings className="mr-2 h-4 w-4" />
                   {t("dashboard")}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/profile">
-                  <User className="mr-2 h-4 w-4" />
-                  {t("profile")}
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/hotel">
-                  <User className="mr-2 h-4 w-4" />
-                  {t("Hotels Add")}
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/support">
-                  <MessageCircle className="mr-2 h-4 w-4" />
-                  {t("live-chat")}
-                </Link>
-              </DropdownMenuItem>
+              
+              {/* CUSTOMER rolü için ek menü öğeleri */}
+              {user.role === "CUSTOMER" && (
+                <>
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile">
+                      <User className="mr-2 h-4 w-4" />
+                      {t("profile")}
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/hotel">
+                      <User className="mr-2 h-4 w-4" />
+                      {t("Hotels Add")}
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/support">
+                      <MessageCircle className="mr-2 h-4 w-4" />
+                      {t("live-chat")}
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              )}
+              
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />

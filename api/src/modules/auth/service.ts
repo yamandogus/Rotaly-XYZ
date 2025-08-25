@@ -149,7 +149,7 @@ export class AuthService {
     };
   }
   async refreshToken(authorizationHeader: string) {
-    await this.jwtService.refresh(authorizationHeader);
+    return await this.jwtService.refresh(authorizationHeader);
   }
 
   async forgotPassword(email: string) {

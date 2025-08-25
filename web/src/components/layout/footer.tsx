@@ -176,7 +176,7 @@ export function Footer() {
 
         <div className="mt-8 border-t border-blue-500 dark:border-blue-400 pt-8">
           <div className="text-center flex flex-row items-center justify-center">
-            <Image src='/images/logo3.png' alt='logo' width={50} height={50} />
+            <Image src='/images/logo3.PNG' alt='logo' width={50} height={50} />
             <p className="text-sm text-blue-100 dark:text-blue-200">{t("copyright")}</p>
           </div>
         </div>
