@@ -7,11 +7,11 @@
     "seed": "ts-node src/seed.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only ./main.ts",
+    "build": "tsc",
+    "start": "nodemon api/main.js",
     "seed:all": "npm run seed:users && npm run seed:hotels",
     "seed:users": "ts-node src/scripts/seeds/seed-users.ts",
-    "seed:hotels": "ts-node src/scripts/seeds/seed-hotels.ts",
-    "build": "tsc",
-    "start": "nodemon api/main.js"
+    "seed:hotels": "ts-node src/scripts/seeds/seed-hotels.ts"
   },
   "keywords": [],
   "author": "",
