@@ -6,6 +6,7 @@ import { BookingSearch } from "@/components/home/booking-search";
 import HotelListWithPagination from "@/components/hotel-list-with-pagination";
 import MobileFilter from "@/components/mobile-filter";
 
+
 interface CategoryPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
@@ -19,6 +20,11 @@ export default function CategoryPage({
       categoryPage.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+
+
+
+
 
   return (
     <div className="min-h-1/2 md:min-h-screen bg-background">

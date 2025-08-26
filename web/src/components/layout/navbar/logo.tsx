@@ -15,7 +15,7 @@ const Logo = () => {
         />
         <div className="flex items-center cursor-pointer">
           <h1
-            className="text-2xl font-black tracking-wider leading-none font-bold"
+            className="text-2xl tracking-wider leading-none font-bold"
             style={{
               fontFamily: '"Courier New", Courier, monospace',
               fontWeight: "900",

@@ -9,13 +9,14 @@ import bookingReducer from "./booking/booking-slice";
 import stepReducer from "./step/step-slice";
 import favoriteReducer from "./favorite/favorite-slice";
 import hotelReducer from "./hotel/hotel-slice"; // ✅ Otel reducer'ını import ettik
+import filterReducer from "./filter/filter-slice";
 
 
 // Persist config
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["testUser", "auth", "search", "booking", "step", "dashboard", "favorite", "hotel"], // ✅ reservationStep kaldırıldı
+  whitelist: ["testUser", "auth", "search", "booking", "step", "dashboard", "favorite", "hotel", "filter"], // ✅ reservationStep kaldırıldı
 };
 
 // Root reducer
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   step: stepReducer,
   favorite: favoriteReducer, // ✅ burada reducer'ı ekledik
   hotel: hotelReducer, // ✅ burada hotel reducer'ı ekledik
+  filter: filterReducer,
 });
 
 // Persisted reducer

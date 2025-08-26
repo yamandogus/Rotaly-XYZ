@@ -11,6 +11,7 @@ import {
   CustomerListSection,
   CustomersLoading
 } from "@/components/dashboard/admin/customers";
+import EditCustomerDialog from "@/components/dashboard/admin/customers/edit-customer-dialog";
 
 // User interface based on API response
 interface User {
@@ -66,28 +67,46 @@ export default function CustomersPage() {
   const router = useRouter();
   const [page, setPage] = useState(1);
   const pageSize = 8; // Max 8 kullanıcı göster
+  
+  // Edit dialog state
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
 
   // Pagination hesaplamaları
   const totalPages = Math.ceil(filteredCustomers.length / pageSize);
   const startIndex = (page - 1) * pageSize;
   const paginatedCustomers = filteredCustomers.slice(startIndex, startIndex + pageSize);
 
-  // API'den kullanıcıları çek
+  // API'den kullanıcıları çek - pagination ile
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await adminService.getAllUsers();
+        // Pagination kullanarak tüm kullanıcıları çek
+        const response = await adminService.getAllUsersWithPagination(1, 100, "", "CUSTOMER");
         
         if (response.success && response.data) {
-          // Sadece CUSTOMER rolündeki kullanıcıları filtrele
-          const users = response.data.filter((user: User) => user.role === 'CUSTOMER');
-          const customers = users.map(transformUserToCustomer);
-          setAllUsers(users);
+          // CUSTOMER rolündeki kullanıcıları al
+          const users = Array.isArray(response.data) ? response.data : response.data.users || [];
+          const customerUsers = users.filter((user: User) => user.role === 'CUSTOMER');
+          const customers = customerUsers.map(transformUserToCustomer);
+          setAllUsers(customerUsers);
           setFilteredCustomers(customers);
         }
       } catch (error) {
         console.error("Kullanıcılar yüklenirken hata oluştu:", error);
+        // Fallback to old method if pagination fails
+        try {
+          const fallbackResponse = await adminService.getAllUsers();
+          if (fallbackResponse.success && fallbackResponse.data) {
+            const users = fallbackResponse.data.filter((user: User) => user.role === 'CUSTOMER');
+            const customers = users.map(transformUserToCustomer);
+            setAllUsers(users);
+            setFilteredCustomers(customers);
+          }
+        } catch (fallbackError) {
+          console.error("Fallback method also failed:", fallbackError);
+        }
       } finally {
         setLoading(false);
       }
@@ -161,14 +180,30 @@ export default function CustomersPage() {
     router.push(`/dashboard/admin/customers/${customer.id}`);
   };
 
-  const handleEdit = (customer: Customer) => {
+  const handleEdit = async (customer: Customer) => {
     console.log("Edit customer:", customer);
+    setSelectedCustomer(customer);
+    setIsEditDialogOpen(true);
   };
 
-  const handleDelete = (customer: Customer) => {
-    console.log("Delete customer:", customer);
-    const response = adminService.deleteUser(customer.id);
-    console.log("Delete customer response:", response);
+  const handleDelete = async (customer: Customer) => {
+    if (window.confirm(`${customer.name} ${customer.surname} kullanıcısını silmek istediğinizden emin misiniz?`)) {
+      try {
+        await adminService.deleteUser(customer.id);
+        // Refresh the user list
+        const response = await adminService.getAllUsers();
+        if (response.success && response.data) {
+          const users = response.data.filter((user: User) => user.role === 'CUSTOMER');
+          const customers = users.map(transformUserToCustomer);
+          setAllUsers(users);
+          setFilteredCustomers(customers);
+        }
+        console.log("Customer deleted successfully");
+      } catch (error) {
+        console.error("Error deleting customer:", error);
+        alert("Kullanıcı silinirken hata oluştu");
+      }
+    }
   };
 
   // Loading durumunda skeleton göster
@@ -196,6 +231,32 @@ export default function CustomersPage() {
           page={page}
           totalPages={totalPages}
           setPage={setPage}
+        />
+
+        {/* Edit Customer Dialog */}
+        <EditCustomerDialog
+          isEditDialogOpen={isEditDialogOpen}
+          setIsEditDialogOpen={setIsEditDialogOpen}
+          t={t}
+          selectedCustomer={selectedCustomer || ({} as Customer)}
+          onCustomerUpdated={() => {
+            // Refresh customers list after update
+            const fetchUsers = async () => {
+              try {
+                const response = await adminService.getAllUsersWithPagination(1, 100, "", "CUSTOMER");
+                if (response.success && response.data) {
+                  const users = Array.isArray(response.data) ? response.data : response.data.users || [];
+                  const customerUsers = users.filter((user: User) => user.role === 'CUSTOMER');
+                  const customers = customerUsers.map(transformUserToCustomer);
+                  setAllUsers(customerUsers);
+                  setFilteredCustomers(customers);
+                }
+              } catch (error) {
+                console.error("Error refreshing customers:", error);
+              }
+            };
+            fetchUsers();
+          }}
         />
       </div>
     </div>

@@ -44,11 +44,11 @@ export function DateRangeCalendar({ checkIn, checkOut, onDateRangeChange }: Date
 
   return (
     <div className="bg-white dark:bg-card text-black dark:text-white rounded-lg overflow-hidden">
-      <div className="bg-white dark:bg-card p-4 text-center">
-        <h2 className="text-lg font-medium text-black dark:text-white">{t("heading")}</h2>
+      <div className="bg-white dark:bg-card p-2 text-center">
+        <h2 className="text-sm font-medium text-black dark:text-white">{t("heading")}</h2>
       </div>
 
-      <div className="flex items-center justify-between p-4 border-b border-gray-300 dark:border-gray-700">
+      <div className="flex items-center justify-between p-1 border-b border-gray-300 dark:border-gray-700">
         <Button
           variant="ghost"
           size="sm"
@@ -57,7 +57,7 @@ export function DateRangeCalendar({ checkIn, checkOut, onDateRangeChange }: Date
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
-        <div className="text-black dark:text-white font-medium">
+        <div className="text-black dark:text-white font-medium text-sm">
           {currentMonth.toLocaleDateString("tr-TR", { month: "long", year: "numeric" })} -{" "}
           {new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1).toLocaleDateString("tr-TR", {
             month: "long",

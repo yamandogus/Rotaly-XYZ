@@ -23,6 +23,7 @@ interface BookingFormProps {
   price: number;
   hotelName: string;
   hotelLocation: string;
+  hotelId: string;
 }
 
 const rating = 4.7;
@@ -38,7 +39,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
   numberOfNights,
   price,
   hotelName,
-  hotelLocation
+  hotelLocation,
+  hotelId
 }) => {
   const t = useTranslations("HotelDetail.bookingForm");
   const formatSelectedDate = (date: Date | undefined) =>
@@ -175,7 +177,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
       {/* Butonlar */}
 
-      <Link href="/hotels/1/booking" className="w-full">
+      <Link href={`/hotels/${hotelId}/booking`} className="w-full">
         <Button className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white py-2 rounded-md font-semibold
         cursor-pointer
         ">
