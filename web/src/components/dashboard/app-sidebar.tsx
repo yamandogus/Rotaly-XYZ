@@ -184,7 +184,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <div className="flex flex-row items-center gap-2">
                 <Image
-                  src="/images/logo3.png"
+                  src="/images/logo3.PNG"
                   alt="Rotaly"
                   className="w-10 h-10"
                   width={40}

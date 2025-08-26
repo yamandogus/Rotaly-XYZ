@@ -1,8 +1,8 @@
 "use client";
 
 import type React from "react";
-import { useEffect, useRef, useState } from "react";
-import { MessageCircleIcon, SendIcon, UserIcon } from "lucide-react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { MessageCircleIcon, SendIcon, UserIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -16,24 +16,34 @@ import { Input } from "../ui/input";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import { aiChatService, type AIChatMessage } from "@/services/ai-chat.service";
 
 // Welcome mesajını artık t ile oluşturuyoruz
-const welcomeMessages = (t: (key: string) => string) => {
+const welcomeMessages = (t: (key: string) => string, onButtonClick?: (action: string) => void) => {
   return (
     <div>
       <div className="max-w-sm w-full bg-card shadow-lg rounded-xl overflow-hidden">
         <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-4 text-white">
-          <h2 className="text-lg font-semibold"> {t("welcome")}</h2>
+          <h2 className="text-lg font-semibold">🏨 {t("welcome")}</h2>
           <p className="text-sm opacity-90">{t("assistantIntro")}</p>
         </div>
         <div className="grid grid-cols-1 gap-3 px-6 pb-6 mt-4">
-          <button className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+          <button 
+            className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+            onClick={() => onButtonClick?.('book-room')}
+          >
             🛏 {t("bookRoom")}
           </button>
-          <button className="w-full px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition">
+          <button 
+            className="w-full px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition"
+            onClick={() => onButtonClick?.('view-reservation')}
+          >
             📅 {t("viewReservation")}
           </button>
-          <button className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+          <button 
+            className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+            onClick={() => onButtonClick?.('live-support')}
+          >
             💬 {t("liveSupport")}
           </button>
         </div>
@@ -52,19 +62,60 @@ export default function ChatWidgetMobile() {
       id: number;
       message: string | React.ReactNode;
       sender: "user" | "bot" | "system";
-      type?: "live-support";
+      type?: "live-support" | "ai-response";
+      isLoading?: boolean;
     }[]
-  >([{ id: 1, message: welcomeMessages(t), sender: "bot" }]);
+  >([]);
+
+  const [isAIAvailable, setIsAIAvailable] = useState<boolean>(false);
+  const [conversationHistory, setConversationHistory] = useState<AIChatMessage[]>([]);
+
+  // Mesaj sayısını sınırla (performans için)
+  const limitedMessages = messages.slice(-20);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Welcome mesaj butonları için handler
+  const handleWelcomeAction = useCallback((action: string) => {
+    switch (action) {
+      case 'book-room':
+        setIsOpen(false);
+        router.push('/hotels');
+        break;
+      case 'view-reservation':
+        setIsOpen(false);
+        router.push('/reservations');
+        break;
+      case 'live-support':
+        setIsOpen(false);
+        router.push("/support");
+        break;
+      default:
+        break;
+    }
+  }, [router, setIsOpen]);
+
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    // Performans için setTimeout kullanarak scroll'u geciktiriyoruz
+    const timer = setTimeout(() => {
+      scrollToBottom();
+    }, 100);
+    
+    return () => clearTimeout(timer);
   }, [messages]);
+
+  // İlk welcome mesajını ekle
+  useEffect(() => {
+    if (messages.length === 0) {
+      setMessages([{ id: 1, message: welcomeMessages(t, handleWelcomeAction), sender: "bot" }]);
+    }
+  }, [t, messages.length, handleWelcomeAction]);
 
   useEffect(() => {
     const openChat = () => setIsOpen(true);
@@ -72,45 +123,155 @@ export default function ChatWidgetMobile() {
     return () => window.removeEventListener("open-chat-widget", openChat);
   }, []);
 
+  // AI durumunu kontrol et
+  useEffect(() => {
+    const checkAIStatus = async () => {
+      try {
+        console.log("🔍 Chat Widget Mobile: Checking AI status...");
+        
+        // AI status kontrolü için authentication gerekmiyor artık
+        const status = await aiChatService.checkAIStatus();
+        console.log("📊 Chat Widget Mobile: AI status received:", status);
+        setIsAIAvailable(status);
+      } catch (error) {
+        console.error("❌ Chat Widget Mobile: AI status check failed:", error);
+        setIsAIAvailable(false);
+      }
+    };
+
+    // Chat açıldığında AI durumunu kontrol et
+    if (isOpen) {
+      checkAIStatus();
+    }
+  }, [isOpen]);
+
   const handleLiveSupport = () => {
     setIsOpen(false);
     router.push("/support");
   };
 
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      const userMessage = {
-        id: Date.now(),
-        message: message,
-        sender: "user" as const,
+  const handleSendMessage = async () => {
+    const trimmedMessage = message.trim();
+    if (!trimmedMessage) return;
+
+    const userMessage = {
+      id: Date.now(),
+      message: trimmedMessage,
+      sender: "user" as const,
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setMessage("");
+
+    // Özel komutları kontrol et
+    if (trimmedMessage.toLowerCase().includes("canlı destek")) {
+      const liveSupportMessage = {
+        id: Date.now() + 1,
+        message: t("liveSupportMessage"),
+        sender: "system" as const,
+        type: "live-support" as const,
       };
+      setMessages((prev) => [...prev, liveSupportMessage]);
+      return;
+    } 
+    
+    if (trimmedMessage.toLowerCase().includes("anamenu")) {
+      const reservationMessage = {
+        id: Date.now() + 1,
+        message: welcomeMessages(t, handleWelcomeAction),
+        sender: "bot" as const,
+      };
+      setMessages((prev) => [...prev, reservationMessage]);
+      return;
+    }
 
-      setMessages((prev) => [...prev, userMessage]);
-      setMessage("");
+    // Loading mesajı ekle
+    const loadingMessage = {
+      id: Date.now() + 1,
+      message: "...",
+      sender: "bot" as const,
+      isLoading: true,
+    };
+    setMessages((prev) => [...prev, loadingMessage]);
 
-      if (message.toLowerCase().includes("canlı destek")) {
-        const liveSupportMessage = {
-          id: Date.now() + 1,
-          message: t("liveSupportMessage"),
+    try {
+      let botResponseText: string;
+      let ticketCreated = false;
+      let supportId: string | undefined;
+
+      // Token kontrolü
+      const token = localStorage.getItem("access_token");
+      
+      if (isAIAvailable && token) {
+        // AI ile sohbet et
+        console.log("🤖 Chat Widget Mobile: Sending message to AI...");
+        const aiResponse = await aiChatService.sendMessage(
+          trimmedMessage,
+          conversationHistory
+        );
+        
+        console.log("✅ Chat Widget Mobile: AI response received:", aiResponse);
+        
+        botResponseText = aiResponse.response;
+        ticketCreated = aiResponse.ticketCreated;
+        supportId = aiResponse.supportId;
+
+        // Konuşma geçmişini güncelle
+        setConversationHistory(prev => [
+          ...prev,
+          { role: "user", content: trimmedMessage },
+          { role: "assistant", content: aiResponse.response }
+        ]);
+      } else {
+        // AI kullanılamıyorsa veya giriş yapılmamışsa fallback mesajı kullan
+        console.log("⚠️ Chat Widget Mobile: AI not available or not authenticated, using fallback");
+        if (!token) {
+          botResponseText = "Merhaba! AI asistan özelliklerini kullanabilmek için lütfen giriş yapın. Genel sorularınız için size yardımcı olmaya devam edebilirim.";
+        } else {
+          botResponseText = aiChatService.getFallbackMessage(trimmedMessage);
+        }
+      }
+
+      // Loading mesajını gerçek yanıtla değiştir
+      setMessages((prev) => 
+        prev.map((msg) => 
+          msg.isLoading 
+            ? { 
+                ...msg, 
+                message: botResponseText, 
+                isLoading: false,
+                type: ticketCreated ? "ai-response" as const : undefined
+              }
+            : msg
+        )
+      );
+
+      // Eğer ticket oluşturulduysa bilgilendirme mesajı ekle
+      if (ticketCreated && supportId) {
+        const ticketMessage = {
+          id: Date.now() + 2,
+          message: `🎫 Destek talebi oluşturuldu (ID: ${supportId}). Bir temsilci en kısa sürede size yardımcı olacak.`,
           sender: "system" as const,
           type: "live-support" as const,
         };
-        setMessages((prev) => [...prev, liveSupportMessage]);
-      } else if (message.toLowerCase().includes("anamenu")) {
-        const reservationMessage = {
-          id: Date.now() + 1,
-          message: welcomeMessages(t),
-          sender: "bot" as const,
-        };
-        setMessages((prev) => [...prev, reservationMessage]);
-      } else {
-        const botResponse = {
-          id: Date.now() + 1,
-          message: t("botDefaultMessage"),
-          sender: "bot" as const,
-        };
-        setMessages((prev) => [...prev, botResponse]);
+        setMessages((prev) => [...prev, ticketMessage]);
       }
+
+    } catch (error) {
+      console.error("AI chat error:", error);
+      
+      // Hata durumunda loading mesajını hata mesajıyla değiştir
+      setMessages((prev) => 
+        prev.map((msg) => 
+          msg.isLoading 
+            ? { 
+                ...msg, 
+                message: "Üzgünüm, şu anda size yardımcı olamıyorum. Lütfen daha sonra tekrar deneyin veya canlı destek ile iletişime geçin.", 
+                isLoading: false 
+              }
+            : msg
+        )
+      );
     }
   };
 
@@ -120,7 +281,7 @@ export default function ChatWidgetMobile() {
         <SheetTrigger asChild>
         <Button
             variant="outline"
-            className="flex items-center gap-2 rounded-full shadow-lg p-0 cursor-pointer dark:bg-gray-200 dark:hover:bg-gray-300"
+            className="flex items-center gap-2 rounded-full shadow-lg p-0 cursor-pointer dark:bg-gray-200 dark:hover:bg-gray-300 border-2 border-green-200 hover:border-green-300 dark:border-green-200 dark:hover:border-green-300"
             size="lg"
           >
             <Image src="/images/chatbot.png" alt="Ai Chatbot" width={50} height={50} />
@@ -128,24 +289,30 @@ export default function ChatWidgetMobile() {
         </SheetTrigger>
         <SheetContent
           side="bottom"
-          className="h-[calc(100vh-72px)] w-full p-0 flex flex-col data-[state=open]:animate-slideInUp 
-  data-[state=closed]:animate-slideOutDown
-  duration-500 top-[72px]"
+          className="h-full w-full p-0 flex flex-col bg-white dark:bg-gray-900"
         >
-          {/* Header */}
-          <div className="relative overflow-hidden text-gray-900 dark:text-gray-200 border-b border-b-blue-500 flex-shrink-0">
-            <div className="px-4 py-2 flex items-center justify-between">
-              <SheetTitle className="font-medium">
+          {/* Header - Görünürlük sorunu çözüldü */}
+          <div className="relative bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex-shrink-0 z-10">
+            <div className="px-4 py-3 flex items-center justify-between">
+              <SheetTitle className="font-semibold text-gray-900 dark:text-white text-base">
                 {t("assistantTitle")}
               </SheetTitle>
-              <SheetClose asChild></SheetClose>
+              <SheetClose asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-800"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </SheetClose>
             </div>
           </div>
 
           {/* Body */}
-          <div className="flex-1 overflow-y-auto p-3 scrollbar-hide">
+          <div className="flex-1 overflow-y-auto p-3 bg-gray-50 dark:bg-gray-800 scrollbar-hide">
             <div className="flex flex-col gap-3 scrollbar-hide">
-              {messages.map((msg) => (
+              {limitedMessages.map((msg) => (
                 <div
                   key={msg.id}
                   className={`flex gap-2 ${
@@ -166,10 +333,18 @@ export default function ChatWidgetMobile() {
                           ? "bg-blue-500 dark:bg-blue-500 text-white rounded-br-sm"
                           : msg.sender === "system"
                           ? "bg-yellow-50 text-gray-800 rounded-bl-sm border border-yellow-200"
-                          : "bg-gray-100 text-gray-800 rounded-bl-sm"
+                          : "bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-bl-sm shadow-sm"
                       }`}
                     >
-                      {msg.message}
+                      {msg.isLoading ? (
+                        <div className="flex items-center gap-1">
+                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                        </div>
+                      ) : (
+                        msg.message
+                      )}
                       {msg.sender === "system" &&
                         msg.type === "live-support" && (
                           <div className="mt-2">
@@ -199,24 +374,45 @@ export default function ChatWidgetMobile() {
             </div>
           </div>
 
-          {/* Footer */}
-          <div className="border-t p-3 flex-shrink-0">
-            <div className="flex items-center gap-2 mb-2">
+          {/* Footer - Görünürlük sorunu çözüldü */}
+          <div className="border-t border-gray-200 dark:border-gray-700 p-3 flex-shrink-0 bg-white dark:bg-gray-900 z-10">
+            {/* AI Status Indicator */}
+            <div className="flex items-center gap-1 mb-2 text-xs text-gray-500">
+              {(() => {
+                const token = localStorage.getItem("access_token");
+                if (!token) {
+                  return (
+                    <>
+                      <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                      Giriş Gerekli
+                    </>
+                  );
+                }
+                return (
+                  <>
+                    <div className={`w-2 h-2 rounded-full ${isAIAvailable ? 'bg-green-500' : 'bg-gray-400'}`}></div>
+                    {isAIAvailable ? 'AI Asistan Aktif' : 'AI Asistan Çevrimdışı'}
+                  </>
+                );
+              })()}
+            </div>
+            
+            <div className="flex items-center gap-2">
               <Input
                 type="text"
                 placeholder={t("inputPlaceholder")}
-                className="flex-1 h-8 text-sm"
+                className="flex-1 h-10 text-sm border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+                onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
               />
               <Button
                 size="sm"
-                className="h-8 px-3 bg-blue-500 hover:bg-blue-600"
+                className="h-10 px-3 bg-blue-500 hover:bg-blue-600 text-white"
                 onClick={handleSendMessage}
                 disabled={!message.trim()}
               >
-                <SendIcon className="w-3 h-3" />
+                <SendIcon className="w-4 h-4" />
               </Button>
             </div>
           </div>

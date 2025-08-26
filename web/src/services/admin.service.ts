@@ -1,19 +1,13 @@
 // Admin Servis Katmanı - Admin paneli için gerekli tüm API isteklerini yönetir
 
 import axios from "axios";
+import type { UpdateAdminProfileDto } from "@/types/admin";
+import type { UpdateHotelDto, CreateHotelDto } from "@/types/hotel-dto";
+import type { UpdateUserDto } from "@/types/user-dto";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
 
-// Admin profil güncelleme için tip tanımı
-interface UpdateAdminProfileDto {
-  companyName?: string;
-  companyTaxId?: string;
-  country?: string;
-  city?: string;
-  state?: string;
-  postCode?: string;
-  fullAddress?: string;
-}
+// Admin profil güncelleme için tip tanımı - types/admin.ts'den import ediliyor
 
 // Token'ı localStorage'dan alıp header'a ekleyen yardımcı fonksiyon
 const getAuthHeaders = () => {
@@ -86,7 +80,65 @@ export const adminService = {
   },
 
   async deleteUser(id: string) {
-    const response = await axios.delete(`${API_BASE_URL}/admin/users/${id}`, getAuthHeaders());
+    const response = await axios.delete(`${API_BASE_URL}/users/${id}`, getAuthHeaders());
+    return response.data;
+  },
+
+  // Hotel CRUD Operations
+  async getHotelById(id: string) {
+    const response = await axios.get(`${API_BASE_URL}/hotels/${id}`, getAuthHeaders());
+    return response.data;
+  },
+
+  async updateHotel(id: string, data: UpdateHotelDto) {
+    const response = await axios.put(`${API_BASE_URL}/hotels/${id}`, data, getAuthHeaders());
+    return response.data;
+  },
+
+  async deleteHotel(id: string) {
+    const response = await axios.delete(`${API_BASE_URL}/hotels/${id}`, getAuthHeaders());
+    return response.data;
+  },
+
+  async createHotel(data: CreateHotelDto) {
+    const response = await axios.post(`${API_BASE_URL}/hotels`, data, getAuthHeaders());
+    return response.data;
+  },
+
+  // User CRUD Operations with Pagination
+  async getAllUsersWithPagination(page: number = 1, limit: number = 10, search?: string, role?: string) {
+    const params: Record<string, string | number> = { page, limit };
+    if (search) params.search = search;
+    if (role) params.role = role;
+    
+    const response = await axios.get(`${API_BASE_URL}/users`, {
+      ...getAuthHeaders(),
+      params
+    });
+    return response.data;
+  },
+
+  async updateUser(id: string, data: UpdateUserDto) {
+    const response = await axios.put(`${API_BASE_URL}/users/${id}`, data, getAuthHeaders());
+    return response.data;
+  },
+
+  // Hotel Operations with Pagination
+  async getAllHotelsWithPagination(page: number = 1, limit: number = 10, search?: string, isActive?: boolean) {
+    const params: Record<string, string | number | boolean> = { page, limit };
+    if (search) params.search = search;
+    if (typeof isActive === 'boolean') params.isActive = isActive;
+    
+    const response = await axios.get(`${API_BASE_URL}/hotels`, {
+      ...getAuthHeaders(),
+      params
+    });
+    return response.data;
+  },
+
+  // Company Profile Operations
+  async updateCompanyProfile(data: UpdateAdminProfileDto) {
+    const response = await axios.put(`${API_BASE_URL}/admin/profile`, data, getAuthHeaders());
     return response.data;
   }
 };

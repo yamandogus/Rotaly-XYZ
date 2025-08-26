@@ -3,8 +3,10 @@ import { io, Socket } from 'socket.io-client';
 export interface SocketMessage {
   id: string;
   message: string;
+  content: string;
   senderId: string;
   receiverId?: string;
+  supportId?: string;
   timestamp: Date;
   isAIMessage?: boolean;
 }
@@ -15,6 +17,11 @@ export interface AIResponse {
   timestamp: Date;
   ticketCreated?: boolean;
   supportId?: string;
+}
+
+export interface TypingEvent {
+  isTyping: boolean;
+  userId: string;
 }
 
 class SocketService {
@@ -93,9 +100,42 @@ class SocketService {
     }
   }
 
+  // Typing indicator methods
+  onTyping(callback: (event: TypingEvent) => void): void {
+    if (this.socket) {
+      this.socket.on('typing', callback);
+    }
+  }
+
+  startTyping(roomId: string, userId: string): void {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('startTyping', { roomId, userId });
+    }
+  }
+
+  stopTyping(roomId: string, userId: string): void {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('stopTyping', { roomId, userId });
+    }
+  }
+
+  // Room management methods
+  joinRoom(roomId: string, userId: string): void {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('joinRoom', { roomId, userId });
+    }
+  }
+
+  leaveRoom(roomId: string, userId: string): void {
+    if (this.socket && this.isConnected) {
+      this.socket.emit('leaveRoom', { roomId, userId });
+    }
+  }
+
   // General message methods
   sendMessage(data: {
-    message: string;
+    message?: string;
+    content?: string;
     receiverId?: string;
     roomId?: string;
     supportId?: string;

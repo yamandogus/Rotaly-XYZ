@@ -98,17 +98,30 @@ export default function HotelsPage() {
     const fetchHotels = async () => {
       try {
         setLoading(true);
-        const response = await adminService.getAllHotels();
+        // Pagination ile otelleri çek
+        const response = await adminService.getAllHotelsWithPagination(1, 100);
         
-        if (response.hotels) {
+        if (response.hotels || response.data) {
+          const hotels = response.hotels || response.data || [];
           // Tüm otelleri sakla
-          setAllHotels(response.hotels);
+          setAllHotels(hotels);
           // Aktif olanları filtrele
-          const activeHotels = response.hotels.filter((hotel: HotelNew) => hotel.isActive === true);
+          const activeHotels = hotels.filter((hotel: HotelNew) => hotel.isActive === true);
           setFilteredHotels(activeHotels);
         }
       } catch (error) {
-        console.error("Otel yüklenirken hata oluştu:", error);
+        console.error("Pagination ile otel yüklenirken hata oluştu:", error);
+        // Fallback to old method if pagination fails
+        try {
+          const fallbackResponse = await adminService.getAllHotels();
+          if (fallbackResponse.hotels) {
+            setAllHotels(fallbackResponse.hotels);
+            const activeHotels = fallbackResponse.hotels.filter((hotel: HotelNew) => hotel.isActive === true);
+            setFilteredHotels(activeHotels);
+          }
+        } catch (fallbackError) {
+          console.error("Fallback method also failed:", fallbackError);
+        }
       } finally {
         setLoading(false);
       }
@@ -127,9 +140,23 @@ export default function HotelsPage() {
     setIsDeleteDialogOpen(true);
   };
 
-  const confirmDelete = () => {
-    // Silme işlemi burada yapılacak
-    console.log("Deleting hotel:", selectedHotel?.id);
+  const confirmDelete = async () => {
+    if (selectedHotel?.id) {
+      try {
+        await adminService.deleteHotel(selectedHotel.id);
+        // Refresh the hotels list
+        const response = await adminService.getAllHotels();
+        if (response.hotels) {
+          setAllHotels(response.hotels);
+          const activeHotels = response.hotels.filter((hotel: HotelNew) => hotel.isActive === true);
+          setFilteredHotels(activeHotels);
+        }
+        console.log("Hotel deleted successfully");
+      } catch (error) {
+        console.error("Error deleting hotel:", error);
+        alert("Otel silinirken hata oluştu");
+      }
+    }
     setIsDeleteDialogOpen(false);
     setSelectedHotel(null);
   };
@@ -242,6 +269,23 @@ export default function HotelsPage() {
         setIsEditDialogOpen={setIsEditDialogOpen}
         t={t}
         selectedHotel={selectedHotel || ({} as HotelNew)}
+        onHotelUpdated={() => {
+          // Refresh hotels list after update
+          const fetchHotels = async () => {
+            try {
+              const response = await adminService.getAllHotelsWithPagination(1, 100);
+              if (response.hotels || response.data) {
+                const hotels = response.hotels || response.data || [];
+                setAllHotels(hotels);
+                const activeHotels = hotels.filter((hotel: HotelNew) => hotel.isActive === true);
+                setFilteredHotels(activeHotels);
+              }
+            } catch (error) {
+              console.error("Error refreshing hotels:", error);
+            }
+          };
+          fetchHotels();
+        }}
       />
 
       {/* Delete Confirmation Dialog */}

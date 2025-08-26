@@ -906,7 +906,16 @@
     "target": "Hedef",
     "ofTotal": "toplamdan",
     "inactiveRate": "inaktif oranı",
-    "thisMonth": "bu ay"
+    "thisMonth": "bu ay",
+    "editCustomer": "Müşteri Düzenle",
+    "editingCustomer": "Düzenlenen müşteri",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "nameMin2": "Ad en az 2 karakter olmalıdır",
+    "surnameMin2": "Soyad en az 2 karakter olmalıdır",
+    "invalidEmail": "Geçersiz e-posta adresi",
+    "phoneMin10": "Telefon numarası en az 10 karakter olmalıdır",
+    "save": "Kaydet"
   },
   "ResetPassword": {
     "title": "Şifremi Unuttum",
@@ -1198,7 +1207,21 @@
     "selectOwner": "Sahip Seçin",
     "owner": "Sahip",
     "selectType": "Tip Seçin",
-    "required": "Gerekli"
+    "required": "Gerekli",
+    "nameMin2": "Otel adı en az 2 karakter olmalıdır",
+    "locationMin2": "Konum en az 2 karakter olmalıdır",
+    "cityMin2": "Şehir en az 2 karakter olmalıdır",
+    "countryMin2": "Ülke en az 2 karakter olmalıdır",
+    "isActive": "Durum",
+    "save": "Kaydet",
+    "country": "Ülke",
+    "addressMin2": "Adres en az 2 karakter olmalıdır",
+    "ownerIdRequired": "Otel sahibi ID gereklidir",
+    "address": "Adres",
+    "deleteHotel": "Otel Sil",
+    "deleteHotelConfirmation": "Bu oteli silmek istediğinizden emin misiniz",
+    "deleteWarning": "Bu işlem geri alınamaz. Otel ve tüm verileri kalıcı olarak silinecektir.",
+    "user": "Kullanıcı"
   },
     "Favorites": {
     "title": "Favoriler",

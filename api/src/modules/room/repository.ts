@@ -26,6 +26,11 @@ export const RoomRepository = {
         bedCount: data.bedCount,
         hotelId: data.hotelId,
         description: data.description,
+        maxAdults: data.maxAdults || 2,
+        maxChildren: data.maxChildren || 0,
+        floor: data.floor || 1,
+        roomNumber: data.roomNumber || 101,
+        type: data.type || "STANDARD"
       },
     });
   },

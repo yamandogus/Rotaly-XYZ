@@ -31,6 +31,8 @@ export default function HomePage() {
     router.push(`/categories`);
   };
 
+
+
   const categories = [
     { name: t("categoryDaire"), label: "Daire", icon: "/icons/daire.svg" },
     { name: t("categoryHotel"), label: "Hotel", icon: "/icons/otel.svg" },
@@ -222,6 +224,7 @@ export default function HomePage() {
 
         <div className="relative z-40 w-full max-w-6xl -mt-36 sm:-mt-18 md:-mt-20 px-4 mb-8 sm:mb-10 md:mb-12">
           <BookingSearch handleSearch={handleSearch} />
+          
         </div>
 
         {/* Categories Section */}

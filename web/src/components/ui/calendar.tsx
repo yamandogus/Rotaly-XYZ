@@ -201,7 +201,31 @@ function CalendarDayButton({
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       className={cn(
-        "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 dark:hover:text-accent-foreground flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] data-[range-end=true]:rounded-md data-[range-end=true]:rounded-r-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md data-[range-start=true]:rounded-l-md [&>span]:text-xs [&>span]:opacity-70",
+        // Seçili tek gün
+        "data-[selected-single=true]:bg-blue-500 dark:data-[selected-single=true]:bg-blue-600 " +
+        "data-[selected-single=true]:text-white dark:data-[selected-single=true]:text-gray-200 " +
+      
+        // Aralık ortası
+        "data-[range-middle=true]:bg-blue-300 dark:data-[range-middle=true]:bg-gray-600 " +
+        "data-[range-middle=true]:text-white dark:data-[range-middle=true]:text-gray-200 " +
+        "data-[range-middle=true]:rounded-l-md data-[range-middle=true]:rounded-r-md " +
+      
+        // Aralık başlangıcı
+        "data-[range-start=true]:bg-blue-500 dark:data-[range-start=true]:bg-blue-600 " +
+        "data-[range-start=true]:text-white dark:data-[range-start=true]:text-gray-200 " +
+        "data-[range-start=true]:rounded-l-md " +
+      
+        // Aralık sonu
+        "data-[range-end=true]:bg-blue-500 dark:data-[range-end=true]:bg-blue-600 " +
+        "data-[range-end=true]:text-white dark:data-[range-end=true]:text-gray-200 " +
+        "data-[range-end=true]:rounded-r-md " +
+      
+        // Odaklanmış durum
+        "group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 " +
+      
+        // Genel stil
+        "flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal " +
+        "[&>span]:text-xs [&>span]:opacity-70",
         defaultClassNames.day,
         className
       )}

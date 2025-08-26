@@ -7,7 +7,7 @@ import {
   SupportResponseDto,
   SupportListResponseDto,
 } from "../../dto/support";
-import { AIService, AIResponse } from "../../services/ai.service";
+import { AIService, AIResponse } from "../../services/ai";
 import { AppError } from "../../utils/appError";
 
 export class SupportService {

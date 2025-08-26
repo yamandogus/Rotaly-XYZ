@@ -16,9 +16,9 @@ import {
   DollarSign,
   Building,
 } from "lucide-react";
-import hotelsData from "@/data/hotelsData.json";
 import Image from "next/image";
 import {HotelNew } from "@/types/hotel";
+import { adminService } from "@/services/admin.service";
 
 
 export default function HotelDetailPage() {
@@ -29,12 +29,24 @@ export default function HotelDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // otel bilgisini al
-    const foundHotel = hotelsData.find((h: HotelNew) => h.id === params.id);
-    if (foundHotel) {
-      setHotel(foundHotel);
+    const fetchHotel = async () => {
+      try {
+        setLoading(true);
+        const response = await adminService.getHotelById(params.id as string);
+        
+        if (response.success && response.data) {
+          setHotel(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching hotel:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (params.id) {
+      fetchHotel();
     }
-    setLoading(false);
   }, [params.id]);
 
   // otel şehirini belirle

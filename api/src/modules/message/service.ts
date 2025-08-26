@@ -9,7 +9,7 @@ import {
   MessagesListResponseDto,
   ConversationResponseDto,
 } from "../../dto/message";
-import { AIService } from "../../services/ai.service";
+import { AIService } from "../../services/ai";
 import { SupportService } from "../support/service";
 import { AppError } from "../../utils/appError";
 
