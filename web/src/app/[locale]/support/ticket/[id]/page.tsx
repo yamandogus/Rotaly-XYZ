@@ -7,11 +7,12 @@ export const metadata: Metadata = {
 };
 
 interface TicketPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default function TicketPage({ params }: TicketPageProps) {
-  return <TicketDetailView ticketId={params.id} />;
+export default async function TicketPage({ params }: TicketPageProps) {
+  const { id } = await params;
+  return <TicketDetailView ticketId={id} />;
 }

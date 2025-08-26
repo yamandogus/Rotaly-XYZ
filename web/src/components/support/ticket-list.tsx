@@ -131,6 +131,11 @@ export const TicketList: React.FC<TicketListProps> = ({
     }
   };
 
+  const handleViewTicket = (ticket: SupportTicket) => {
+    // Always navigate to ticket detail, regardless of onTicketSelect
+    router.push(`/support/ticket/${ticket.id}`);
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -245,7 +250,7 @@ export const TicketList: React.FC<TicketListProps> = ({
                         size="sm"
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleTicketClick(ticket);
+                          handleViewTicket(ticket);
                         }}
                         className="flex items-center gap-1"
                       >

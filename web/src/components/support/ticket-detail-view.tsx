@@ -45,15 +45,17 @@ export const TicketDetailView: React.FC<TicketDetailViewProps> = ({
   const loadTicketData = async () => {
     setLoading(true);
     try {
-      const [ticketData, messagesData] = await Promise.all([
-        SupportService.getSupportTicket(ticketId),
-        SupportService.getTicketMessages(ticketId),
-      ]);
+      // First get the ticket data
+      const ticketData = await SupportService.getSupportTicket(ticketId);
       setTicket(ticketData);
+
+      // Then get messages using the ticket info
+      const messagesData = await SupportService.getTicketMessages(ticketData);
+      console.log("Messages data:", messagesData);
       setMessages(messagesData);
     } catch (error) {
       console.error("Error loading ticket data:", error);
-      toast.error("Bilet bilgileri yüklenirken bir hata oluştu");
+      toast.error(t("ticketLoadError"));
     } finally {
       setLoading(false);
     }
@@ -69,13 +71,17 @@ export const TicketDetailView: React.FC<TicketDetailViewProps> = ({
         supportId: ticket.id,
       };
 
-      const sentMessage = await SupportService.sendMessage(messageData);
+      const sentMessage = await SupportService.sendMessage({
+        ...messageData,
+        ticket: ticket,
+      });
+      console.log("Sent message:", sentMessage);
       setMessages((prev) => [...prev, sentMessage]);
       setNewMessage("");
-      toast.success("Mesaj başarıyla gönderildi");
+      toast.success(t("messageSentSuccess"));
     } catch (error) {
       console.error("Error sending message:", error);
-      toast.error("Mesaj gönderilirken bir hata oluştu");
+      toast.error(t("messageSendError"));
     } finally {
       setSending(false);
     }
@@ -93,12 +99,12 @@ export const TicketDetailView: React.FC<TicketDetailViewProps> = ({
 
     try {
       await SupportService.closeSupportTicket(ticket.id);
-      toast.success("Bilet başarıyla kapatıldı");
+      toast.success(t("ticketClosedSuccess"));
       // Reload ticket data to reflect the change
       await loadTicketData();
     } catch (error) {
       console.error("Error closing ticket:", error);
-      toast.error("Bilet kapatılırken bir hata oluştu");
+      toast.error(t("ticketCloseError"));
     }
   };
 
@@ -106,7 +112,7 @@ export const TicketDetailView: React.FC<TicketDetailViewProps> = ({
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <p className="ml-2 text-gray-600">Bilet yükleniyor...</p>
+        <p className="ml-2 text-gray-600">{t("loadingTicket")}</p>
       </div>
     );
   }
@@ -114,9 +120,9 @@ export const TicketDetailView: React.FC<TicketDetailViewProps> = ({
   if (!ticket) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500">Bilet bulunamadı</p>
+        <p className="text-gray-500">{t("ticketNotFound")}</p>
         <Button onClick={() => router.push("/support")} className="mt-4">
-          Destek Sayfasına Dön
+          {t("backToSupport")}
         </Button>
       </div>
     );
@@ -134,15 +140,15 @@ export const TicketDetailView: React.FC<TicketDetailViewProps> = ({
             className="flex items-center gap-2"
           >
             <ArrowLeft className="h-4 w-4" />
-            Geri Dön
+            {t("backToSupport")}
           </Button>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Destek Bileti #{ticket.id.slice(-8)}
+            {t("supportTicket")} #{ticket.id.slice(-8)}
           </h1>
         </div>
         {!ticket.closedAt && (
           <Button variant="destructive" size="sm" onClick={handleCloseTicket}>
-            Bileti Kapat
+            {t("closeTicket")}
           </Button>
         )}
       </div>
@@ -160,14 +166,14 @@ export const TicketDetailView: React.FC<TicketDetailViewProps> = ({
             </div>
             <div className="text-right text-sm text-gray-500 dark:text-gray-400">
               <p>
-                Oluşturulma:{" "}
+                {t("created")}:{" "}
                 {format(new Date(ticket.createdAt), "dd MMM yyyy HH:mm", {
                   locale: tr,
                 })}
               </p>
               {ticket.closedAt && (
                 <p>
-                  Kapatılma:{" "}
+                  {t("closed")}:{" "}
                   {format(new Date(ticket.closedAt), "dd MMM yyyy HH:mm", {
                     locale: tr,
                   })}
@@ -180,7 +186,7 @@ export const TicketDetailView: React.FC<TicketDetailViewProps> = ({
           <div className="space-y-4">
             <div>
               <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                İlk Mesaj:
+                {t("firstMessage")}:
               </h4>
               <p className="text-gray-600 dark:text-gray-300 whitespace-pre-wrap">
                 {ticket.body}
@@ -189,7 +195,7 @@ export const TicketDetailView: React.FC<TicketDetailViewProps> = ({
             {ticket.supportRep && (
               <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Atanan Destek Temsilcisi:{" "}
+                  {t("assignedRep")}:{" "}
                   <span className="font-medium">
                     {ticket.supportRep.name} {ticket.supportRep.surname}
                   </span>
@@ -205,40 +211,40 @@ export const TicketDetailView: React.FC<TicketDetailViewProps> = ({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MessageCircle className="h-5 w-5" />
-            Mesajlar ({messages.length})
+            {t("messages")} ({messages.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4 max-h-96 overflow-y-auto">
             {messages.length === 0 ? (
               <p className="text-gray-500 text-center py-4">
-                Henüz mesaj bulunmuyor
+                {t("noMessages")}
               </p>
             ) : (
               messages.map((message) => (
                 <div
                   key={message.id}
                   className={`flex gap-3 ${
-                    message.sender.role === "CUSTOMER"
+                    message.sender?.role === "CUSTOMER"
                       ? "justify-end"
                       : "justify-start"
                   }`}
                 >
                   <div
                     className={`max-w-[70%] rounded-lg p-4 ${
-                      message.sender.role === "CUSTOMER"
+                      message.sender?.role === "CUSTOMER"
                         ? "bg-blue-500 text-white"
                         : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      {message.sender.role === "CUSTOMER" ? (
+                      {message.sender?.role === "CUSTOMER" ? (
                         <User className="h-4 w-4" />
                       ) : (
                         <Headphones className="h-4 w-4" />
                       )}
                       <span className="text-xs font-medium">
-                        {message.sender.name} {message.sender.surname}
+                        {message.sender?.name} {message.sender?.surname}
                       </span>
                       <span className="text-xs opacity-75">
                         {format(new Date(message.createdAt), "dd MMM HH:mm", {
@@ -262,7 +268,7 @@ export const TicketDetailView: React.FC<TicketDetailViewProps> = ({
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyDown={handleKeyPress}
-                  placeholder="Mesajınızı yazın..."
+                  placeholder={t("typeMessage")}
                   className="flex-1 min-h-[80px] resize-none"
                   disabled={sending}
                 />
@@ -272,13 +278,10 @@ export const TicketDetailView: React.FC<TicketDetailViewProps> = ({
                   className="flex items-center gap-2 px-6"
                 >
                   <Send className="h-4 w-4" />
-                  {sending ? "Gönderiliyor..." : "Gönder"}
+                  {sending ? t("sending") : t("send")}
                 </Button>
               </div>
-              <p className="text-xs text-gray-500 mt-2">
-                Enter tuşu ile gönderebilirsiniz. Yeni satır için Shift+Enter
-                kullanın.
-              </p>
+              <p className="text-xs text-gray-500 mt-2">{t("enterToSend")}</p>
             </div>
           )}
 
@@ -286,7 +289,7 @@ export const TicketDetailView: React.FC<TicketDetailViewProps> = ({
             <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
               <div className="text-center py-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <p className="text-gray-500 dark:text-gray-400">
-                  Bu bilet kapatılmıştır. Yeni mesaj gönderemezsiniz.
+                  {t("ticketClosedMessage")}
                 </p>
               </div>
             </div>
