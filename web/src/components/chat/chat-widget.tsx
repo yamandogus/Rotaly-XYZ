@@ -21,7 +21,7 @@ import { aiChatService, type AIChatMessage } from "@/services/ai-chat.service";
 const welcomeMessages = (t: (key: string) => string, onButtonClick?: (action: string) => void) => {
   return (
     <div>
-      <div className="max-w-sm w-full bg-card shadow-lg rounded-xl overflow-hidden">
+      <div className="max-w-sm w-full rounded-xl overflow-hidden">
         <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-4 text-white">
           <h2 className="text-lg font-semibold">🏨 {t("welcome")}</h2>
           <p className="text-sm opacity-90">{t("assistantIntro")}</p>

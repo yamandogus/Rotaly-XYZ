@@ -168,10 +168,10 @@ const AddHotelDialog = ({ isAddHotelDialogOpen, setIsAddHotelDialogOpen, t }: Ad
                           <SelectValue placeholder={t("selectOwner")} />
                         </SelectTrigger>
                         <SelectContent>
-                          {/* Burada mevcut kullanıcılar listelenecek */}
-                          <SelectItem value="user1">User 1</SelectItem>
-                          <SelectItem value="user2">User 2</SelectItem>
-                          <SelectItem value="user3">User 3</SelectItem>
+                          {/* {t("availableOwnersWillBeListedHere")} */}
+                          <SelectItem value="user1">{t("user")} 1</SelectItem>
+                          <SelectItem value="user2">{t("user")} 2</SelectItem>
+                          <SelectItem value="user3">{t("user")} 3</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

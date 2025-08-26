@@ -913,7 +913,16 @@
     "target": "Target",
     "ofTotal": "of total",
     "inactiveRate": "inactive rate",
-    "thisMonth": "this month"
+    "thisMonth": "this month",
+    "editCustomer": "Edit Customer",
+    "editingCustomer": "Editing customer",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "nameMin2": "Name must be at least 2 characters",
+    "surnameMin2": "Surname must be at least 2 characters",
+    "invalidEmail": "Invalid email address",
+    "phoneMin10": "Phone must be at least 10 characters",
+    "save": "Save"
   },
   "ResetPassword": {
     "title": "Reset Password",
@@ -1185,7 +1194,21 @@
     "selectOwner": "Select Owner",
     "owner": "Owner",
     "selectType": "Select type",
-    "required": "Required"  
+    "required": "Required",
+    "nameMin2": "Hotel name must be at least 2 characters",
+    "locationMin2": "Location must be at least 2 characters",
+    "cityMin2": "City must be at least 2 characters",
+    "countryMin2": "Country must be at least 2 characters",
+    "isActive": "Status",
+    "save": "Save",
+    "country": "Country",
+    "addressMin2": "Address must be at least 2 characters",
+    "ownerIdRequired": "Hotel owner ID is required",
+    "address": "Address",
+    "deleteHotel": "Delete Hotel",
+    "deleteHotelConfirmation": "Are you sure you want to delete this hotel",
+    "deleteWarning": "This action cannot be undone. The hotel and all its data will be permanently deleted.",
+    "user": "User"
   },
     "Favorites": {
     "title": "Favorites",
@@ -1197,6 +1220,7 @@
   "AdminHotels": {
     "allRegisteredHotels": "All Registered Hotels",
     "activeHotels": "Active Hotels",
+    "totalBookings": "Total Bookings",
     "totalRevenue": "Total Revenue",
     "hotelList": "Hotel List",
     "searchHotels": "Search hotels...",

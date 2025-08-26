@@ -22,7 +22,17 @@ export interface QueryHotelInput {
   search?: string;
   city?: string;
   country?: string;
-  type?: string;
+  type?: "APARTMENT" | "HOTEL" | "VILLA" | "BUNGALOW" | "ROOM" | "RESORT" | "HOSTEL" | "CAMP";
+  isDiscounted?: boolean;
+  isActive?: boolean;
+  ownerId?: string;
+  minRating?: number;
+  maxRating?: number;
+  minDiscountPrice?: number;
+  maxDiscountPrice?: number;
+  sortBy?: "name" | "rating" | "createdAt" | "updatedAt" | "discountRate" | "discountPrice";
+  sortOrder?: "asc" | "desc";
+  // Frontend için ek parametreler
   minPrice?: number;
   maxPrice?: number;
   features?: string[];
