@@ -9,7 +9,6 @@ import HotelInfo from "@/components/hotel/hotel-info";
 import BookingForm from "@/components/hotel/booking-form";
 import { singleHotelData } from "@/data/dumy";
 
-
 const HotelDetailPageContent = () => {
   const [checkInDate, setCheckInDate] = React.useState<Date | undefined>(new Date());
   const [checkOutDate, setCheckOutDate] = React.useState<Date | undefined>(() => {
@@ -33,14 +32,15 @@ const HotelDetailPageContent = () => {
       {/* Breadcrumbs */}
       <Breadcrumbs />
 
-
-      <div className="bg-white dark:bg-card border border-gray-200 dark:border-gray-700 rounded-lg shadow-md dark:shadow-lg p-6 lg:flex lg:gap-6 transition-colors duration-300">
+      <div className="bg-white dark:bg-card border border-gray-200 dark:border-gray-700 rounded-lg shadow-md dark:shadow-lg p-6 flex flex-col lg:flex-row gap-6 transition-colors duration-300">
 
         {/* Sol: Galeri */}
-        <ImageGallery />
+        <div className="w-full lg:w-2/3">
+          <ImageGallery />
+        </div>
 
         {/* Sağ: Rezervasyon ve Bilgi */}
-        <div className="lg:w-1/3 mt-6 lg:mt-0 flex flex-col gap-4">
+        <div className="w-full lg:w-1/3 mt-6 lg:mt-0 flex flex-col gap-4">
           <BookingForm
             checkInDate={checkInDate}
             setCheckInDate={setCheckInDate}
