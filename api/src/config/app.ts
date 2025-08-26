@@ -16,6 +16,7 @@ import hotelRoutes from "../modules/hotel/route";
 import roomRoutes from "../modules/room/route";
 import reservationRoutes from "../modules/reservation/route";
 import ownerRoutes from "../modules/owner/route";
+import paymentRoutes from "../modules/payment/route";
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use("/api/hotels", hotelRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/owner", ownerRoutes);
+app.use("/api/payments", paymentRoutes);
 
 // error handler has to come after all other routes
 app.use(errorHandler);

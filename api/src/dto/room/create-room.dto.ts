@@ -11,6 +11,11 @@ export const CreateRoomSchema = z.object({
     .int()
     .positive("Kapasite pozitif tam sayı olmalı"),
   bedCount: z.number().int().min(0, "Yatak sayısı negatif olamaz"),
+  maxAdults: z.number().int().min(1, "Maksimum yetişkin sayısı en az 1 olmalı").optional(),
+  maxChildren: z.number().int().min(0, "Maksimum çocuk sayısı negatif olamaz").optional(),
+  floor: z.number().int().min(0, "Kat numarası negatif olamaz").optional(),
+  roomNumber: z.number().int().min(1, "Oda numarası en az 1 olmalı").optional(),
+  type: z.enum(["STANDARD", "DELUXE", "SUITE", "PRESIDENTIAL", "EXECUTIVE"]).optional(),
   isAvailable: z.boolean().optional(), // backend default true atayabilir
   // Eğer DB tarafında hotel id'ler UUID ise .uuid() kullan; değilse plain string yap
   hotelId: z.string().uuid("hotelId UUID formatında olmalı"),

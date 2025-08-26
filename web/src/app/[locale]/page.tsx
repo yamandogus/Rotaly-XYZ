@@ -13,7 +13,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { BookingSearch } from "@/components/home/booking-search";
 import { useRouter } from "next/navigation";
-import { authService } from "@/services/auth.service";
 
 const images = [
   "/images/Istanbul.jpg",
@@ -32,16 +31,7 @@ export default function HomePage() {
     router.push(`/categories`);
   };
 
-  // Refresh token test fonksiyonu
-  const handleTestRefreshToken = async () => {
-    try {
-      console.log(" Refresh token test başlatılıyor...");
-      await authService.refreshToken();
-      console.log("✅ Refresh token test başarılı!");
-    } catch (error) {
-      console.error("❌ Refresh token test hatası:", error);
-    }
-  };
+
 
   const categories = [
     { name: t("categoryDaire"), label: "Daire", icon: "/icons/daire.svg" },
@@ -235,15 +225,6 @@ export default function HomePage() {
         <div className="relative z-40 w-full max-w-6xl -mt-36 sm:-mt-18 md:-mt-20 px-4 mb-8 sm:mb-10 md:mb-12">
           <BookingSearch handleSearch={handleSearch} />
           
-          {/* Refresh Token Test Butonu */}
-          <div className="mt-4 text-center">
-            <button 
-              onClick={handleTestRefreshToken}
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-            >
-               Test Refresh Token
-            </button>
-          </div>
         </div>
 
         {/* Categories Section */}

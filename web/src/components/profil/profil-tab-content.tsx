@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { userService } from "@/services";
 import { Button } from "@/components/ui/button";
 import { Edit, Camera, BadgeCheck } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -22,19 +23,38 @@ interface InfoField {
   value: string;
 }
 
-interface ProfileTabContentProps {
-  t: (key: string) => string;
+interface User {
+  id: string;
+  name: string;
+  surname: string;
+  email: string;
+  phone: string;
+  isVerified: boolean;
+  images: string[];
+  paymentCards: string[];
+  role: string;
 }
 
-export default function ProfileTabContent({ t }: ProfileTabContentProps) {
-  const [personalInfo, setPersonalInfo] = useState<InfoField[]>([
-    { id: "firstName", label: t("firstName"), value: "Ahmet" },
-    { id: "lastName", label: t("lastName"), value: "Yıldız" },
-    { id: "dob", label: t("dob"), value: "1990-10-12" },
-    { id: "email", label: t("email"), value: "info@binary-fusion.com" },
-    { id: "phone", label: t("phone"), value: "+90 532 123 4567" },
-    { id: "role", label: t("role"), value: "Kullanıcı" },
-  ]);
+interface ProfileTabContentProps {
+  t: (key: string) => string;
+  user: User | null;
+}
+
+export default function ProfileTabContent({ t, user }: ProfileTabContentProps) {
+  const [personalInfo, setPersonalInfo] = useState<InfoField[]>([]);
+  
+  // User bilgileri geldiğinde state'i güncelle
+  useEffect(() => {
+    if (user) {
+      setPersonalInfo([
+        { id: "firstName", label: t("firstName"), value: user.name || "" },
+        { id: "lastName", label: t("lastName"), value: user.surname || "" },
+        { id: "email", label: t("email"), value: user.email || "" },
+        { id: "phone", label: t("phone"), value: user.phone || "" },
+        { id: "role", label: t("role"), value: user.role || "" },
+      ]);
+    }
+  }, [user, t]);
   const [addressInfo, setAddressInfo] = useState<InfoField[]>([
     { id: "country", label: t("country"), value: "Türkiye" },
     { id: "city", label: t("city"), value: "Ankara" },
@@ -106,13 +126,30 @@ export default function ProfileTabContent({ t }: ProfileTabContentProps) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!validate()) return;
 
     if (editSection === "personal") {
-      const roleField = personalInfo.find((f) => f.id === "role")!;
-      const updated = [...tempData, roleField];
-      setPersonalInfo(updated);
+      try {
+        const userData = {
+          name: tempData.find(f => f.id === "firstName")?.value || "",
+          surname: tempData.find(f => f.id === "lastName")?.value || "",
+          email: tempData.find(f => f.id === "email")?.value || "",
+          phone: tempData.find(f => f.id === "phone")?.value || "",
+        };
+
+        await userService.updateProfile(userData);
+        
+        const roleField = personalInfo.find((f) => f.id === "role")!;
+        const updated = [...tempData, roleField];
+        setPersonalInfo(updated);
+        
+        // Success mesajı gösterebilirsiniz
+        console.log("Profil başarıyla güncellendi");
+      } catch (error) {
+        console.error("Profil güncelleme hatası:", error);
+        // Error mesajı gösterebilirsiniz
+      }
     } else {
       setAddressInfo(tempData);
     }
@@ -157,13 +194,12 @@ export default function ProfileTabContent({ t }: ProfileTabContentProps) {
         <div className="text-center sm:text-left">
           <h2 className="text-xl font-medium text-gray-800 dark:text-white flex items-center gap-2">
             <span>
-              {getFieldValue(personalInfo, "firstName")}{" "}
-              {getFieldValue(personalInfo, "lastName")}
+              {user ? `${user.name} ${user.surname}` : getFieldValue(personalInfo, "firstName") + " " + getFieldValue(personalInfo, "lastName")}
             </span>
-            <BadgeCheck className="text-blue-500 w-5 h-5" />
+            {user?.isVerified && <BadgeCheck className="text-blue-500 w-5 h-5" />}
           </h2>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            {getFieldValue(personalInfo, "role")}
+            {user ? user.role : getFieldValue(personalInfo, "role")}
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {getFieldValue(addressInfo, "city")},{" "}

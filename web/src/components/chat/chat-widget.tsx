@@ -16,11 +16,6 @@ import { Avatar, AvatarImage } from "../ui/avatar";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { aiChatService, type AIChatMessage } from "@/services/ai-chat.service";
-import {
-  socketService,
-  type SocketMessage,
-  type TypingEvent,
-} from "@/services/socket.service";
 
 // Welcome mesajını artık t ile oluşturuyoruz
 const welcomeMessages = (
@@ -64,16 +59,6 @@ export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const [message, setMessage] = useState<string>("");
-  // State tanımlamaları
-  const [isAIAvailable, setIsAIAvailable] = useState<boolean>(false);
-  const [conversationHistory, setConversationHistory] = useState<
-    AIChatMessage[]
-  >([]);
-  const [isTyping, setIsTyping] = useState(false);
-  const [typingUser, setTypingUser] = useState("");
-  const [supportId, setSupportId] = useState<string>("");
-  const [isSocketConnected, setIsSocketConnected] = useState(false);
-
   const [messages, setMessages] = useState<
     {
       id: number;
@@ -84,44 +69,16 @@ export default function ChatWidget() {
     }[]
   >([]);
 
-  // Load messages from localStorage on mount
-  useEffect(() => {
-    const savedMessages = localStorage.getItem("chat-messages");
-    const savedSupportId = localStorage.getItem("chat-supportId");
-
-    if (savedMessages) {
-      try {
-        const parsedMessages = JSON.parse(savedMessages);
-        setMessages(parsedMessages);
-      } catch (error) {
-        console.error("Error loading saved messages:", error);
-      }
-    }
-
-    if (savedSupportId) {
-      setSupportId(savedSupportId);
-    }
-  }, []);
-
-  // Save messages to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem("chat-messages", JSON.stringify(messages));
-  }, [messages]);
-
-  // Save supportId to localStorage whenever it changes
-  useEffect(() => {
-    if (supportId) {
-      localStorage.setItem("chat-supportId", supportId);
-    } else {
-      localStorage.removeItem("chat-supportId");
-    }
-  }, [supportId]);
+  const [isAIAvailable, setIsAIAvailable] = useState<boolean>(false);
+  const [conversationHistory, setConversationHistory] = useState<
+    AIChatMessage[]
+  >([]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Welcome mesaj butonları için handler
   const handleWelcomeAction = useCallback(
-    async (action: string) => {
+    (action: string) => {
       switch (action) {
         case "book-room":
           setIsOpen(false);
@@ -132,69 +89,8 @@ export default function ChatWidget() {
           router.push("/reservations");
           break;
         case "live-support":
-          // Zaten canlı desteğe bağlıysa yeni request oluşturma
-          if (supportId) {
-            console.log(
-              "⚠️ Zaten canlı desteğe bağlı, yeni request oluşturulmuyor"
-            );
-            return;
-          }
-
-          // Widget içinde canlı destek başlat
-          const newSupportId = `support-${Date.now()}`;
-          setSupportId(newSupportId);
-
-          // Support room'a katıl
-          socketService.joinRoom(newSupportId, "user");
-
-          // Support request oluştur (HTTP API çağrısı)
-          try {
-            const token = localStorage.getItem("access_token");
-            if (token) {
-              const response = await fetch(
-                "http://localhost:3001/api/support",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                  },
-                  body: JSON.stringify({
-                    subject: "Canlı Destek Talebi",
-                    category: "GENERAL",
-                    body: "Kullanıcı chat widget üzerinden canlı destek talebinde bulundu.",
-                  }),
-                }
-              );
-
-              if (response.ok) {
-                const result = await response.json();
-                console.log("✅ Support request oluşturuldu:", result);
-                setSupportId(result.data.id);
-
-                // Support room'a katıl
-                socketService.joinRoom(`support:${result.data.id}`, "user");
-              } else {
-                const errorText = await response.text();
-                console.error(
-                  "❌ Support request oluşturulamadı:",
-                  response.status,
-                  errorText
-                );
-              }
-            }
-          } catch (error) {
-            console.error("❌ Support request oluşturma hatası:", error);
-          }
-
-          const liveSupportMessage = {
-            id: Date.now() + 1,
-            message:
-              "Canlı destek bağlantısı kuruluyor. Bir temsilci size yardımcı olacak.",
-            sender: "system" as const,
-            type: "live-support" as const,
-          };
-          setMessages((prev) => [...prev, liveSupportMessage]);
+          setIsOpen(false);
+          router.push("/support");
           break;
         default:
           break;
@@ -230,74 +126,6 @@ export default function ChatWidget() {
     return () => window.removeEventListener("open-chat-widget", openChat);
   }, []);
 
-  // Socket.IO bağlantısı ve event listeners
-  useEffect(() => {
-    const initializeSocket = async () => {
-      try {
-        // Socket bağlantısını kontrol et
-        if (!socketService.isSocketConnected()) {
-          await socketService.connect();
-        }
-
-        setIsSocketConnected(true);
-        console.log("✅ Chat Widget: Socket.IO bağlandı");
-      } catch (error) {
-        console.error("❌ Chat Widget: Socket.IO bağlantı hatası:", error);
-        setIsSocketConnected(false);
-      }
-    };
-
-    // Chat açıldığında socket bağlantısını kur
-    if (isOpen) {
-      initializeSocket();
-    }
-
-    // Socket event listeners
-    const handleNewMessage = (socketMessage: SocketMessage) => {
-      console.log("📨 Chat Widget: Yeni socket mesajı alındı:", socketMessage);
-
-      const newMessage = {
-        id: Date.now(),
-        message: socketMessage.content,
-        sender: (socketMessage.senderId?.includes("agent") ? "bot" : "user") as
-          | "user"
-          | "bot"
-          | "system",
-        type: "live-support" as const,
-      };
-
-      setMessages((prev) => [...prev, newMessage]);
-    };
-
-    const handleTyping = (event: TypingEvent) => {
-      if (event.isTyping) {
-        setIsTyping(true);
-        setTypingUser(event.userId);
-      } else {
-        setIsTyping(false);
-        setTypingUser("");
-      }
-    };
-
-    // Event listener'ları ekle
-    socketService.onNewMessage(handleNewMessage);
-    socketService.onTyping(handleTyping);
-
-    // Cleanup
-    return () => {
-      // Event listener'ları temizleme işlemi socket service'de yapılacak
-    };
-  }, [isOpen]);
-
-  // Clear chat function
-  const clearChat = () => {
-    setMessages([]);
-    setSupportId("");
-    setConversationHistory([]);
-    localStorage.removeItem("chat-messages");
-    localStorage.removeItem("chat-supportId");
-  };
-
   // AI durumunu kontrol et
   useEffect(() => {
     const checkAIStatus = async () => {
@@ -320,65 +148,9 @@ export default function ChatWidget() {
     }
   }, [isOpen]);
 
-  const handleLiveSupport = async () => {
-    // Zaten canlı desteğe bağlıysa yeni request oluşturma
-    if (supportId) {
-      console.log("⚠️ Zaten canlı desteğe bağlı, yeni request oluşturulmuyor");
-      return;
-    }
-
-    // Widget içinde canlı destek başlat (aynı logic)
-    const newSupportId = `support-${Date.now()}`;
-    setSupportId(newSupportId);
-
-    // Support room'a katıl
-    socketService.joinRoom(newSupportId, "user");
-
-    // Support request oluştur (HTTP API çağrısı)
-    try {
-      const token = localStorage.getItem("access_token");
-      if (token) {
-        const response = await fetch("http://localhost:3001/api/support", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            subject: "Canlı Destek Talebi",
-            category: "GENERAL",
-            body: "Kullanıcı chat widget üzerinden canlı destek talebinde bulundu.",
-          }),
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          console.log("✅ Support request oluşturuldu:", result);
-          setSupportId(result.data.id);
-
-          // Support room'a katıl
-          socketService.joinRoom(`support:${result.data.id}`, "user");
-        } else {
-          const errorText = await response.text();
-          console.error(
-            "❌ Support request oluşturulamadı:",
-            response.status,
-            errorText
-          );
-        }
-      }
-    } catch (error) {
-      console.error("❌ Support request oluşturma hatası:", error);
-    }
-
-    const liveSupportMessage = {
-      id: Date.now() + 1,
-      message:
-        "Canlı destek bağlantısı kuruluyor. Bir temsilci size yardımcı olacak.",
-      sender: "system" as const,
-      type: "live-support" as const,
-    };
-    setMessages((prev) => [...prev, liveSupportMessage]);
+  const handleLiveSupport = () => {
+    setIsOpen(false);
+    router.push("/support");
   };
 
   const handleSendMessage = async () => {
@@ -393,83 +165,11 @@ export default function ChatWidget() {
       const currentMessage = message;
       setMessage("");
 
-      // Typing indicator'ı durdur
-      if (supportId && isSocketConnected) {
-        socketService.stopTyping(`support:${supportId}`, "user");
-      }
-
-      // Canlı destek modunda ise mesajları support'a gönder
-      if (supportId) {
-        console.log(
-          "📨 Canlı destek modunda mesaj gönderiliyor:",
-          currentMessage
-        );
-
-        try {
-          // Support mesajını socket ile gönder
-          socketService.sendMessage({
-            content: currentMessage,
-            supportId: supportId,
-          });
-
-          console.log("✅ Support mesajı socket ile gönderildi");
-          return; // AI işlemlerine geçme
-        } catch (error) {
-          console.error("❌ Support mesajı gönderme hatası:", error);
-        }
-      }
-
-      // Özel komutları kontrol et (sadece AI modunda)
+      // Özel komutları kontrol et
       if (currentMessage.toLowerCase().includes("canlı destek")) {
-        // Canlı destek için support room oluştur
-        const newSupportId = `support-${Date.now()}`;
-        setSupportId(newSupportId);
-
-        // Support room'a katıl
-        socketService.joinRoom(newSupportId, "user");
-
-        // Support request oluştur (HTTP API çağrısı)
-        try {
-          const token = localStorage.getItem("access_token");
-          if (token) {
-            const response = await fetch("http://localhost:3001/api/support", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify({
-                subject: "Canlı Destek Talebi",
-                category: "GENERAL",
-                body:
-                  "Kullanıcı canlı destek talep etti. Mesaj: " + currentMessage,
-              }),
-            });
-
-            if (response.ok) {
-              const result = await response.json();
-              console.log("✅ Support request oluşturuldu:", result);
-              setSupportId(result.data.id);
-
-              // Support room'a katıl
-              socketService.joinRoom(`support:${result.data.id}`, "user");
-            } else {
-              const errorText = await response.text();
-              console.error(
-                "❌ Support request oluşturulamadı:",
-                response.status,
-                errorText
-              );
-            }
-          }
-        } catch (error) {
-          console.error("❌ Support request oluşturma hatası:", error);
-        }
-
         const liveSupportMessage = {
           id: Date.now() + 1,
-          message:
-            "Canlı destek bağlantısı kuruluyor. Bir temsilci size yardımcı olacak.",
+          message: t("liveSupportMessage"),
           sender: "system" as const,
           type: "live-support" as const,
         };
@@ -487,7 +187,7 @@ export default function ChatWidget() {
         return;
       }
 
-      // Loading mesajı ekle (sadece AI modunda)
+      // Loading mesajı ekle
       const loadingMessage = {
         id: Date.now() + 1,
         message: "...",
@@ -499,7 +199,7 @@ export default function ChatWidget() {
       try {
         let botResponseText: string;
         let ticketCreated = false;
-        let supportIdFromAI: string | undefined;
+        let supportId: string | undefined;
 
         // Token kontrolü
         const token = localStorage.getItem("access_token");
@@ -516,7 +216,7 @@ export default function ChatWidget() {
 
           botResponseText = aiResponse.response;
           ticketCreated = aiResponse.ticketCreated;
-          supportIdFromAI = aiResponse.supportId;
+          supportId = aiResponse.supportId;
 
           // Konuşma geçmişini güncelle
           setConversationHistory((prev) => [
@@ -524,14 +224,6 @@ export default function ChatWidget() {
             { role: "user", content: currentMessage },
             { role: "assistant", content: aiResponse.response },
           ]);
-
-          // Eğer support room varsa, AI mesajını socket ile de gönder
-          if (supportIdFromAI && isSocketConnected) {
-            socketService.sendMessage({
-              content: aiResponse.response,
-              supportId: supportIdFromAI,
-            });
-          }
         } else {
           // AI kullanılamıyorsa veya giriş yapılmamışsa fallback mesajı kullan
           console.log(
@@ -560,10 +252,10 @@ export default function ChatWidget() {
         );
 
         // Eğer ticket oluşturulduysa bilgilendirme mesajı ekle
-        if (ticketCreated && supportIdFromAI) {
+        if (ticketCreated && supportId) {
           const ticketMessage = {
             id: Date.now() + 2,
-            message: `🎫 Destek talebi oluşturuldu (ID: ${supportIdFromAI}). Bir temsilci en kısa sürede size yardımcı olacak.`,
+            message: `🎫 Destek talebi oluşturuldu (ID: ${supportId}). Bir temsilci en kısa sürede size yardımcı olacak.`,
             sender: "system" as const,
             type: "live-support" as const,
           };
@@ -615,34 +307,15 @@ export default function ChatWidget() {
           {/* Header */}
           <div className="relative overflow-hidden text-gray-900 dark:text-gray-200 border-b border-b-blue-500">
             <div className="px-4 py-2 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <h4 className="font-medium">{t("assistantTitle")}</h4>
-                {supportId && (
-                  <div className="flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
-                    <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
-                    <span>Canlı Destek</span>
-                  </div>
-                )}
-              </div>
-              <div className="flex items-center gap-1">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="bg-white/20 hover:bg-white/30 border-0 text-white cursor-pointer"
-                  onClick={clearChat}
-                  title="Sohbeti Temizle"
-                >
-                  🗑️
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="bg-white/20 hover:bg-white/30 border-0 text-white cursor-pointer"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <XIcon className="w-4 h-4 text-black dark:text-gray-200" />
-                </Button>
-              </div>
+              <h4 className="font-medium">{t("assistantTitle")}</h4>
+              <Button
+                variant="outline"
+                size="sm"
+                className="bg-white/20 hover:bg-white/30 border-0 text-white cursor-pointer"
+                onClick={() => setIsOpen(false)}
+              >
+                <XIcon className="w-4 h-4 text-black dark:text-gray-200" />
+              </Button>
             </div>
           </div>
 
@@ -689,8 +362,7 @@ export default function ChatWidget() {
                         msg.message
                       )}
                       {msg.sender === "system" &&
-                        msg.type === "live-support" &&
-                        !supportId && (
+                        msg.type === "live-support" && (
                           <div className="mt-2">
                             <Button
                               variant="outline"
@@ -703,57 +375,17 @@ export default function ChatWidget() {
                             </Button>
                           </div>
                         )}
-                      {msg.sender === "system" &&
-                        msg.type === "live-support" &&
-                        supportId && (
-                          <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded text-xs">
-                            <div className="flex items-center gap-1 text-green-700">
-                              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                              <span className="font-medium">
-                                Canlı Desteğe Bağlandı
-                              </span>
-                            </div>
-                            <div className="text-green-600 mt-1">
-                              Destek ID: {supportId}
-                            </div>
-                          </div>
-                        )}
                     </div>
                   </div>
                 </div>
               ))}
-
-              {/* Typing indicator */}
-              {isTyping && (
-                <div className="flex gap-2 justify-start">
-                  <Avatar className="w-6 h-6 flex-shrink-0">
-                    <AvatarImage src="/images/logo3.png" alt="Rotaly Logo" />
-                  </Avatar>
-                  <div className="flex flex-col">
-                    <div className="bg-gray-100 text-gray-800 rounded-bl-sm p-2">
-                      <div className="flex items-center gap-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                        <div
-                          className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                          style={{ animationDelay: "0.1s" }}
-                        ></div>
-                        <div
-                          className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                          style={{ animationDelay: "0.2s" }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
               <div ref={messagesEndRef} />
             </div>
           </div>
 
           {/* Footer */}
           <div className="border-t p-3 flex-shrink-0">
-            {/* Status Indicators */}
+            {/* AI Status Indicator */}
             <div className="flex items-center gap-1 mb-2 text-xs text-gray-500">
               {(() => {
                 const token = localStorage.getItem("access_token");
@@ -778,15 +410,6 @@ export default function ChatWidget() {
                   </>
                 );
               })()}
-
-              {/* Socket.IO Status */}
-              <span className="mx-2">•</span>
-              <div
-                className={`w-2 h-2 rounded-full ${
-                  isSocketConnected ? "bg-green-500" : "bg-red-400"
-                }`}
-              ></div>
-              {isSocketConnected ? "Socket Bağlı" : "Socket Bağlantısı Yok"}
             </div>
 
             <div className="flex items-center gap-2 mb-2">
@@ -801,24 +424,7 @@ export default function ChatWidget() {
                 }
                 className="flex-1 h-8 text-sm"
                 value={message}
-                onChange={(e) => {
-                  setMessage(e.target.value);
-
-                  // Typing indicator gönder
-                  if (
-                    e.target.value.length > 0 &&
-                    supportId &&
-                    isSocketConnected
-                  ) {
-                    socketService.startTyping(`support:${supportId}`, "user");
-                  } else if (
-                    e.target.value.length === 0 &&
-                    supportId &&
-                    isSocketConnected
-                  ) {
-                    socketService.stopTyping(`support:${supportId}`, "user");
-                  }
-                }}
+                onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
               />
               <Button

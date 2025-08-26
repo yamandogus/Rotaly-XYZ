@@ -3,14 +3,13 @@
 
 export interface SocketMessage {
   id: string;
+  message: string;
   content: string;
   senderId: string;
   receiverId?: string;
-  createdAt: Date;
-  timestamp?: Date;
-  isFromAI?: boolean;
-  ticketCreated?: boolean;
   supportId?: string;
+  timestamp: Date;
+  isAIMessage?: boolean;
 }
 
 export interface AIResponse {
