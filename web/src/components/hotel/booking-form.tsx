@@ -49,25 +49,26 @@ const BookingForm: React.FC<BookingFormProps> = ({
       {/* Başlık ve puan */}
       <div className="mb-4">
         <h1 className="text-2xl font-bold">{hotelName}</h1>
-        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300 text-sm mt-1">
+        <div className="flex items-center flex-wrap gap-2 text-gray-600 dark:text-gray-300 text-sm mt-1">
           <MapPinIcon className="w-4 h-4" />
           <span className="dark:text-white">{hotelLocation}</span>
           <span className="mx-1 dark:text-white">·</span>
-          <span className="font-semibold dark:text-white">{rating}</span>
-          <div className="flex items-center">
-            {Array.from({ length: totalStars }).map((_, i) => (
-              <StarIcon
-                key={i}
-                className={`w-4 h-4 ${
-                  i < Math.floor(rating)
-                    ? "text-yellow-400 fill-yellow-400"
-                    : "text-gray-300 dark:text-gray-500"
-                }`}
-                fill={i < Math.floor(rating) ? "#facc15" : "none"}
-              />
-            ))}
+          <div className="flex items-center gap-1">
+            <span className="font-semibold dark:text-white">{rating}</span>
+            <div className="flex items-center">
+              {Array.from({ length: totalStars }).map((_, i) => (
+                <StarIcon
+                  key={i}
+                  className={`w-4 h-4 ${
+                    i < Math.floor(rating)
+                      ? "text-yellow-400 fill-yellow-400"
+                      : "text-gray-300 dark:text-gray-500"
+                  }`}
+                  fill={i < Math.floor(rating) ? "#facc15" : "none"}
+                />
+              ))}
+            </div>
           </div>
-
           <span className="text-gray-400 dark:text-gray-500">(120)</span>
         </div>
       </div>
