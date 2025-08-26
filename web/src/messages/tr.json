@@ -12,7 +12,7 @@
     "logout": "Çıkış Yap",
     "Hotels Add": "Otel Ekle",
     "profile": "Profil",
-    "contact":"İletişim",
+    "contact": "İletişim",
     "sheetTitle": "Menü",
     "sheetDescription": "Uygulama menüsünü görüntüleyin",
     "live-chat": "Canlı Sohbet",
@@ -52,7 +52,7 @@
     "specialOffers": "Özel Teklifler",
     "reviewsCount": "{count} Yorum",
     "viewDetailsButton": "Detayları Görüntüle",
-   "bookingSearch": {
+    "bookingSearch": {
       "errors": {
         "selectCity": "Lütfen bir şehir seçin",
         "selectCheckIn": "Lütfen giriş tarihi seçin",
@@ -90,8 +90,18 @@
       "heading": "Giriş ve çıkış tarihlerini seçin",
       "monthFormat": "long year",
       "months": [
-        "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
-        "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
+        "Ocak",
+        "Şubat",
+        "Mart",
+        "Nisan",
+        "Mayıs",
+        "Haziran",
+        "Temmuz",
+        "Ağustos",
+        "Eylül",
+        "Ekim",
+        "Kasım",
+        "Aralık"
       ]
     },
     "guestSelector": {
@@ -107,45 +117,45 @@
   },
 
   "ChatWidget": {
-  "welcome": "Hoşgeldiniz!",
-  "assistantIntro": "Rotaly Hotel Asistanınız size yardımcı olmak için burada.",
-  "bookRoom": "Oda Rezervasyonu Yap",
-  "viewReservation": "Mevcut Rezervasyonumu Gör",
-  "liveSupport": "Canlı Destek ile Konuş",
-  "botDefaultMessage": "Teşekkür ederim. Size nasıl yardımcı olabilirim? Daha detaylı bilgi için canlı destek ile iletişime geçebilirsiniz.",
-  "liveSupportMessage": "Canlı destek ile bağlanmak istiyorsunuz. Aşağıdaki butona tıklayarak canlı destek ekibimizle iletişime geçebilirsiniz.",
-  "assistantTitle": "AI Asistan",
-  "inputPlaceholder": "Mesajınızı giriniz..."
+    "welcome": "Hoşgeldiniz!",
+    "assistantIntro": "Rotaly Hotel Asistanınız size yardımcı olmak için burada.",
+    "bookRoom": "Oda Rezervasyonu Yap",
+    "viewReservation": "Mevcut Rezervasyonumu Gör",
+    "liveSupport": "Canlı Destek ile Konuş",
+    "botDefaultMessage": "Teşekkür ederim. Size nasıl yardımcı olabilirim? Daha detaylı bilgi için canlı destek ile iletişime geçebilirsiniz.",
+    "liveSupportMessage": "Canlı destek ile bağlanmak istiyorsunuz. Aşağıdaki butona tıklayarak canlı destek ekibimizle iletişime geçebilirsiniz.",
+    "assistantTitle": "AI Asistan",
+    "inputPlaceholder": "Mesajınızı giriniz..."
   },
 
-  "LiveChat":{
-  "systemWelcome": "Merhaba! Rotaly destek ekibine hoş geldiniz. Size nasıl yardımcı olabilirim?",
-  "exampleUserMessage": "Rezervasyonumu iptal etmek istiyorum",
-  "supportReply": "Rezervasyonunuzu iptal etmenize yardımcı olabilirim. Lütfen rezervasyon numaranızı paylaşın.",
-  "systemInfo": "Canlı destek ile bağlanmak istiyorsunuz. Ekibimiz en kısa sürede yanıt verecektir.",
-  "supportUnit": "Rotaly Destek Ekibi",
-  "online": "Çevrimiçi",
-  "expertTeam": "Uzman Destek Ekibi",
-  "responseTime": "Yanıt süresi: ~2 dk",
-  "supportTitle": "Rotaly Destek",
-  "typeMessage": "Mesajınızı yazın..."
+  "LiveChat": {
+    "systemWelcome": "Merhaba! Rotaly destek ekibine hoş geldiniz. Size nasıl yardımcı olabilirim?",
+    "exampleUserMessage": "Rezervasyonumu iptal etmek istiyorum",
+    "supportReply": "Rezervasyonunuzu iptal etmenize yardımcı olabilirim. Lütfen rezervasyon numaranızı paylaşın.",
+    "systemInfo": "Canlı destek ile bağlanmak istiyorsunuz. Ekibimiz en kısa sürede yanıt verecektir.",
+    "supportUnit": "Rotaly Destek Ekibi",
+    "online": "Çevrimiçi",
+    "expertTeam": "Uzman Destek Ekibi",
+    "responseTime": "Yanıt süresi: ~2 dk",
+    "supportTitle": "Rotaly Destek",
+    "typeMessage": "Mesajınızı yazın..."
   },
 
-  "Notifications":{
-  "title": "Bildirimler",
-  "newReservation": "Yeni rezervasyon",
-  "reservationConfirmed": "Otel rezervasyonunuz onaylandı",
-  "twoHoursAgo": "2 saat önce",
-  "paymentSuccess": "Ödeme başarılı",
-  "paymentReceived": "Ödemeniz başarıyla alındı",
-  "oneDayAgo": "1 gün önce",
-  "systemUpdate": "Sistem güncellemesi",
-  "newFeaturesAdded": "Yeni özellikler eklendi",
-  "threeDaysAgo": "3 gün önce",
-  "viewAll": "Tüm bildirimleri görüntüle",
-  "emptyMessage": "Henüz bildirim yok",
-  "markAllRead": "Tümünü okundu olarak işaretle"
-},
+  "Notifications": {
+    "title": "Bildirimler",
+    "newReservation": "Yeni rezervasyon",
+    "reservationConfirmed": "Otel rezervasyonunuz onaylandı",
+    "twoHoursAgo": "2 saat önce",
+    "paymentSuccess": "Ödeme başarılı",
+    "paymentReceived": "Ödemeniz başarıyla alındı",
+    "oneDayAgo": "1 gün önce",
+    "systemUpdate": "Sistem güncellemesi",
+    "newFeaturesAdded": "Yeni özellikler eklendi",
+    "threeDaysAgo": "3 gün önce",
+    "viewAll": "Tüm bildirimleri görüntüle",
+    "emptyMessage": "Henüz bildirim yok",
+    "markAllRead": "Tümünü okundu olarak işaretle"
+  },
 
   "HotelCard": {
     "discountLabel": "Fırsat",
@@ -156,7 +166,7 @@
     "breakfastText": "Kahvaltı Dahil",
     "parkingText": "Ücretsiz Otopark"
   },
-  
+
   "HotelDetail": {
     "bookingForm": {
       "selectDate": "Tarih Seçin",
@@ -265,7 +275,7 @@
       "loading": "Yükleniyor..."
     },
 
-    "BookingInformationPage":{
+    "BookingInformationPage": {
       "nameLabel": "Ad",
       "surnameLabel": "Soyad",
       "emailLabel": "E-posta",
@@ -275,7 +285,7 @@
       "specialRequestPlaceholder": "Taleplerinizi buraya yazın...",
       "proceedToPaymentButton": "Ödemeye Geç"
     },
-      "HotelSummary": {
+    "HotelSummary": {
       "reviewsCount": "{count} Yorum",
       "freeCancellation": "Ücretsiz İptal",
       "breakfastIncluded": "Kahvaltı Dahil",
@@ -351,10 +361,6 @@
     }
   },
 
-
-  
-
-
   "CategoryPage": {
     "resultsFound": "{count} sonuç bulundu"
   },
@@ -421,9 +427,9 @@
     "hotelManagement": "Otel Yönetimi",
     "rotaly": "Rotaly",
     "home": "Anasayfa",
-    "customers": "Müşteriler",  
+    "customers": "Müşteriler",
     "admins": "Adminler",
-    "WelcamePage" :"Ana Sayfa",
+    "WelcamePage": "Ana Sayfa",
     "reservation-management": "Rezervasyon Yönetimi",
     "active-reservations": "Aktif Rezervasyonlar",
     "passive-reservations": "Pasif Rezervasyonlar",
@@ -452,9 +458,9 @@
     "system-settings": "Sistem Ayarları",
     "live-support": "Canlı Destek",
     "information": "Bilgiler",
-    "room-price-management":"Oda Fiyat Yönetimi",
-    "hotel-profile":"Otel Profili",
-    "evaluations":"Değerlendirmeler",
+    "room-price-management": "Oda Fiyat Yönetimi",
+    "hotel-profile": "Otel Profili",
+    "evaluations": "Değerlendirmeler",
     "reports": "Raporlar",
     "statistics": "İstatistikler",
     "business": "İşletme",
@@ -505,31 +511,29 @@
     },
 
     "HotelDetail": {
-  "bookingForm": {
-    "selectDate": "Tarih seç",
-    "checkIn": "Giriş",
-    "checkOut": "Çıkış",
-    "guests": "Kişi",
-    "nights": "Gece",
-    "bookNow": "Rezervasyon yap",
-    "learnMore": "Detaylı bilgi al"
-  },
-  "breadcrumbs": {
-    "homePage": "Anasayfa",
-    "hotel": "Otel"
-  },
-  "hotelInfo": {
-    "title": "Özellikler",
-    "beds": "Yataklar",
-    "seatingArea": "Oturma Alanı",
-    "bathrooms": "Banyo",
-    "minibar": "Minibar",
-    "wifi": "WiFi",
-    "television": "Televizyon"
-  }
-}
-
-
+      "bookingForm": {
+        "selectDate": "Tarih seç",
+        "checkIn": "Giriş",
+        "checkOut": "Çıkış",
+        "guests": "Kişi",
+        "nights": "Gece",
+        "bookNow": "Rezervasyon yap",
+        "learnMore": "Detaylı bilgi al"
+      },
+      "breadcrumbs": {
+        "homePage": "Anasayfa",
+        "hotel": "Otel"
+      },
+      "hotelInfo": {
+        "title": "Özellikler",
+        "beds": "Yataklar",
+        "seatingArea": "Oturma Alanı",
+        "bathrooms": "Banyo",
+        "minibar": "Minibar",
+        "wifi": "WiFi",
+        "television": "Televizyon"
+      }
+    }
   },
   "Company": {
     "title": "Şirket Bilgileri",
@@ -579,59 +583,59 @@
     "confirmPassword": "Şifre Tekrar"
   },
   "AdminProfile": {
-  "title": "Admin Profili",
-  "subtitle": "Profilinizi görüntüleyebilir ve düzenleyebilirsiniz.",
-  "profilePhoto": "Profil Fotoğrafı",
-  "profileInformation": "Profil Bilgileri",
-  "personalInfo": "Kişisel Bilgiler",
-  "name": "Ad",
-  "email": "E-posta",
-  "enterName": "Adınızı girin",
-  "enterEmail": "E-posta adresinizi girin",
-  "password": "Şifre",
-  "confirmPassword": "Şifre Tekrar",
-  "changePassword": "Şifre Değiştir",
-  "newPassword": "Yeni Şifre",
-  "enterNewPassword": "Yeni şifrenizi girin",
-  "confirmNewPassword": "Yeni şifrenizi tekrar girin",
-  "saveChanges": "Değişiklikleri Kaydet",
-  "cancel": "İptal",
-  "fieldRequired": "Bu alan boş bırakılamaz",
-  "invalidEmail": "Lütfen geçerli bir e-posta adresi girin",
-  "passwordHint": "Şifrenizi düzenli aralıklarla değiştirmeniz önerilir.",
-  "invalidPhone": "Lütfen geçerli bir telefon numarası girin: +90 5XX XXX XXXX formatında",
-  "reservationsDescription": "Aktif rezervasyonlarınız burada listelenecek.",
-  "pastReservationsDescription": "Geçmiş rezervasyonlarınız burada listelenecek.",
-  "notifications": "Bildirimler",
-  "notificationsDescription": "Güncel bildirimlerinizi buradan görüntüleyebilirsiniz.",
-  "passwordOperations": "Şifre İşlemleri",
-  "passwordSettingsDescription": "Hesabınızın güvenliği için şifrenizi düzenli olarak güncelleyin.",
-  "currentPassword": "Mevcut Şifre",
-  "passwordsDoNotMatch": "Yeni şifreler eşleşmiyor.",
-  "otpConfirm": "Onayla",
-  
-  "otpTitle": "Doğrulama Kodu",
-  "otpDescription": "E-mail adresinize gönderilen 6 haneli kodu giriniz.",
-  "otpPlaceholder": "6 haneli kod",
-  "otpInvalid": "Lütfen 6 haneli kodu giriniz.",
-  "otpVerified": "OTP Doğrulandı",
-  "otpFailed": "OTP Doğrulanamadı",
-  "otpSubmit": "Onayla ve Kaydet",
-  "otpCancel": "Vazgeç",
-  
-  "socialMedia": "Sosyal Medya",
-  "companyInfo": "Şirket Bilgileri",
-  "phone": "Telefon",
-  "website": "Web Sitesi",
-  "facebook": "Facebook",
-  "instagram": "Instagram",
-  "twitter": "Twitter",
-  "linkedin": "LinkedIn",
-  "formErrorPassword": "Şifre alanlarında hata var. Lütfen kontrol edin.",
-  "otpErrorLength": "Lütfen 6 haneli kodu tam olarak girin.",
-  "otpSuccess": "Şifreniz başarıyla güncellendi!",
-  "otpErrorInvalid": "Geçersiz doğrulama kodu. Lütfen tekrar deneyin."
-},
+    "title": "Admin Profili",
+    "subtitle": "Profilinizi görüntüleyebilir ve düzenleyebilirsiniz.",
+    "profilePhoto": "Profil Fotoğrafı",
+    "profileInformation": "Profil Bilgileri",
+    "personalInfo": "Kişisel Bilgiler",
+    "name": "Ad",
+    "email": "E-posta",
+    "enterName": "Adınızı girin",
+    "enterEmail": "E-posta adresinizi girin",
+    "password": "Şifre",
+    "confirmPassword": "Şifre Tekrar",
+    "changePassword": "Şifre Değiştir",
+    "newPassword": "Yeni Şifre",
+    "enterNewPassword": "Yeni şifrenizi girin",
+    "confirmNewPassword": "Yeni şifrenizi tekrar girin",
+    "saveChanges": "Değişiklikleri Kaydet",
+    "cancel": "İptal",
+    "fieldRequired": "Bu alan boş bırakılamaz",
+    "invalidEmail": "Lütfen geçerli bir e-posta adresi girin",
+    "passwordHint": "Şifrenizi düzenli aralıklarla değiştirmeniz önerilir.",
+    "invalidPhone": "Lütfen geçerli bir telefon numarası girin: +90 5XX XXX XXXX formatında",
+    "reservationsDescription": "Aktif rezervasyonlarınız burada listelenecek.",
+    "pastReservationsDescription": "Geçmiş rezervasyonlarınız burada listelenecek.",
+    "notifications": "Bildirimler",
+    "notificationsDescription": "Güncel bildirimlerinizi buradan görüntüleyebilirsiniz.",
+    "passwordOperations": "Şifre İşlemleri",
+    "passwordSettingsDescription": "Hesabınızın güvenliği için şifrenizi düzenli olarak güncelleyin.",
+    "currentPassword": "Mevcut Şifre",
+    "passwordsDoNotMatch": "Yeni şifreler eşleşmiyor.",
+    "otpConfirm": "Onayla",
+
+    "otpTitle": "Doğrulama Kodu",
+    "otpDescription": "E-mail adresinize gönderilen 6 haneli kodu giriniz.",
+    "otpPlaceholder": "6 haneli kod",
+    "otpInvalid": "Lütfen 6 haneli kodu giriniz.",
+    "otpVerified": "OTP Doğrulandı",
+    "otpFailed": "OTP Doğrulanamadı",
+    "otpSubmit": "Onayla ve Kaydet",
+    "otpCancel": "Vazgeç",
+
+    "socialMedia": "Sosyal Medya",
+    "companyInfo": "Şirket Bilgileri",
+    "phone": "Telefon",
+    "website": "Web Sitesi",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "twitter": "Twitter",
+    "linkedin": "LinkedIn",
+    "formErrorPassword": "Şifre alanlarında hata var. Lütfen kontrol edin.",
+    "otpErrorLength": "Lütfen 6 haneli kodu tam olarak girin.",
+    "otpSuccess": "Şifreniz başarıyla güncellendi!",
+    "otpErrorInvalid": "Geçersiz doğrulama kodu. Lütfen tekrar deneyin."
+  },
 
   "AdminSecurity": {
     "title": "Güvenlik Merkezi",
@@ -701,7 +705,7 @@
     "failedLoginAttempt": "Başarısız giriş denemesi"
   },
 
- "AdminStatistics": {
+  "AdminStatistics": {
     "adminStatistics": "Yönetici İstatistikleri",
     "exportCSV": "CSV Olarak Dışa Aktar",
     "monthlyRevenue": "Aylık Gelir",
@@ -727,6 +731,67 @@
     "pendingPayments": "Bekleyen Ödemeler",
     "thisWeekBookings": "Bu Haftaki Rezervasyonlar",
     "activeSupportTickets": "Aktif Destek Talepleri",
+    "closeTicketSuccess": "Bilet başarıyla kapatıldı",
+    "closeTicketError": "Bilet kapatılırken bir hata oluştu"
+  },
+  "Support": {
+    "myTickets": "Destek Biletlerim",
+    "createNewTicket": "Yeni Bilet Oluştur",
+    "allTickets": "Tüm Biletler",
+    "open": "Açık",
+    "closed": "Kapalı",
+    "allCategories": "Tüm Kategoriler",
+    "general": "Genel",
+    "technical": "Teknik",
+    "billing": "Faturalama",
+    "reservation": "Rezervasyon",
+    "complaint": "Şikayet",
+    "featureRequest": "Özellik Talebi",
+    "security": "Güvenlik",
+    "other": "Diğer",
+    "perPage": "Sayfa Başına",
+    "status": "Durum",
+    "category": "Kategori",
+    "loadingTickets": "Biletler yükleniyor...",
+    "noTicketsFound": "Henüz bilet bulunamadı.",
+    "createFirstTicket": "İlk biletinizi oluşturun",
+    "view": "Görüntüle",
+    "close": "Kapat",
+    "created": "Oluşturulma",
+    "messages": "mesaj",
+    "assigned": "Atanan",
+    "showing": "arası, toplam",
+    "results": "sonuç",
+    "total": "toplam",
+    "previous": "Önceki",
+    "next": "Sonraki",
+    "ticketClosedSuccess": "Bilet başarıyla kapatıldı",
+    "ticketCloseError": "Bilet kapatılırken bir hata oluştu",
+    "ticketsLoadError": "Biletler yüklenirken bir hata oluştu",
+    "supportTitle": "Rotaly Destek",
+    "backToSupport": "Geri Dön",
+    "ticketNumber": "Destek Bileti",
+    "closeTicket": "Bileti Kapat",
+    "ticketInfo": "Bilet Bilgileri",
+    "firstMessage": "İlk Mesaj",
+    "assignedRep": "Atanan Destek Temsilcisi",
+    "messagesTitle": "Mesajlar",
+    "noMessages": "Henüz mesaj bulunmuyor",
+    "typeMessage": "Mesajınızı yazın...",
+    "send": "Gönder",
+    "sending": "Gönderiliyor...",
+    "messageSent": "Mesaj başarıyla gönderildi",
+    "messageError": "Mesaj gönderilirken bir hata oluştu",
+    "ticketClosedMessage": "Bu bilet kapatılmıştır. Yeni mesaj gönderemezsiniz.",
+    "keyboardHint": "Enter tuşu ile gönderebilirsiniz. Yeni satır için Shift+Enter kullanın.",
+    "ticketNotFound": "Bilet bulunamadı",
+    "loadingTicket": "Bilet yükleniyor...",
+    "24x7Support": "7/24 Destek Hizmeti",
+    "adminPanel": "Yönetim Paneli",
+    "admin": "Admin",
+    "support": "Destek",
+    "customer": "Müşteri",
+    "accessDenied": "Erişim reddedildi. Yönetici yetkileri gereklidir.",
     "newHotelApplications": "Yeni Otel Başvuruları",
     "positiveTrend": "Artış",
     "negativeTrend": "Azalış",
@@ -744,7 +809,6 @@
     "working": "Çalışıyor",
     "timeAgo": "{minutes} dk önce"
   },
-
 
   "UserProfile": {
     "title": "Profilim",
@@ -826,7 +890,6 @@
         "cancelled": "Rezervasyonunuz iptal edildi."
       }
     }
-    
   },
   "Footer": {
     "copyright": "Tüm hakları saklıdır",
@@ -858,16 +921,13 @@
     "followUs": "- Bizi Takip Edin",
     "addressTitle": "ADRES",
     "contactTitle": "İLETİŞİM"
-
   },
-
-  
 
   "Customers": {
     "customerManagement": "Müşteri Yönetimi",
     "allRegisteredUsers": "Tüm kayıtlı kullanıcılar",
     "joinedThisMonth": "Bu ay katılanlar",
-    "purchasedIn30Days": "30 gün içinde satın alanlar", 
+    "purchasedIn30Days": "30 gün içinde satın alanlar",
     "inactiveFor90Days": "90+ gün boyunca inaktif",
     "customerList": "Müşteri Listesi",
     "search": "Ara...",
@@ -919,90 +979,88 @@
     "submit": "Şifremi Sıfırla",
     "back": "Giriş Yap"
   },
-  
+
   "Rooms": {
-  "id": "ID",
-  "roomName": "Oda Adı",
-  "roomType": "Oda Türü",
-  "roomNumber": "Oda Numarası",
-  "floor": "Kat",
-  "maxAdults": "Maksimum Yetişkin",
-  "maxChildren": "Maksimum Çocuk",
-  "price": "Fiyat",
-  "capacity": "Kapasite",
-  "status": "Durum",
-  "bedCount": "Yatak Sayısı",
-  "available": "Mevcut",
-  "unavailable": "Mevcut Değil",
-  "viewDetails": "Detayları Gör",
-  "edit": "Düzenle",
-  "delete": "Sil",
-  "roomList": "Oda Listesi",
-  "searchRooms": "Oda Ara...",
-  "filter": "Filtre",
-  "allStatus": "Tümü",
-  "sortBy": "Sırala",
-  "name": "İsim A-Z",
-  "nameDesc": "İsim Z-A",
-  "priceAsc": "Fiyat Artan",
-  "priceDesc": "Fiyat Azalan",
-  "capacityAsc": "Kapasite Artan",
-  "capacityDesc": "Kapasite Azalan",
-  "addRoom": "Oda Ekle",
-  "deletingRoom": "Oda siliniyor:",
-  "totalRooms": "Toplam Odalar",
-  "availableRooms": "Mevcut Odalar",
-  "unavailableRooms": "Mevcut Olmayan Odalar",
-  "back": "Geri",
-  "roomNotFound": "Oda bulunamadı",
-  "notAvailable": "Mevcut değil",
-  "basicInformation": "Temel Bilgiler",
-  "createdAt": "Oluşturulma Tarihi",
-  "updatedAt": "Güncellenme Tarihi",
-  "description": "Açıklama",
-  "noDescription": "Açıklama yok",
-  "overview": "Genel Bakış",
-  "bookings": "Rezervasyonlar",
-  "bookingInformationComingSoon": "Rezervasyon bilgileri yakında",
-  "features": "Özellikler",
-  "noFeatures": "Özellik yok",
-  "roomId": "Oda ID",
-  "availability": "Durum",
-  "roomDetails": "Oda Detayları",
-  "hotelId": "Otel ID",
-  "save": "Kaydet",
-  "editRoom": "Oda Düzenle",
-  "manageRoomsInstructions": "Odaları yönetmek için işlemleri kullanın",
-  "manageRooms": "Odaları yönetmek için işlemleri kullanın",
-  "averagePrice": "Ortalama Fiyat",
-  "highestPrice": "En Yüksek Fiyat",
-  "lowestPrice": "En Düşük Fiyat",
-  "totalRevenuePotential": "Toplam Gelir Potansiyeli",
-  "totalRevenue": "Toplam Gelir",
-  "searchPlaceholder": "Oda adı, numarası, türü...",
-  "noRoomsFound": "Hiç oda bulunamadı",
-  "confirmDelete": "Silmek istediğinizden emin misiniz?",
-  "addRoomTitle": "Yeni Oda Ekle",
-  "editRoomTitle": "Oda Düzenle",
-  "roomImage": "Oda Görseli",
-  "roomImageDescription": "Oda görselini yükleyin",
-  "room-image": "Oda Görseli",
-  "roomNamePlaceholder": "Oda adını girin",
-  "roomDescriptionPlaceholder": "Oda açıklamasını girin",
-  "roomTypePlaceholder": "Oda türünü seçin",
-  "maxAdultsPlaceholder": "Maksimum yetişkin sayısı",
-  "maxChildrenPlaceholder": "Maksimum çocuk sayısı",
-  "floorPlaceholder": "Kat numarası",
-  "roomNumberPlaceholder": "Oda numarası",
-  "pricePlaceholder": "Fiyat",
-  "capacityPlaceholder": "Toplam kapasite",
-  "bedCountPlaceholder": "Yatak sayısı",
-  "cancel": "İptal"
-  
-},
+    "id": "ID",
+    "roomName": "Oda Adı",
+    "roomType": "Oda Türü",
+    "roomNumber": "Oda Numarası",
+    "floor": "Kat",
+    "maxAdults": "Maksimum Yetişkin",
+    "maxChildren": "Maksimum Çocuk",
+    "price": "Fiyat",
+    "capacity": "Kapasite",
+    "status": "Durum",
+    "bedCount": "Yatak Sayısı",
+    "available": "Mevcut",
+    "unavailable": "Mevcut Değil",
+    "viewDetails": "Detayları Gör",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "roomList": "Oda Listesi",
+    "searchRooms": "Oda Ara...",
+    "filter": "Filtre",
+    "allStatus": "Tümü",
+    "sortBy": "Sırala",
+    "name": "İsim A-Z",
+    "nameDesc": "İsim Z-A",
+    "priceAsc": "Fiyat Artan",
+    "priceDesc": "Fiyat Azalan",
+    "capacityAsc": "Kapasite Artan",
+    "capacityDesc": "Kapasite Azalan",
+    "addRoom": "Oda Ekle",
+    "deletingRoom": "Oda siliniyor:",
+    "totalRooms": "Toplam Odalar",
+    "availableRooms": "Mevcut Odalar",
+    "unavailableRooms": "Mevcut Olmayan Odalar",
+    "back": "Geri",
+    "roomNotFound": "Oda bulunamadı",
+    "notAvailable": "Mevcut değil",
+    "basicInformation": "Temel Bilgiler",
+    "createdAt": "Oluşturulma Tarihi",
+    "updatedAt": "Güncellenme Tarihi",
+    "description": "Açıklama",
+    "noDescription": "Açıklama yok",
+    "overview": "Genel Bakış",
+    "bookings": "Rezervasyonlar",
+    "bookingInformationComingSoon": "Rezervasyon bilgileri yakında",
+    "features": "Özellikler",
+    "noFeatures": "Özellik yok",
+    "roomId": "Oda ID",
+    "availability": "Durum",
+    "roomDetails": "Oda Detayları",
+    "hotelId": "Otel ID",
+    "save": "Kaydet",
+    "editRoom": "Oda Düzenle",
+    "manageRoomsInstructions": "Odaları yönetmek için işlemleri kullanın",
+    "manageRooms": "Odaları yönetmek için işlemleri kullanın",
+    "averagePrice": "Ortalama Fiyat",
+    "highestPrice": "En Yüksek Fiyat",
+    "lowestPrice": "En Düşük Fiyat",
+    "totalRevenuePotential": "Toplam Gelir Potansiyeli",
+    "totalRevenue": "Toplam Gelir",
+    "searchPlaceholder": "Oda adı, numarası, türü...",
+    "noRoomsFound": "Hiç oda bulunamadı",
+    "confirmDelete": "Silmek istediğinizden emin misiniz?",
+    "addRoomTitle": "Yeni Oda Ekle",
+    "editRoomTitle": "Oda Düzenle",
+    "roomImage": "Oda Görseli",
+    "roomImageDescription": "Oda görselini yükleyin",
+    "room-image": "Oda Görseli",
+    "roomNamePlaceholder": "Oda adını girin",
+    "roomDescriptionPlaceholder": "Oda açıklamasını girin",
+    "roomTypePlaceholder": "Oda türünü seçin",
+    "maxAdultsPlaceholder": "Maksimum yetişkin sayısı",
+    "maxChildrenPlaceholder": "Maksimum çocuk sayısı",
+    "floorPlaceholder": "Kat numarası",
+    "roomNumberPlaceholder": "Oda numarası",
+    "pricePlaceholder": "Fiyat",
+    "capacityPlaceholder": "Toplam kapasite",
+    "bedCountPlaceholder": "Yatak sayısı",
+    "cancel": "İptal"
+  },
 
-
-   "Reservations": {
+  "Reservations": {
     "title": "Rezervasyonlar",
     "checkIn": "Giriş Tarihi",
     "checkOut": "Çıkış Tarihi",
@@ -1030,7 +1088,7 @@
     "sortBy": "Sırala",
     "createdAt": "Oluşturulma Tarihi"
   },
- "UserReservations": {
+  "UserReservations": {
     "title": "Rezervasyonlar",
     "roomNumber": "Oda No",
     "guests": "Kişi",
@@ -1060,7 +1118,6 @@
     "cancelModalYes": "Evet, İptal Et"
   },
 
-  
   "HotelStatistics": {
     "title": "Otel İstatistikleri",
     "dateRange": "Son 30 Gün",
@@ -1200,7 +1257,7 @@
     "selectType": "Tip Seçin",
     "required": "Gerekli"
   },
-    "Favorites": {
+  "Favorites": {
     "title": "Favoriler",
     "description": "Kaydettiğiniz otelleri bulun ve rezervasyon vermeye hazırlanın.",
     "searchPlaceholder": "favorilerde ara...",
@@ -1238,7 +1295,7 @@
     "createdAt": "Kayıt Tarihi",
     "back": "Geri",
     "basicInformation": "Temel Bilgiler",
-    "reviews": "Yorumlar",  
+    "reviews": "Yorumlar",
     "night": "gece",
     "ownerInformation": "Sahip Bilgileri",
     "hotelOwner": "Otel Sahibi",
@@ -1295,17 +1352,6 @@
     "thisMonth": "bu ay"
   },
 
-  "Support": {
-    "title": "Destek Paneli",
-    "liveSupport": "Canlı Destek",
-    "liveSupportDescription": "Canlı destek ile müşteri desteği sağlayabilirsiniz.",
-    "statisticsReports": "İstatistikler & Raporlar",
-    "statisticsReportsDescription": "Rezervasyon istatistikleri ve sistem raporlarını görüntüleyebilirsiniz.",
-    "informationSystemInfo": "Bilgilendirme ve Sistem Bilgileri",
-    "informationSystemInfoDescription": "Bilgilendirme ve sistem bilgilerini görüntüleyebilirsiniz.",
-    "loading": "Yükleniyor..."
-  },
-
   "Hotel": {
     "title": "Otel Paneli",
     "reservationManagement": "Rezervasyon Yönetimi",
@@ -1360,7 +1406,7 @@
       "addressRequired": "Adres zorunludur."
     }
   },
-"LoginPage": {
+  "LoginPage": {
     "welcome": "Rotaly'ye Hoş Geldiniz!",
     "subtitle": "E-posta adresinize giriş yapın ve otel rezervasyonlarınızı yönetin",
     "email": "E-posta Adresi",
@@ -1373,6 +1419,5 @@
     "invalidPassword": "Geçersiz şifre",
     "emailPlaceholder": "E-posta adresinizi girin",
     "passwordPlaceholder": "Şifrenizi girin"
-
-}
+  }
 }

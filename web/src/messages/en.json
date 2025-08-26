@@ -12,7 +12,7 @@
     "logout": "Logout",
     "Hotels Add": "Add Hotel",
     "profile": "Profile",
-    "contact":"Contact",
+    "contact": "Contact",
     "sheetTitle": "ROTALY",
     "sheetDescription": "Book reservations and find hotels with ROTALY.",
     "searchBar": {
@@ -55,7 +55,7 @@
     "specialOffers": "Special Deals",
     "reviewsCount": "{count} Reviews",
     "viewDetailsButton": "View Details",
-       "bookingSearch": {
+    "bookingSearch": {
       "errors": {
         "selectCity": "Please select a city",
         "selectCheckIn": "Please select check-in date",
@@ -93,13 +93,22 @@
       "heading": "Select check-in and check-out dates",
       "monthFormat": "long year",
       "months": [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
       ]
     },
 
-
-       "guestSelector": {
+    "guestSelector": {
       "title": "Guests",
       "adults": "Adults",
       "adultsDescription": "13 years and older",
@@ -110,48 +119,46 @@
       "guestPlural": "Guests"
     }
   },
-    "ChatWidget": {
+  "ChatWidget": {
     "welcome": "Welcome!",
-  "assistantIntro": "Your Rotaly Hotel Assistant is here to help you.",
-  "bookRoom": "Book a Room",
-  "viewReservation": "View My Reservation",
-  "liveSupport": "Chat with Live Support",
-  "botDefaultMessage": "Thank you. How can I assist you? For more details, you can contact live support.",
-  "liveSupportMessage": "You want to connect with live support. Click the button below to reach our live support team.",
-  "assistantTitle": "AI Assistant",
-  "inputPlaceholder": "Type your message..."
+    "assistantIntro": "Your Rotaly Hotel Assistant is here to help you.",
+    "bookRoom": "Book a Room",
+    "viewReservation": "View My Reservation",
+    "liveSupport": "Chat with Live Support",
+    "botDefaultMessage": "Thank you. How can I assist you? For more details, you can contact live support.",
+    "liveSupportMessage": "You want to connect with live support. Click the button below to reach our live support team.",
+    "assistantTitle": "AI Assistant",
+    "inputPlaceholder": "Type your message..."
   },
 
-  "LiveChat":{
-  "systemWelcome": "Hello! Welcome to Rotaly support team. How can I assist you?",
-  "exampleUserMessage": "I want to cancel my reservation",
-  "supportReply": "I can help you cancel your reservation. Please provide your reservation number.",
-  "systemInfo": "You want to connect with live support. Our team will respond shortly.",
-  "supportUnit": "Rotaly Support Team",
-  "online": "Online",
-  "expertTeam": "Expert Support Team",
-  "responseTime": "Response time: ~2 min",
-  "supportTitle": "Rotaly Support",
-  "typeMessage": "Type your message..."
-},
+  "LiveChat": {
+    "systemWelcome": "Hello! Welcome to Rotaly support team. How can I assist you?",
+    "exampleUserMessage": "I want to cancel my reservation",
+    "supportReply": "I can help you cancel your reservation. Please provide your reservation number.",
+    "systemInfo": "You want to connect with live support. Our team will respond shortly.",
+    "supportUnit": "Rotaly Support Team",
+    "online": "Online",
+    "expertTeam": "Expert Support Team",
+    "responseTime": "Response time: ~2 min",
+    "supportTitle": "Rotaly Support",
+    "typeMessage": "Type your message..."
+  },
 
-"Notifications":{
-  "title": "Notifications",
-  "newReservation": "New Reservation",
-  "reservationConfirmed": "Your hotel reservation has been confirmed",
-  "twoHoursAgo": "2 hours ago",
-  "paymentSuccess": "Payment Successful",
-  "paymentReceived": "Your payment has been received successfully",
-  "oneDayAgo": "1 day ago",
-  "systemUpdate": "System Update",
-  "newFeaturesAdded": "New features added",
-  "threeDaysAgo": "3 days ago",
-  "viewAll": "View all notifications",
-  "emptyMessage": "No notifications yet",
-  "markAllRead": "Mark all as read"
-},
-
-
+  "Notifications": {
+    "title": "Notifications",
+    "newReservation": "New Reservation",
+    "reservationConfirmed": "Your hotel reservation has been confirmed",
+    "twoHoursAgo": "2 hours ago",
+    "paymentSuccess": "Payment Successful",
+    "paymentReceived": "Your payment has been received successfully",
+    "oneDayAgo": "1 day ago",
+    "systemUpdate": "System Update",
+    "newFeaturesAdded": "New features added",
+    "threeDaysAgo": "3 days ago",
+    "viewAll": "View all notifications",
+    "emptyMessage": "No notifications yet",
+    "markAllRead": "Mark all as read"
+  },
 
   "HotelCard": {
     "discountLabel": "20% off",
@@ -303,8 +310,7 @@
       "step3": "Reservation Confirmation",
       "loading": "Loading..."
     },
-       "BookingInformationPage":  
-     {
+    "BookingInformationPage": {
       "nameLabel": "Name",
       "surnameLabel": "Surname",
       "emailLabel": "Email",
@@ -314,7 +320,7 @@
       "specialRequestPlaceholder": "Write your requests here...",
       "proceedToPaymentButton": "Continue to Payment"
     },
-      "HotelSummary": {
+    "HotelSummary": {
       "reviewsCount": "{count} Reviews",
       "freeCancellation": "Free Cancellation",
       "breakfastIncluded": "Breakfast Included",
@@ -349,7 +355,7 @@
       "expiryDateLabel": "Expiry Date",
       "cvvLabel": "CVV"
     },
-    
+
     "PaymentForm": {
       "newCard": "New Card",
       "secure": "Secure",
@@ -458,10 +464,10 @@
     "customers": "Customers",
     "admins": "Admins",
     "hotel-info": "Hotel Info",
-    "reservation-management":"Reservations Management",
+    "reservation-management": "Reservations Management",
     "reports": "Reports",
     "statistics": "Statistics",
-    "WelcamePage" :"Home",
+    "WelcamePage": "Home",
     "active-reservations": "Active Reservations",
     "passive-reservations": "Passive Reservations",
     "active-customers": "Active Customers",
@@ -490,9 +496,9 @@
     "live-support": "Live Support",
     "information": "Information",
     "room-price-management": "Room Price Management",
-  "hotel-profile": "Hotel Profile",
-  "guest-management": "Guest Management",
-  "evaluations": "Evaluations",
+    "hotel-profile": "Hotel Profile",
+    "guest-management": "Guest Management",
+    "evaluations": "Evaluations",
     "business": "Business",
     "logoutModal": {
       "title": "Logout",
@@ -563,58 +569,58 @@
     "confirmPassword": "Confirm Password"
   },
 
-"AdminProfile": {
-      "title": "Admin Profile",
-      "subtitle": "You can view and edit your profile.",
-      "profilePhoto": "Profile Photo",
-      "profileInformation": "Profile Information",
-      "personalInfo": "Personal Information",
-      "name": "Name",
-      "email": "Email",
-      "enterName": "Enter your name",
-      "enterEmail": "Enter your email address",
-      "password": "Password",
-      "confirmPassword": "Confirm Password",
-      "changePassword": "Change Password",
-      "newPassword": "New Password",
-      "enterNewPassword": "Enter your new password",
-      "confirmNewPassword": "Confirm your new password",
-      "saveChanges": "Save Changes",
-      "cancel": "Cancel",
-      "fieldRequired": "This field cannot be empty",
-      "invalidEmail": "Please enter a valid email address",
-      "passwordHint": "It is recommended to change your password regularly.",
-      "invalidPhone": "Please enter a valid phone number: +90 5XX XXX XXXX format",
-      "reservationsDescription": "Your active reservations will be listed here.",
-      "pastReservationsDescription": "Your past reservations will be listed here.",
-      "notifications": "Notifications",
-      "notificationsDescription": "You can view your latest notifications here.",
-      "passwordOperations": "Password Operations",
-      "passwordSettingsDescription": "Regularly update your password for account security.",
-      "currentPassword": "Current Password",
-      "passwordsDoNotMatch": "New passwords do not match.",
-      "otpTitle": "Verification Code",
-      "otpDescription": "Enter the 6-digit code sent to your email address.",
-      "otpPlaceholder": "6-digit code",
-      "otpInvalid": "Please enter the 6-digit code.",
-      "otpVerified": "OTP Verified",
-      "otpFailed": "OTP Verification Failed",
-      "otpSubmit": "Confirm & Save",
-      "otpCancel": "Cancel",
-      "socialMedia": "Social Media",
-      "companyInfo": "Company Information",
-      "phone": "Phone",
-      "website": "Website",
-      "facebook": "Facebook",
-      "instagram": "Instagram",
-      "twitter": "Twitter",
-      "linkedin": "LinkedIn",
-      "otpConfirm": "Confirm",
-      "formErrorPassword": "There are errors in password fields. Please check.",
-      "otpErrorLength": "Please enter the complete 6-digit code.",
-      "otpSuccess": "Your password has been successfully updated!",
-      "otpErrorInvalid": "Invalid verification code. Please try again."
-    },
+  "AdminProfile": {
+    "title": "Admin Profile",
+    "subtitle": "You can view and edit your profile.",
+    "profilePhoto": "Profile Photo",
+    "profileInformation": "Profile Information",
+    "personalInfo": "Personal Information",
+    "name": "Name",
+    "email": "Email",
+    "enterName": "Enter your name",
+    "enterEmail": "Enter your email address",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "changePassword": "Change Password",
+    "newPassword": "New Password",
+    "enterNewPassword": "Enter your new password",
+    "confirmNewPassword": "Confirm your new password",
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel",
+    "fieldRequired": "This field cannot be empty",
+    "invalidEmail": "Please enter a valid email address",
+    "passwordHint": "It is recommended to change your password regularly.",
+    "invalidPhone": "Please enter a valid phone number: +90 5XX XXX XXXX format",
+    "reservationsDescription": "Your active reservations will be listed here.",
+    "pastReservationsDescription": "Your past reservations will be listed here.",
+    "notifications": "Notifications",
+    "notificationsDescription": "You can view your latest notifications here.",
+    "passwordOperations": "Password Operations",
+    "passwordSettingsDescription": "Regularly update your password for account security.",
+    "currentPassword": "Current Password",
+    "passwordsDoNotMatch": "New passwords do not match.",
+    "otpTitle": "Verification Code",
+    "otpDescription": "Enter the 6-digit code sent to your email address.",
+    "otpPlaceholder": "6-digit code",
+    "otpInvalid": "Please enter the 6-digit code.",
+    "otpVerified": "OTP Verified",
+    "otpFailed": "OTP Verification Failed",
+    "otpSubmit": "Confirm & Save",
+    "otpCancel": "Cancel",
+    "socialMedia": "Social Media",
+    "companyInfo": "Company Information",
+    "phone": "Phone",
+    "website": "Website",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "twitter": "Twitter",
+    "linkedin": "LinkedIn",
+    "otpConfirm": "Confirm",
+    "formErrorPassword": "There are errors in password fields. Please check.",
+    "otpErrorLength": "Please enter the complete 6-digit code.",
+    "otpSuccess": "Your password has been successfully updated!",
+    "otpErrorInvalid": "Invalid verification code. Please try again."
+  },
 
   "AdminSecurity": {
     "title": "Security Center",
@@ -709,7 +715,7 @@
     "savedSuccessfully": "Company data saved successfully"
   },
 
- "AdminStatistics": {
+  "AdminStatistics": {
     "adminStatistics": "Admin Statistics",
     "exportCSV": "Export CSV",
     "monthlyRevenue": "Monthly Revenue",
@@ -734,7 +740,66 @@
     "bookings": "Bookings",
     "pendingPayments": "Pending Payments",
     "thisWeekBookings": "This Week's Bookings",
-    "activeSupportTickets": "Active Support Tickets",
+    "activeSupportTickets": "Active Support Tickets"
+  },
+  "Support": {
+    "myTickets": "My Support Tickets",
+    "createNewTicket": "Create New Ticket",
+    "allTickets": "All Tickets",
+    "open": "Open",
+    "closed": "Closed",
+    "allCategories": "All Categories",
+    "general": "General",
+    "technical": "Technical",
+    "billing": "Billing",
+    "reservation": "Reservation",
+    "complaint": "Complaint",
+    "featureRequest": "Feature Request",
+    "security": "Security",
+    "other": "Other",
+    "perPage": "Per Page",
+    "status": "Status",
+    "category": "Category",
+    "loadingTickets": "Loading tickets...",
+    "noTicketsFound": "No tickets found yet.",
+    "createFirstTicket": "Create your first ticket",
+    "view": "View",
+    "close": "Close",
+    "created": "Created",
+    "messages": "messages",
+    "assigned": "Assigned",
+    "showing": "Showing",
+    "results": "results",
+    "total": "total",
+    "previous": "Previous",
+    "next": "Next",
+    "ticketClosed": "Ticket successfully closed",
+    "ticketCloseError": "Error closing ticket",
+    "ticketsLoadError": "Error loading tickets",
+    "supportTitle": "Rotaly Support",
+    "backToSupport": "Back to Support",
+    "ticketNumber": "Support Ticket",
+    "closeTicket": "Close Ticket",
+    "ticketInfo": "Ticket Information",
+    "firstMessage": "Initial Message",
+    "assignedRep": "Assigned Support Representative",
+    "messagesTitle": "Messages",
+    "noMessages": "No messages yet",
+    "typeMessage": "Type your message...",
+    "send": "Send",
+    "sending": "Sending...",
+    "messageSent": "Message sent successfully",
+    "messageError": "Error sending message",
+    "ticketClosedMessage": "This ticket is closed. You cannot send new messages.",
+    "keyboardHint": "Press Enter to send. Use Shift+Enter for new line.",
+    "ticketNotFound": "Ticket not found",
+    "loadingTicket": "Loading ticket...",
+    "24x7Support": "24/7 Support Service",
+    "adminPanel": "Admin Panel",
+    "admin": "Admin",
+    "support": "Support",
+    "customer": "Customer",
+    "accessDenied": "Access denied. Admin privileges required.",
     "newHotelApplications": "New Hotel Applications",
     "positiveTrend": "Positive Trend",
     "negativeTrend": "Negative Trend",
@@ -752,7 +817,6 @@
     "working": "Working",
     "timeAgo": "{minutes} min ago"
   },
-
 
   "UserProfile": {
     "title": "My Profile",
@@ -785,7 +849,7 @@
     "save": "Save",
     "fieldRequired": "This field is required",
     "invalidEmail": "Please enter a valid email address",
-     "passwordHint": "It is recommended to change your password regularly.",
+    "passwordHint": "It is recommended to change your password regularly.",
     "invalidPhone": "Please enter a valid phone number in format: +90 5XX XXX XXXX",
     "reservationsDescription": "Your active reservations will be listed here.",
     "pastReservationsDescription": "Your past reservations will be listed here.",
@@ -835,7 +899,6 @@
         "cancelled": "Your reservation has been cancelled."
       }
     }
-  
   },
 
   "Footer": {
@@ -1000,7 +1063,6 @@
     "addRoomTitle": "Add New Room",
     "editRoomTitle": "Edit Room",
 
-    
     "roomImageDescription": "Upload room image",
     "room-image": "Room Image",
     "roomNamePlaceholder": "Enter room name",
@@ -1016,8 +1078,6 @@
     "cancel": "Cancel",
     "save": "Save"
   },
-
-
 
   "Reservations": {
     "title": "Reservations",
@@ -1185,9 +1245,9 @@
     "selectOwner": "Select Owner",
     "owner": "Owner",
     "selectType": "Select type",
-    "required": "Required"  
+    "required": "Required"
   },
-    "Favorites": {
+  "Favorites": {
     "title": "Favorites",
     "description": "Find the hotels you saved and get ready to book.",
     "searchPlaceholder": "search favorites...",
@@ -1274,17 +1334,6 @@
     "totalBookings": "Total Bookings"
   },
 
-  "Support": {
-    "title": "Support Panel",
-    "liveSupport": "Live Support",
-    "liveSupportDescription": "Provide customer support through live chat.",
-    "statisticsReports": "Statistics & Reports",
-    "statisticsReportsDescription": "View reservation statistics and system reports.",
-    "informationSystemInfo": "Information & System Info",
-    "informationSystemInfoDescription": "View information and system information.",
-    "loading": "Loading..."
-  },
-
   "Hotel": {
     "title": "Hotel Panel",
     "reservationManagement": "Reservation Management",
@@ -1302,7 +1351,7 @@
     "liveSupport": "Live Support",
     "liveSupportDescription": "Provide customer support through live chat."
   },
-  
+
   "HotelProfil": {
     "title": "Hotel Profile Management",
     "subtitle": "Update and manage your hotel information",
@@ -1354,7 +1403,4 @@
     "emailPlaceholder": "example@email.com",
     "passwordPlaceholder": "••••••••"
   }
-  
-
-
 }
