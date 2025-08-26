@@ -299,7 +299,6 @@ export default function ChatWidget() {
             />
           </Button>
         </PopoverTrigger>
-
         <PopoverContent
           className="md:w-80 md:h-[550px] md:p-0 flex flex-col transition-all duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out overflow-hidden"
           align="end"
@@ -333,7 +332,7 @@ export default function ChatWidget() {
                     (msg.sender === "system" &&
                       msg.type === "live-support")) && (
                     <Avatar className="w-6 h-6 flex-shrink-0">
-                      <AvatarImage src="/images/logo.png" alt="AI Assistant" />
+                      <AvatarImage src="/images/logo3.png" alt="Rotaly Logo" />
                     </Avatar>
                   )}
                   <div className="flex flex-col">
@@ -377,6 +376,13 @@ export default function ChatWidget() {
                         )}
                     </div>
                   </div>
+                  {msg.sender === "user" && (
+                    <Avatar className="w-6 h-6 flex-shrink-0">
+                      <div className="w-full h-full bg-blue-500 rounded-full flex items-center justify-center">
+                        <UserIcon className="w-3 h-3 text-white" />
+                      </div>
+                    </Avatar>
+                  )}
                 </div>
               ))}
               <div ref={messagesEndRef} />
@@ -415,13 +421,7 @@ export default function ChatWidget() {
             <div className="flex items-center gap-2 mb-2">
               <Input
                 type="text"
-                placeholder={
-                  authenticated
-                    ? chatState.isConnected
-                      ? t("inputPlaceholder")
-                      : "Connecting..."
-                    : "Please log in to chat..."
-                }
+                placeholder={t("inputPlaceholder")}
                 className="flex-1 h-8 text-sm"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
@@ -431,23 +431,10 @@ export default function ChatWidget() {
                 size="sm"
                 className="h-8 px-3 bg-blue-500 hover:bg-blue-600"
                 onClick={handleSendMessage}
-                disabled={
-                  !message.trim() ||
-                  !authenticated ||
-                  (!chatState.isConnected && authenticated) ||
-                  chatState.isLoading
-                }
+                disabled={!message.trim()}
               >
                 <SendIcon className="w-3 h-3" />
               </Button>
-            </div>
-
-            <div className="text-xs text-gray-500 mt-2 text-center">
-              {authenticated
-                ? chatState.isAIAvailable
-                  ? "Powered by AI • Real-time responses"
-                  : "AI temporarily unavailable"
-                : "Login required for AI chat"}
             </div>
           </div>
         </PopoverContent>
