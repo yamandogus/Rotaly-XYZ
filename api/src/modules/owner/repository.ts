@@ -11,7 +11,11 @@ export class OwnerRepository {
     });
   }
   static async getProfile(ownerId: string) {
-    //  companydto kullanılcak
+    return await Prisma.company.findUnique({
+      where: {
+        id: ownerId,
+      },
+    });
   }
   static async getTotalRevenue(ownerId: string) {
     return await Prisma.reservation.aggregate({
@@ -36,64 +40,6 @@ export class OwnerRepository {
           },
         },
       },
-    });
-  }
-  static async getOccupancyRate(ownerId: string) {
-    const rooms = await Prisma.room.findMany({
-      where: {
-        hotel: {
-          ownerId: ownerId,
-        },
-      },
-      include: {
-        bookings: true,
-      },
-    });
-  }
-  static async getAverageRating(ownerId: string) {
-    return await Prisma.comment.aggregate({
-      where: {
-        hotel: {
-          ownerId: ownerId,
-        },
-      },
-      _avg: {
-        rating: true,
-      },
-    });
-  }
-  static async getRoomTypeStats(ownerId: string) {
-    return await Prisma.room.groupBy({
-      by: ["type"],
-      where: {
-        hotel: {
-          ownerId: ownerId,
-        },
-      },
-      _count: true,
-    });
-  }
-  static async getPopularRooms(ownerId: string) {
-    return await Prisma.room.findMany({
-      where: {
-        hotel: {
-          ownerId: ownerId,
-        },
-      },
-      include: {
-        bookings: true,
-        _count: {
-          select: {
-            bookings: true,
-          },
-        },
-      },
-      orderBy: {
-        bookings: {
-          _count: "desc",
-        },
-      },
-      take: 5,
     });
   }
 }
