@@ -121,13 +121,8 @@ const UserActions = () => {
               </div>
               <DropdownMenuSeparator />
               
-              {/* Tüm roller için dashboard butonu */}
-              <DropdownMenuItem asChild>
-                <Link href={getDashboardUrl()}>
-                  <Settings className="mr-2 h-4 w-4" />
-                  {t("dashboard")}
-                </Link>
-              </DropdownMenuItem>
+            
+              
               
               {/* CUSTOMER rolü için ek menü öğeleri */}
               {user.role === "CUSTOMER" && (
@@ -141,13 +136,7 @@ const UserActions = () => {
                   <DropdownMenuItem asChild>
                     <Link href="/hotel">
                       <User className="mr-2 h-4 w-4" />
-                      {t("Hotels Add")}
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/support">
-                      <MessageCircle className="mr-2 h-4 w-4" />
-                      {t("live-chat")}
+                      Oteller için ROTALY
                     </Link>
                   </DropdownMenuItem>
                 </>

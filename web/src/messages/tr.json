@@ -815,6 +815,7 @@
       "room": "Oda",
       "payment": "Ödeme",
       "specialRequest": "Özel İstek",
+       "editReservation": "Rezervasyonu Düzenle",
       "checkIn": "Giriş",
       "checkOut": "Çıkış",
       "roomNumber": "Oda No",
