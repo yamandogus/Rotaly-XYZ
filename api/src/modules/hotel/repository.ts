@@ -2,7 +2,7 @@ import { CreateHotelInput } from "../../dto/hotel/create-hotel.dto";
 import Prisma from "../../config/db";
 
 export const HotelRepository = {
-  async createHotel( data: CreateHotelInput & { ownerId: string }) {
+  async createHotel(data: CreateHotelInput & { ownerId: string }) {
     return await Prisma.hotel.create({
       data: {
         ...data,
@@ -41,6 +41,4 @@ export const HotelRepository = {
   async getAllHotels() {
     return await Prisma.hotel.findMany();
   },
-
-
 };

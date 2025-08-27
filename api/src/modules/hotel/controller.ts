@@ -4,7 +4,6 @@ import {
   getHotelById,
   deleteHotel,
   updateHotel,
-
 } from "./service";
 import {
   CreateHotelSchema,
@@ -21,40 +20,12 @@ interface AuthenticatedRequest extends Request {
   user?: TokenPayload;
 }
 
-// Yorum ekleme için basit schema
-const CreateCommentSchema = {
-  rating: (value: any) => {
-    const num = Number(value);
-    if (isNaN(num) || num < 1 || num > 5) {
-      throw new Error("Rating 1-5 arasında olmalıdır");
-    }
-    return num;
-  },
-  text: (value: any) => value || undefined,
-};
-
-// Yorum güncelleme için basit schema
-const UpdateCommentSchema = {
-  rating: (value: any) => {
-    if (value === undefined) return undefined;
-    const num = Number(value);
-    if (isNaN(num) || num < 1 || num > 5) {
-      throw new Error("Rating 1-5 arasında olmalıdır");
-    }
-    return num;
-  },
-  text: (value: any) => value || undefined,
-};
-
 export async function createHotelHandler(req: Request, res: Response) {
   try {
     const sessionUser = req.user; // middleware ile eklenmiş olmalı
 
     // 🔐 Rol kontrolü
-    if (
-      !sessionUser ||
-      !["ADMIN", "OWNER"].includes(sessionUser.role || "")
-    ) {
+    if (!sessionUser || !["ADMIN", "OWNER"].includes(sessionUser.role || "")) {
       return res.status(403).json({ message: "Yetkisiz erişim" });
     }
 
@@ -82,12 +53,10 @@ export async function getHotelsHandler(req: Request, res: Response) {
     // Query parametrelerini validate et
     const queryParsed = QueryHotelSchema.safeParse(req.query);
     if (!queryParsed.success) {
-      return res
-        .status(400)
-        .json({
-          message: "Geçersiz query parametreleri",
-          errors: queryParsed.error.flatten(),
-        });
+      return res.status(400).json({
+        message: "Geçersiz query parametreleri",
+        errors: queryParsed.error.flatten(),
+      });
     }
 
     const hotels = await getHotels(queryParsed.data);
@@ -119,10 +88,7 @@ export async function updateHotelHandler(req: Request, res: Response) {
     const sessionUser = req.user;
     const { id } = req.params;
 
-    if (
-      !sessionUser ||
-      !["ADMIN", "OWNER"].includes(sessionUser.role || "")
-    ) {
+    if (!sessionUser || !["ADMIN", "OWNER"].includes(sessionUser.role || "")) {
       return res.status(403).json({ message: "Yetkisiz erişim" });
     }
 
@@ -133,7 +99,9 @@ export async function updateHotelHandler(req: Request, res: Response) {
         return res.status(404).json({ message: "Otel bulunamadı" });
       }
       if (existingHotel.ownerId !== sessionUser.userId) {
-        return res.status(403).json({ message: "Bu oteli güncelleme yetkiniz yok" });
+        return res
+          .status(403)
+          .json({ message: "Bu oteli güncelleme yetkiniz yok" });
       }
     }
 
@@ -160,10 +128,7 @@ export async function deleteHotelHandler(
     const sessionUser = req.user;
     const { id } = req.params;
 
-    if (
-      !sessionUser ||
-      !["ADMIN", "OWNER"].includes(sessionUser.role || "")
-    ) {
+    if (!sessionUser || !["ADMIN", "OWNER"].includes(sessionUser.role || "")) {
       return res.status(403).json({ message: "Yetkisiz erişim" });
     }
 
@@ -185,6 +150,4 @@ export async function deleteHotelHandler(
     return res.status(500).json({ message: "Sunucu hatası" });
   }
 }
-
-
 
