@@ -1,8 +1,13 @@
 import { Link } from "@/i18n/routing";
 import { Heart, Share2, Home } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { HotelNew } from "@/types/hotel";
 
-const Breadcrumbs = () => {
+interface BreadcrumbsProps {
+  hotel?: HotelNew | null;
+}
+
+const Breadcrumbs = ({ hotel }: BreadcrumbsProps) => {
   const t = useTranslations("HotelDetail.breadcrumbs");
 
   return (
@@ -21,7 +26,7 @@ const Breadcrumbs = () => {
           </Link>
           <span className="mx-2 text-gray-900 dark:text-gray-100">/</span>
         </li>
-        <li className="text-blue-600 font-semibold dark:text-blue-400">Riad Deluxe Hotel</li>
+        <li className="text-blue-600 font-semibold dark:text-blue-400">{hotel?.name || "Hotel"}</li>
       </ol>
 
       <div className="flex items-center gap-4">

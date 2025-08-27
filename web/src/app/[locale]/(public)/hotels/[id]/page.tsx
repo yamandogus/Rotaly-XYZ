@@ -1,12 +1,15 @@
 "use client";
 
 import React, { use, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import HotelTabs from "@/components/hotel/hotel-tabs";
 import RecentlyViewedHotels from "@/components/hotel/recently-viewed-hotels";
 import Breadcrumbs from "@/components/hotel/bread-crumbs";
 import ImageGallery from "@/components/hotel/image-gallery";
 import HotelInfo from "@/components/hotel/hotel-info";
 import BookingForm from "@/components/hotel/booking-form";
+import { setCheckInDate as setReduxCheckInDate, setCheckOutDate as setReduxCheckOutDate, setGuestsCount } from "@/store/search/search-slice";
+import { RootState } from "@/store/store";
 
 import { hotelService } from "@/services";
 import { HotelNew } from "@/types/hotel";
@@ -17,15 +20,32 @@ interface HotelDetailPageProps {
 
 const HotelDetailPageContent = ({ params }: HotelDetailPageProps) => {
   const { id } = use(params);
+  const dispatch = useDispatch();
+  
+  // Redux store'dan tarih ve kişi bilgilerini al
+  const { checkIn, checkOut, guests } = useSelector((state: RootState) => state.search);
+  
   const [hotel, setHotel] = useState<HotelNew | null>(null);
   const [loading, setLoading] = useState(true);
-  const [checkInDate, setCheckInDate] = useState<Date | undefined>(new Date());
+  
+  // Redux store'dan gelen tarihleri Date objesine çevir
+  const [checkInDate, setCheckInDate] = useState<Date | undefined>(() => {
+    return checkIn ? new Date(checkIn) : new Date();
+  });
   const [checkOutDate, setCheckOutDate] = useState<Date | undefined>(() => {
+    if (checkOut) return new Date(checkOut);
     const today = new Date();
     today.setDate(today.getDate() + 4);
     return today;
   });
-  const [adults, setAdults] = useState(1);
+  const [adults, setAdults] = useState(guests || 1);
+  
+  // Store değerleri değiştiğinde local state'i güncelle
+  useEffect(() => {
+    if (checkIn) setCheckInDate(new Date(checkIn));
+    if (checkOut) setCheckOutDate(new Date(checkOut));
+    if (guests) setAdults(guests);
+  }, [checkIn, checkOut, guests]);
   
   useEffect(() => {
     const fetchHotel = async () => {
@@ -75,27 +95,55 @@ const HotelDetailPageContent = ({ params }: HotelDetailPageProps) => {
   };
 
   const numberOfNights = calculateNights(checkInDate, checkOutDate);
+  
+  // Debug log'ları
+  console.log("Hotel Detail Page - hotel:", hotel);
+  console.log("Hotel Detail Page - checkInDate:", checkInDate);
+  console.log("Hotel Detail Page - checkOutDate:", checkOutDate); 
+  console.log("Hotel Detail Page - adults:", adults);
+  console.log("Hotel Detail Page - numberOfNights:", numberOfNights);
+  console.log("Hotel Detail Page - Redux store checkIn/checkOut/guests:", checkIn, checkOut, guests);
+
+  // Tarih ve kişi değişimlerini Redux store'a da yansıt
+  const handleCheckInChange = (date: Date | undefined) => {
+    setCheckInDate(date);
+    if (date) {
+      dispatch(setReduxCheckInDate(date.toISOString().split('T')[0]));
+    }
+  };
+
+  const handleCheckOutChange = (date: Date | undefined) => {
+    setCheckOutDate(date);
+    if (date) {
+      dispatch(setReduxCheckOutDate(date.toISOString().split('T')[0]));
+    }
+  };
+
+  const handleAdultsChange = (count: number) => {
+    setAdults(count);
+    dispatch(setGuestsCount(count));
+  };
 
   return (
     <main className="container mx-auto px-4 py-8 min-h-[calc(100vh-160px)] text-gray-900 dark:text-gray-100">
       {/* Breadcrumbs */}
-      <Breadcrumbs />
+      <Breadcrumbs hotel={hotel} />
 
 
       <div className="bg-white dark:bg-card border border-gray-200 dark:border-gray-700 rounded-lg shadow-md dark:shadow-lg p-6 lg:flex lg:gap-6 transition-colors duration-300">
 
         {/* Sol: Galeri */}
-        <ImageGallery />
+        <ImageGallery hotel={hotel} />
 
         {/* Sağ: Rezervasyon ve Bilgi */}
         <div className="lg:w-1/3 mt-6 lg:mt-0 flex flex-col gap-4">
           <BookingForm
             checkInDate={checkInDate}
-            setCheckInDate={setCheckInDate}
+            setCheckInDate={handleCheckInChange}
             checkOutDate={checkOutDate}
-            setCheckOutDate={setCheckOutDate}
+            setCheckOutDate={handleCheckOutChange}
             adults={adults}
-            setAdults={setAdults}
+            setAdults={handleAdultsChange}
             numberOfNights={numberOfNights}
             price={Number(hotel.rooms?.[0]?.price) || 0}
             hotelName={hotel.name}

@@ -3,7 +3,6 @@
 import { Search, MapPin } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Command, CommandGroup, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command"
-import { popularHotels as popularSearches } from "@/data/dumy"
 import type { HotelNew } from "@/types/hotel"
 import { useTranslations } from "next-intl"
 
@@ -94,74 +93,17 @@ export function SearchPopoverContent({
               </>
             )}
             
-            {/* Popüler Oteller Bölümü - Arama yoksa göster */}
-            {searchTerm.length <= 1 && popularHotels.length > 0 && (
-              <>
-                <CommandGroup>
-                  <div className="px-2 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
-                    ⭐ Popüler Oteller
-                  </div>
-                  {popularHotels.map((hotel) => (
-                    <CommandItem
-                      key={hotel.id}
-                      onSelect={() => handleHotelSelect(hotel.city)}
-                      className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 p-2 sm:p-3 rounded-md mx-1"
-                    >
-                      <div className="flex items-center gap-3 w-full">
-                        <div className="flex-shrink-0">
-                          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">
-                              {hotel.name.charAt(0)}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                            {hotel.name}
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
-                            {hotel.city}, {hotel.country}
-                          </p>
-                          <div className="flex items-center gap-2 mt-1">
-                            <span className="text-xs text-yellow-500">
-                              ⭐ {hotel.rating || 0}
-                            </span>
-                            {hotel.isDiscounted && (
-                              <span className="text-xs bg-red-100 text-red-600 px-1.5 py-0.5 rounded">
-                                %{hotel.discountRate} İndirim
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex-shrink-0 text-right">
-                          {hotel.rooms && hotel.rooms[0] && (
-                            <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">
-                              ₺{hotel.rooms[0].price}
-                            </p>
-                          )}
-                          <p className="text-xs text-gray-400">
-                            /gece
-                          </p>
-                        </div>
-                      </div>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-                <CommandSeparator />
-              </>
-            )}
-            
-            {/* Popüler Aramalar - Sadece arama yoksa göster */}
+            {/* Popüler Aramalar */}
             {searchTerm.length <= 1 && popularHotels.length > 0 && (
               <CommandGroup>
-                <div className="px-2 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
-                  🔥 {t("search.popularSearches")}
+                <div className="px-2 py-1.5 text-sm font-medium text-orange-600 dark:text-orange-400 flex items-center gap-2">
+                  🔥 POPULAR SEARCHES
                 </div>
-                {popularSearches.slice(0, 3).map((hotel) => (
+                {popularHotels.slice(0, 5).map((hotel) => (
                   <CommandItem
-                    key={hotel.name}
+                    key={hotel.id}
                     onSelect={() => handleHotelSelect(hotel.city)}
-                    className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 p-2 rounded-md mx-1"
+                    className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2 mx-1 rounded-lg"
                   >
                     <div className="flex items-center gap-3 w-full">
                       <div className="flex-shrink-0">
@@ -169,10 +111,10 @@ export function SearchPopoverContent({
                       </div>
                       <div className="flex-1">
                         <p className="text-sm font-medium text-gray-900 dark:text-white">
-                          {hotel.city}
+                          {hotel.name}
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {hotel.location}
+                          {hotel.city}, {hotel.country}
                         </p>
                       </div>
                     </div>

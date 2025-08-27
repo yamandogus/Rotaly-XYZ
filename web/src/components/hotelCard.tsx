@@ -259,17 +259,17 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
               <>
                 {/* Eski fiyat - üstü çizili */}
                 <span className="text-sm text-muted-foreground line-through">
-                  {Math.round(item.price / (1 - item.discountRate / 100)).toLocaleString()} ₺
+                  {Math.round((item.price * (item.nights || 1)) / (1 - item.discountRate / 100)).toLocaleString()} ₺
                 </span>
                 {/* İndirimli fiyat - büyük ve renkli */}
                 <span className="text-xl font-bold text-red-600">
-                  {item.price.toLocaleString()} ₺
+                  {(item.price * (item.nights || 1)).toLocaleString()} ₺
                 </span>
               </>
             ) : (
               /* Normal fiyat */
               <span className="text-xl font-bold text-blue-600">
-                {item.price?.toLocaleString() || "0"} ₺
+                {((item.price || 0) * (item.nights || 1)).toLocaleString()} ₺
               </span>
             )}
           </div>
