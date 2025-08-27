@@ -134,13 +134,29 @@ export default function ReservationsContent() {
     };
 
     fetchData();
-  }, []);
+  }, [t]);
 
-  useEffect(() => {
-    if (isChatOpen) {
-      setMessages(defaultMessage(currentHotel.name || t("chat.ourHotel")));
-    }
-  }, [isChatOpen, currentHotel.name, defaultMessage, t]);
+   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const reservationsData = await reservationService.getUserReservations();
+        console.log("Reservations Data:", reservationsData);
+        console.log("Reservations Items:", reservationsData.items);
+        setReservations(reservationsData.items || []);
+      } catch (error) {
+        console.error("Data fetch error:", error);
+        setError(t("loadError")); // burası artık güncel dilde çalışır
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [t]); // ✅ dependency eklendi
+
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
