@@ -150,4 +150,3 @@ export async function deleteHotelHandler(
     return res.status(500).json({ message: "Sunucu hatası" });
   }
 }
-
