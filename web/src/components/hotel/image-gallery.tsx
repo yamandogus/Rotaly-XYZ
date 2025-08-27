@@ -6,17 +6,31 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React from "react";
+import { HotelNew } from "@/types/hotel";
 
-const images = [
+const defaultImages = [
   { src: "/images/detail3.jpg", alt: "Hotel Image 1" },
   { src: "/images/detail2.jpg", alt: "Hotel Image 2" },
   { src: "/images/detail5.jpg", alt: "Hotel Image 3" },
   { src: "/images/detail4.jpg", alt: "Hotel Image 4", overlay: "16+" },
 ];
 
-const ImageGallery = () => {
+interface ImageGalleryProps {
+  hotel?: HotelNew | null;
+}
+
+const ImageGallery = ({ hotel }: ImageGalleryProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+
+  // Hotel images'ları kullan, yoksa default images
+  const images = hotel?.images && hotel.images.length > 0 
+    ? hotel.images.map((img, index) => ({
+        src: img.url,
+        alt: `${hotel.name} - Image ${index + 1}`,
+        overlay: index === hotel.images.length - 1 && hotel.images.length > 4 ? `${hotel.images.length - 4}+` : undefined
+      }))
+    : defaultImages;
 
   const scrollTo = useCallback(
     (index: number) => {

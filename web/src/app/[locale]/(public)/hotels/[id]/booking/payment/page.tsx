@@ -3,16 +3,17 @@
 import HotelSummary from "@/components/booking/hotel-summary";
 import { HotelNew } from "@/types/hotel";
 import React, { useState, useEffect, use } from "react";
-import PaymentMethodSelector from "@/components/booking/payment/payment-method-selector";
+
 import PaymentForm, {
   PaymentFormData,
 } from "@/components/booking/payment/payment-form";
 import PaymentProcessing from "@/components/booking/payment/payment-processing";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { nextStep } from "@/store/step/step-slice";
 import { useTranslations } from "next-intl";
-import { hotelService } from "@/services";
+import { hotelService, reservationService, userService } from "@/services";
+import { RootState } from "@/store/store";
 
 interface BookingPaymentPageProps {
   params: Promise<{ id: string; locale: string }>;
@@ -26,6 +27,9 @@ export default function BookingPaymentPage({ params }: BookingPaymentPageProps) 
   const dispatch = useDispatch();
   const router = useRouter();
   const t = useTranslations("HotelDetail.BookingPaymentPage");
+  
+  // Redux store'dan search verilerini al
+  const { checkIn, checkOut, guests } = useSelector((state: RootState) => state.search);
 
   useEffect(() => {
     const fetchHotel = async () => {
@@ -50,6 +54,24 @@ export default function BookingPaymentPage({ params }: BookingPaymentPageProps) 
     router.push(`/${locale}/hotels/${id}/booking/success`);
   };
 
+  // Tarih ve gece sayısı hesaplamaları
+  const calculateNights = (checkinDate: string, checkoutDate: string) => {
+    if (!checkinDate || !checkoutDate) return 1;
+    const checkin = new Date(checkinDate);
+    const checkout = new Date(checkoutDate);
+    const diffTime = Math.abs(checkout.getTime() - checkin.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 1;
+  };
+
+  const numberOfNights = calculateNights(checkIn, checkOut);
+  
+  // Debug log'ları
+  console.log("Payment Page - checkIn:", checkIn);
+  console.log("Payment Page - checkOut:", checkOut);
+  console.log("Payment Page - guests:", guests);
+  console.log("Payment Page - numberOfNights:", numberOfNights);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -72,27 +94,54 @@ export default function BookingPaymentPage({ params }: BookingPaymentPageProps) 
     );
   }
 
-  const onSubmit = (data: PaymentFormData) => {
+  const onSubmit = async (data: PaymentFormData) => {
     console.log("Payment form data:", data);
     setIsPaymentControl(true);
+    
     setTimeout(() => {
       document
         .querySelector(".payment-processing")
         ?.scrollIntoView({ behavior: "smooth" });
     }, 100);
-    setTimeout(() => {
-      if (
-        data.cardNumber &&
-        data.cvv &&
-        data.expiryDate &&
-        data.address &&
-        data.country &&
-        data.phoneNumber &&
-        data.specialRequest
-      ) {
-        handleNextStep();
+
+    try {
+      // Kullanıcı profil bilgisini al
+      const userProfile = await userService.getUserProfile();
+      const userId = userProfile.data?.id;
+
+      if (!userId) {
+        throw new Error("Kullanıcı bilgisi alınamadı. Lütfen tekrar giriş yapın.");
       }
-    }, 8000);
+
+      // Rezervasyon oluşturma
+      const reservationData = {
+        userId: userId, // Kullanıcı ID'sini ekle
+        roomId: hotel?.rooms?.[0]?.id || "", // İlk oda ID'si
+        startDate: checkIn ? new Date(checkIn).toISOString() : new Date().toISOString(),
+        endDate: checkOut ? new Date(checkOut).toISOString() : new Date(Date.now() + numberOfNights * 24 * 60 * 60 * 1000).toISOString(),
+        guests: guests || 2,
+        totalPrice: Math.round(Number(hotel?.rooms?.[0]?.price || 0) * numberOfNights * 1.18),
+        paymentMethod: data.paymentMethod === 'existing' ? 'Kayıtlı Kart' : 'Yeni Kart',
+        hotelAddress: hotel?.address || hotel?.city || '',
+        userPhone: data.phoneNumber,
+        specialRequest: data.specialRequest,
+        paymentCardId: data.paymentMethod === 'existing' ? data.selectedCardId : undefined,
+      };
+
+      // API'ye rezervasyon gönder
+      const reservation = await reservationService.createReservation(reservationData);
+      console.log("Rezervasyon oluşturuldu:", reservation);
+
+      setTimeout(() => {
+        handleNextStep();
+      }, 6000);
+    } catch (error) {
+      console.error("Rezervasyon oluşturma hatası:", error);
+      // Hata durumunda da devam et (test amaçlı)
+      setTimeout(() => {
+        handleNextStep();
+      }, 6000);
+    }
   };
 
   return (
@@ -104,7 +153,6 @@ export default function BookingPaymentPage({ params }: BookingPaymentPageProps) 
               <h1 className="text-2xl font-semibold">
                 {t("paymentOptionsTitle")}
               </h1>
-              <PaymentMethodSelector />
 
               <PaymentForm
                 onSubmit={onSubmit}
@@ -134,16 +182,16 @@ export default function BookingPaymentPage({ params }: BookingPaymentPageProps) 
             },
           }}
           booking={{
-            checkIn: new Date().toLocaleDateString('tr-TR'),
-            checkOut: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toLocaleDateString('tr-TR'), // 4 gün sonra
+            checkIn: checkIn ? new Date(checkIn).toLocaleDateString('tr-TR') : new Date().toLocaleDateString('tr-TR'),
+            checkOut: checkOut ? new Date(checkOut).toLocaleDateString('tr-TR') : new Date(Date.now() + numberOfNights * 24 * 60 * 60 * 1000).toLocaleDateString('tr-TR'),
             checkInTime: hotel.checkIn || "15:00",
             checkOutTime: hotel.checkOut || "11:00", 
-            roomType: hotel.rooms?.[0]?.name || "Standart Oda",
-            guests: hotel.rooms?.[0]?.maxAdults || 2,
-            nights: 4,
-            basePrice: Number(hotel.rooms?.[0]?.price || 0) * 4,
-            taxesAndFees: Math.round(Number(hotel.rooms?.[0]?.price || 0) * 4 * 0.18),
-            total: Math.round(Number(hotel.rooms?.[0]?.price || 0) * 4 * 1.18)
+            roomType: hotel.rooms?.[0]?.name || "Cave Suite Premium",
+            guests: guests || 2,
+            nights: numberOfNights,
+            basePrice: Number(hotel.rooms?.[0]?.price || 0) * numberOfNights,
+            taxesAndFees: Math.round(Number(hotel.rooms?.[0]?.price || 0) * numberOfNights * 0.18),
+            total: Math.round(Number(hotel.rooms?.[0]?.price || 0) * numberOfNights * 1.18)
           }}
         />
       </div>

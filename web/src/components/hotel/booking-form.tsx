@@ -169,7 +169,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
       {/* Fiyat */}
       <div className="flex items-end gap-2 mt-2 mb-4">
         <span className="text-3xl font-bold text-blue-700 dark:text-blue-400">
-          {price.toLocaleString("tr-TR")} TL
+          {(price * numberOfNights).toLocaleString("tr-TR")} TL
         </span>
         <span className="text-base text-gray-500 dark:text-gray-400 font-medium">
           / {numberOfNights} {t("nights")}

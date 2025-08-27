@@ -36,6 +36,7 @@ export const reservationService = {
   },
 
   async createReservation(reservationData: {
+    userId: string;
     roomId: string;
     startDate: string;
     endDate: string;

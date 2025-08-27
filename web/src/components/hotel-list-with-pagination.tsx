@@ -47,9 +47,11 @@ export function HotelListWithPagination() {
 
   // API'den otelleri getir
   const fetchHotels = async (queryParams: QueryHotelInput) => {
+    console.log("fetchHotels - query params:", queryParams);
     setLoading(true);
     try {
       const response: HotelApiResponse = await hotelService.getHotels(queryParams);
+      console.log("fetchHotels - API response:", response);
       
       // Test için mock indirim verisi ekleyelim
       const hotelsWithDiscount = response.hotels?.map((hotel, index) => ({
@@ -63,6 +65,9 @@ export function HotelListWithPagination() {
         breakfastText: "Kahvaltı Dahil",
         parkingText: index % 2 === 0 ? "Ücretsiz Otopark" : null,
       })) || [];
+      
+      console.log("fetchHotels - hotels with discount:", hotelsWithDiscount);
+      console.log("fetchHotels - hotels count:", hotelsWithDiscount.length);
       
       setHotels(hotelsWithDiscount);
       setPagination(response.pagination || { page: 1, limit: 9, total: 0, totalPages: 0 });
@@ -110,17 +115,27 @@ export function HotelListWithPagination() {
 
   // İlk yükleme ve parametreler değiştiğinde otelleri getir
   useEffect(() => {
+    console.log("HotelListWithPagination - buildQueryParams:", buildQueryParams);
+    console.log("HotelListWithPagination - city from store:", city);
+    console.log("HotelListWithPagination - filterState:", filterState);
     fetchHotels(buildQueryParams);
-  }, [buildQueryParams]);
+  }, [buildQueryParams, city, filterState]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const totalDate = new Date(checkOut).getTime() - new Date(checkIn).getTime();
-  const totalDays = Math.ceil(totalDate / (1000 * 60 * 60 * 24));
-  console.log("totalDays", totalDays);
+  // Gece sayısı hesaplama - checkIn ve checkOut boşsa default 1 gece
+  let totalDays = 1;
+  if (checkIn && checkOut && checkIn !== "" && checkOut !== "") {
+    const totalDate = new Date(checkOut).getTime() - new Date(checkIn).getTime();
+    totalDays = Math.ceil(totalDate / (1000 * 60 * 60 * 24));
+    // Negatif veya 0 ise 1 gece yap
+    if (totalDays <= 0) totalDays = 1;
+  }
+  console.log("checkIn:", checkIn, "checkOut:", checkOut);
+  console.log("totalDays:", totalDays);
 
   const totalPrice = hotels.reduce((acc, hotel) => {
     return acc + (hotel.rooms[0]?.price || 0) * totalDays;
