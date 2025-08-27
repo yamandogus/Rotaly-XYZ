@@ -19,7 +19,8 @@
       "noResultsFound": "No results found"
     },
     "close": "Close",
-    "user": "User"
+    "user": "User",
+    "favorites": "Favorites"
   },
   "HomePage": {
     "withRotaly": "With Rotaly",
@@ -950,18 +951,16 @@
     "save": "Save"
   },
   "ResetPassword": {
-    "title": "Reset Password",
-    "description": "Please enter your email to reset your password",
-    "email": "Email",
-    "password": "Password",
-    "confirm_password": "Confirm Password",
-    "confirm_password_description": "Please enter your password again",
-    "password_description": "Please enter your password",
-    "submit": "Reset Password",
+    "title": "Forgot Password",
+    "description": "Enter your email address to reset your password",
+    "email": "Email Address",
+    "submit": "Send Reset Link",
     "back": "Back to Login",
     "emailPlaceholder": "example@email.com",
-    "passwordPlaceholder": "••••••••",
-    "confirmPasswordPlaceholder": "••••••••"
+    "invalidEmail": "Please enter a valid email address",
+    "resetSuccess": "Password reset link has been sent to your email address.",
+    "resetError": "An error occurred. Please try again.",
+    "sending": "Sending..."
   },
 
   "Rooms": {

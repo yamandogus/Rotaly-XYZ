@@ -3,7 +3,7 @@
 import React from "react";
 import { Link, useRouter } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Heart, LayoutDashboard, LogOut } from "lucide-react";
+import { Heart, LayoutDashboard, LogOut, User } from "lucide-react";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ModeToggle } from "@/components/mode-toggle";
 import {
@@ -14,7 +14,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Notification from "../../notifications/page";
 import { RootState } from "@/store/store";
@@ -119,25 +118,14 @@ const UserActions = () => {
               </div>
               <DropdownMenuSeparator />
               
-            
-              
-              
-              {/* CUSTOMER rolü için ek menü öğeleri */}
+              {/* CUSTOMER rolü için profil menüsü */}
               {user.role === "CUSTOMER" && (
-                <>
-                  <DropdownMenuItem asChild>
-                    <Link href="/profile">
-                      <User className="mr-2 h-4 w-4" />
-                      {t("profile")}
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/hotel">
-                      <User className="mr-2 h-4 w-4" />
-                      {t("Hotels Add")}
-                    </Link>
-                  </DropdownMenuItem>
-                </>
+                <DropdownMenuItem asChild>
+                  <Link href="/profile">
+                    <User className="mr-2 h-4 w-4" />
+                    {t("profile")}
+                  </Link>
+                </DropdownMenuItem>
               )}
               
               <DropdownMenuSeparator />

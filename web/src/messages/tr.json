@@ -16,7 +16,8 @@
     "sheetTitle": "Menü",
     "sheetDescription": "Uygulama menüsünü görüntüleyin",
     "close": "Kapat",
-    "user": "Kullanıcı"
+    "user": "Kullanıcı",
+    "favorites": "Favoriler"
   },
   "HomePage": {
     "withRotaly": "Rotaly ile",
@@ -944,14 +945,15 @@
   },
   "ResetPassword": {
     "title": "Şifremi Unuttum",
-    "description": "Lütfen e-posta adresinizi giriniz",
+    "description": "Şifrenizi sıfırlamak için e-posta adresinizi giriniz",
     "email": "E-posta Adresi",
-    "password": "Şifre",
-    "confirm_password": "Şifre Tekrarı",
-    "confirm_password_description": "Şifrenizi tekrar giriniz",
-    "password_description": "Lütfen şifrenizi giriniz",
-    "submit": "Şifremi Sıfırla",
-    "back": "Giriş Yap"
+    "submit": "Sıfırlama Linkini Gönder",
+    "back": "Giriş Yap",
+    "emailPlaceholder": "ornek@email.com",
+    "invalidEmail": "Geçerli bir e-posta adresi giriniz",
+    "resetSuccess": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.",
+    "resetError": "Bir hata oluştu. Lütfen tekrar deneyin.",
+    "sending": "Gönderiliyor..."
   },
   
   "Rooms": {

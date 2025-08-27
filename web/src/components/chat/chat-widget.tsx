@@ -45,6 +45,12 @@ const welcomeMessages = (t: (key: string) => string, onButtonClick?: (action: st
           >
             💬 {t("liveSupport")}
           </button>
+          <button 
+            className="w-full px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition"
+            onClick={() => onButtonClick?.('hotel')}
+          >
+            Oteller için Rotaly
+          </button>
         </div>
       </div>
     </div>
@@ -85,6 +91,10 @@ export default function ChatWidget() {
       case 'live-support':
         setIsOpen(false);
         router.push("/support");
+        break;
+      case 'hotel':
+        setIsOpen(false);
+        router.push('/hotel');
         break;
       default:
         break;

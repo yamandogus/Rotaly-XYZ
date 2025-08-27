@@ -136,10 +136,11 @@ export default function RegisterPage() {
                 <FormItem>
                   <FormLabel>{t("phone")}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t("phonePlaceholder")} {...field} 
-                    type="number"
-                    // pattern="^\\+90\\s?5\\d{2}\\s?\\d{3}\\s?\\d{2}\\s?\\d{2}$"
-                    title={t("phoneFormatHint")}
+                    <Input 
+                      placeholder={t("phonePlaceholder")} 
+                      {...field} 
+                      type="text"
+                      title={t("phoneFormatHint")}
                     />
                   </FormControl>
                   <FormMessage />
