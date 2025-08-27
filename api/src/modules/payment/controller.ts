@@ -7,11 +7,7 @@ import {
   paymentCardIdSchema 
 } from "../../dto/payment";
 import { AppError } from "../../utils/appError";
-import { TokenPayload } from "../../types/express";
-
-interface AuthenticatedRequest extends Request {
-  user?: TokenPayload;
-}
+import { TokenPayload, AuthenticatedRequest } from "../../types/express";
 
 export class PaymentController {
   // Kullanıcının kredi kartlarını listele

@@ -7,12 +7,8 @@ import {
   MarkAsReadSchema,
   EditMessageSchema,
 } from "../../dto/message";
-import { TokenPayload } from "../../types/express";
+import { TokenPayload, AuthenticatedRequest } from "../../types/express";
 import { MessageHandler } from "../socket/handlers/message.handler";
-
-interface AuthenticatedRequest extends Request {
-  user?: TokenPayload;
-}
 
 interface SocketEmitter {
   emitAIResponse?: (userId: string, message: any) => void;

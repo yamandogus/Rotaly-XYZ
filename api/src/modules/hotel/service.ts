@@ -10,9 +10,28 @@ type CreateHotelWithOwnerInput = CreateHotelInput & { ownerId: string };
 export const createHotel = async (input: CreateHotelWithOwnerInput) => {
   const hotel = await Prisma.hotel.create({
     data: {
-      ...input,
+      name: input.name,
+      description: input.description,
+      location: input.location,
+      address: input.address,
+      city: input.city,
+      country: input.country,
+      type: input.type,
+      discountRate: input.discountRate,
+      ownerId: input.ownerId,
     },
   });
+
+  // Features'ları ayrı olarak ekle
+  if (input.features && input.features.length > 0) {
+    await Prisma.hotelProps.createMany({
+      data: input.features.map(feature => ({
+        hotelId: hotel.id,
+        feature: feature,
+      })),
+    });
+  }
+
   return hotel;
 };
 

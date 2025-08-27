@@ -8,7 +8,9 @@ export class CommentRepository {
   static async create(userId: string, data: CreateCommentSchemaType) {
     return Prisma.comment.create({
       data: {
-        ...data,
+        rating: data.rating,
+        text: data.text,
+        hotelId: data.hotelId,
         userId,
       },
     });
