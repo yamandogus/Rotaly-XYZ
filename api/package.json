@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only ./main.ts",
     "build": "tsc",
+    "build:render": "npx tsc --skipLibCheck",
     "start": "node dist/main.js",
     "seed:all": "npm run seed:users && npm run seed:hotels",
     "seed:users": "ts-node src/scripts/seeds/seed-users.ts",
@@ -17,6 +18,10 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "dependencies": {
     "@prisma/client": "^5.20.0",
     "bcrypt": "^5.1.1",
