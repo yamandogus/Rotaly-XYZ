@@ -8,8 +8,9 @@
     "removeComments": true,
     "resolveJsonModule": true,
     "typeRoots": ["./node_modules/@types"],
+    "types": [],
     "noImplicitAny": false,
-    "sourceMap": true,
+    "sourceMap": false,
     "outDir": "dist",
     "strict": false,
     "baseUrl": ".",
@@ -20,7 +21,9 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "exactOptionalPropertyTypes": false,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "declaration": false,
+    "declarationMap": false
   },
   "ts-node": {
     "compilerOptions": {
