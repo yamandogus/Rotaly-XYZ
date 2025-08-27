@@ -23,7 +23,15 @@ import { Rating, RatingButton } from "./ui/shadcn-io/rating";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "./ui/input";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import {
+  setCategories,
+  setRatings,
+  setPriceRange,
+  setFeatures,
+  clearFilters,
+} from "@/store/filter/filter-slice";
 import { MinusIcon } from "lucide-react";
 
 export const filterOrder = [
@@ -71,14 +79,10 @@ const FormSchema = z.object({
 });
 
 export function Filters() {
-  const [priceRange, setPriceRange] = useState([50, 100000]);
-  const [minPrice, maxPrice] = priceRange;
-  const [filters, setFilters] = useState({
-    categories: [] as string[],
-    ratings: [] as string[],
-    priceRange: [50, 100000] as number[],
-    other: [] as string[],
-  });
+  const dispatch = useDispatch();
+  const filterState = useSelector((state: RootState) => state.filter);
+  
+  const [minPrice, maxPrice] = filterState.priceRange;
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -88,10 +92,10 @@ export function Filters() {
   });
 
   const onSubmit = () => {
-    console.log("Seçilen kategoriler:", filters.categories);
-    console.log("Seçilen değerlendirme:", filters.ratings);
-    console.log("Seçilen fiyat:", filters.priceRange);
-    console.log("Seçilen diğer:", filters.other);
+    console.log("Seçilen kategoriler:", filterState.categories);
+    console.log("Seçilen değerlendirme:", filterState.ratings);
+    console.log("Seçilen fiyat:", filterState.priceRange);
+    console.log("Seçilen diğer:", filterState.features);
 
     const filterScroll = document.querySelector(".category-page");
     if (filterScroll) {
@@ -100,38 +104,31 @@ export function Filters() {
   };
 
   const handlePriceRangeChange = (newRange: number[]) => {
-    setPriceRange(newRange);
-    setFilters({
-      ...filters,
-      priceRange: newRange,
-    });
+    dispatch(setPriceRange(newRange as [number, number]));
   };
 
   const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 50;
-    const newRange = [Math.min(value, maxPrice - 1), maxPrice];
-    setPriceRange(newRange);
-    setFilters({
-      ...filters,
-      priceRange: newRange,
-    });
+    const newRange: [number, number] = [Math.min(value, maxPrice - 1), maxPrice];
+    dispatch(setPriceRange(newRange));
   };
 
   const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 40000;
-    const newRange = [minPrice, Math.max(value, minPrice + 1)];
-    setPriceRange(newRange);
-    setFilters({
-      ...filters,
-      priceRange: newRange,
-    });
+    const newRange: [number, number] = [minPrice, Math.max(value, minPrice + 1)];
+    dispatch(setPriceRange(newRange));
   };
 
   return (
     <div className="lg:col-span-1 hidden lg:block">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-foreground">Filtreler</h2>
-        <Button variant="outline" size="sm" className="rounded-full">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="rounded-full"
+          onClick={() => dispatch(clearFilters())}
+        >
           Temizle
         </Button>
       </div>
@@ -160,22 +157,15 @@ export function Filters() {
                               <FormItem className="flex items-center space-x-2">
                                 <FormControl>
                                   <Checkbox
-                                    checked={filters.categories.includes(
+                                    checked={filterState.categories.includes(
                                       cat.id
                                     )}
                                     className="data-[state=checked]:bg-blue-500 data-[state=checked]:text-white"
                                     onCheckedChange={(checked) => {
-                                      setFilters({
-                                        ...filters,
-                                        categories: checked
-                                          ? [
-                                              ...(filters.categories || []),
-                                              cat.id,
-                                            ]
-                                          : filters.categories?.filter(
-                                              (v) => v !== cat.id
-                                            ),
-                                      });
+                                      const newCategories = checked
+                                        ? [...filterState.categories, cat.id]
+                                        : filterState.categories.filter((v) => v !== cat.id);
+                                      dispatch(setCategories(newCategories));
                                     }}
                                   />
                                 </FormControl>
@@ -217,22 +207,15 @@ export function Filters() {
                               <FormItem className="flex items-center space-x-2">
                                 <FormControl>
                                   <Checkbox
-                                    checked={filters.ratings.includes(
+                                    checked={filterState.ratings.includes(
                                       rating.id
                                     )}
                                     className="data-[state=checked]:bg-blue-500 data-[state=checked]:text-white"
                                     onCheckedChange={(checked) => {
-                                      setFilters({
-                                        ...filters,
-                                        ratings: checked
-                                          ? [
-                                              ...(filters.ratings || []),
-                                              rating.id,
-                                            ]
-                                          : filters.ratings?.filter(
-                                              (v) => v !== rating.id
-                                            ),
-                                      });
+                                      const newRatings = checked
+                                        ? [...filterState.ratings, rating.id]
+                                        : filterState.ratings.filter((v) => v !== rating.id);
+                                      dispatch(setRatings(newRatings));
                                     }}
                                   />
                                 </FormControl>
@@ -281,7 +264,7 @@ export function Filters() {
                       </span>
                     </div>
                     <Slider
-                      value={filters.priceRange}
+                      value={filterState.priceRange}
                       onValueChange={handlePriceRangeChange}
                       max={100000}
                       min={50}
@@ -299,7 +282,7 @@ export function Filters() {
                     Min.fiyat
                   </Label>
                   <Input
-                    value={filters.priceRange[0]}
+                    value={filterState.priceRange[0]}
                     onChange={handleMinPriceChange}
                     placeholder="50 ₺"
                     size={20}
@@ -317,7 +300,7 @@ export function Filters() {
                     Max.fiyat
                   </Label>
                   <Input
-                    value={filters.priceRange[1]}
+                    value={filterState.priceRange[1]}
                     onChange={handleMaxPriceChange}
                     placeholder="100.000 ₺"
                     min={minPrice + 1}
@@ -340,17 +323,15 @@ export function Filters() {
                     variant="outline"
                     size="sm"
                     className={`rounded-full mx-2 my-1 px-4 ${
-                      filters.other.includes(item)
+                      filterState.features.includes(item)
                         ? "bg-blue-500 hover:bg-blue-600 text-white hover:text-white"
                         : "bg-background text-foreground hover:bg-background hover:text-foreground"
                     }`}
                     onClick={() => {
-                      setFilters({
-                        ...filters,
-                        other: filters.other.includes(item)
-                          ? filters.other.filter((v) => v !== item)
-                          : [...(filters.other || []), item],
-                      });
+                      const newFeatures = filterState.features.includes(item)
+                        ? filterState.features.filter((v) => v !== item)
+                        : [...filterState.features, item];
+                      dispatch(setFeatures(newFeatures));
                     }}
                   >
                     {item}

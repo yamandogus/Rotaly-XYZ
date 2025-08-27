@@ -2,6 +2,13 @@ import { Router } from "express";
 import { AdminController } from "./controller";
 import { isAdmin } from "../../middleware/auth.middleware";
 import { authenticateToken } from "../../middleware/jwt.middleware";
+import {
+  createHotelHandler,
+  getHotelsHandler,
+  getHotelByIdHandler,
+  updateHotelHandler,
+  deleteHotelHandler,
+} from "../hotel/controller";
 
 const router = Router();
 const adminController = new AdminController();
@@ -37,6 +44,13 @@ router.put(
   isAdmin,
   AdminController.updateProfile
 );
+
+// 🏨 Admin Hotel Management Routes
+router.post("/hotels", authenticateToken, isAdmin, createHotelHandler);
+router.get("/hotels", authenticateToken, isAdmin, getHotelsHandler);
+router.get("/hotels/:id", authenticateToken, isAdmin, getHotelByIdHandler);
+router.put("/hotels/:id", authenticateToken, isAdmin, updateHotelHandler);
+router.delete("/hotels/:id", authenticateToken, isAdmin, deleteHotelHandler);
 
 export default router;
 

@@ -327,7 +327,11 @@
       "specialRequestLabel": "Özel Talep",
       "specialRequestPlaceholder": "Özel Talep",
       "back": "Geri",
-      "completePayment": "Ödemeyi Tamamla"
+      "completePayment": "Ödemeyi Tamamla",
+      "selectPaymentMethod": "Ödeme Yöntemi Seçin",
+      "useExistingCard": "Kayıtlı Kartı Kullan",
+      "addNewCard": "Yeni Kart Ekle",
+      "default": "Varsayılan"
     },
     "PaymentProcessing": {
       "processingMessage": "Ödeme işleniyor..."
@@ -790,7 +794,7 @@
     "newPassword": "Yeni Şifre",
     "confirmNewPassword": "Yeni Şifre (Tekrar)",
     "passwordsDoNotMatch": "Yeni şifreler eşleşmiyor.",
-    "reservationss": {
+    "reservationsDetails": {
       "title": "Rezervasyonlar",
       "roomNumber": "Oda No: {roomNumber}",
       "guests": "{guests} Kişilik",
@@ -808,6 +812,16 @@
       "freeCancellationNotAvailable": "Yok",
       "cancelReservation": "Rezervasyon İptal",
       "askHotel": "Otele Sor",
+      "room": "Oda",
+      "payment": "Ödeme",
+      "specialRequest": "Özel İstek",
+      "checkIn": "Giriş",
+      "checkOut": "Çıkış",
+      "roomNumber": "Oda No",
+      "guests": "Kişilik",
+      "nights": "Gece",
+      "registeredCard": "Kayıtlı Kart",
+      "noAddressInfo": "Adres bilgisi yok",
       "cancelModal": {
         "title": "Rezervasyon İptali",
         "description": "Rezervasyonunuzu iptal etmek istediğinize emin misiniz?",
@@ -823,8 +837,19 @@
         "ourHotel": "Otelimiz"
       },
       "toast": {
-        "cancelled": "Rezervasyonunuz iptal edildi."
-      }
+        "cancelled": "Rezervasyonunuz iptal edildi.",
+        "cancelError": "Rezervasyon iptal edilemedi. Lütfen tekrar deneyin.",
+        "updateSuccess": "Rezervasyonunuz başarıyla güncellendi.",
+        "updateError": "Rezervasyon güncellenemedi. Lütfen tekrar deneyin."
+      },
+      "update": "Güncelle",
+      "tryAgain": "Tekrar Dene",
+      "startHotelSearch": "Otel Aramaya Başla",
+      "noReservations": "Henüz rezervasyonunuz bulunmuyor.",
+      "loadError": "Rezervasyon bilgileri yüklenemedi",
+      "loading": "Rezervasyonlar yükleniyor...",
+      "editDescription": "Rezervasyon bilgilerinizi güncelleyebilirsiniz.",
+      "specialRequestPlaceholder": "Özel isteklerinizi yazabilirsiniz..."
     }
     
   },
@@ -906,7 +931,16 @@
     "target": "Hedef",
     "ofTotal": "toplamdan",
     "inactiveRate": "inaktif oranı",
-    "thisMonth": "bu ay"
+    "thisMonth": "bu ay",
+    "editCustomer": "Müşteri Düzenle",
+    "editingCustomer": "Düzenlenen müşteri",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "nameMin2": "Ad en az 2 karakter olmalıdır",
+    "surnameMin2": "Soyad en az 2 karakter olmalıdır",
+    "invalidEmail": "Geçersiz e-posta adresi",
+    "phoneMin10": "Telefon numarası en az 10 karakter olmalıdır",
+    "save": "Kaydet"
   },
   "ResetPassword": {
     "title": "Şifremi Unuttum",
@@ -1145,10 +1179,6 @@
     "editHotel": "Otel Düzenle",
     "editingHotel": "Düzenlenen Otel",
     "cancel": "İptal",
-    "save": "Kaydet",
-    "deleteHotel": "Otel Sil",
-    "deleteHotelConfirmation": "Bu oteli silmek istediğinizden emin misiniz",
-    "deleteWarning": "Bu işlem geri alınamaz.",
     "roomInformationComingSoon": "Oda bilgileri yakında gelecek",
     "reviewInformationComingSoon": "Yorum bilgileri yakında gelecek",
     "bookingInformationComingSoon": "Rezervasyon bilgileri yakında gelecek",
@@ -1163,12 +1193,9 @@
     "taxCertificate": "Vergi Levhası",
     "discountRate": "İndirim Oranı",
     "noDiscount": "İndirim Yok",
-    "address": "Adres",
     "description": "Açıklama",
-    "country": "Ülke",
     "updatedAt": "Güncellenme Tarihi",
     "ownerId": "Sahip ID",
-    "isActive": "Aktif Mi",
     "isDiscounted": "İndirimli Mi",
     "discountStartDate": "İndirim Başlangıç Tarihi",
     "discountEndDate": "İndirim Bitiş Tarihi",
@@ -1180,12 +1207,6 @@
     "PET_FRIENDLY": "Evcil Hayvan Dostu",
     "RESTAURANT": "Restoran",
     "BREAKFAST_INCLUDED": "Kahvaltı Dahil",
-    "nameMin2": "Ad en az 2 karakter olmalıdır",
-    "locationMin2": "Konum en az 2 karakter olmalıdır",
-    "addressMin2": "Adres en az 2 karakter olmalıdır",
-    "cityMin2": "Şehir en az 2 karakter olmalıdır",
-    "countryMin2": "Ülke en az 2 karakter olmalıdır",
-    "ownerIdRequired": "Sahip ID gerekli",
     "typeRequired": "Tip gerekli",
     "typeDescription": "Otel tipini seçin",
     "nameDescription": "Otel adını girin",
@@ -1198,7 +1219,21 @@
     "selectOwner": "Sahip Seçin",
     "owner": "Sahip",
     "selectType": "Tip Seçin",
-    "required": "Gerekli"
+    "required": "Gerekli",
+    "nameMin2": "Otel adı en az 2 karakter olmalıdır",
+    "locationMin2": "Konum en az 2 karakter olmalıdır",
+    "cityMin2": "Şehir en az 2 karakter olmalıdır",
+    "countryMin2": "Ülke en az 2 karakter olmalıdır",
+    "isActive": "Durum",
+    "save": "Kaydet",
+    "country": "Ülke",
+    "addressMin2": "Adres en az 2 karakter olmalıdır",
+    "ownerIdRequired": "Otel sahibi ID gereklidir",
+    "address": "Adres",
+    "deleteHotel": "Otel Sil",
+    "deleteHotelConfirmation": "Bu oteli silmek istediğinizden emin misiniz",
+    "deleteWarning": "Bu işlem geri alınamaz. Otel ve tüm verileri kalıcı olarak silinecektir.",
+    "user": "Kullanıcı"
   },
     "Favorites": {
     "title": "Favoriler",

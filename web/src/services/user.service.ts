@@ -15,6 +15,21 @@ export const userService = {
     });
     return response.data;
   },
+  
+  async updateProfile(userData: {
+    name: string;
+    surname: string;
+    email: string;
+    phone: string;
+  }) {
+    const response = await axios.put(`${API_BASE_URL}/auth/update-profile`, userData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+    return response.data;
+  },
+
   async updateProfileImage(image: string) {
     const response = await axios.put(`${API_BASE_URL}/auth/update-profile-image`, {image}, {
       headers: {
@@ -23,13 +38,27 @@ export const userService = {
     });
     return response.data;
   },
-  async updateProfile(userData: {
-    name: string;
-    surname: string;
-    email: string;
-    phone: string;
-  }) {
-    const response = await axios.put(`${API_BASE_URL}/auth/update-profile`, userData, {
+
+  async deleteUser(userId: string) {
+    const response = await axios.delete(`${API_BASE_URL}/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+    return response.data;
+  },
+
+  async getUserById(userId: string) {
+    const response = await axios.get(`${API_BASE_URL}/users/id/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+    return response.data;
+  },
+
+  async getAllCreditCards() {
+    const response = await axios.get(`${API_BASE_URL}/payments/cards`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },

@@ -23,6 +23,7 @@ import { UploadIcon, SaveIcon } from "lucide-react";
 import Image from "next/image";
 import { toast } from "react-hot-toast";
 import { adminService } from "@/services/admin.service";
+import { UpdateAdminProfileDto } from "@/types/admin";
 import { useEffect, useState } from "react";
 
 interface CompanyFormData {
@@ -106,9 +107,53 @@ export default function CompanyPage() {
     fetchProfile();
   }, [form]);
 
-  const onSubmit = (data: CompanyFormData) => {
-    console.log("Company Data", data);
-    toast.success(t("Company.savedSuccessfully") || "Company Data saved successfully");
+  const onSubmit = async (data: CompanyFormData) => {
+    try {
+      // Sadece değişen alanları gönder
+      const updateData: UpdateAdminProfileDto = {};
+      
+      if (data.companyName && data.companyName !== profile?.companyName) {
+        updateData.companyName = data.companyName;
+      }
+      if (data.companyVatOrTaxId && data.companyVatOrTaxId !== profile?.companyTaxId) {
+        updateData.companyTaxId = data.companyVatOrTaxId;
+      }
+      if (data.country && data.country !== profile?.country) {
+        updateData.country = data.country;
+      }
+      if (data.city && data.city !== profile?.city) {
+        updateData.city = data.city;
+      }
+      if (data.state && data.state !== profile?.state) {
+        updateData.state = data.state;
+      }
+      if (data.postalCode && data.postalCode !== profile?.postCode) {
+        updateData.postCode = data.postalCode;
+      }
+      if (data.fullAddress && data.fullAddress !== profile?.fullAddress) {
+        updateData.fullAddress = data.fullAddress;
+      }
+
+      // Eğer hiç değişiklik yoksa uyarı ver
+      if (Object.keys(updateData).length === 0) {
+        toast.error("Herhangi bir değişiklik yapılmadı");
+        return;
+      }
+
+      const response = await adminService.updateCompanyProfile(updateData);
+      
+      if (response.success) {
+        toast.success(t("Company.savedSuccessfully") || "Şirket bilgileri başarıyla güncellendi");
+        // Refresh profile data
+        const updatedProfile = await adminService.getUserProfile();
+        if (updatedProfile.success && updatedProfile.data) {
+          setProfile(updatedProfile.data);
+        }
+      }
+    } catch (error) {
+      console.error("Company update error:", error);
+      toast.error("Şirket bilgileri güncellenirken hata oluştu");
+    }
   };
 
   if (loading) {

@@ -6,17 +6,31 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React from "react";
+import { HotelNew } from "@/types/hotel";
 
-const images = [
+const defaultImages = [
   { src: "/images/detail3.jpg", alt: "Hotel Image 1" },
   { src: "/images/detail2.jpg", alt: "Hotel Image 2" },
   { src: "/images/detail5.jpg", alt: "Hotel Image 3" },
   { src: "/images/detail4.jpg", alt: "Hotel Image 4", overlay: "16+" },
 ];
 
-const ImageGallery = () => {
+interface ImageGalleryProps {
+  hotel?: HotelNew | null;
+}
+
+const ImageGallery = ({ hotel }: ImageGalleryProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+
+  // Hotel images'ları kullan, yoksa default images
+  const images = hotel?.images && hotel.images.length > 0 
+    ? hotel.images.map((img, index) => ({
+        src: img.url,
+        alt: `${hotel.name} - Image ${index + 1}`,
+        overlay: index === hotel.images.length - 1 && hotel.images.length > 4 ? `${hotel.images.length - 4}+` : undefined
+      }))
+    : defaultImages;
 
   const scrollTo = useCallback(
     (index: number) => {
@@ -40,12 +54,12 @@ const ImageGallery = () => {
   const scrollNext = () => emblaApi?.scrollNext();
 
   return (
-    <div className="lg:w-[700px]">
+    <div className="w-full lg:max-w-[700px]">
       {/* Ana büyük görsel alanı */}
       <div className="relative overflow-hidden rounded-2xl mb-4" ref={emblaRef}>
         <div className="flex">
           {images.map((image, idx) => (
-            <div key={idx} className="flex-[0_0_100%] relative h-[550px] w-full">
+            <div key={idx} className="flex-[0_0_100%] relative h-[300px] sm:h-[400px] lg:h-[550px] w-full">
               <Image
                 src={image.src}
                 alt={image.alt}
@@ -81,7 +95,7 @@ const ImageGallery = () => {
           <button
             key={idx}
             onClick={() => scrollTo(idx)}
-            className={`relative w-full h-[210px] rounded-xl overflow-hidden group border-2 transition-all ${
+            className={`relative w-full h-[100px] sm:h-[150px] lg:h-[210px] rounded-xl overflow-hidden group border-2 transition-all ${
               selectedIndex === idx
                 ? "border-primary"
                 : "border-transparent opacity-70 hover:opacity-100"

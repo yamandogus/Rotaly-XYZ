@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -13,11 +13,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { setCity, setCheckInDate, setCheckOutDate, setGuestsCount } from "@/store/search/search-slice"
 import type { RootState } from "@/store/store"
 import { useToastMessages } from "@/hooks/toast-messages"
-import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList, CommandSeparator } from "../ui/command"
-import hotelsData from "@/data/hotelsData.json"
-import { popularHotels } from "@/data/dumy"
 import type { HotelNew } from "@/types/hotel"
 import { useTranslations } from "next-intl"
+import { hotelService } from "@/services"
+import { SearchPopoverContent } from "./search-popover-content"
 
 interface BookingSearchProps {
   handleSearch: () => void
@@ -29,6 +28,9 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
   const dispatch = useDispatch()
   const { showError } = useToastMessages()
   const [isOpen, setIsOpen] = useState(false)
+  const [allHotels, setAllHotels] = useState<HotelNew[]>([])
+  const [popularHotels, setPopularHotels] = useState<HotelNew[]>([])
+  const [loading, setLoading] = useState(false)
 
   // Store'dan mevcut verileri al
   const {
@@ -47,6 +49,32 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
     adults: storeGuests || 1,
     children: 0,
   })
+
+  // API'den otelleri getir
+  useEffect(() => {
+    const fetchHotels = async () => {
+      setLoading(true)
+      try {
+        const response = await hotelService.getHotels({ 
+          limit: 50, // Daha fazla otel getir
+          isActive: true 
+        })
+        const hotels = response.hotels || []
+        setAllHotels(hotels)
+        
+        // İlk 5 oteli popüler olarak ayarla
+        setPopularHotels(hotels.slice(0, 5))
+      } catch (error) {
+        console.error("Oteller yüklenirken hata:", error)
+        setAllHotels([])
+        setPopularHotels([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchHotels()
+  }, [])
 
   // Search fonksiyonu - store'a veri kaydet ve parent'a bildir
   const handleSearchClick = () => {
@@ -91,11 +119,15 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
   })
 
   const filteredHotels = useMemo(() => {
-    if (searchTerm.length > 2) {
-      return hotelsData.filter((hotel: HotelNew) => hotel.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    if (searchTerm.length > 1 && allHotels.length > 0) {
+      return allHotels.filter((hotel: HotelNew) => 
+        hotel.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        hotel.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        hotel.location.toLowerCase().includes(searchTerm.toLowerCase())
+      )
     }
     return []
-  }, [searchTerm])
+  }, [searchTerm, allHotels])
 
   return (
     <div className="relative">
@@ -128,89 +160,17 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
                       />
                     </div>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[380px] md:w-[400px] p-0 bg-card border-gray-300 dark:border-gray-600" align="center">
-                    <div className="p-2">
-                      {/* Results */}
-                      <div className="max-h-80 overflow-y-auto p-2 overflow-hidden">
-                        <div className="mt-2">
-                          <div className="relative mb-2">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                            <Input
-                              placeholder={t("placeholders.startSearching")}
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
-                              className="pl-10 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-black dark:text-white placeholder:text-gray-400"
-                            />
-                          </div>
-                          <Command className="bg-card">
-                            <CommandList className="bg-card">
-                              <CommandEmpty>{t("search.noResults")}</CommandEmpty>
-                              {filteredHotels.length > 0 ? (
-                                <CommandGroup heading={t(filteredHotels.length > 1 ? "search.results" : "search.noResults")}>
-                                  {filteredHotels.map((hotel) => (
-                                    <CommandItem
-                                      key={hotel.name}
-                                      onSelect={() => {
-                                        setDestination(hotel.name)
-                                        setIsOpen(false)
-                                      }}
-                                    >
-                                      <div className="flex flex-row gap-4">
-                                        <div className="flex justify-center items-center">
-                                          <MapPin width={4} hanging={4} />
-                                        </div>
-                                        <div className="flex flex-col">
-                                          <p className="text-md">{hotel.city}</p>
-                                          <p className="text-gray-400 text-sm">{hotel.location}</p>
-                                          <p></p>
-                                        </div>
-                                      </div>
-                                    </CommandItem>
-                                  ))}
-                                </CommandGroup>
-                              ) : (
-                                <CommandGroup heading={t("search.results")}>
-                                  <span className="text-gray-400 py-2 text-sm">
-                                    {searchTerm === "" ? t("search.startSearching") : t("search.noResults")}
-                                  </span>
-                                </CommandGroup>
-                              )}
-                              <CommandSeparator />
-                            </CommandList>
-                            {filteredHotels.length === 0 && (
-                              <CommandList>
-                                <CommandGroup>
-                                  <div className="px-2 py-1 text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                                  {t("search.popularSearches")}
-                                </div>
-                                {popularHotels.map((hotel) => (
-                                  <CommandItem
-                                    key={hotel.name}
-                                    onSelect={() => {
-                                      setDestination(hotel.name)
-                                      setIsOpen(false)
-                                    }}
-                                  >
-                                    <div className="flex flex-row gap-4">
-                                      <div className="flex justify-center items-center">
-                                        <MapPin width={4} hanging={4} />
-                                      </div>
-                                      <div className="flex flex-col">
-                                        <p className="text-md">{hotel.city}</p>
-                                        <p className="text-gray-400 text-sm">{hotel.location}</p>
-                                        <p></p>
-                                      </div>
-                                    </div>
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-
-                              <CommandSeparator />
-                            </CommandList>
-                            )}
-                          </Command>
-                        </div>
-                      </div>
+                  <PopoverContent className="w-[350px] sm:w-[400px] md:w-[450px] p-0 bg-card border-gray-300 dark:border-gray-600 mx-2 sm:mx-0" align="center">
+                    <div className="p-3">
+                      <SearchPopoverContent
+                        searchTerm={searchTerm}
+                        setSearchTerm={setSearchTerm}
+                        setDestination={setDestination}
+                        setIsOpen={setIsOpen}
+                        filteredHotels={filteredHotels}
+                        popularHotels={popularHotels}
+                        loading={loading}
+                      />
                     </div>
                   </PopoverContent>
                 </Popover>
@@ -222,6 +182,7 @@ export function BookingSearch({ handleSearch }: BookingSearchProps) {
                   {t("labels.checkIn")}
                 </Label>
                 <SingleDatePicker
+                
                   date={checkIn}
                   checkIn={checkIn}
                   checkOut={checkOut}

@@ -38,9 +38,38 @@ interface HotelCardProps {
     ownerId?: string;
     isActive?: boolean;
     images?: { id: string; url: string }[];
+    // Otel özellikleri
+    features?: string[]; // ['WIFI', 'POOL', 'SPA', 'PARKING'] gibi
+    hotelFeatures?: string[]; // Hotel-specific features
+    roomFeatures?: string[]; // Room-specific features
   };
   onToggleFavorite?: () => void; // Favoriler sayfasından kaldırınca yeniden render için
 }
+
+// Özellik adlarını Türkçe'ye çeviren fonksiyon
+const getFeatureName = (feature: string): string => {
+  const featureMap: { [key: string]: string } = {
+    'WIFI': 'WiFi',
+    'POOL': 'Havuz',
+    'SPA': 'Spa',
+    'PARKING': 'Otopark',
+    'GYM': 'Spor Salonu',
+    'RESTAURANT': 'Restoran',
+    'BAR': 'Bar',
+    'BREAKFAST_INCLUDED': 'Kahvaltı Dahil',
+    'ROOM_SERVICE': 'Oda Servisi',
+    'LAUNDRY': 'Çamaşırhane',
+    'PET_FRIENDLY': 'Evcil Hayvan Dostu',
+    'AIR_CONDITIONER': 'Klima',
+    'TV': 'TV',
+    'MINIBAR': 'Minibar',
+    'SAFE_BOX': 'Kasa',
+    'BALCONY': 'Balkon',
+    'BATH_TUB': 'Küvet',
+    'HAIR_DRYER': 'Saç Kurutma Makinesi',
+  };
+  return featureMap[feature] || feature;
+};
 
 const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
   const t = useTranslations("HotelCard");
@@ -119,12 +148,15 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
             className="object-cover rounded-2xl p-1"
             priority
           />
-          <div className="absolute top-3 left-1">
-            <div className="bg-[#4E946C] text-white px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-sm">
-              <Sparkles className="w-3 h-3" />
-              <span className="text-xs font-semibold">{t("discountLabel")}</span>
+          {/* İndirim Etiketi - Sadece indirimli otellerde göster */}
+          {item.isDiscounted && item.discountRate && (
+            <div className="absolute top-3 left-1">
+              <div className="bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-sm">
+                <Sparkles className="w-3 h-3" />
+                <span className="text-xs font-bold">%{item.discountRate} İndirim</span>
+              </div>
             </div>
-          </div>
+          )}
           <div className="absolute top-3 right-3">
             <Button
               variant="ghost"
@@ -171,47 +203,46 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        {/* Otel Özellikleri */}
+        <div className="flex flex-wrap gap-1.5 mb-2">
+          {/* Mevcut text-based özellikler */}
           {item.cancelText && (
-            <div className="flex items-center gap-1.5 text-xs text-red-600 bg-red-50 dark:bg-red-900/20 dark:text-red-400 px-2.5 py-1.5 rounded-lg border border-red-100 dark:border-red-800/30">
-              <svg
-                className="w-3 h-3"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4"
-                />
+            <div className="flex items-center gap-1 text-xs text-red-600 bg-red-50 dark:bg-red-900/20 dark:text-red-400 px-2 py-1 rounded-md border border-red-100 dark:border-red-800/30">
+              <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4" />
               </svg>
               <span className="font-medium">{t("cancellationText")}</span>
             </div>
           )}
           {item.breakfastText && (
-            <div className="flex items-center gap-1.5 text-xs text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400 px-2.5 py-1.5 rounded-lg border border-green-100 dark:border-green-800/30">
-              <svg
-                className="w-3 h-3"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4"
-                />
+            <div className="flex items-center gap-1 text-xs text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400 px-2 py-1 rounded-md border border-green-100 dark:border-green-800/30">
+              <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4" />
               </svg>
               <span className="font-medium">{t("breakfastText")}</span>
             </div>
           )}
           {item.parkingText && (
-            <div className="flex items-center gap-1.5 text-xs text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 px-2.5 py-1.5 rounded-lg border border-blue-100 dark:border-blue-800/30">
-              <CarIcon className="w-3 h-3" />
+            <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 px-2 py-1 rounded-md border border-blue-100 dark:border-blue-800/30">
+              <CarIcon className="w-2.5 h-2.5" />
               <span className="font-medium">{t("parkingText")}</span>
+            </div>
+          )}
+          
+          {/* Yeni features array'inden gelen özellikler - sadece ilk 3 tanesini göster */}
+          {item.features && item.features.slice(0, 3).map((feature) => (
+            <div key={feature} className="flex items-center gap-1 text-xs text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 px-2 py-1 rounded-md border border-blue-100 dark:border-blue-800/30">
+              <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4" />
+              </svg>
+              <span className="font-medium">{getFeatureName(feature)}</span>
+            </div>
+          ))}
+          
+          {/* Eğer 3'ten fazla özellik varsa "+X more" göster */}
+          {item.features && item.features.length > 3 && (
+            <div className="flex items-center gap-1 text-xs text-gray-600 bg-gray-50 dark:bg-gray-900/20 dark:text-gray-400 px-2 py-1 rounded-md border border-gray-100 dark:border-gray-800/30">
+              <span className="font-medium">+{item.features.length - 3} daha</span>
             </div>
           )}
         </div>
@@ -222,7 +253,26 @@ const HotelCard = ({ item, onToggleFavorite }: HotelCardProps) => {
           <span className="text-sm text-muted-foreground mb-1">
             {t("nightsFor", { nights: item.nights || 1 })}
           </span>
-          <span className="text-xl font-bold text-blue-600">{item.price?.toLocaleString() || "0"} ₺</span>
+          <div className="flex flex-col gap-1">
+            {/* İndirimli fiyat gösterimi */}
+            {item.isDiscounted && item.discountRate && item.price ? (
+              <>
+                {/* Eski fiyat - üstü çizili */}
+                <span className="text-sm text-muted-foreground line-through">
+                  {Math.round((item.price * (item.nights || 1)) / (1 - item.discountRate / 100)).toLocaleString()} ₺
+                </span>
+                {/* İndirimli fiyat - büyük ve renkli */}
+                <span className="text-xl font-bold text-red-600">
+                  {(item.price * (item.nights || 1)).toLocaleString()} ₺
+                </span>
+              </>
+            ) : (
+              /* Normal fiyat */
+              <span className="text-xl font-bold text-blue-600">
+                {((item.price || 0) * (item.nights || 1)).toLocaleString()} ₺
+              </span>
+            )}
+          </div>
         </div>
         <Button 
           onClick={() => router.push(`/hotels/${item.id}`)}

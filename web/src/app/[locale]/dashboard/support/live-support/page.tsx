@@ -16,30 +16,75 @@ import {
   MailIcon
 } from "lucide-react";
 import React, { useState, useEffect } from "react";
-import { socketService, type SocketMessage, type TypingEvent } from "@/services/socket.service";
-import { supportService, type SupportRequest, type SupportMessage } from "@/services/support.service";
 
-// Backend'den gelen support request interface'i
-interface SupportUser {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  avatar: string;
-  status: "waiting" | "online" | "away" | "resolved";
-  priority: "high" | "medium" | "low";
-  lastMessage: string;
-  waitTime: string;
-  category: string;
-  supportId: string;
-  createdAt: string;
-}
+// Örnek kullanıcı verileri
+const users = [
+  {
+    id: 1,
+    name: "Ahmet Yılmaz",
+    email: "ahmet.yilmaz@example.com",
+    phone: "+90 555 123 4567",
+    avatar: "AY",
+    status: "waiting",
+    priority: "high",
+    lastMessage: "Rezervasyonum hakkında bilgi almak istiyorum",
+    waitTime: "5 dk",
+    category: "reservation"
+  },
+  {
+    id: 2,
+    name: "Elif Demir",
+    email: "elif.demir@example.com",
+    phone: "+90 555 234 5678",
+    avatar: "ED",
+    status: "online",
+    priority: "medium",
+    lastMessage: "Ödeme yaparken sorun yaşıyorum",
+    waitTime: "2 dk",
+    category: "payment"
+  },
+  {
+    id: 3,
+    name: "Mehmet Kaya",
+    email: "mehmet.kaya@example.com",
+    phone: "+90 555 345 6789",
+    avatar: "MK",
+    status: "online",
+    priority: "low",
+    lastMessage: "Otel bilgilerini değiştirmek istiyorum",
+    waitTime: "1 dk",
+    category: "modification"
+  },
+  {
+    id: 4,
+    name: "Zeynep Çelik",
+    email: "zeynep.celik@example.com",
+    phone: "+90 555 456 7890",
+    avatar: "ZÇ",
+    status: "away",
+    priority: "medium",
+    lastMessage: "İptal işlemi yapmak istiyorum",
+    waitTime: "8 dk",
+    category: "cancellation"
+  },
+  {
+    id: 5,
+    name: "Can Özkan",
+    email: "can.ozkan@example.com",
+    phone: "+90 555 567 8901",
+    avatar: "CÖ",
+    status: "waiting",
+    priority: "high",
+    lastMessage: "Acil durum, yardım gerekli!",
+    waitTime: "12 dk",
+    category: "emergency"
+  },
+];
 
 const LiveSupportPage = () => {
-  const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const [selectedUser, setSelectedUser] = useState<number | null>(null);
   const [message, setMessage] = useState("");
   const [activeTab, setActiveTab] = useState("waiting");
-  const [users, setUsers] = useState<SupportUser[]>([]);
   const [messages, setMessages] = useState<
     {
       id: number;
@@ -47,11 +92,14 @@ const LiveSupportPage = () => {
       sender: "user" | "support";
       timestamp: string;
     }[]
-  >([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSocketConnected, setIsSocketConnected] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
-  const [typingUser, setTypingUser] = useState('');
+  >([
+    { 
+      id: 1, 
+      message: "Merhaba! Size nasıl yardımcı olabilirim?", 
+      sender: "support",
+      timestamp: "14:30"
+    }
+  ]);
 
   // Otomatik scroll fonksiyonu
   const scrollToBottom = () => {
@@ -69,127 +117,9 @@ const LiveSupportPage = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  // Socket.IO bağlantısı ve backend entegrasyonu
-  useEffect(() => {
-    const initializeSupport = async () => {
-      try {
-        setIsLoading(true);
-        
-        // Socket.IO bağlantısını kur
-        if (!socketService.isSocketConnected()) {
-          await socketService.connect();
-        }
-        setIsSocketConnected(true);
-        
-        // Support request'leri getir
-        await fetchSupportRequests();
-        
-        // Support room'lara katıl
-        socketService.joinRoom('support-agents', 'agent');
-        
-      } catch (error) {
-        console.error('Support başlatma hatası:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    initializeSupport();
-
-    // Socket event listeners
-    const handleNewMessage = (socketMessage: SocketMessage) => {
-      console.log('📨 Yeni support mesajı alındı:', socketMessage);
-      
-      if (socketMessage.supportId) {
-        // Eğer bu mesaj şu anda seçili kullanıcıdan geliyorsa UI'a ekle
-        if (selectedUser === socketMessage.supportId) {
-          const newMessage = {
-            id: Date.now(),
-            message: socketMessage.content,
-            sender: (socketMessage.senderId?.includes('agent') ? 'support' : 'user') as "user" | "support",
-            timestamp: new Date().toLocaleTimeString('tr-TR', { 
-              hour: '2-digit', 
-              minute: '2-digit' 
-            })
-          };
-          
-          setMessages(prev => [...prev, newMessage]);
-        }
-        
-        // Support request listesini güncelle (yeni mesaj için)
-        fetchSupportRequests();
-      }
-    };
-
-    const handleTyping = (event: TypingEvent) => {
-      if (event.isTyping) {
-        setIsTyping(true);
-        setTypingUser(event.userId);
-      } else {
-        setIsTyping(false);
-        setTypingUser('');
-      }
-    };
-
-    // Event listener'ları ekle
-    socketService.onNewMessage(handleNewMessage);
-    socketService.onTyping(handleTyping);
-
-    return () => {
-      // Cleanup
-    };
-  }, [selectedUser]);
-
-  // Support request'leri getir
-  const fetchSupportRequests = async () => {
-    try {
-      const response = await supportService.getSupportRequests();
-      console.log('📋 Support request\'leri alındı:', response);
-      
-      if (response.success && response.data && response.data.supports) {
-        const supportUsers: SupportUser[] = response.data.supports.map((request: SupportRequest) => ({
-          id: request.id,
-          name: request.user?.name || 'Anonim Kullanıcı',
-          email: request.user?.email || '',
-          phone: request.user?.phone || '',
-          avatar: (request.user?.name || 'AK').substring(0, 2).toUpperCase(),
-          status: request.status === 'open' ? 'waiting' : 
-                  request.status === 'assigned' ? 'online' : 
-                  request.status === 'resolved' ? 'resolved' : 'away',
-          priority: request.priority || 'medium',
-          lastMessage: request.message || 'Mesaj yok',
-          waitTime: calculateWaitTime(request.createdAt),
-          category: request.category || 'general',
-          supportId: request.id,
-          createdAt: request.createdAt
-        }));
-        
-        setUsers(supportUsers);
-      }
-    } catch (error) {
-      console.error('Support request\'leri getirme hatası:', error);
-      // Fallback veriler
-      setUsers([]);
-    }
-  };
-
-  // Bekleme süresini hesapla
-  const calculateWaitTime = (createdAt: string): string => {
-    const created = new Date(createdAt);
-    const now = new Date();
-    const diffMs = now.getTime() - created.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    
-    if (diffMins < 1) return 'Yeni';
-    if (diffMins < 60) return `${diffMins} dk`;
-    const diffHours = Math.floor(diffMins / 60);
-    return `${diffHours} sa`;
-  };
    
-  const handleSendMessage = async () => {
-    if (message.trim() === "" || !selectedUser) return;
-    
+  const handleSendMessage = () => {
+    if (message.trim() === "") return;
     const newMessage = {
       id: messages.length + 1,
       message: message,
@@ -199,32 +129,8 @@ const LiveSupportPage = () => {
         minute: '2-digit' 
       })
     };
-    
     setMessages([...messages, newMessage]);
-    const currentMessage = message;
     setMessage("");
-
-    // Typing indicator'ı durdur
-    if (isSocketConnected) {
-      socketService.stopTyping(`support:${selectedUser}`, 'agent');
-    }
-
-    try {
-      // Socket.IO ile mesaj gönder (backend'e de gidecek)
-      if (isSocketConnected) {
-        socketService.sendMessage({
-          content: currentMessage,
-          supportId: selectedUser
-        });
-        console.log('✅ Support mesajı socket ile gönderildi');
-      } else {
-        // Socket bağlı değilse HTTP API kullan
-        await supportService.sendSupportMessage(selectedUser, currentMessage);
-        console.log('✅ Support mesajı HTTP API ile gönderildi');
-      }
-    } catch (error) {
-      console.error('Mesaj gönderme hatası:', error);
-    }
   };
 
   const getStatusIcon = (status: string) => {
@@ -275,36 +181,6 @@ const LiveSupportPage = () => {
 
   const selectedUserData = users.find(user => user.id === selectedUser);
 
-  // Kullanıcı seçme fonksiyonu
-  const handleUserSelect = async (userId: string) => {
-    setSelectedUser(userId);
-    setMessages([]); // Mesajları temizle
-    
-    try {
-      // Seçilen kullanıcının mesajlarını getir
-      const response = await supportService.getSupportMessages(userId);
-      if (response.success && response.data) {
-        const supportMessages = response.data.map((msg: SupportMessage) => ({
-          id: parseInt(msg.id),
-          message: msg.content,
-          sender: msg.isAgentMessage ? 'support' : 'user' as const,
-          timestamp: new Date(msg.timestamp).toLocaleTimeString('tr-TR', { 
-            hour: '2-digit', 
-            minute: '2-digit' 
-          })
-        }));
-        setMessages(supportMessages);
-      }
-      
-      // Support room'a katıl
-      if (isSocketConnected) {
-        socketService.joinRoom(`support:${userId}`, 'agent');
-      }
-    } catch (error) {
-      console.error('Mesajları getirme hatası:', error);
-    }
-  };
-
   return (
     <div className="min-h-screen p-2 md:p-4">
       <div className="grid grid-cols-1 lg:grid-cols-12 min-h-screen gap-4">
@@ -318,13 +194,7 @@ const LiveSupportPage = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {isLoading ? (
-                <div className="flex items-center justify-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                  <span className="ml-2 text-sm text-gray-600">Destek talepleri yükleniyor...</span>
-                </div>
-              ) : (
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="waiting" className="flex items-center gap-1">
                     <ClockIcon className="w-3 h-3" />
@@ -351,7 +221,7 @@ const LiveSupportPage = () => {
                             ? "bg-blue-500 hover:bg-blue-600"
                             : ""
                         }`}
-                        onClick={() => handleUserSelect(user.id)}
+                        onClick={() => setSelectedUser(user.id)}
                       >
                         <div className="flex items-start gap-3 w-full">
                           <div className="relative flex-shrink-0">
@@ -396,7 +266,6 @@ const LiveSupportPage = () => {
                   </div>
                 </TabsContent>
               </Tabs>
-              )}
             </CardContent>
           </Card>
         </div>
@@ -488,24 +357,6 @@ const LiveSupportPage = () => {
                         )}
                       </div>
                     ))}
-                    
-                    {/* Typing indicator */}
-                    {isTyping && (
-                      <div className="flex gap-2 justify-start">
-                        <Avatar className="w-8 h-8 flex-shrink-0">
-                          <AvatarImage src="/images/logo3.png" alt="User" />
-                        </Avatar>
-                        <div className="flex flex-col">
-                          <div className="bg-gray-100 text-gray-800 rounded-bl-sm p-3">
-                            <div className="flex items-center gap-1">
-                              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                              <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </CardContent>
 
@@ -516,16 +367,7 @@ const LiveSupportPage = () => {
                       className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[40px] max-h-[120px] resize-none"
                       placeholder="Mesajınızı yazın..."
                       value={message}
-                      onChange={(e) => {
-                        setMessage(e.target.value);
-                        
-                        // Typing indicator gönder
-                        if (e.target.value.length > 0 && selectedUser && isSocketConnected) {
-                          socketService.startTyping(`support:${selectedUser}`, 'agent');
-                        } else if (e.target.value.length === 0 && selectedUser && isSocketConnected) {
-                          socketService.stopTyping(`support:${selectedUser}`, 'agent');
-                        }
-                      }}
+                      onChange={(e) => setMessage(e.target.value)}
                       onKeyPress={(e) => e.key === "Enter" && !e.shiftKey && handleSendMessage()}
                     />
                     <Button

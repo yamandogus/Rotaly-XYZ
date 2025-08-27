@@ -61,7 +61,7 @@ export function SingleDatePicker({
           {displayText}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0 bg-white dark:bg-card border-gray-300 dark:border-gray-700" align="start">
+      <PopoverContent side="bottom" className="w-auto p-0 bg-white dark:bg-card border-gray-300 dark:border-gray-700" align="start" sideOffset={4}>
         <DateRangeCalendar checkIn={checkIn} checkOut={checkOut} onDateRangeChange={handleDateRangeChange} />
       </PopoverContent>
     </Popover>
