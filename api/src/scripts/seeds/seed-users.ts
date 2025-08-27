@@ -20,7 +20,7 @@ const seedUsers: SeedUser[] = [
     surname: "User",
     email: "admin@rotaly.com",
     phone: "+905001234567",
-    password: "pass123",
+    password: "pass1234",
     role: "ADMIN",
     isVerified: true,
   },
@@ -31,7 +31,7 @@ const seedUsers: SeedUser[] = [
     surname: "Smith",
     email: "owner1@rotaly.com",
     phone: "+905001234568",
-    password: "pass123",
+    password: "pass1234",
     role: "OWNER",
     isVerified: true,
   },
@@ -40,7 +40,7 @@ const seedUsers: SeedUser[] = [
     surname: "Johnson",
     email: "owner2@rotaly.com",
     phone: "+905001234569",
-    password: "pass123",
+    password: "pass1234",
     role: "OWNER",
     isVerified: true,
   },
@@ -51,7 +51,7 @@ const seedUsers: SeedUser[] = [
     surname: "Davis",
     email: "user1@rotaly.com",
     phone: "+905001234570",
-    password: "pass123",
+    password: "pass1234",
     role: "CUSTOMER",
     isVerified: true,
   },
@@ -60,7 +60,7 @@ const seedUsers: SeedUser[] = [
     surname: "Wilson",
     email: "user2@rotaly.com",
     phone: "+905001234571",
-    password: "pass123",
+    password: "pass1234",
     role: "CUSTOMER",
     isVerified: true,
   },
@@ -69,7 +69,7 @@ const seedUsers: SeedUser[] = [
     surname: "Brown",
     email: "user3@rotaly.com",
     phone: "+905001234572",
-    password: "pass123",
+    password: "pass1234",
     role: "CUSTOMER",
     isVerified: false, // one unverified user for testing
   },
@@ -80,7 +80,7 @@ const seedUsers: SeedUser[] = [
     surname: "Wilson",
     email: "support1@rotaly.com",
     phone: "+905001234573",
-    password: "pass123",
+    password: "pass1234",
     role: "SUPPORT",
     isVerified: true,
   },
@@ -89,7 +89,7 @@ const seedUsers: SeedUser[] = [
     surname: "Martinez",
     email: "support2@rotaly.com",
     phone: "+905001234574",
-    password: "pass123",
+    password: "pass1234",
     role: "SUPPORT",
     isVerified: true,
   },
@@ -151,7 +151,8 @@ async function seedDatabase() {
 
         await prisma.user.create({
           data: {
-            id: userData.role === "AI" ? "ai-assistant" : undefined,
+            id:
+              userData.role === "AI" ? "ai-assistant-gpt-3.5-turbo" : undefined,
             name: userData.name,
             surname: userData.surname,
             email: userData.email,
@@ -213,7 +214,7 @@ async function seedDatabase() {
       console.log(`  - ${roleGroup.role}: ${roleGroup._count.role} kullanıcı`);
     });
 
-    console.log("\n!!! TÜM KULLANICILARIN ŞİFRESİ : pass123\n");
+    console.log("\n!!! TÜM KULLANICILARIN ŞİFRESİ : pass1234\n");
   } catch (error) {
     console.error("Kullanıcı yerleştirme sırasında hata:", error);
     throw error;

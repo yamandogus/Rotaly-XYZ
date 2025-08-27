@@ -229,8 +229,237 @@ export class EmailService {
   }
 
   /**
-   * TODO: CREATE SEND BOOKING CONFIRMATION EMAIL METHOD
+   * Send payment confirmation email
+   * @param email - receiver email address
+   * @param data - payment confirmation data
+   * @param locale - language locale (en, tr)
+   * @returns Promise<boolean>
    */
+  async sendPaymentConfirmationEmail(
+    email: string,
+    data: {
+      name: string;
+      totalAmount: string;
+      cardLastFour: string;
+      hotelName: string;
+      checkInDate: string;
+      checkInTime: string;
+      checkOutDate: string;
+      checkOutTime: string;
+      guestCount: number;
+      roomType: string;
+      confirmationNumber: string;
+    },
+    locale: string = "en"
+  ): Promise<boolean> {
+    try {
+      const templateName =
+        locale === "tr" ? "tr/payment-confirmation" : "en/payment-confirmation";
+      const subject =
+        locale === "tr"
+          ? "Ödeme Onaylandı - Rotaly XYZ"
+          : "Payment Confirmed - Rotaly XYZ";
+
+      const mailOptions = {
+        from: {
+          name: String(process.env.EMAIL_FROM_NAME),
+          address: "payments@rotaly-xyz.com",
+        },
+        to: email,
+        subject: subject,
+        template: templateName,
+        context: {
+          ...data,
+          year: new Date().getFullYear(),
+          date: new Date().toLocaleString(),
+        },
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log("Payment confirmation email sent successfully");
+      return true;
+    } catch (error) {
+      console.error("Error sending payment confirmation email:", error);
+      return false;
+    }
+  }
+
+  /**
+   * Send booking confirmation email
+   * @param email - receiver email address
+   * @param data - booking confirmation data
+   * @param locale - language locale (en, tr)
+   * @returns Promise<boolean>
+   */
+  async sendBookingConfirmationEmail(
+    email: string,
+    data: {
+      name: string;
+      hotelName: string;
+      hotelAddress: string;
+      hotelPhone?: string;
+      checkInDate: string;
+      checkInTime: string;
+      checkOutDate: string;
+      checkOutTime: string;
+      nightCount: number;
+      guestCount: number;
+      roomType: string;
+      totalAmount: string;
+      confirmationNumber: string;
+      specialRequest?: string;
+    },
+    locale: string = "en"
+  ): Promise<boolean> {
+    try {
+      const templateName =
+        locale === "tr" ? "tr/booking-confirmation" : "en/booking-confirmation";
+      const subject =
+        locale === "tr"
+          ? "Rezervasyon Onaylandı - Rotaly XYZ"
+          : "Booking Confirmed - Rotaly XYZ";
+
+      const mailOptions = {
+        from: {
+          name: String(process.env.EMAIL_FROM_NAME),
+          address: "reservations@rotaly-xyz.com",
+        },
+        to: email,
+        subject: subject,
+        template: templateName,
+        context: {
+          ...data,
+          year: new Date().getFullYear(),
+          date: new Date().toLocaleString(),
+        },
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log("Booking confirmation email sent successfully");
+      return true;
+    } catch (error) {
+      console.error("Error sending booking confirmation email:", error);
+      return false;
+    }
+  }
+
+  /**
+   * Send booking cancellation email
+   * @param email - receiver email address
+   * @param data - booking cancellation data
+   * @param locale - language locale (en, tr)
+   * @returns Promise<boolean>
+   */
+  async sendBookingCancellationEmail(
+    email: string,
+    data: {
+      name: string;
+      hotelName: string;
+      confirmationNumber: string;
+      cancellationDate: string;
+      cancelledBy: string;
+      checkInDate: string;
+      checkOutDate: string;
+      nightCount: number;
+      guestCount: number;
+      roomType: string;
+      originalAmount: string;
+      cancellationFee: string;
+      refundAmount: string;
+      refundProcessingTime: string;
+      cancellationReason?: string;
+    },
+    locale: string = "en"
+  ): Promise<boolean> {
+    try {
+      const templateName =
+        locale === "tr" ? "tr/booking-cancellation" : "en/booking-cancellation";
+      const subject =
+        locale === "tr"
+          ? "Rezervasyon İptal Edildi - Rotaly XYZ"
+          : "Booking Cancelled - Rotaly XYZ";
+
+      const mailOptions = {
+        from: {
+          name: String(process.env.EMAIL_FROM_NAME),
+          address: "reservations@rotaly-xyz.com",
+        },
+        to: email,
+        subject: subject,
+        template: templateName,
+        context: {
+          ...data,
+          year: new Date().getFullYear(),
+          date: new Date().toLocaleString(),
+        },
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log("Booking cancellation email sent successfully");
+      return true;
+    } catch (error) {
+      console.error("Error sending booking cancellation email:", error);
+      return false;
+    }
+  }
+
+  /**
+   * Send check-in reminder email
+   * @param email - receiver email address
+   * @param data - check-in reminder data
+   * @param locale - language locale (en, tr)
+   * @returns Promise<boolean>
+   */
+  async sendCheckInReminderEmail(
+    email: string,
+    data: {
+      name: string;
+      hotelName: string;
+      hotelAddress: string;
+      hotelPhone?: string;
+      checkInDate: string;
+      checkInTime: string;
+      roomType: string;
+      confirmationNumber: string;
+      additionalGuests?: boolean;
+      parkingInfo?: string;
+      transportationInfo?: string;
+      mapsLink?: string;
+      specialRequest?: string;
+    },
+    locale: string = "en"
+  ): Promise<boolean> {
+    try {
+      const templateName =
+        locale === "tr" ? "tr/check-in-reminder" : "en/check-in-reminder";
+      const subject =
+        locale === "tr"
+          ? "Check-in Hatırlatması - Rotaly XYZ"
+          : "Check-in Reminder - Rotaly XYZ";
+
+      const mailOptions = {
+        from: {
+          name: String(process.env.EMAIL_FROM_NAME),
+          address: "reservations@rotaly-xyz.com",
+        },
+        to: email,
+        subject: subject,
+        template: templateName,
+        context: {
+          ...data,
+          year: new Date().getFullYear(),
+          date: new Date().toLocaleString(),
+        },
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log("Check-in reminder email sent successfully");
+      return true;
+    } catch (error) {
+      console.error("Error sending check-in reminder email:", error);
+      return false;
+    }
+  }
 }
 
 export const emailService = new EmailService();
