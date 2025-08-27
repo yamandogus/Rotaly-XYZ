@@ -8,7 +8,6 @@
     "removeComments": true,
     "resolveJsonModule": true,
     "typeRoots": ["./node_modules/@types"],
-    "types": ["node"],
     "noImplicitAny": false,
     "sourceMap": false,
     "outDir": "dist",
