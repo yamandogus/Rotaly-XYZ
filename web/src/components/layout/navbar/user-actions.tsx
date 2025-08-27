@@ -14,9 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Settings } from "lucide-react";
 import { User } from "lucide-react";
-import { MessageCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Notification from "../../notifications/page";
 import { RootState } from "@/store/store";
@@ -136,7 +134,7 @@ const UserActions = () => {
                   <DropdownMenuItem asChild>
                     <Link href="/hotel">
                       <User className="mr-2 h-4 w-4" />
-                      Oteller için ROTALY
+                      {t("Hotels Add")}
                     </Link>
                   </DropdownMenuItem>
                 </>

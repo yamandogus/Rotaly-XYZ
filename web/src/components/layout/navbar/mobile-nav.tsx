@@ -11,7 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Link } from "@/i18n/routing";
-import { Hotel, Menu, MessageCircle, Settings, User } from "lucide-react";
+import { Hotel, Menu, Settings, User } from "lucide-react";
 import React from "react";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -65,14 +65,6 @@ const MobileNav = () => {
                 <Button variant="outline" className="w-full">
                   <Hotel className="h-5 w-5" />
                   {t("Hotels Add")}
-                </Button>
-              </Link>
-            </SheetClose>
-            <SheetClose asChild>
-              <Link href="/support">
-                <Button variant="outline" className="w-full">
-                  <MessageCircle className="h-5 w-5" />
-                  {t("live-chat")}
                 </Button>
               </Link>
             </SheetClose>
