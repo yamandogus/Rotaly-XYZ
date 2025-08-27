@@ -1,0 +1,111 @@
+{{> header title="Booking Confirmed"}}
+
+      <h1 class="title welcome">🎉 Booking Confirmed!</h1>
+
+      <div class="greeting">Hello <span class="highlight">{{name}}</span>,</div>
+
+      <div class="content">
+        <p>
+          Wonderful! Your booking has been confirmed and we're excited to welcome you to <strong>{{hotelName}}</strong>.
+        </p>
+
+        <p>
+          This email contains all the important details about your upcoming stay. Please save this confirmation for your records.
+        </p>
+      </div>
+
+      <div class="otp-container welcome">
+        <div class="otp-label">Your Confirmation Number</div>
+        <div class="otp-code welcome">{{confirmationNumber}}</div>
+        <div style="color: #666; font-size: 14px;">Please present this number at check-in</div>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">🏨 Hotel Information:</h3>
+        
+        <div class="support-details">
+          <div class="detail-row">
+            <span class="detail-label">Hotel:</span>
+            <span class="detail-value">{{hotelName}}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Address:</span>
+            <span class="detail-value">{{hotelAddress}}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Phone:</span>
+            <span class="detail-value">{{hotelPhone}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">📅 Stay Details:</h3>
+        
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-title">📅 Check-in</div>
+            <div class="feature-description">{{checkInDate}}<br>After {{checkInTime}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">📅 Check-out</div>
+            <div class="feature-description">{{checkOutDate}}<br>Before {{checkOutTime}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">🌙 Duration</div>
+            <div class="feature-description">{{nightCount}} night(s)</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">👥 Guests</div>
+            <div class="feature-description">{{guestCount}} guest(s)</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">🛏️ Room</div>
+            <div class="feature-description">{{roomType}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">💰 Total Amount</div>
+            <div class="feature-description">${{totalAmount}}</div>
+          </div>
+        </div>
+      </div>
+
+      {{#if specialRequest}}
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">📝 Special Requests:</h3>
+        <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+          {{specialRequest}}
+        </div>
+      </div>
+      {{/if}}
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">ℹ️ Important Information:</h3>
+        <p>
+          • <strong>Check-in:</strong> Please bring a valid ID and your confirmation number<br>
+          • <strong>Cancellation:</strong> Free cancellation up to 24 hours before check-in<br>
+          • <strong>Late Arrival:</strong> Please inform the hotel if you'll arrive after 10 PM<br>
+          • <strong>Early Check-in:</strong> Subject to availability, additional charges may apply
+        </p>
+      </div>
+
+      <div class="content">
+        <p>
+          Need to modify or cancel your booking? Visit our website or contact us at 
+          <a href="mailto:reservations@rotaly-xyz.com">reservations@rotaly-xyz.com</a>
+        </p>
+
+        <p>
+          We look forward to welcoming you soon!<br />
+          <strong>The Rotaly XYZ Team</strong>
+        </p>
+      </div>
+
+{{> footer footerMessage="This is your booking confirmation. Please keep this email for your records and present the confirmation number at check-in."}}

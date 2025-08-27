@@ -1,0 +1,111 @@
+{{> header title="Rezervasyon Onaylandı"}}
+
+      <h1 class="title welcome">🎉 Rezervasyonunuz Onaylandı!</h1>
+
+      <div class="greeting">Merhaba <span class="highlight">{{name}}</span>,</div>
+
+      <div class="content">
+        <p>
+          Harika! Rezervasyonunuz onaylandı ve sizi <strong>{{hotelName}}</strong>'de ağırlamaktan mutluluk duyuyoruz.
+        </p>
+
+        <p>
+          Bu e-posta gelecek konaklamanızla ilgili tüm önemli detayları içermektedir. Lütfen bu onayı kayıtlarınız için saklayın.
+        </p>
+      </div>
+
+      <div class="otp-container welcome">
+        <div class="otp-label">Onay Numaranız</div>
+        <div class="otp-code welcome">{{confirmationNumber}}</div>
+        <div style="color: #666; font-size: 14px;">Lütfen check-in sırasında bu numarayı gösterin</div>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">🏨 Otel Bilgileri:</h3>
+        
+        <div class="support-details">
+          <div class="detail-row">
+            <span class="detail-label">Otel:</span>
+            <span class="detail-value">{{hotelName}}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Adres:</span>
+            <span class="detail-value">{{hotelAddress}}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Telefon:</span>
+            <span class="detail-value">{{hotelPhone}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">📅 Konaklama Detayları:</h3>
+        
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-title">📅 Giriş</div>
+            <div class="feature-description">{{checkInDate}}<br>{{checkInTime}} sonrası</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">📅 Çıkış</div>
+            <div class="feature-description">{{checkOutDate}}<br>{{checkOutTime}} öncesi</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">🌙 Süre</div>
+            <div class="feature-description">{{nightCount}} gece</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">👥 Misafir</div>
+            <div class="feature-description">{{guestCount}} misafir</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">🛏️ Oda</div>
+            <div class="feature-description">{{roomType}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">💰 Toplam Tutar</div>
+            <div class="feature-description">{{totalAmount}} TL</div>
+          </div>
+        </div>
+      </div>
+
+      {{#if specialRequest}}
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">📝 Özel İstekler:</h3>
+        <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+          {{specialRequest}}
+        </div>
+      </div>
+      {{/if}}
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">ℹ️ Önemli Bilgiler:</h3>
+        <p>
+          • <strong>Check-in:</strong> Lütfen geçerli kimlik ve onay numaranızı getirin<br>
+          • <strong>İptal:</strong> Check-in'den 24 saat öncesine kadar ücretsiz iptal<br>
+          • <strong>Geç Varış:</strong> 22:00'den sonra gelecekseniz lütfen oteli bilgilendirin<br>
+          • <strong>Erken Check-in:</strong> Müsaitlik durumuna göre, ek ücret uygulanabilir
+        </p>
+      </div>
+
+      <div class="content">
+        <p>
+          Rezervasyonunuzu değiştirmek veya iptal etmek mi istiyorsunuz? Web sitemizi ziyaret edin veya 
+          <a href="mailto:reservations@rotaly-xyz.com">reservations@rotaly-xyz.com</a> adresinden bizimle iletişime geçin.
+        </p>
+
+        <p>
+          Sizi yakında ağırlamayı sabırsızlıkla bekliyoruz!<br />
+          <strong>Rotaly XYZ Ekibi</strong>
+        </p>
+      </div>
+
+{{> footer footerMessage="Bu rezervasyon onayınızdır. Lütfen kayıtlarınız için bu e-postayı saklayın ve check-in sırasında onay numarasını gösterin."}}
