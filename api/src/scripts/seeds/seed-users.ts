@@ -151,7 +151,8 @@ async function seedDatabase() {
 
         await prisma.user.create({
           data: {
-            id: userData.role === "AI" ? "ai-assistant" : undefined,
+            id:
+              userData.role === "AI" ? "ai-assistant-gpt-3.5-turbo" : undefined,
             name: userData.name,
             surname: userData.surname,
             email: userData.email,
