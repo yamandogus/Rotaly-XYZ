@@ -4,7 +4,6 @@ import {
   getHotelById,
   deleteHotel,
   updateHotel,
-
 } from "./service";
 import {
   CreateHotelSchema,
@@ -21,30 +20,7 @@ interface AuthenticatedRequest extends Request {
   user?: TokenPayload;
 }
 
-// Yorum ekleme için basit schema
-const CreateCommentSchema = {
-  rating: (value: any) => {
-    const num = Number(value);
-    if (isNaN(num) || num < 1 || num > 5) {
-      throw new Error("Rating 1-5 arasında olmalıdır");
-    }
-    return num;
-  },
-  text: (value: any) => value || undefined,
-};
 
-// Yorum güncelleme için basit schema
-const UpdateCommentSchema = {
-  rating: (value: any) => {
-    if (value === undefined) return undefined;
-    const num = Number(value);
-    if (isNaN(num) || num < 1 || num > 5) {
-      throw new Error("Rating 1-5 arasında olmalıdır");
-    }
-    return num;
-  },
-  text: (value: any) => value || undefined,
-};
 
 export async function createHotelHandler(req: Request, res: Response) {
   try {
@@ -178,10 +154,19 @@ export async function deleteHotelHandler(
       }
     }
 
-    await deleteHotel(id);
-    return res.status(204).send();
+    const result = await deleteHotel(id);
+    return res.status(200).json(result);
   } catch (err) {
-    console.error(err);
+    console.error("Delete Hotel Error:", err);
+    
+    // Hata tipine göre farklı mesajlar
+    if (err instanceof Error) {
+      if (err.message.includes("bulunamadı")) {
+        return res.status(404).json({ message: err.message });
+      }
+      return res.status(400).json({ message: err.message });
+    }
+    
     return res.status(500).json({ message: "Sunucu hatası" });
   }
 }

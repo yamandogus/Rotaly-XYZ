@@ -86,7 +86,7 @@ async function seedPaymentCardsForUser(userId: string) {
 
 async function seedPaymentCardsForSpecificUser() {
   try {
-    const userId = "32c5ac15-f0a5-4ffe-bd12-29bde046b69a";
+    const userId = "a57dc318-76d7-4252-a351-8cf08d927a6f";
     
     // Kullanıcıyı kontrol et
     const user = await prisma.user.findUnique({
