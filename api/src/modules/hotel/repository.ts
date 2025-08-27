@@ -3,11 +3,31 @@ import Prisma from "../../config/db";
 
 export const HotelRepository = {
   async createHotel(data: CreateHotelInput & { ownerId: string }) {
-    return await Prisma.hotel.create({
+    const hotel = await Prisma.hotel.create({
       data: {
-        ...data,
+        name: data.name,
+        description: data.description,
+        location: data.location,
+        address: data.address,
+        city: data.city,
+        country: data.country,
+        type: data.type,
+        discountRate: data.discountRate,
+        ownerId: data.ownerId,
       },
     });
+
+    // Features'ları ayrı olarak ekle
+    if (data.features && data.features.length > 0) {
+      await Prisma.hotelProps.createMany({
+        data: data.features.map(feature => ({
+          hotelId: hotel.id,
+          feature: feature,
+        })),
+      });
+    }
+
+    return hotel;
   },
 
   async getHotelById(hotelId: string) {
