@@ -21,7 +21,7 @@ export class SupportRepository {
           create: {
             content: data.body,
             senderId: userId,
-            receiverId: supportRep?.id || userId, // if no support rep, set as self for now
+            receiverId: supportRep?.id,
           },
         },
       },

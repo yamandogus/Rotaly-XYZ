@@ -31,7 +31,7 @@ export class SupportController {
     this.supportService = new SupportService(prisma, aiService);
   }
 
-  // Create new support request
+  // create new support request
   createSupportRequest = async (
     req: Request,
     res: Response,

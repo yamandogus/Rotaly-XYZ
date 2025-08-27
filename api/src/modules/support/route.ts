@@ -8,7 +8,7 @@ const router = Router();
 const prisma = new PrismaClient();
 const supportController = new SupportController(prisma);
 
-// Public endpoint - AI status check (no auth required)
+// public endpoint - AI status check (no auth required)
 router.get("/ai-status", supportController.isAIServiceAvailable);
 
 // apply auth middleware and email verification to protected routes
