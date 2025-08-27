@@ -1,161 +1,184 @@
 import { PrismaClient } from "@prisma/client";
+import { v4 as uuidv4 } from 'uuid';
+import * as fs from 'fs/promises';
 
 const prisma = new PrismaClient();
 
-// Payment Card seed fonksiyonları
-async function seedPaymentCardsForUser(userId: string) {
-  const seedPaymentCards = [
-    {
-      cardNumber: "4111111111111111",
-      cardHolderName: "Ahmet Yılmaz",
-      expiryDate: "12/25",
-      cvv: "123",
-      brand: "Visa",
-      last4: "1111"
-    },
-    {
-      cardNumber: "5555555555554444",
-      cardHolderName: "Ahmet Yılmaz",
-      expiryDate: "12/26",
-      cvv: "123",
-      brand: "Mastercard",
-      last4: "4444"
-    },
-    {
-      cardNumber: "378282246310005",
-      cardHolderName: "Ahmet Yılmaz",
-      expiryDate: "12/27",
-      cvv: "1234",
-      brand: "American Express",
-      last4: "0005"
-    },
-    {
-      cardNumber: "4000056655665556",
-      cardHolderName: "Ahmet Yılmaz",
-      expiryDate: "12/28",
-      cvv: "123",
-      brand: "Visa",
-      last4: "5556"
-    },
-    {
-      cardNumber: "5105105105105100",
-      cardHolderName: "Ahmet Yılmaz",
-      expiryDate: "12/29",
-      cvv: "123",
-      brand: "Mastercard",
-      last4: "5100"
-    }
-  ];
+// This is a placeholder for the actual hotel data.
+// The hotelsData.json file is too large to be directly embedded or fully read by the tool in one go.
+// Please provide a smaller sample of hotelsData.json or specify how you'd like to handle the large file (e.g., process a limited number of entries, or a different access method).
+// const hotelsData = []; // Will be populated dynamically or with a smaller subset.
 
-  console.log(`\n💳 ${userId} kullanıcısı için ${seedPaymentCards.length} kredi kartı oluşturuluyor...`);
-  
-  let successCount = 0;
-  let errorCount = 0;
+async function seedHotels() {
+  console.log("\n🏨 Otel seed işlemi başlatılıyor...");
 
-  for (const cardData of seedPaymentCards) {
-    try {
-      // Kart bilgilerini tokenize et (gerçek uygulamada güvenli şekilde yapılır)
-      const token = `tok_${Math.random().toString(36).substr(2, 9)}_${cardData.last4}`;
-      
-      // Son kullanma tarihini Date objesine çevir
-      const [month, year] = cardData.expiryDate.split('/');
-      const expiresAt = new Date(2000 + parseInt(year), parseInt(month) - 1, 1);
+  const ownerId = "43ccd9c0-d5bb-4495-88fe-28690542415c"; // Replace with an actual owner ID from your database or create one
 
-      const paymentCard = await prisma.paymentCard.create({
-        data: {
-          token: token,
-          brand: cardData.brand,
-          last4: cardData.last4,
-          expiresAt: expiresAt,
-          userId: userId
-        },
-      });
-
-      console.log(`  ✅ Kredi kartı oluşturuldu: ${cardData.brand} ****${cardData.last4} - ${paymentCard.id}`);
-      successCount++;
-      
-    } catch (error) {
-      console.error(`  ❌ Kredi kartı oluşturulurken hata: ${cardData.brand} ****${cardData.last4}:`, error);
-      errorCount++;
-    }
-  }
-
-  console.log(`  📊 Sonuç: ${successCount} başarılı, ${errorCount} hata`);
-  return { successCount, errorCount };
-}
-
-async function seedPaymentCardsForSpecificUser() {
   try {
-    const userId = "32c5ac15-f0a5-4ffe-bd12-29bde046b69a";
-    
-    // Kullanıcıyı kontrol et
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { id: true, name: true, surname: true, email: true }
-    });
+    // Clear existing data to prevent duplicates during re-seeding
+    console.log("🧹 Mevcut otel verileri temizleniyor...");
+    await prisma.comment.deleteMany({});
+    await prisma.roomFeatureStatus.deleteMany({});
+    await prisma.room.deleteMany({});
+    await prisma.hotelProps.deleteMany({});
+    await prisma.image.deleteMany({});
+    await prisma.hotel.deleteMany({});
+    console.log("✅ Mevcut otel verileri temizlendi.");
 
-    if (!user) {
-      console.log("❌ Kullanıcı bulunamadı:", userId);
-      return;
+    console.log("⏳ hotelsData.json okunuyor...");
+    const data = await fs.readFile('../web/src/data/hotelsData.json', 'utf-8');
+    const hotelsData = JSON.parse(data);
+    console.log(`✅ ${hotelsData.length} otel verisi okundu.`);
+
+    let hotelSuccessCount = 0;
+    let roomSuccessCount = 0;
+    let imageSuccessCount = 0;
+    let propSuccessCount = 0;
+    let commentSuccessCount = 0;
+    let errorCount = 0;
+
+    for (const hotelData of hotelsData) {
+      try {
+        // Create Hotel
+        const hotel = await prisma.hotel.create({
+          data: {
+            id: hotelData.id,
+            name: hotelData.name,
+            description: hotelData.description,
+            checkIn: hotelData.checkIn,
+            checkOut: hotelData.checkOut,
+            location: hotelData.location,
+            address: hotelData.address,
+            city: hotelData.city,
+            country: hotelData.country,
+            rating: hotelData.rating,
+            discountRate: hotelData.discountRate,
+            isDiscounted: hotelData.isDiscounted,
+            discountStartDate: hotelData.discountStartDate ? new Date(hotelData.discountStartDate) : null,
+            discountEndDate: hotelData.discountEndDate ? new Date(hotelData.discountEndDate) : null,
+            type: hotelData.type,
+            ownerId: ownerId, // Assign to the predefined owner
+            isActive: hotelData.isActive,
+            createdAt: new Date(hotelData.createdAt),
+            updatedAt: new Date(hotelData.updatedAt),
+            deletedAt: hotelData.deletedAt ? new Date(hotelData.deletedAt) : null,
+            taxId: hotelData.taxId,
+            taxOffice: hotelData.taxOffice,
+            tradeRegistryNumber: String(hotelData.tradeRegistryNumber), // Ensure it's a string
+            businessLicense: hotelData.businessLicense,
+            addressProof: hotelData.addressProof,
+            taxCertificate: hotelData.taxCertificate,
+          },
+        });
+        console.log(`  ✅ Otel oluşturuldu: ${hotel.name} (${hotel.id})`);
+        hotelSuccessCount++;
+
+        // Create Rooms
+        for (const roomData of hotelData.rooms) {
+          const room = await prisma.room.create({
+            data: {
+              id: roomData.id,
+              name: roomData.name,
+              description: roomData.description,
+              price: roomData.price,
+              maxAdults: roomData.maxAdults,
+              maxChildren: roomData.maxChildren,
+              floor: roomData.floor,
+              roomNumber: roomData.roomNumber,
+              capacity: roomData.capacity,
+              bedCount: roomData.bedCount,
+              isAvailable: roomData.isAvailable,
+              type: roomData.type,
+              hotelId: hotel.id,
+              createdAt: new Date(roomData.createdAt),
+              updatedAt: new Date(roomData.updatedAt),
+              deletedAt: roomData.deletedAt ? new Date(roomData.deletedAt) : null,
+              featureStatus: {
+                create: roomData.featureStatus.map((fs: any) => ({
+                  id: fs.id,
+                  feature: fs.feature,
+                  isAvailable: fs.isAvailable,
+                  deletedAt: fs.deletedAt ? new Date(fs.deletedAt) : null,
+                })),
+              },
+            },
+            include: {
+              featureStatus: true,
+            },
+          });
+          console.log(`    ✅ Oda oluşturuldu: ${room.name} (${room.id})`);
+          roomSuccessCount++;
+        }
+
+        // Create Images
+        for (const imageData of hotelData.images) {
+          const image = await prisma.image.create({
+            data: {
+              id: imageData.id,
+              url: imageData.url,
+              hotelId: hotel.id,
+              createdAt: new Date(imageData.createdAt),
+              deletedAt: imageData.deletedAt ? new Date(imageData.deletedAt) : null,
+            },
+          });
+          console.log(`    🖼️ Resim oluşturuldu: ${image.url}`);
+          imageSuccessCount++;
+        }
+
+        // Create Properties
+        for (const propData of hotelData.props) {
+          const property = await prisma.hotelProps.create({
+            data: {
+              id: propData.id,
+              hotelId: hotel.id,
+              feature: propData.feature,
+              createdAt: new Date(propData.createdAt),
+            },
+          });
+          console.log(`    ✨ Özellik oluşturuldu: ${property.feature}`);
+          propSuccessCount++;
+        }
+
+        // Create Comments
+        for (const commentData of hotelData.comments) {
+          const comment = await prisma.comment.create({
+            data: {
+              id: commentData.id || uuidv4(),
+              rating: commentData.rating,
+              text: commentData.text,
+              userId: commentData.userId,
+              hotelId: hotel.id,
+              createdAt: new Date(), // Assuming comments are newly created
+              updatedAt: new Date(),
+            },
+          });
+          console.log(`    💬 Yorum oluşturuldu: ${comment.id}`);
+          commentSuccessCount++;
+        }
+
+      } catch (hotelError) {
+        console.error(`  ❌ Otel oluşturulurken hata: ${hotelData.name}:`, hotelError);
+        errorCount++;
+      }
     }
 
-    console.log(`👤 Kullanıcı: ${user.name} ${user.surname} (${user.email})`);
+    console.log(`
+🎉 Otel seed işlemi tamamlandı!`);
+    console.log(`📊 Sonuç: ${hotelSuccessCount} otel, ${roomSuccessCount} oda, ${imageSuccessCount} resim, ${propSuccessCount} özellik, ${commentSuccessCount} yorum başarılı. Toplam ${errorCount} hata.`);
 
-    // Kullanıcı için payment card oluştur
-    const result = await seedPaymentCardsForUser(userId);
-
-    // İstatistikler
-    await printPaymentCardStatistics(userId);
-
-    console.log(`\n🎉 Payment Card seed işlemi tamamlandı!`);
-    console.log(`📊 Toplam: ${result.successCount} başarılı, ${result.errorCount} hata`);
-
-  } catch (error) {
-    console.error("❌ Payment Card seed işlemi sırasında hata oluştu:", error);
-    throw error;
+  } catch (globalError) {
+    console.error("❌ Otel seed işlemi sırasında genel bir hata oluştu:", globalError);
+    throw globalError;
   } finally {
     await prisma.$disconnect();
   }
 }
 
-async function printPaymentCardStatistics(userId: string) {
-  const totalCards = await prisma.paymentCard.count({
-    where: { userId: userId }
-  });
-
-  const cardBrands = await prisma.paymentCard.groupBy({
-    by: ["brand"],
-    where: { userId: userId },
-    _count: {
-      brand: true
-    }
-  });
-
-  const expiryStats = await prisma.paymentCard.aggregate({
-    where: { userId: userId },
-    _count: {
-      id: true
-    },
-    _min: {
-      expiresAt: true
-    }
-  });
-
-  console.log("\n📊 Payment Card İstatistikleri:");
-  console.log(`Toplam kart sayısı: ${totalCards}`);
-  console.log(`En yakın son kullanma tarihi: ${expiryStats._min.expiresAt?.toLocaleDateString('tr-TR')}`);
-
-  console.log("\nKart markaları:");
-  cardBrands.forEach(brand => {
-    console.log(`  - ${brand.brand}: ${brand._count.brand} kart`);
-  });
-}
-
 if (require.main === module) {
-  seedPaymentCardsForSpecificUser().catch((error) => {
-    console.error("Payment Card seed işlemi başarısız oldu:", error);
+  seedHotels().catch((error) => {
+    console.error("Otel seed işlemi başarısız oldu:", error);
     process.exit(1);
   });
 }
 
-export { seedPaymentCardsForSpecificUser };
+export { seedHotels };
