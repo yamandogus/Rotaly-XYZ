@@ -1,0 +1,79 @@
+{{> header title="Payment Confirmed"}}
+
+      <h1 class="title welcome">✅ Payment Confirmed Successfully!</h1>
+
+      <div class="greeting">Hello <span class="highlight">{{name}}</span>,</div>
+
+      <div class="content">
+        <p>
+          Great news! Your payment has been successfully processed and your reservation is now confirmed.
+        </p>
+
+        <p>
+          We're excited to have you as our guest and look forward to providing you with an exceptional experience.
+        </p>
+      </div>
+
+      <div class="welcome-notice">
+        <strong>💳 Payment Details</strong><br>
+        Your payment of <strong>${{totalAmount}}</strong> has been successfully charged to your payment method ending in ****{{cardLastFour}}.
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">📋 Reservation Summary:</h3>
+        
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-title">🏨 Hotel</div>
+            <div class="feature-description">{{hotelName}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">📅 Check-in</div>
+            <div class="feature-description">{{checkInDate}} at {{checkInTime}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">📅 Check-out</div>
+            <div class="feature-description">{{checkOutDate}} at {{checkOutTime}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">👥 Guests</div>
+            <div class="feature-description">{{guestCount}} guest(s)</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">🛏️ Room Type</div>
+            <div class="feature-description">{{roomType}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">📧 Confirmation Number</div>
+            <div class="feature-description">{{confirmationNumber}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">🎯 What's Next?</h3>
+        <p>
+          • You'll receive a separate email with detailed check-in instructions<br>
+          • Present your confirmation number at the hotel front desk<br>
+          • Enjoy your stay and feel free to contact us if you need assistance
+        </p>
+      </div>
+
+      <div class="content">
+        <p>
+          If you have any questions about your reservation, please don't hesitate to contact us at 
+          <a href="mailto:support@rotaly-xyz.com">support@rotaly-xyz.com</a> or reference your confirmation number {{confirmationNumber}}.
+        </p>
+
+        <p>
+          Thank you for choosing Rotaly XYZ!<br />
+          <strong>The Rotaly XYZ Team</strong>
+        </p>
+      </div>
+
+{{> footer footerMessage="This is an automated payment confirmation. Please keep this email for your records."}}

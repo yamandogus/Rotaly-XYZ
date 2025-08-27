@@ -1,0 +1,109 @@
+{{> header title="Check-in Hatırlatması"}}
+
+      <h1 class="title welcome">🏨 Konaklamanız Yarın Başlıyor!</h1>
+
+      <div class="greeting">Merhaba <span class="highlight">{{name}}</span>,</div>
+
+      <div class="content">
+        <p>
+          Yarın sizi <strong>{{hotelName}}</strong>'de ağırlamaktan mutluluk duyuyoruz! Bu e-posta sorunsuz bir check-in deneyimi sağlamak için önemli bilgiler içermektedir.
+        </p>
+
+        <p>
+          Lütfen aşağıdaki detayları inceleyin ve herhangi bir yardıma ihtiyacınız olursa bizimle iletişime geçin.
+        </p>
+      </div>
+
+      <div class="otp-container welcome">
+        <div class="otp-label">Onay Numaranız</div>
+        <div class="otp-code welcome">{{confirmationNumber}}</div>
+        <div style="color: #666; font-size: 14px;">Check-in sırasında hazır bulundurun</div>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">📅 Yarınki Check-in Detayları:</h3>
+        
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-title">🏨 Otel</div>
+            <div class="feature-description">{{hotelName}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">📍 Adres</div>
+            <div class="feature-description">{{hotelAddress}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">📅 Giriş Tarihi</div>
+            <div class="feature-description">{{checkInDate}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">⏰ Giriş Saati</div>
+            <div class="feature-description">{{checkInTime}} sonrası</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">🛏️ Oda Tipi</div>
+            <div class="feature-description">{{roomType}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">📞 Otel Telefonu</div>
+            <div class="feature-description">{{hotelPhone}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">📋 Check-in Kontrol Listesi:</h3>
+        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #28a745;">
+          ✅ <strong>Geçerli Fotoğraflı Kimlik</strong> (pasaport, ehliyet veya nüfus cüzdanı)<br>
+          ✅ <strong>Onay Numarası:</strong> {{confirmationNumber}}<br>
+          ✅ <strong>Ödeme Yöntemi</strong> (ek hizmetler ve güvenlik depozitosu için)<br>
+          {{#if additionalGuests}}✅ <strong>Misafir Bilgileri</strong> ek yolcular için{{/if}}
+        </div>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">🚗 Oraya Nasıl Gidilir:</h3>
+        <p>
+          <strong>Adres:</strong> {{hotelAddress}}<br>
+          {{#if parkingInfo}}<strong>Park:</strong> {{parkingInfo}}<br>{{/if}}
+          {{#if transportationInfo}}<strong>Ulaşım:</strong> {{transportationInfo}}<br>{{/if}}
+          <strong>Yol Tarifi Gerekiyor mu?</strong> <a href="{{mapsLink}}" target="_blank">Haritada Görüntüle</a>
+        </p>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">💡 Faydalı İpuçları:</h3>
+        <p>
+          • <strong>Erken Varış:</strong> {{checkInTime}} öncesi gelirseniz, bagaj saklama hizmeti mevcut olabilir<br>
+          • <strong>Geç Varış:</strong> 22:00 sonrası gelecekseniz lütfen oteli bilgilendirin<br>
+          • <strong>Özel İstekler:</strong> {{#if specialRequest}}İsteğiniz: "{{specialRequest}}"{{else}}Özel düzenlemeler için doğrudan otelle iletişime geçin{{/if}}<br>
+          • <strong>Mobil Check-in:</strong> Bazı oteller uygulamaları üzerinden mobil check-in sunar
+        </p>
+      </div>
+
+      <div class="welcome-notice">
+        <strong>🎯 Önemli Hatırlatmalar</strong><br>
+        • Check-in {{checkInTime}} saatinde başlar<br>
+        • Onay numaranızı ve kimliğinizi hazır bulundurun<br>
+        • Özel istekler için doğrudan otelle iletişime geçin<br>
+        • Konaklamanızın tadını çıkarın!
+      </div>
+
+      <div class="content">
+        <p>
+          Gelişinizi sabırsızlıkla bekliyoruz! Sorularınız varsa veya rezervasyonunuzda değişiklik yapmanız gerekiyorsa, 
+          lütfen <a href="mailto:support@rotaly-xyz.com">support@rotaly-xyz.com</a> adresinden bizimle iletişime geçin veya {{hotelPhone}} numarasından oteli doğrudan arayın.
+        </p>
+
+        <p>
+          Harika bir konaklama geçirin!<br />
+          <strong>Rotaly XYZ Ekibi</strong>
+        </p>
+      </div>
+
+{{> footer footerMessage="Bu otomatik bir check-in hatırlatmasıdır. Bizimle harika bir konaklama geçirin!"}}

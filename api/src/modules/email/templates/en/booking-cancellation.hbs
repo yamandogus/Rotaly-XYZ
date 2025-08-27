@@ -1,0 +1,122 @@
+{{> header title="Booking Cancelled"}}
+
+      <h1 class="title reset">❌ Booking Cancelled</h1>
+
+      <div class="greeting">Hello <span class="highlight">{{name}}</span>,</div>
+
+      <div class="content">
+        <p>
+          We're sorry to see you go. Your booking at <strong>{{hotelName}}</strong> has been successfully cancelled as requested.
+        </p>
+
+        <p>
+          This email confirms the cancellation of your reservation and provides information about any applicable refunds.
+        </p>
+      </div>
+
+      <div class="security-notice">
+        <strong>📋 Cancelled Reservation Details</strong><br>
+        Confirmation Number: <strong>{{confirmationNumber}}</strong><br>
+        Cancellation Date: <strong>{{cancellationDate}}</strong><br>
+        Cancelled by: <strong>{{cancelledBy}}</strong>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">🏨 Original Booking Details:</h3>
+        
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-title">🏨 Hotel</div>
+            <div class="feature-description">{{hotelName}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">📅 Check-in</div>
+            <div class="feature-description">{{checkInDate}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">📅 Check-out</div>
+            <div class="feature-description">{{checkOutDate}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">🌙 Duration</div>
+            <div class="feature-description">{{nightCount}} night(s)</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">👥 Guests</div>
+            <div class="feature-description">{{guestCount}} guest(s)</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">🛏️ Room</div>
+            <div class="feature-description">{{roomType}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">💰 Refund Information:</h3>
+        
+        <div class="support-details">
+          <div class="detail-row">
+            <span class="detail-label">Original Amount:</span>
+            <span class="detail-value">${{originalAmount}}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Cancellation Fee:</span>
+            <span class="detail-value">${{cancellationFee}}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Refund Amount:</span>
+            <span class="detail-value"><strong>${{refundAmount}}</strong></span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Refund Method:</span>
+            <span class="detail-value">Original payment method</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Processing Time:</span>
+            <span class="detail-value">{{refundProcessingTime}}</span>
+          </div>
+        </div>
+      </div>
+
+      {{#if cancellationReason}}
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">📝 Cancellation Reason:</h3>
+        <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #e74c3c;">
+          {{cancellationReason}}
+        </div>
+      </div>
+      {{/if}}
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">🔄 What's Next?</h3>
+        <p>
+          • Your refund will be processed within {{refundProcessingTime}}<br>
+          • You'll receive an email confirmation once the refund is completed<br>
+          • The refund will appear on your original payment method<br>
+          • Check our website for alternative accommodations if needed
+        </p>
+      </div>
+
+      <div class="content">
+        <p>
+          We hope to serve you again in the future. If you have any questions about this cancellation or need assistance with a new booking, 
+          please contact us at <a href="mailto:support@rotaly-xyz.com">support@rotaly-xyz.com</a>.
+        </p>
+
+        <p>
+          Thank you for choosing Rotaly XYZ.<br />
+          <strong>The Rotaly XYZ Team</strong>
+        </p>
+      </div>
+
+{{> footer footerMessage="This is an automated cancellation confirmation. Please keep this email for your records."}}

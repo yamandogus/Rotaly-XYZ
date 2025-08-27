@@ -3,3 +3,7 @@ export * from "./password-reset-email.dto";
 export * from "./welcome-email.dto";
 export * from "./contact-us-email.dto";
 export * from "./support-confirmation-email.dto";
+export * from "./payment-confirmation-email.dto";
+export * from "./booking-confirmation-email.dto";
+export * from "./booking-cancellation-email.dto";
+export * from "./check-in-reminder-email.dto";

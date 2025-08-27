@@ -1,0 +1,109 @@
+{{> header title="Check-in Reminder"}}
+
+      <h1 class="title welcome">🏨 Your Stay Begins Tomorrow!</h1>
+
+      <div class="greeting">Hello <span class="highlight">{{name}}</span>,</div>
+
+      <div class="content">
+        <p>
+          We're excited to welcome you to <strong>{{hotelName}}</strong> tomorrow! This email contains important information to ensure a smooth check-in experience.
+        </p>
+
+        <p>
+          Please review the details below and let us know if you need any assistance.
+        </p>
+      </div>
+
+      <div class="otp-container welcome">
+        <div class="otp-label">Your Confirmation Number</div>
+        <div class="otp-code welcome">{{confirmationNumber}}</div>
+        <div style="color: #666; font-size: 14px;">Have this ready at check-in</div>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">📅 Tomorrow's Check-in Details:</h3>
+        
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-title">🏨 Hotel</div>
+            <div class="feature-description">{{hotelName}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">📍 Address</div>
+            <div class="feature-description">{{hotelAddress}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">📅 Check-in Date</div>
+            <div class="feature-description">{{checkInDate}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">⏰ Check-in Time</div>
+            <div class="feature-description">After {{checkInTime}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">🛏️ Room Type</div>
+            <div class="feature-description">{{roomType}}</div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-title">📞 Hotel Phone</div>
+            <div class="feature-description">{{hotelPhone}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">📋 Check-in Checklist:</h3>
+        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #28a745;">
+          ✅ <strong>Valid Photo ID</strong> (passport, driver's license, or national ID)<br>
+          ✅ <strong>Confirmation Number:</strong> {{confirmationNumber}}<br>
+          ✅ <strong>Payment Method</strong> (for incidentals and security deposit)<br>
+          {{#if additionalGuests}}✅ <strong>Guest Information</strong> for additional travelers{{/if}}
+        </div>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">🚗 Getting There:</h3>
+        <p>
+          <strong>Address:</strong> {{hotelAddress}}<br>
+          {{#if parkingInfo}}<strong>Parking:</strong> {{parkingInfo}}<br>{{/if}}
+          {{#if transportationInfo}}<strong>Transportation:</strong> {{transportationInfo}}<br>{{/if}}
+          <strong>Need Directions?</strong> <a href="{{mapsLink}}" target="_blank">View on Maps</a>
+        </p>
+      </div>
+
+      <div class="content">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">💡 Helpful Tips:</h3>
+        <p>
+          • <strong>Early Arrival:</strong> If arriving before {{checkInTime}}, luggage storage may be available<br>
+          • <strong>Late Arrival:</strong> Please inform the hotel if arriving after 10 PM<br>
+          • <strong>Special Requests:</strong> {{#if specialRequest}}Your request: "{{specialRequest}}"{{else}}Contact the hotel directly for any special arrangements{{/if}}<br>
+          • <strong>Mobile Check-in:</strong> Some hotels offer mobile check-in via their app
+        </p>
+      </div>
+
+      <div class="welcome-notice">
+        <strong>🎯 Important Reminders</strong><br>
+        • Check-in begins at {{checkInTime}}<br>
+        • Have your confirmation number and ID ready<br>
+        • Contact the hotel directly for any special requests<br>
+        • Enjoy your stay!
+      </div>
+
+      <div class="content">
+        <p>
+          Looking forward to your arrival! If you have any questions or need to make changes to your reservation, 
+          please contact us at <a href="mailto:support@rotaly-xyz.com">support@rotaly-xyz.com</a> or call the hotel directly at {{hotelPhone}}.
+        </p>
+
+        <p>
+          Have a wonderful stay!<br />
+          <strong>The Rotaly XYZ Team</strong>
+        </p>
+      </div>
+
+{{> footer footerMessage="This is an automated check-in reminder. Have a great stay with us!"}}

@@ -6,6 +6,10 @@ import {
   passwordResetEmailSchema,
   welcomeEmailSchema,
   supportConfirmationEmailSchema,
+  paymentConfirmationEmailSchema,
+  bookingConfirmationEmailSchema,
+  bookingCancellationEmailSchema,
+  checkInReminderEmailSchema,
 } from "../../dto/email";
 import { LocaleParams } from "../../dto/common";
 
@@ -282,6 +286,226 @@ export class EmailController {
       });
     } catch (error) {
       console.error("Error in sendSupportConfirmationEmail:", error);
+
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
+
+  /**
+   * Send payment confirmation email
+   * @param req - Express req object
+   * @param res - Express res object
+   */
+  async sendPaymentConfirmationEmail(
+    req: Request<LocaleParams>,
+    res: Response
+  ): Promise<void> {
+    try {
+      const validation = paymentConfirmationEmailSchema.safeParse(req.body);
+
+      if (!validation.success) {
+        res.status(400).json({
+          success: false,
+          message: "Validation error",
+          errors: validation.error.issues,
+        });
+        return;
+      }
+
+      const data = validation.data;
+      const locale = req.params.locale;
+
+      const isEmailSent = await emailService.sendPaymentConfirmationEmail(
+        data.email,
+        data,
+        locale
+      );
+
+      if (!isEmailSent) {
+        throw new AppError("Failed to send payment confirmation email", 500);
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Payment confirmation email sent successfully",
+      });
+    } catch (error) {
+      console.error("Error in sendPaymentConfirmationEmail:", error);
+
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
+
+  /**
+   * Send booking confirmation email
+   * @param req - Express req object
+   * @param res - Express res object
+   */
+  async sendBookingConfirmationEmail(
+    req: Request<LocaleParams>,
+    res: Response
+  ): Promise<void> {
+    try {
+      const validation = bookingConfirmationEmailSchema.safeParse(req.body);
+
+      if (!validation.success) {
+        res.status(400).json({
+          success: false,
+          message: "Validation error",
+          errors: validation.error.issues,
+        });
+        return;
+      }
+
+      const data = validation.data;
+      const locale = req.params.locale;
+
+      const isEmailSent = await emailService.sendBookingConfirmationEmail(
+        data.email,
+        data,
+        locale
+      );
+
+      if (!isEmailSent) {
+        throw new AppError("Failed to send booking confirmation email", 500);
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Booking confirmation email sent successfully",
+      });
+    } catch (error) {
+      console.error("Error in sendBookingConfirmationEmail:", error);
+
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
+
+  /**
+   * Send booking cancellation email
+   * @param req - Express req object
+   * @param res - Express res object
+   */
+  async sendBookingCancellationEmail(
+    req: Request<LocaleParams>,
+    res: Response
+  ): Promise<void> {
+    try {
+      const validation = bookingCancellationEmailSchema.safeParse(req.body);
+
+      if (!validation.success) {
+        res.status(400).json({
+          success: false,
+          message: "Validation error",
+          errors: validation.error.issues,
+        });
+        return;
+      }
+
+      const data = validation.data;
+      const locale = req.params.locale;
+
+      const isEmailSent = await emailService.sendBookingCancellationEmail(
+        data.email,
+        data,
+        locale
+      );
+
+      if (!isEmailSent) {
+        throw new AppError("Failed to send booking cancellation email", 500);
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Booking cancellation email sent successfully",
+      });
+    } catch (error) {
+      console.error("Error in sendBookingCancellationEmail:", error);
+
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    }
+  }
+
+  /**
+   * Send check-in reminder email
+   * @param req - Express req object
+   * @param res - Express res object
+   */
+  async sendCheckInReminderEmail(
+    req: Request<LocaleParams>,
+    res: Response
+  ): Promise<void> {
+    try {
+      const validation = checkInReminderEmailSchema.safeParse(req.body);
+
+      if (!validation.success) {
+        res.status(400).json({
+          success: false,
+          message: "Validation error",
+          errors: validation.error.issues,
+        });
+        return;
+      }
+
+      const data = validation.data;
+      const locale = req.params.locale;
+
+      const isEmailSent = await emailService.sendCheckInReminderEmail(
+        data.email,
+        data,
+        locale
+      );
+
+      if (!isEmailSent) {
+        throw new AppError("Failed to send check-in reminder email", 500);
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Check-in reminder email sent successfully",
+      });
+    } catch (error) {
+      console.error("Error in sendCheckInReminderEmail:", error);
 
       if (error instanceof AppError) {
         res.status(error.statusCode).json({
