@@ -120,8 +120,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           },
 
           {
-            title: t("live-support"),
-            url: "/dashboard/hotel/live-support",
+            title: t("support-tickets"),
+            url: "/dashboard/hotel/tickets",
             icon: <IconMessageCircle />,
           },
         ];
@@ -133,8 +133,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: <IconDashboard />,
           },
           {
-            title: t("live-support"),
-            url: "/dashboard/support/live-support",
+            title: t("support-tickets"),
+            url: "/dashboard/support/tickets",
             icon: <IconMessageCircle />,
           },
           {

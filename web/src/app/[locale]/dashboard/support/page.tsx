@@ -14,7 +14,7 @@ export default function SupportDashboard() {
       title: t("liveSupport"),
       icon: MessageCircleIcon,
       description: t("liveSupportDescription"),
-      link: "/dashboard/support/live-support",
+      link: "/dashboard/support/tickets",
       color: "text-green-500",
     },
     {
@@ -47,7 +47,7 @@ export default function SupportDashboard() {
             };
 
             return (
-              <Card 
+              <Card
                 key={index}
                 onClick={handleClick}
                 className="bg-card cursor-pointer  hover:bg-accent hover:shadow-lg transition-all duration-300"
@@ -55,9 +55,7 @@ export default function SupportDashboard() {
                 <CardHeader>
                   <div className="flex flex-col justify-center items-center gap-2">
                     <IconComponent className={`w-10 h-10 ${item.color}`} />
-                    <CardTitle className="text-center">
-                      {item.title}
-                    </CardTitle>
+                    <CardTitle className="text-center">{item.title}</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent className="">

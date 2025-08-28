@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
+import { useTranslations } from "next-intl";
 import {
   ArrowLeft,
   MessageSquare,
@@ -52,17 +53,8 @@ const categoryColors = {
   [SupportCategory.OTHER]: "bg-gray-100 text-gray-800",
 };
 
-const categoryLabels = {
-  [SupportCategory.GENERAL]: "General",
-  [SupportCategory.TECHNICAL]: "Technical",
-  [SupportCategory.BILLING]: "Billing",
-  [SupportCategory.BOOKING]: "Booking",
-  [SupportCategory.CANCELLATION]: "Cancellation",
-  [SupportCategory.ACCOUNT]: "Account",
-  [SupportCategory.OTHER]: "Other",
-};
-
 export default function TicketDetailPage() {
+  const t = useTranslations("TicketDetail");
   const [ticket, setTicket] = useState<SupportTicketWithMessages | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -74,6 +66,16 @@ export default function TicketDetailPage() {
   const params = useParams();
   const router = useRouter();
   const ticketId = params.ticketId as string;
+
+  const categoryLabels = {
+    [SupportCategory.GENERAL]: t("categoryGeneral"),
+    [SupportCategory.TECHNICAL]: t("categoryTechnical"),
+    [SupportCategory.BILLING]: t("categoryBilling"),
+    [SupportCategory.BOOKING]: t("categoryBooking"),
+    [SupportCategory.CANCELLATION]: t("categoryCancellation"),
+    [SupportCategory.ACCOUNT]: t("categoryAccount"),
+    [SupportCategory.OTHER]: t("categoryOther"),
+  };
 
   const fetchTicket = useCallback(async () => {
     try {
@@ -205,9 +207,9 @@ export default function TicketDetailPage() {
           className="flex items-center gap-2"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back
+          {t("back")}
         </Button>
-        <h1 className="text-2xl font-bold">Support Ticket</h1>
+        <h1 className="text-2xl font-bold">{t("supportTicket")}</h1>
       </div>
 
       {error && (
@@ -224,8 +226,8 @@ export default function TicketDetailPage() {
             <div className="flex-1">
               <CardTitle className="text-xl">{ticket.subject}</CardTitle>
               <CardDescription className="mt-2">
-                Created {formatDate(ticket.createdAt)} by {ticket.user.name}{" "}
-                {ticket.user.surname}
+                {t("created")} {formatDate(ticket.createdAt)} {t("by")}{" "}
+                {ticket.user.name} {ticket.user.surname}
               </CardDescription>
             </div>
             <div className="flex items-center gap-2">
@@ -238,7 +240,7 @@ export default function TicketDetailPage() {
                   className="text-green-600 border-green-600"
                 >
                   <CheckCircle className="w-3 h-3 mr-1" />
-                  Closed
+                  {t("statusClosed")}
                 </Badge>
               ) : (
                 <Badge
@@ -246,7 +248,7 @@ export default function TicketDetailPage() {
                   className="text-blue-600 border-blue-600"
                 >
                   <Clock className="w-3 h-3 mr-1" />
-                  Open
+                  {t("statusOpen")}
                 </Badge>
               )}
             </div>
@@ -261,11 +263,13 @@ export default function TicketDetailPage() {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1">
                 <MessageSquare className="w-4 h-4" />
-                <span>{ticket.messageCount} messages</span>
+                <span>
+                  {ticket.messageCount} {t("messages")}
+                </span>
               </div>
               {ticket.supportRep && (
                 <div>
-                  Assigned to: {ticket.supportRep.name}{" "}
+                  {t("assignedTo")} {ticket.supportRep.name}{" "}
                   {ticket.supportRep.surname}
                 </div>
               )}
@@ -278,7 +282,7 @@ export default function TicketDetailPage() {
                 className="text-red-600 border-red-600 hover:bg-red-50"
               >
                 <X className="w-4 h-4 mr-1" />
-                Close Ticket
+                {t("closeTicket")}
               </Button>
             )}
           </div>
@@ -286,7 +290,7 @@ export default function TicketDetailPage() {
           {ticket.closedAt && (
             <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
               <p className="text-sm text-green-800">
-                This ticket was closed on {formatDate(ticket.closedAt)}
+                {t("ticketClosed")} {formatDate(ticket.closedAt)}
               </p>
             </div>
           )}
@@ -295,7 +299,7 @@ export default function TicketDetailPage() {
 
       {/* Messages */}
       <div className="space-y-4 mb-6">
-        <h2 className="text-lg font-semibold">Conversation</h2>
+        <h2 className="text-lg font-semibold">{t("conversation")}</h2>
 
         {ticket.messages && ticket.messages.length > 0 ? (
           ticket.messages.map((message: SupportMessage) => (
@@ -314,7 +318,7 @@ export default function TicketDetailPage() {
                       </span>
                       {message.sender.role === "SUPPORT" && (
                         <Badge variant="outline" className="text-xs">
-                          Support Team
+                          {t("supportTeam")}
                         </Badge>
                       )}
                       <span className="text-xs text-gray-500">
@@ -333,9 +337,7 @@ export default function TicketDetailPage() {
           <Card>
             <CardContent className="py-8 text-center">
               <MessageSquare className="w-8 h-8 mx-auto text-gray-400 mb-3" />
-              <p className="text-gray-600">
-                No messages yet. Start the conversation!
-              </p>
+              <p className="text-gray-600">{t("noMessages")}</p>
             </CardContent>
           </Card>
         )}
@@ -345,15 +347,13 @@ export default function TicketDetailPage() {
       {!ticket.closedAt && user?.role !== "ADMIN" && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Send Message</CardTitle>
-            <CardDescription>
-              Add a message to continue the conversation with our support team.
-            </CardDescription>
+            <CardTitle className="text-lg">{t("sendMessageTitle")}</CardTitle>
+            <CardDescription>{t("addMessage")}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <Textarea
-                placeholder="Type your message here..."
+                placeholder={t("typeMessage")}
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 className="min-h-[100px]"
@@ -366,7 +366,7 @@ export default function TicketDetailPage() {
                   className="flex items-center gap-2"
                 >
                   <Send className="w-4 h-4" />
-                  {sendingMessage ? "Sending..." : "Send Message"}
+                  {sendingMessage ? t("sending") : t("sendMessage")}
                 </Button>
               </div>
             </div>
@@ -379,14 +379,8 @@ export default function TicketDetailPage() {
         <Card>
           <CardContent className="py-8 text-center">
             <div className="text-gray-500">
-              <p className="text-sm">
-                As an administrator, you can view this conversation but cannot
-                send messages.
-              </p>
-              <p className="text-xs mt-1">
-                Only customers and support representatives can participate in
-                ticket conversations.
-              </p>
+              <p className="text-sm">{t("adminInfo")}</p>
+              <p className="text-xs mt-1">{t("adminInfoSub")}</p>
             </div>
           </CardContent>
         </Card>
@@ -396,11 +390,8 @@ export default function TicketDetailPage() {
       <Dialog open={showCloseDialog} onOpenChange={setShowCloseDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Close Support Ticket</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to close this support ticket? This action
-              cannot be undone.
-            </DialogDescription>
+            <DialogTitle>{t("closeTicketTitle")}</DialogTitle>
+            <DialogDescription>{t("closeTicketConfirm")}</DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button
@@ -408,14 +399,14 @@ export default function TicketDetailPage() {
               onClick={() => setShowCloseDialog(false)}
               disabled={closingTicket}
             >
-              Cancel
+              {t("cancel")}
             </Button>
             <Button
               onClick={handleCloseTicket}
               disabled={closingTicket}
               className="bg-red-600 hover:bg-red-700"
             >
-              {closingTicket ? "Closing..." : "Close Ticket"}
+              {closingTicket ? t("closing") : t("closeTicket")}
             </Button>
           </DialogFooter>
         </DialogContent>

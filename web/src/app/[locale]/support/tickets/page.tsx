@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   Plus,
   MessageSquare,
@@ -36,23 +37,25 @@ const categoryColors = {
   [SupportCategory.OTHER]: "bg-gray-100 text-gray-800",
 };
 
-const categoryLabels = {
-  [SupportCategory.GENERAL]: "General",
-  [SupportCategory.TECHNICAL]: "Technical",
-  [SupportCategory.BILLING]: "Billing",
-  [SupportCategory.BOOKING]: "Booking",
-  [SupportCategory.CANCELLATION]: "Cancellation",
-  [SupportCategory.ACCOUNT]: "Account",
-  [SupportCategory.OTHER]: "Other",
-};
-
 export default function SupportPage() {
+  const t = useTranslations("SupportTickets");
+  const tDetail = useTranslations("TicketDetail");
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"all" | "open" | "closed">("all");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const router = useRouter();
+
+  const categoryLabels = {
+    [SupportCategory.GENERAL]: tDetail("categoryGeneral"),
+    [SupportCategory.TECHNICAL]: tDetail("categoryTechnical"),
+    [SupportCategory.BILLING]: tDetail("categoryBilling"),
+    [SupportCategory.BOOKING]: tDetail("categoryBooking"),
+    [SupportCategory.CANCELLATION]: tDetail("categoryCancellation"),
+    [SupportCategory.ACCOUNT]: tDetail("categoryAccount"),
+    [SupportCategory.OTHER]: tDetail("categoryOther"),
+  };
 
   const fetchTickets = async (status: "all" | "open" | "closed" = "all") => {
     try {
@@ -61,7 +64,7 @@ export default function SupportPage() {
       const response = await supportService.getSupportTickets(1, 20, status);
       setTickets(response.supports);
     } catch (err: unknown) {
-      setError(getErrorMessage(err, "Failed to load support tickets"));
+      setError(getErrorMessage(err, t("failedToLoad")));
     } finally {
       setLoading(false);
     }
@@ -96,7 +99,7 @@ export default function SupportPage() {
           <div className="flex-1">
             <CardTitle className="text-lg">{ticket.subject}</CardTitle>
             <CardDescription className="mt-1">
-              Created {formatDate(ticket.createdAt)}
+              {t("created")} {formatDate(ticket.createdAt)}
             </CardDescription>
           </div>
           <div className="flex items-center gap-2">
@@ -109,7 +112,7 @@ export default function SupportPage() {
                 className="text-green-600 border-green-600"
               >
                 <CheckCircle className="w-3 h-3 mr-1" />
-                Closed
+                {tDetail("statusClosed")}
               </Badge>
             ) : (
               <Badge
@@ -117,7 +120,7 @@ export default function SupportPage() {
                 className="text-blue-600 border-blue-600"
               >
                 <Clock className="w-3 h-3 mr-1" />
-                Open
+                {tDetail("statusOpen")}
               </Badge>
             )}
           </div>
@@ -168,17 +171,15 @@ export default function SupportPage() {
     <div className="container mx-auto py-8 px-4">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Support Tickets</h1>
-          <p className="text-gray-600 mt-1">
-            Manage your support requests and get help
-          </p>
+          <h1 className="text-3xl font-bold">{t("title")}</h1>
+          <p className="text-gray-600 mt-1">{t("description")}</p>
         </div>
         <Button
           onClick={() => setShowCreateDialog(true)}
           className="flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
-          New Ticket
+          {t("createTicket")}
         </Button>
       </div>
 
@@ -196,9 +197,9 @@ export default function SupportPage() {
         }
       >
         <TabsList className="grid w-full grid-cols-3 lg:w-400">
-          <TabsTrigger value="all">All Tickets</TabsTrigger>
-          <TabsTrigger value="open">Open</TabsTrigger>
-          <TabsTrigger value="closed">Closed</TabsTrigger>
+          <TabsTrigger value="all">{t("allTickets")}</TabsTrigger>
+          <TabsTrigger value="open">{t("openTickets")}</TabsTrigger>
+          <TabsTrigger value="closed">{t("closedTickets")}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="mt-6">
@@ -214,14 +215,10 @@ export default function SupportPage() {
             <Card>
               <CardContent className="py-8 text-center">
                 <MessageSquare className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-                <h3 className="text-lg font-semibold mb-2">
-                  No support tickets
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  You haven&apos;t created any support tickets yet.
-                </p>
+                <h3 className="text-lg font-semibold mb-2">{t("noTickets")}</h3>
+                <p className="text-gray-600 mb-4">{t("noTicketsDesc")}</p>
                 <Button onClick={() => setShowCreateDialog(true)}>
-                  Create Your First Ticket
+                  {t("createFirstTicket")}
                 </Button>
               </CardContent>
             </Card>
@@ -243,10 +240,10 @@ export default function SupportPage() {
             <Card>
               <CardContent className="py-8 text-center">
                 <CheckCircle className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-                <h3 className="text-lg font-semibold mb-2">No open tickets</h3>
-                <p className="text-gray-600">
-                  All your tickets have been resolved!
-                </p>
+                <h3 className="text-lg font-semibold mb-2">
+                  {t("noOpenTickets")}
+                </h3>
+                <p className="text-gray-600">{t("allResolved")}</p>
               </CardContent>
             </Card>
           )}
@@ -268,11 +265,9 @@ export default function SupportPage() {
               <CardContent className="py-8 text-center">
                 <Clock className="w-12 h-12 mx-auto text-gray-400 mb-4" />
                 <h3 className="text-lg font-semibold mb-2">
-                  No closed tickets
+                  {t("noClosedTickets")}
                 </h3>
-                <p className="text-gray-600">
-                  You don&apos;t have any closed tickets yet.
-                </p>
+                <p className="text-gray-600">{t("noClosedTicketsDesc")}</p>
               </CardContent>
             </Card>
           )}

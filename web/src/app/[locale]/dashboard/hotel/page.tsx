@@ -1,7 +1,15 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CalendarDaysIcon, BedDoubleIcon, SettingsIcon, BarChart3Icon, UsersIcon, StarIcon, MessageCircleIcon } from "lucide-react";
+import {
+  CalendarDaysIcon,
+  BedDoubleIcon,
+  SettingsIcon,
+  BarChart3Icon,
+  UsersIcon,
+  StarIcon,
+  MessageCircleIcon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -56,7 +64,7 @@ export default function HotelDashboard() {
       title: t("liveSupport"),
       icon: MessageCircleIcon,
       description: t("liveSupportDescription"),
-      link: "/dashboard/hotel/live-support",
+      link: "/dashboard/hotel/tickets",
       color: "text-gray-500",
     },
   ];
@@ -84,7 +92,9 @@ export default function HotelDashboard() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-center text-sm text-muted-foreground">{item.description}</p>
+                  <p className="text-center text-sm text-muted-foreground">
+                    {item.description}
+                  </p>
                 </CardContent>
               </Card>
             );
