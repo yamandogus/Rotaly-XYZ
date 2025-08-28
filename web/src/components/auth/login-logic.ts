@@ -21,7 +21,7 @@ interface LoginFormData {
 interface LoginLogicProps {
   router: AppRouterInstance;
   dispatch: Dispatch;
-  loginSuccess: (userType: 'user' | 'hotel' | 'admin' | 'support') => void;
+  loginSuccess: (userType: "user" | "hotel" | "admin" | "support") => void;
   setOpen: (open: boolean) => void;
 }
 
@@ -46,7 +46,12 @@ export const createLoginLogic = ({
         if (userResponse.data.isVerified === false) {
           setOpen(true);
         } else {
-          handleUserRedirection(userResponse.data, router, dispatch, loginSuccess);
+          handleUserRedirection(
+            userResponse.data,
+            router,
+            dispatch,
+            loginSuccess
+          );
         }
       } else {
         toast.error("Hatalı kullanıcı adı veya şifre.");
@@ -74,7 +79,12 @@ export const createLoginLogic = ({
       // Doğrulama başarılı olduğunda kullanıcıyı yönlendir
       const userResponse = await userService.getUserProfile();
       if (userResponse.data.isVerified) {
-        handleUserRedirection(userResponse.data, router, dispatch, loginSuccess);
+        handleUserRedirection(
+          userResponse.data,
+          router,
+          dispatch,
+          loginSuccess
+        );
       }
     } else {
       toast.error("Doğrulama kodu geçersiz.");
@@ -91,35 +101,33 @@ const handleUserRedirection = (
   userData: User,
   router: AppRouterInstance,
   dispatch: Dispatch,
-  loginSuccess: (userType: 'user' | 'hotel' | 'admin' | 'support') => void
+  loginSuccess: (userType: "user" | "hotel" | "admin" | "support") => void
 ) => {
+  // Set user in Redux store first
+  dispatch(setUser(userData));
+
   switch (userData.role) {
     case "ADMIN":
       localStorage.setItem("userRole", "admin");
       loginSuccess("admin");
-      dispatch(setUser(userData));
       router.push("/dashboard/admin");
       break;
     case "OWNER":
       localStorage.setItem("userRole", "hotel");
       loginSuccess("hotel");
-      dispatch(setUser(userData));
       router.push("/dashboard/hotel");
       break;
     case "SUPPORT":
       localStorage.setItem("userRole", "support");
       loginSuccess("support");
-      dispatch(setUser(userData));
       router.push("/dashboard/support");
       break;
     case "CUSTOMER":
-      localStorage.setItem("userRole", "user");
+      localStorage.setItem("userRole", "customer");
       loginSuccess("user");
-      dispatch(setUser(userData));
       router.push("/");
       break;
     default:
       router.push("/");
   }
 };
-

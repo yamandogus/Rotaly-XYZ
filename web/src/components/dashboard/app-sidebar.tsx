@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { NavMain } from "@/components/dashboard/nav-main";
 import { NavUser } from "@/components/dashboard/nav-user";
 
@@ -12,12 +13,10 @@ import {
   IconBuilding,
   IconUser,
   IconMessageCircle,
-
   IconBed,
   IconStar,
   IconCalendar,
   IconShield,
-
 } from "@tabler/icons-react";
 
 import {
@@ -30,26 +29,19 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { RootState } from "@/store/store";
 
-type UserRole = "admin" | "hotel" | "user" | "support" | null;
-
+type UserRole = "ADMIN" | "OWNER" | "CUSTOMER" | "SUPPORT" | null;
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const [userRole, setUserRole] = useState<UserRole>(null);
+  const user = useSelector((state: RootState) => state.auth.user);
+  const userRole = user?.role as UserRole;
   const t = useTranslations("Dashboard");
-
-  useEffect(() => {
-    // Kullanıcı rolünü localStorage'dan al
-    const role = localStorage.getItem("userRole") as UserRole;
-    setUserRole(role);
-  }, []);
-
 
   const getNavMainByRole = (role: UserRole) => {
     switch (role) {
-      case "admin":
+      case "ADMIN":
         return [
           {
             title: t("home"),
@@ -87,7 +79,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: <IconUser />,
           },
         ];
-      case "hotel":
+      case "OWNER":
         return [
           {
             title: t("home"),
@@ -95,23 +87,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: <IconDashboard />,
           },
 
-            {
+          {
             title: t("reservation-management"),
             url: "/dashboard/hotel/reservations",
             icon: <IconCalendar />,
           },
-           {
+          {
             title: t("room-price-management"),
             url: "/dashboard/hotel/room-price",
             icon: <IconBed />,
           },
-        
-           {
+
+          {
             title: t("customer-management"),
             url: "/dashboard/hotel/customers",
             icon: <IconUsers />,
           },
-            {
+          {
             title: t("hotel-profile"),
             url: "/dashboard/hotel/profile",
             icon: <IconBuilding />,
@@ -121,19 +113,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             url: "/dashboard/hotel/statistic",
             icon: <IconChartBar />,
           },
-              {
+          {
             title: t("evaluations"),
             url: "/dashboard/hotel/evaluations",
             icon: <IconStar />,
           },
-        
-            {
+
+          {
             title: t("live-support"),
             url: "/dashboard/hotel/live-support",
             icon: <IconMessageCircle />,
           },
         ];
-      case "support":
+      case "SUPPORT":
         return [
           {
             title: t("home"),
@@ -156,20 +148,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: <IconFileDescription />,
           },
         ];
-      default:  
+      default:
         return [];
     }
   };
-  
+
   const data = {
     user: {
       name: "shadcn",
       email: "m@example.com",
       avatar: "/avatars/shadcn.jpg",
     },
- 
   };
-  
 
   const navMainItems = getNavMainByRole(userRole);
 
@@ -191,7 +181,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   height={40}
                 />
                 <a href="#">
-                  <span className="text-xl font-bold ">Rotaly {userRole === "hotel" ? t("business") : ""} </span>
+                  <span className="text-xl font-bold ">
+                    Rotaly {userRole === "OWNER" ? t("business") : ""}{" "}
+                  </span>
                 </a>
               </div>
             </SidebarMenuButton>

@@ -22,6 +22,8 @@ router.get("/", supportController.getSupportList);
 
 router.get("/:supportId", supportController.getSupportById);
 
+router.post("/:supportId/messages", supportController.sendMessageToTicket);
+
 router.patch("/:supportId/close", supportController.closeSupportRequest);
 
 // admin only - get statistics for all support representatives

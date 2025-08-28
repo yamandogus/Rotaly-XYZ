@@ -6,6 +6,7 @@ import {
   CreateSupportSchema,
   GetSupportListSchema,
   CloseSupportSchema,
+  SendSupportMessageSchema,
 } from "../../dto/support";
 import { AIChatSchema } from "../../dto/support/ai-chat.dto";
 import { AppError } from "../../utils/appError";
@@ -223,6 +224,40 @@ export class SupportController {
       });
     } catch (error) {
       console.error("❌ AI Chat error:", error);
+      next(error);
+    }
+  };
+
+  // Send message to support ticket
+  sendMessageToTicket = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const userId = req.user?.userId;
+      const userRole = req.user?.role as Role;
+
+      if (!userId || !userRole) {
+        throw new AppError("User not authenticated", 401);
+      }
+
+      const { supportId } = req.params;
+      const validatedData = SendSupportMessageSchema.parse(req.body);
+
+      const message = await this.supportService.sendMessageToTicket(
+        userId,
+        supportId,
+        validatedData.content,
+        userRole
+      );
+
+      res.status(201).json({
+        success: true,
+        message: "Message sent successfully",
+        data: message,
+      });
+    } catch (error) {
       next(error);
     }
   };
