@@ -90,3 +90,26 @@ if (typeof window !== 'undefined') {
 // 3. Hata Yönetimi: 401 hatalarında otomatik logout
 // 4. Kod Tekrarını Önleme: Her serviste aynı axios konfigürasyonu yazmaya gerek yok
 // 5. Bakım Kolaylığı: API URL değişikliklerinde tek yerden güncelleme
+
+// API health check
+export const checkApiHealth = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL.replace('/api', '')}/api/health`, {
+      timeout: 5000,
+    });
+    console.log('API Health Check:', response.data);
+    return { isHealthy: true, data: response.data };
+  } catch (error: unknown) {
+    const err = error as { message?: string; code?: string; response?: { status?: number; statusText?: string } };
+    console.error('API Health Check Failed:', error);
+    return { 
+      isHealthy: false, 
+      error: err.message || 'Unknown error',
+      details: {
+        code: err.code,
+        status: err.response?.status,
+        statusText: err.response?.statusText,
+      }
+    };
+  }
+};

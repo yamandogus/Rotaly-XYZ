@@ -1,6 +1,7 @@
 "use client";
 
-import React from 'react';
+import React from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,31 +26,33 @@ import {
 } from "lucide-react";
 
 export default function InformationPage() {
+  const t = useTranslations("SupportInformation");
+
   const supportCategories = [
     {
-      title: "Teknik Destek",
-      description: "Uygulama ve sistem sorunları",
+      title: t("technicalSupport"),
+      description: t("technicalSupportDesc"),
       icon: Settings,
       color: "bg-blue-500",
       responseTime: "2-4 saat",
     },
     {
-      title: "Rezervasyon Desteği",
-      description: "Rezervasyon işlemleri ve değişiklikler",
+      title: t("reservationSupport"),
+      description: t("reservationSupportDesc"),
       icon: FileText,
       color: "bg-green-500",
       responseTime: "1-2 saat",
     },
     {
-      title: "Ödeme Sorunları",
-      description: "Fatura ve ödeme işlemleri",
+      title: t("paymentSupport"),
+      description: t("paymentSupportDesc"),
       icon: Shield,
       color: "bg-purple-500",
       responseTime: "1-3 saat",
     },
     {
-      title: "Genel Sorular",
-      description: "Genel bilgi ve yardım",
+      title: t("generalSupport"),
+      description: t("generalSupportDesc"),
       icon: HelpCircle,
       color: "bg-orange-500",
       responseTime: "4-6 saat",
@@ -58,20 +61,18 @@ export default function InformationPage() {
 
   const supportRules = [
     {
-      title: "Yanıt Süreleri",
-      description:
-        "Destek talepleriniz kategorisine göre belirtilen sürelerde yanıtlanır.",
+      title: t("responseTimesTitle"),
+      description: t("responseTimesText"),
       icon: Clock,
     },
     {
-      title: "Gerekli Bilgiler",
-      description:
-        "Destek talebi oluştururken rezervasyon numarası ve detaylı açıklama ekleyin.",
+      title: t("requiredInformation"),
+      description: t("requiredInformationDesc"),
       icon: Info,
     },
     {
-      title: "İletişim Kanalları",
-      description: "Canlı destek, e-posta ve telefon ile 7/24 hizmetinizdeyiz.",
+      title: t("contactChannels"),
+      description: t("contactChannelsDesc"),
       icon: MessageCircle,
     },
     {
@@ -165,21 +166,26 @@ export default function InformationPage() {
           <div className="relative px-6 py-10 md:px-10 md:py-14">
             <div className="text-center space-y-4">
               <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-                Destek Merkezi
+                {t("title")}
               </h1>
               <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                Rotaly XYZ destek ekibi olarak yanınızdayız. Yanıt süreleri, kurallar ve
-                süreçlerle ilgili tüm detaylar burada.
+                {t("subtitle")}
               </p>
               <div className="flex justify-center gap-3 pt-2">
-                <Button onClick={() => (window.location.href = '/dashboard/support/live-support')}>
-                  <MessageCircle className="w-5 h-5 mr-2" /> Canlı Destek Başlat
+                <Button
+                  onClick={() =>
+                    (window.location.href = "/dashboard/support/tickets")
+                  }
+                >
+                  <MessageCircle className="w-5 h-5 mr-2" />{" "}
+                  {t("startLiveSupport")}
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => (window.location.href = '/support/faq')}
+                  onClick={() => (window.location.href = "/support/faq")}
                 >
-                  <HelpCircle className="w-5 h-5 mr-2" /> SSS&apos;yi Görüntüle
+                  <HelpCircle className="w-5 h-5 mr-2" />{" "}
+                  {t("frequentlyAskedQuestions")}
                 </Button>
               </div>
             </div>
@@ -191,17 +197,24 @@ export default function InformationPage() {
           {stats.map((s, i) => {
             const IconCmp = s.icon;
             return (
-              <Card key={i} className="shadow-sm border-0 bg-white dark:bg-gray-900">
+              <Card
+                key={i}
+                className="shadow-sm border-0 bg-white dark:bg-gray-900"
+              >
                 <CardContent className="p-5 flex items-center gap-4">
                   <div className={`p-3 rounded-xl ${s.color}`}>
                     <IconCmp className="w-5 h-5" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{s.title}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {s.title}
+                    </p>
                     <p className="text-2xl font-semibold text-gray-900 dark:text-white">
                       {s.value}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{s.sub}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {s.sub}
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -214,7 +227,7 @@ export default function InformationPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-xl">
               <Users className="w-6 h-6 text-blue-600" />
-              İletişim Bilgileri
+              {t("contactInformation")}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -231,7 +244,9 @@ export default function InformationPage() {
                       <h3 className="font-semibold text-gray-900 dark:text-white">
                         {contact.title}
                       </h3>
-                      <p className="text-gray-600 dark:text-gray-300">{contact.value}</p>
+                      <p className="text-gray-600 dark:text-gray-300">
+                        {contact.value}
+                      </p>
                     </div>
                   </div>
                 );
@@ -244,7 +259,8 @@ export default function InformationPage() {
         <Card className="bg-white dark:bg-gray-800 shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-xl">
-              <Shield className="w-6 h-6 text-purple-600" /> Hizmet Seviyesi (SLA)
+              <Shield className="w-6 h-6 text-purple-600" /> Hizmet Seviyesi
+              (SLA)
             </CardTitle>
             <p className="text-gray-600 dark:text-gray-300">
               Kategorilere göre hedeflenen ilk yanıt ve çözüm süreleri.
@@ -253,10 +269,14 @@ export default function InformationPage() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
-                { name: 'Teknik Destek', first: '2-4 saat', resolve: '24 saat' },
-                { name: 'Rezervasyon', first: '1-2 saat', resolve: '12 saat' },
-                { name: 'Ödeme', first: '1-3 saat', resolve: '12 saat' },
-                { name: 'Genel', first: '4-6 saat', resolve: '48 saat' },
+                {
+                  name: "Teknik Destek",
+                  first: "2-4 saat",
+                  resolve: "24 saat",
+                },
+                { name: "Rezervasyon", first: "1-2 saat", resolve: "12 saat" },
+                { name: "Ödeme", first: "1-3 saat", resolve: "12 saat" },
+                { name: "Genel", first: "4-6 saat", resolve: "48 saat" },
               ].map((row, i) => (
                 <div
                   key={i}
@@ -267,14 +287,18 @@ export default function InformationPage() {
                       <p className="font-medium text-gray-900 dark:text-white">
                         {row.name}
                       </p>
-                      <p className="text-xs text-gray-500">Hedeflenen süreler</p>
+                      <p className="text-xs text-gray-500">
+                        Hedeflenen süreler
+                      </p>
                     </div>
                     <div className="text-right">
                       <p className="text-sm text-gray-700 dark:text-gray-300">
-                        İlk yanıt: <span className="font-medium">{row.first}</span>
+                        İlk yanıt:{" "}
+                        <span className="font-medium">{row.first}</span>
                       </p>
                       <p className="text-sm text-gray-700 dark:text-gray-300">
-                        Çözüm: <span className="font-medium">{row.resolve}</span>
+                        Çözüm:{" "}
+                        <span className="font-medium">{row.resolve}</span>
                       </p>
                     </div>
                   </div>
@@ -305,7 +329,9 @@ export default function InformationPage() {
                     className="p-6 border rounded-lg hover:shadow-md transition-shadow"
                   >
                     <div className="flex items-start gap-4">
-                      <div className={`p-3 rounded-lg ${category.color} text-white`}>
+                      <div
+                        className={`p-3 rounded-lg ${category.color} text-white`}
+                      >
                         <IconComponent className="w-6 h-6" />
                       </div>
                       <div className="flex-1">
@@ -373,22 +399,27 @@ export default function InformationPage() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              {["Talep Oluştur", "İlk Yanıt", "Çözüm Üret", "Kapat & Geri Bildirim"].map(
-                (step, i) => (
-                  <div key={i} className="p-5 rounded-lg border">
-                    <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold mb-3">
-                      {i + 1}
-                    </div>
-                    <p className="font-medium text-gray-900 dark:text-white">{step}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                      {i === 0 && "Sorunu ve detayları iletin."}
-                      {i === 1 && "Temsilci ilk değerlendirmeyi yapar."}
-                      {i === 2 && "Çözüm uygulanır ve doğrulanır."}
-                      {i === 3 && "Talep kapatılır, memnuniyet toplanır."}
-                    </p>
+              {[
+                "Talep Oluştur",
+                "İlk Yanıt",
+                "Çözüm Üret",
+                "Kapat & Geri Bildirim",
+              ].map((step, i) => (
+                <div key={i} className="p-5 rounded-lg border">
+                  <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold mb-3">
+                    {i + 1}
                   </div>
-                )
-              )}
+                  <p className="font-medium text-gray-900 dark:text-white">
+                    {step}
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    {i === 0 && "Sorunu ve detayları iletin."}
+                    {i === 1 && "Temsilci ilk değerlendirmeyi yapar."}
+                    {i === 2 && "Çözüm uygulanır ve doğrulanır."}
+                    {i === 3 && "Talep kapatılır, memnuniyet toplanır."}
+                  </p>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -406,19 +437,23 @@ export default function InformationPage() {
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
                 <p className="text-gray-700 dark:text-gray-300">
-                  <strong>Rezervasyon değişiklikleri:</strong> Rezervasyon tarihinden 24 saat öncesine kadar ücretsiz değişiklik yapabilirsiniz.
+                  <strong>Rezervasyon değişiklikleri:</strong> Rezervasyon
+                  tarihinden 24 saat öncesine kadar ücretsiz değişiklik
+                  yapabilirsiniz.
                 </p>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
                 <p className="text-gray-700 dark:text-gray-300">
-                  <strong>İptal politikası:</strong> Rezervasyon tarihinden 48 saat öncesine kadar %100 iade garantisi.
+                  <strong>İptal politikası:</strong> Rezervasyon tarihinden 48
+                  saat öncesine kadar %100 iade garantisi.
                 </p>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
                 <p className="text-gray-700 dark:text-gray-300">
-                  <strong>Ödeme güvenliği:</strong> Tüm ödemeleriniz SSL şifreleme ile korunmaktadır.
+                  <strong>Ödeme güvenliği:</strong> Tüm ödemeleriniz SSL
+                  şifreleme ile korunmaktadır.
                 </p>
               </div>
             </div>
@@ -434,7 +469,9 @@ export default function InformationPage() {
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((f, i) => (
                 <AccordionItem key={i} value={`item-${i}`}>
-                  <AccordionTrigger className="text-left">{f.q}</AccordionTrigger>
+                  <AccordionTrigger className="text-left">
+                    {f.q}
+                  </AccordionTrigger>
                   <AccordionContent>{f.a}</AccordionContent>
                 </AccordionItem>
               ))}
@@ -451,7 +488,9 @@ export default function InformationPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Button
                 className="w-full h-12 text-lg"
-                onClick={() => (window.location.href = '/dashboard/support/live-support')}
+                onClick={() =>
+                  (window.location.href = "/dashboard/support/tickets")
+                }
               >
                 <MessageCircle className="w-5 h-5 mr-2" />
                 Canlı Destek Başlat
@@ -459,7 +498,7 @@ export default function InformationPage() {
               <Button
                 variant="outline"
                 className="w-full h-12 text-lg"
-                onClick={() => (window.location.href = '/support/faq')}
+                onClick={() => (window.location.href = "/support/faq")}
               >
                 <HelpCircle className="w-5 h-5 mr-2" />
                 SSS&apos;yi Görüntüle

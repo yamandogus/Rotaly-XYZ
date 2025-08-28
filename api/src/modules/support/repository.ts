@@ -89,13 +89,17 @@ export class SupportRepository {
         },
         messages: {
           orderBy: {
-            createdAt: "desc",
+            createdAt: "asc",
           },
-          take: 1,
-          select: {
-            content: true,
-            createdAt: true,
-            senderId: true,
+          include: {
+            sender: {
+              select: {
+                id: true,
+                name: true,
+                surname: true,
+                role: true,
+              },
+            },
           },
         },
         _count: {

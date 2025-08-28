@@ -21,7 +21,7 @@ interface LoginFormData {
 interface LoginLogicProps {
   router: AppRouterInstance;
   dispatch: Dispatch;
-  loginSuccess: (userType: 'user' | 'hotel' | 'admin' | 'support') => void;
+  loginSuccess: (userType: "user" | "hotel" | "admin" | "support") => void;
   setOpen: (open: boolean) => void;
 }
 
@@ -46,7 +46,12 @@ export const createLoginLogic = ({
         if (userResponse.data.isVerified === false) {
           setOpen(true);
         } else {
-          handleUserRedirection(userResponse.data, router, dispatch, loginSuccess);
+          handleUserRedirection(
+            userResponse.data,
+            router,
+            dispatch,
+            loginSuccess
+          );
         }
       } else {
         toast.error("Hatalı kullanıcı adı veya şifre.");
@@ -65,22 +70,38 @@ export const createLoginLogic = ({
       return;
     }
 
-    const response = await authService.verifyEmail(otp);
-    console.log("verify email response", response);
+    try {
+      const response = await authService.verifyEmail(otp);
+      console.log("verify email response", response);
 
-    if (response.success) {
-      toast.success("Hesabınız doğrulandı.");
-      localStorage.removeItem("endTime");
-      // Doğrulama başarılı olduğunda kullanıcıyı yönlendir
-      const userResponse = await userService.getUserProfile();
-      if (userResponse.data.isVerified) {
-        handleUserRedirection(userResponse.data, router, dispatch, loginSuccess);
+      if (response.success) {
+        toast.success("Hesabınız doğrulandı.");
+        localStorage.removeItem("endTime");
+        
+        // Doğrulama başarılı olduğunda kullanıcıyı yönlendir
+        const userResponse = await userService.getUserProfile();
+        if (userResponse.data.isVerified) {
+          // Önce dialog'u kapat
+          onClose();
+          // Sonra yönlendirme yap
+          setTimeout(() => {
+            handleUserRedirection(
+              userResponse.data,
+              router,
+              dispatch,
+              loginSuccess
+            );
+          }, 100); // Kısa bir gecikme ile dialog kapanmasını sağla
+        }
+      } else {
+        toast.error("Doğrulama kodu geçersiz.");
+        onClose();
       }
-    } else {
-      toast.error("Doğrulama kodu geçersiz.");
+    } catch (error) {
+      console.error("OTP verification error:", error);
+      toast.error("Doğrulama kodunu kontrol edin.");
+      onClose();
     }
-
-    onClose();
   };
 
   return { handleLogin, handleOtpSubmit };
@@ -91,35 +112,33 @@ const handleUserRedirection = (
   userData: User,
   router: AppRouterInstance,
   dispatch: Dispatch,
-  loginSuccess: (userType: 'user' | 'hotel' | 'admin' | 'support') => void
+  loginSuccess: (userType: "user" | "hotel" | "admin" | "support") => void
 ) => {
+  // Set user in Redux store first
+  dispatch(setUser(userData));
+
   switch (userData.role) {
     case "ADMIN":
       localStorage.setItem("userRole", "admin");
       loginSuccess("admin");
-      dispatch(setUser(userData));
       router.push("/dashboard/admin");
       break;
     case "OWNER":
       localStorage.setItem("userRole", "hotel");
       loginSuccess("hotel");
-      dispatch(setUser(userData));
       router.push("/dashboard/hotel");
       break;
     case "SUPPORT":
       localStorage.setItem("userRole", "support");
       loginSuccess("support");
-      dispatch(setUser(userData));
       router.push("/dashboard/support");
       break;
     case "CUSTOMER":
-      localStorage.setItem("userRole", "user");
+      localStorage.setItem("userRole", "customer");
       loginSuccess("user");
-      dispatch(setUser(userData));
       router.push("/");
       break;
     default:
       router.push("/");
   }
 };
-

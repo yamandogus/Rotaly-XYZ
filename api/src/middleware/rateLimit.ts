@@ -15,7 +15,7 @@ export const globalLimiter = rateLimit({
 // Auth rate limiter (login/register için)
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 dakika
-  max: 20, // IP başına maksimum istek sayısı
+  max: 100, // IP başına maksimum istek sayısı
   message: {
     status: "error",
     message:

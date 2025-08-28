@@ -60,7 +60,7 @@ export function Footer() {
                 href="/support"
                 className="text-sm text-blue-100 hover:text-white"
               >
-                {t("live-chat")}
+                {t("supportTickets")}
               </Link>
               <Link
                 href="/support/faq"

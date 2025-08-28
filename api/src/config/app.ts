@@ -22,6 +22,16 @@ const app = express();
 
 app.use(globalLimiter);
 
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ 
+    status: "OK", 
+    message: "API is running", 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
 // Middleware
 app.use(express.json());
 app.use(

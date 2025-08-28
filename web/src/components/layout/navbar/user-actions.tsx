@@ -44,6 +44,8 @@ const UserActions = () => {
     }
   };
 
+ 
+
   const handleLogout = async () => {
     try {
       const response = await authService.logout();

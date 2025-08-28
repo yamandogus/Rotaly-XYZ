@@ -191,8 +191,16 @@ A support representative will assist you shortly.`;
     userRole: Role
   ): Promise<boolean> {
     try {
-      await this.supportRepository.getSupportById(supportId, userId);
-      return true;
+      if (userRole === Role.ADMIN) {
+        // admins can access all tickets
+        const support = await this.prisma.support.findUnique({
+          where: { id: supportId },
+        });
+        return !!support;
+      } else {
+        await this.supportRepository.getSupportById(supportId, userId);
+        return true;
+      }
     } catch (error) {
       return false;
     }
@@ -210,8 +218,84 @@ A support representative will assist you shortly.`;
       user: support.user,
       supportRep: support.supportRep,
       messageCount: support._count?.messages || 0,
-      lastMessage: support.messages?.[0] || null,
+      lastMessage:
+        support.messages?.length > 0
+          ? {
+              content: support.messages[0].content,
+              createdAt: support.messages[0].createdAt,
+              senderId: support.messages[0].senderId,
+            }
+          : null,
+      messages: support.messages || undefined,
     };
+  }
+
+  async sendMessageToTicket(
+    userId: string,
+    supportId: string,
+    content: string,
+    userRole: Role
+  ): Promise<any> {
+    // user has access or not
+    const canAccess = await this.canUserAccessSupport(
+      supportId,
+      userId,
+      userRole
+    );
+    if (!canAccess) {
+      throw new AppError("Support ticket not found or access denied", 404);
+    }
+
+    // get support ticket
+    const support = await this.supportRepository.getSupportById(
+      supportId,
+      userId
+    );
+
+    // determine the receiver based on the sender's role
+    let receiverId: string;
+
+    if (userRole === Role.CUSTOMER) {
+      // customer sends message to support rep
+      if (!support.supportRep?.id) {
+        throw new AppError(
+          "No support representative assigned to this ticket",
+          400
+        );
+      }
+      receiverId = support.supportRep.id;
+    } else if (userRole === Role.SUPPORT) {
+      // support rep sends message to customer
+      receiverId = support.user.id;
+    } else {
+      // admin cannot send messages, only view tickets
+      throw new AppError(
+        "Administrators cannot send messages to support tickets",
+        403
+      );
+    }
+
+    // Create the message
+    const message = await this.prisma.message.create({
+      data: {
+        content,
+        senderId: userId,
+        receiverId,
+        supportId,
+      },
+      include: {
+        sender: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            role: true,
+          },
+        },
+      },
+    });
+
+    return message;
   }
 
   // utility method to check if AI service is available

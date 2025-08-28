@@ -1,5 +1,19 @@
 import { SupportCategory } from "@prisma/client";
 
+export interface SupportMessage {
+  id: string;
+  content: string;
+  senderId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  sender: {
+    id: string;
+    name: string;
+    surname: string;
+    role: string;
+  };
+}
+
 export interface SupportResponseDto {
   id: string;
   subject: string;
@@ -25,6 +39,7 @@ export interface SupportResponseDto {
     createdAt: Date;
     senderId: string;
   } | null;
+  messages?: SupportMessage[];
 }
 
 export interface SupportListResponseDto {
