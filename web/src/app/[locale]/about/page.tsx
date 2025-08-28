@@ -1,22 +1,23 @@
 import { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Users, 
-  Globe, 
-  Award, 
-  Shield, 
-  Heart, 
-  Star, 
+import {
+  Users,
+  Globe,
+  Award,
+  Shield,
+  Heart,
+  Star,
   TrendingUp,
   Target,
-  Lightbulb
+  Lightbulb,
 } from "lucide-react";
 import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Hakkımızda - Rotaly",
-  description: "Rotaly otel rezervasyon sistemi hakkında detaylı bilgi ve misyonumuz",
+  description:
+    "Rotaly otel rezervasyon sistemi hakkında detaylı bilgi ve misyonumuz",
 };
 
 export default function AboutPage() {
@@ -44,8 +45,9 @@ export default function AboutPage() {
               Rotaly Hakkında
             </h1>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
-              2020 yılından bu yana Türkiye&apos;nin önde gelen otel rezervasyon platformlarından biri olarak, 
-              misafirlerimize en iyi konaklama deneyimini sunmaya devam ediyoruz.
+              2020 yılından bu yana Türkiye&apos;nin önde gelen otel rezervasyon
+              platformlarından biri olarak, misafirlerimize en iyi konaklama
+              deneyimini sunmaya devam ediyoruz.
             </p>
             <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
               <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base">
@@ -77,18 +79,27 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent className="space-y-3 sm:space-y-4">
               <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-                Misafirlerimize en uygun fiyatlarla, en kaliteli konaklama seçeneklerini sunarak, 
-                unutulmaz tatil deneyimleri yaşatmak. Teknoloji ve müşteri memnuniyetini birleştirerek, 
-                seyahat endüstrisinde güvenilir bir partner olmak.
+                Misafirlerimize en uygun fiyatlarla, en kaliteli konaklama
+                seçeneklerini sunarak, unutulmaz tatil deneyimleri yaşatmak.
+                Teknoloji ve müşteri memnuniyetini birleştirerek, seyahat
+                endüstrisinde güvenilir bir partner olmak.
               </p>
               <div className="grid grid-cols-2 gap-3 sm:gap-4 pt-3 sm:pt-4">
                 <div className="text-center p-3 sm:p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                  <div className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400">99%</div>
-                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Müşteri Memnuniyeti</div>
+                  <div className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    99%
+                  </div>
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                    Müşteri Memnuniyeti
+                  </div>
                 </div>
                 <div className="text-center p-3 sm:p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <div className="text-xl sm:text-2xl font-bold text-green-600 dark:text-green-400">24/7</div>
-                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Destek Hizmeti</div>
+                  <div className="text-xl sm:text-2xl font-bold text-green-600 dark:text-green-400">
+                    24/7
+                  </div>
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                    Destek Hizmeti
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -105,18 +116,27 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent className="space-y-3 sm:space-y-4">
               <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-                Türkiye&apos;nin en güvenilir ve kullanıcı dostu otel rezervasyon platformu olmak. 
-                Teknolojik yeniliklerle seyahat deneyimini kolaylaştırmak ve müşteri memnuniyetinde 
-                sektör lideri olmak.
+                Türkiye&apos;nin en güvenilir ve kullanıcı dostu otel
+                rezervasyon platformu olmak. Teknolojik yeniliklerle seyahat
+                deneyimini kolaylaştırmak ve müşteri memnuniyetinde sektör
+                lideri olmak.
               </p>
               <div className="grid grid-cols-2 gap-3 sm:gap-4 pt-3 sm:pt-4">
                 <div className="text-center p-3 sm:p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                  <div className="text-xl sm:text-2xl font-bold text-purple-600 dark:text-purple-400">2025</div>
-                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Hedef Yıl</div>
+                  <div className="text-xl sm:text-2xl font-bold text-purple-600 dark:text-purple-400">
+                    2025
+                  </div>
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                    Hedef Yıl
+                  </div>
                 </div>
                 <div className="text-center p-3 sm:p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                  <div className="text-xl sm:text-2xl font-bold text-orange-600 dark:text-orange-400">100+</div>
-                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Şehir</div>
+                  <div className="text-xl sm:text-2xl font-bold text-orange-600 dark:text-orange-400">
+                    100+
+                  </div>
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                    Şehir
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -137,7 +157,9 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               <div className="text-center p-4 sm:p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                 <Shield className="h-8 w-8 sm:h-10 sm:w-10 text-blue-500 mx-auto mb-3 sm:mb-4" />
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2 text-sm sm:text-base">Güvenlik</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2 text-sm sm:text-base">
+                  Güvenlik
+                </h3>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                   Verileriniz güvende, ödemeleriniz güvenli
                 </p>
@@ -145,7 +167,9 @@ export default function AboutPage() {
 
               <div className="text-center p-4 sm:p-6 bg-green-50 dark:bg-green-900/20 rounded-lg">
                 <Star className="h-8 w-8 sm:h-10 sm:w-10 text-green-500 mx-auto mb-3 sm:mb-4" />
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2 text-sm sm:text-base">Kalite</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2 text-sm sm:text-base">
+                  Kalite
+                </h3>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                   En kaliteli oteller, en iyi hizmet
                 </p>
@@ -153,7 +177,9 @@ export default function AboutPage() {
 
               <div className="text-center p-4 sm:p-6 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
                 <Heart className="h-8 w-8 sm:h-10 sm:w-10 text-purple-500 mx-auto mb-3 sm:mb-4" />
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2 text-sm sm:text-base">Müşteri Odaklı</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2 text-sm sm:text-base">
+                  Müşteri Odaklı
+                </h3>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                   Müşteri memnuniyeti önceliğimiz
                 </p>
@@ -161,7 +187,9 @@ export default function AboutPage() {
 
               <div className="text-center p-4 sm:p-6 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
                 <TrendingUp className="h-8 w-8 sm:h-10 sm:w-10 text-orange-500 mx-auto mb-3 sm:mb-4" />
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2 text-sm sm:text-base">İnovasyon</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2 text-sm sm:text-base">
+                  İnovasyon
+                </h3>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                   Sürekli gelişim ve yenilik
                 </p>
@@ -237,7 +265,9 @@ export default function AboutPage() {
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-blue-100 dark:bg-blue-900 rounded-full mx-auto mb-3 sm:mb-4 flex items-center justify-center">
                   <Users className="h-8 w-8 sm:h-10 sm:w-10 text-blue-500" />
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-1 text-sm sm:text-base">Müşteri Hizmetleri</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-1 text-sm sm:text-base">
+                  Müşteri Hizmetleri
+                </h3>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                   7/24 destek ekibi
                 </p>
@@ -247,7 +277,9 @@ export default function AboutPage() {
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 dark:bg-green-900 rounded-full mx-auto mb-3 sm:mb-4 flex items-center justify-center">
                   <Award className="h-8 w-8 sm:h-10 sm:w-10 text-green-500" />
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-1 text-sm sm:text-base">Kalite Kontrol</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-1 text-sm sm:text-base">
+                  Kalite Kontrol
+                </h3>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                   Otel denetim ekibi
                 </p>
@@ -257,7 +289,9 @@ export default function AboutPage() {
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-purple-100 dark:bg-purple-900 rounded-full mx-auto mb-3 sm:mb-4 flex items-center justify-center">
                   <Globe className="h-8 w-8 sm:h-10 sm:w-10 text-purple-500" />
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-1 text-sm sm:text-base">Teknoloji</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-1 text-sm sm:text-base">
+                  Teknoloji
+                </h3>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                   Yazılım geliştirme ekibi
                 </p>
@@ -268,4 +302,4 @@ export default function AboutPage() {
       </div>
     </div>
   );
-} 
+}

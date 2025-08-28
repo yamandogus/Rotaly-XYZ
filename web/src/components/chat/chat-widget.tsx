@@ -16,6 +16,7 @@ import { Avatar, AvatarImage } from "../ui/avatar";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { aiChatService, type AIChatMessage } from "@/services/ai-chat.service";
+import ChatMessage from "./chat-message";
 
 // Welcome mesajını artık t ile oluşturuyoruz
 const welcomeMessages = (t: (key: string) => string, onButtonClick?: (action: string) => void) => {
@@ -338,14 +339,21 @@ export default function ChatWidget() {
                           : "bg-gray-100 text-gray-800 rounded-bl-sm"
                       }`}
                     >
-                      {msg.isLoading ? (
-                        <div className="flex items-center gap-1">
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                        </div>
+                      {typeof msg.message === 'string' ? (
+                        <ChatMessage 
+                          message={msg.message} 
+                          isLoading={msg.isLoading} 
+                        />
                       ) : (
-                        msg.message
+                        msg.isLoading ? (
+                          <div className="flex items-center gap-1">
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                          </div>
+                        ) : (
+                          msg.message
+                        )
                       )}
                       {msg.sender === "system" &&
                         msg.type === "live-support" && (

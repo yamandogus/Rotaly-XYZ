@@ -2,12 +2,11 @@
 
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "@/i18n/routing";
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/sidebar";
+import { useSelector } from "react-redux";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import { SiteHeader } from "@/components/dashboard/site-header";
+import { RootState } from "@/store/store";
 import Image from "next/image";
 // import ChatWidget from "@/components/chat/chat-widget";
 
@@ -15,31 +14,32 @@ type Props = {
   children: ReactNode;
 };
 
-type UserRole = "admin" | "hotel" | "user" | null;
-
 export default function DashboardLayout({ children }: Props) {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
-    // Kullanıcı rolünü localStorage'dan al
-    const role = localStorage.getItem("userRole") as UserRole;
-    
-    // Eğer rol yoksa login sayfasına yönlendir
-    if (!role) {
+    // Check if user is authenticated via Redux store
+    if (!user) {
       router.push("/login");
       return;
     }
-    
+
     setIsLoading(false);
-  }, [router]);
+  }, [router, user]);
 
   // Loading state
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <div>
-          <Image src="/images/logo3.png" alt="Loading" width={100} height={100} />
+          <Image
+            src="/images/logo3.png"
+            alt="Loading"
+            width={100}
+            height={100}
+          />
           <div className="text-lg">Yükleniyor...</div>
         </div>
       </div>

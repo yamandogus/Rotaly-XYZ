@@ -14,8 +14,8 @@ export default function DynamicTitle({ locale }: DynamicTitleProps) {
       ? ["En İyi Otel Rezervasyon Sistemi", "Güvenilir Konaklama Platformu", "Uygun Fiyatlı Oteller"]
       : ["Best Hotel Reservation System", "Reliable Accommodation Platform", "Affordable Hotels"],
     loop: true,
-    typeSpeed: 80,
-    deleteSpeed: 60,
+    typeSpeed: 40,
+    deleteSpeed: 40,
     delaySpeed: 2000,
   });
 

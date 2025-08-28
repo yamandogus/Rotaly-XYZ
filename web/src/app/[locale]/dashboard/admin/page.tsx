@@ -56,11 +56,6 @@ export default function AdminDashboard() {
   return (
     <div className="p-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header ve Token Test Butonu */}
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-        </div>
-
         {/* Admin Menü Kartları */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
           {adminMenu.map((item, index) => {
