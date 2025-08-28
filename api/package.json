@@ -12,14 +12,15 @@
     "start": "node dist/main.js",
     "seed:all": "npm run seed:users && npm run seed:hotels",
     "seed:users": "ts-node src/scripts/seeds/seed-users.ts",
-    "seed:hotels": "ts-node src/scripts/seeds/seed-hotels.ts"
+    "seed:hotels": "ts-node src/scripts/seeds/seed-hotels.ts",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "engines": {
-    "node": ">=18.0.0",
+    "node": "18.x",
     "npm": ">=8.0.0"
   },
   "dependencies": {
