@@ -19,9 +19,9 @@ async function testContactEmailEnglish() {
     console.log("English contact email test result:", result);
 
     if (result) {
-      console.log("✅ English contact email sent successfully!");
+      console.log("English contact email sent successfully!");
     } else {
-      console.log("❌ Failed to send English contact email");
+      console.log("Failed to send English contact email");
     }
 
     return result;
@@ -46,9 +46,9 @@ async function testContactEmailTurkish() {
     console.log("Turkish contact email test result:", result);
 
     if (result) {
-      console.log("✅ Turkish contact email sent successfully!");
+      console.log("Turkish contact email sent successfully!");
     } else {
-      console.log("❌ Failed to send Turkish contact email");
+      console.log("Failed to send Turkish contact email");
     }
 
     return result;
@@ -67,18 +67,14 @@ async function testAllContactEmails() {
   const turkishResult = await testContactEmailTurkish();
   console.log("");
 
-  console.log("📊 Test Summary:");
-  console.log(
-    `English template test: ${englishResult ? "✅ PASSED" : "❌ FAILED"}`
-  );
-  console.log(
-    `Turkish template test: ${turkishResult ? "✅ PASSED" : "❌ FAILED"}`
-  );
+  console.log("Test Summary:");
+  console.log(`English template test: ${englishResult ? "PASSED" : "FAILED"}`);
+  console.log(`Turkish template test: ${turkishResult ? "PASSED" : "FAILED"}`);
 
   const allPassed = englishResult && turkishResult;
   console.log(
     `\n🎯 Overall result: ${
-      allPassed ? "✅ ALL TESTS PASSED" : "❌ SOME TESTS FAILED"
+      allPassed ? "ALL TESTS PASSED" : "SOME TESTS FAILED"
     }`
   );
 

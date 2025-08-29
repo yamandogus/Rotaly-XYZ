@@ -58,7 +58,7 @@ export class TypingHandler {
     });
 
     console.log(
-      `✅ Typing started notification sent for user ${socket.userId} in room ${data.roomId}`
+      `Typing started notification sent for user ${socket.userId} in room ${data.roomId}`
     );
   }
 
@@ -107,7 +107,7 @@ export class TypingHandler {
     });
 
     console.log(
-      `✅ Typing stopped notification sent for user ${socket.userId} in room ${data.roomId}`
+      `Typing stopped notification sent for user ${socket.userId} in room ${data.roomId}`
     );
   }
 
@@ -151,7 +151,7 @@ export class TypingHandler {
       }
     }
 
-    console.log(`✅ Disconnection cleanup completed for user ${socket.userId}`);
+    console.log(`Disconnection cleanup completed for user ${socket.userId}`);
   }
 
   // Get list of user IDs currently typing in a room

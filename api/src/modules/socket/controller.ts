@@ -174,7 +174,7 @@ export class SocketController {
 
       if (!token) {
         console.log(
-          "⚠️  No authentication token provided - allowing anonymous connection"
+          " No authentication token provided - allowing anonymous connection"
         );
         socket.userId = undefined;
         socket.role = "ANONYMOUS";
@@ -199,13 +199,13 @@ export class SocketController {
       socket.role = decoded.role;
 
       console.log(
-        `✅ User authenticated successfully - ID: ${socket.userId}, Role: ${socket.role}`
+        `User authenticated successfully - ID: ${socket.userId}, Role: ${socket.role}`
       );
       next();
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown authentication error";
-      console.error(`❌ Authentication failed:`, errorMessage);
+      console.error(`Authentication failed:`, errorMessage);
 
       if (errorMessage.includes("expired")) {
         console.log("🕐 Token has expired - rejecting connection");

@@ -30,7 +30,7 @@ export class SupportHandler {
       timestamp: new Date(),
     });
 
-    console.log(`✅ Support request ${data.supportId} notifications sent`);
+    console.log(`Support request ${data.supportId} notifications sent`);
   }
 
   handleSupportAssignment(
@@ -63,16 +63,14 @@ export class SupportHandler {
       timestamp: new Date(),
     });
 
-    console.log(
-      `✅ Support assignment notifications sent for ${data.supportId}`
-    );
+    console.log(`Support assignment notifications sent for ${data.supportId}`);
   }
 
   handleSupportResolved(
     socket: AuthenticatedSocket,
     data: SupportEventData
   ): void {
-    console.log(`✅ Support request resolved:`, data);
+    console.log(`Support request resolved:`, data);
 
     const supportRoom = `support:${data.supportId}`;
 
@@ -100,9 +98,7 @@ export class SupportHandler {
       timestamp: new Date(),
     });
 
-    console.log(
-      `✅ Support resolution notifications sent for ${data.supportId}`
-    );
+    console.log(`Support resolution notifications sent for ${data.supportId}`);
   }
 
   // Utility method to emit support events from services

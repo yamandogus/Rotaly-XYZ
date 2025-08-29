@@ -30,9 +30,9 @@ async function testPaymentConfirmationEmailEnglish() {
     console.log("English payment confirmation email test result:", result);
 
     if (result) {
-      console.log("✅ English payment confirmation email sent successfully!");
+      console.log("English payment confirmation email sent successfully!");
     } else {
-      console.log("❌ Failed to send English payment confirmation email");
+      console.log("Failed to send English payment confirmation email");
     }
 
     return result;
@@ -67,9 +67,9 @@ async function testPaymentConfirmationEmailTurkish() {
     console.log("Turkish payment confirmation email test result:", result);
 
     if (result) {
-      console.log("✅ Turkish payment confirmation email sent successfully!");
+      console.log("Turkish payment confirmation email sent successfully!");
     } else {
-      console.log("❌ Failed to send Turkish payment confirmation email");
+      console.log("Failed to send Turkish payment confirmation email");
     }
 
     return result;
@@ -88,18 +88,18 @@ async function runTests() {
   const turkishResult = await testPaymentConfirmationEmailTurkish();
   console.log("");
 
-  console.log("📊 Test Summary:");
+  console.log("Test Summary:");
   console.log(
-    `English Payment Confirmation: ${englishResult ? "✅ PASS" : "❌ FAIL"}`
+    `English Payment Confirmation: ${englishResult ? "PASS" : "FAIL"}`
   );
   console.log(
-    `Turkish Payment Confirmation: ${turkishResult ? "✅ PASS" : "❌ FAIL"}`
+    `Turkish Payment Confirmation: ${turkishResult ? "PASS" : "FAIL"}`
   );
 
   if (englishResult && turkishResult) {
-    console.log("\n🎉 All payment confirmation email tests passed!");
+    console.log("\nAll payment confirmation email tests passed!");
   } else {
-    console.log("\n⚠️ Some payment confirmation email tests failed.");
+    console.log("\nSome payment confirmation email tests failed.");
   }
 
   process.exit(0);

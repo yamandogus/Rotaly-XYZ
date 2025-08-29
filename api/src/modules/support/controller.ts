@@ -208,7 +208,7 @@ export class SupportController {
       }
 
       const validatedData = AIChatSchema.parse(req.body);
-      console.log("✅ Data validated:", validatedData);
+      console.log("Data validated:", validatedData);
 
       const result = await this.supportService.handleAIChatWithAutoTicket(
         userId,
@@ -226,7 +226,7 @@ export class SupportController {
         data: result,
       });
     } catch (error) {
-      console.error("❌ AI Chat error:", error);
+      console.error("AI Chat error:", error);
       next(error);
     }
   };
