@@ -10,7 +10,7 @@ import { testAllSupportConfirmationEmails } from "./test-support-confirmation-em
 
 async function testAllEmailTemplates() {
   console.log(
-    "🚀 Starting comprehensive email template tests for all email types...\n"
+    "Starting comprehensive email template tests for all email types...\n"
   );
   console.log("=".repeat(70));
   console.log("                    EMAIL TEMPLATE TEST SCRIPTS");
@@ -26,13 +26,13 @@ async function testAllEmailTemplates() {
   };
 
   // Test Contact Emails
-  console.log("📧 TESTING CONTACT EMAILS");
+  console.log("TESTING CONTACT EMAILS");
   console.log("-".repeat(50));
   results.contact = await testAllContactEmails();
   console.log("");
 
   // Test Verification Emails
-  console.log("✅ TESTING VERIFICATION EMAILS");
+  console.log("TESTING VERIFICATION EMAILS");
   console.log("-".repeat(50));
   results.verification = await testAllVerificationEmails();
   console.log("");
@@ -44,7 +44,7 @@ async function testAllEmailTemplates() {
   console.log("");
 
   // Test Welcome Emails
-  console.log("🎉 TESTING WELCOME EMAILS");
+  console.log("TESTING WELCOME EMAILS");
   console.log("-".repeat(50));
   results.welcome = await testAllWelcomeEmails();
   console.log("");
@@ -60,24 +60,18 @@ async function testAllEmailTemplates() {
   console.log("                    FINAL TEST RESULTS");
   console.log("=".repeat(70));
   console.log("");
-  console.log("📊 Email Template Test Summary:");
+  console.log("Email Template Test Summary:");
+  console.log(`Contact emails:       ${results.contact ? "PASSED" : "FAILED"}`);
   console.log(
-    `Contact emails:       ${results.contact ? "✅ PASSED" : "❌ FAILED"}`
+    `Verification emails:  ${results.verification ? "PASSED" : "FAILED"}`
   );
   console.log(
-    `Verification emails:  ${results.verification ? "✅ PASSED" : "❌ FAILED"}`
+    `Password reset emails: ${results.passwordReset ? "PASSED" : "FAILED"}`
   );
-  console.log(
-    `Password reset emails: ${
-      results.passwordReset ? "✅ PASSED" : "❌ FAILED"
-    }`
-  );
-  console.log(
-    `Welcome emails:       ${results.welcome ? "✅ PASSED" : "❌ FAILED"}`
-  );
+  console.log(`Welcome emails:       ${results.welcome ? "PASSED" : "FAILED"}`);
   console.log(
     `Support confirmation:  ${
-      results.supportConfirmation ? "✅ PASSED" : "❌ FAILED"
+      results.supportConfirmation ? "PASSED" : "FAILED"
     }`
   );
   console.log("");
@@ -92,8 +86,8 @@ async function testAllEmailTemplates() {
   console.log(
     `🏆 Final Status: ${
       allPassed
-        ? "✅ ALL EMAIL TEMPLATES WORKING!"
-        : "❌ SOME EMAIL TEMPLATES NEED ATTENTION"
+        ? "ALL EMAIL TEMPLATES WORKING!"
+        : "SOME EMAIL TEMPLATES NEED ATTENTION"
     }`
   );
   console.log("");

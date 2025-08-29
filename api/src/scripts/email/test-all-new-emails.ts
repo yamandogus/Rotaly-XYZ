@@ -1,11 +1,12 @@
+// NEW TEST FILE CONTAINING EVERY TEST
+
 import { emailService } from "../../modules/email/service";
 import dotenv from "dotenv";
 import path from "path";
 
-// Load environment variables
 dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
 
-// Import existing test functions
+// import existing test functions
 import {
   testVerificationEmailEnglish,
   testVerificationEmailTurkish,
@@ -26,7 +27,7 @@ import {
   testContactEmailTurkish,
 } from "./test-contact-email";
 
-// Import new test functions
+// import new test functions
 import {
   testPaymentConfirmationEmailEnglish,
   testPaymentConfirmationEmailTurkish,
@@ -112,13 +113,13 @@ async function testBookingCancellationEmailTurkish() {
 }
 
 async function runAllEmailTests() {
-  console.log("🚀 Starting Comprehensive Email Template Tests...\n");
+  console.log("--- Email Template Tests...\n");
   console.log("=".repeat(60));
 
   const testResults: { [key: string]: boolean } = {};
 
-  // Test existing email templates
-  console.log("\n📧 Testing Existing Email Templates");
+  // test existing email templates
+  console.log("\nTesting Existing Email Templates");
   console.log("-".repeat(40));
 
   testResults["verificationEnglish"] = await testVerificationEmailEnglish();
@@ -133,8 +134,8 @@ async function runAllEmailTests() {
   testResults["contactEnglish"] = await testContactEmailEnglish();
   testResults["contactTurkish"] = await testContactEmailTurkish();
 
-  // Test new email templates
-  console.log("\n🆕 Testing New Email Templates");
+  // test new email templates
+  console.log("\nTesting New Email Templates");
   console.log("-".repeat(40));
 
   testResults["paymentConfirmationEnglish"] =
@@ -157,9 +158,9 @@ async function runAllEmailTests() {
   testResults["checkInReminderTurkish"] =
     await testCheckInReminderEmailTurkish();
 
-  // Generate comprehensive test summary
+  // generate test summary
   console.log("\n" + "=".repeat(60));
-  console.log("📊 COMPREHENSIVE TEST RESULTS");
+  console.log("COMPREHENSIVE TEST RESULTS");
   console.log("=".repeat(60));
 
   const testCategories = [
@@ -209,21 +210,21 @@ async function runAllEmailTests() {
     if (trResult) passedTests++;
 
     console.log(`${category.name}:`);
-    console.log(`  English: ${enResult ? "✅ PASS" : "❌ FAIL"}`);
-    console.log(`  Turkish: ${trResult ? "✅ PASS" : "❌ FAIL"}`);
+    console.log(`  English: ${enResult ? "PASS" : "FAIL"}`);
+    console.log(`  Turkish: ${trResult ? "PASS" : "FAIL"}`);
     console.log("");
   });
 
   console.log("=".repeat(60));
-  console.log(`📈 FINAL SUMMARY: ${passedTests}/${totalTests} tests passed`);
+  console.log(`FINAL SUMMARY: ${passedTests}/${totalTests} tests passed`);
   console.log(`Success Rate: ${Math.round((passedTests / totalTests) * 100)}%`);
 
   if (passedTests === totalTests) {
-    console.log("\n🎉 ALL EMAIL TEMPLATE TESTS PASSED! 🎉");
+    console.log("\nALL EMAIL TEMPLATE TESTS PASSED! ");
     console.log("Your email system is ready for production!");
   } else {
     console.log(
-      `\n⚠️  ${
+      `\n ${
         totalTests - passedTests
       } tests failed. Please check the logs above.`
     );
@@ -234,7 +235,7 @@ async function runAllEmailTests() {
   process.exit(passedTests === totalTests ? 0 : 1);
 }
 
-// Only run if this file is executed directly
+// only runs if executed from cmd
 if (require.main === module) {
   runAllEmailTests().catch((error) => {
     console.error("Error running comprehensive email tests:", error);

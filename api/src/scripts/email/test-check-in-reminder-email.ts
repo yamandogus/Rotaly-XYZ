@@ -32,9 +32,9 @@ async function testCheckInReminderEmailEnglish() {
     console.log("English check-in reminder email test result:", result);
 
     if (result) {
-      console.log("✅ English check-in reminder email sent successfully!");
+      console.log("English check-in reminder email sent successfully!");
     } else {
-      console.log("❌ Failed to send English check-in reminder email");
+      console.log("Failed to send English check-in reminder email");
     }
 
     return result;
@@ -72,9 +72,9 @@ async function testCheckInReminderEmailTurkish() {
     console.log("Turkish check-in reminder email test result:", result);
 
     if (result) {
-      console.log("✅ Turkish check-in reminder email sent successfully!");
+      console.log("Turkish check-in reminder email sent successfully!");
     } else {
-      console.log("❌ Failed to send Turkish check-in reminder email");
+      console.log("Failed to send Turkish check-in reminder email");
     }
 
     return result;
@@ -93,18 +93,14 @@ async function runTests() {
   const turkishResult = await testCheckInReminderEmailTurkish();
   console.log("");
 
-  console.log("📊 Test Summary:");
-  console.log(
-    `English Check-in Reminder: ${englishResult ? "✅ PASS" : "❌ FAIL"}`
-  );
-  console.log(
-    `Turkish Check-in Reminder: ${turkishResult ? "✅ PASS" : "❌ FAIL"}`
-  );
+  console.log("Test Summary:");
+  console.log(`English Check-in Reminder: ${englishResult ? "PASS" : "FAIL"}`);
+  console.log(`Turkish Check-in Reminder: ${turkishResult ? "PASS" : "FAIL"}`);
 
   if (englishResult && turkishResult) {
-    console.log("\n🎉 All check-in reminder email tests passed!");
+    console.log("\nAll check-in reminder email tests passed!");
   } else {
-    console.log("\n⚠️ Some check-in reminder email tests failed.");
+    console.log("\nSome check-in reminder email tests failed.");
   }
 
   process.exit(0);

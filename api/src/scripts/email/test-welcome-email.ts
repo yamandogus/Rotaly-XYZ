@@ -1,7 +1,3 @@
-// -------------------------------------------------------
-//   npx ts-node src/scripts/email/test-welcome-email.ts
-// -------------------------------------------------------
-
 import { emailService } from "../../modules/email/service";
 
 async function testWelcomeEmailEnglish() {
@@ -17,9 +13,9 @@ async function testWelcomeEmailEnglish() {
     console.log("English welcome email test result:", result);
 
     if (result) {
-      console.log("✅ English welcome email sent successfully!");
+      console.log("English welcome email sent successfully!");
     } else {
-      console.log("❌ Failed to send English welcome email");
+      console.log("Failed to send English welcome email");
     }
 
     return result;
@@ -42,9 +38,9 @@ async function testWelcomeEmailTurkish() {
     console.log("Turkish welcome email test result:", result);
 
     if (result) {
-      console.log("✅ Turkish welcome email sent successfully!");
+      console.log("Turkish welcome email sent successfully!");
     } else {
-      console.log("❌ Failed to send Turkish welcome email");
+      console.log("Failed to send Turkish welcome email");
     }
 
     return result;
@@ -63,18 +59,14 @@ async function testAllWelcomeEmails() {
   const turkishResult = await testWelcomeEmailTurkish();
   console.log("");
 
-  console.log("📊 Test Summary:");
-  console.log(
-    `English template test: ${englishResult ? "✅ PASSED" : "❌ FAILED"}`
-  );
-  console.log(
-    `Turkish template test: ${turkishResult ? "✅ PASSED" : "❌ FAILED"}`
-  );
+  console.log("Test Summary:");
+  console.log(`English template test: ${englishResult ? "PASSED" : "FAILED"}`);
+  console.log(`Turkish template test: ${turkishResult ? "PASSED" : "FAILED"}`);
 
   const allPassed = englishResult && turkishResult;
   console.log(
     `\n🎯 Overall result: ${
-      allPassed ? "✅ ALL TESTS PASSED" : "❌ SOME TESTS FAILED"
+      allPassed ? "ALL TESTS PASSED" : "SOME TESTS FAILED"
     }`
   );
 

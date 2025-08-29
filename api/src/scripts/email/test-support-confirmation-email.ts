@@ -17,9 +17,9 @@ async function testSupportConfirmationEmailEnglish() {
     console.log("English support confirmation email test result:", result);
 
     if (result) {
-      console.log("✅ English support confirmation email sent successfully!");
+      console.log("English support confirmation email sent successfully!");
     } else {
-      console.log("❌ Failed to send English support confirmation email");
+      console.log("Failed to send English support confirmation email");
     }
 
     return result;
@@ -42,9 +42,9 @@ async function testSupportConfirmationEmailTurkish() {
     console.log("Turkish support confirmation email test result:", result);
 
     if (result) {
-      console.log("✅ Turkish support confirmation email sent successfully!");
+      console.log("Turkish support confirmation email sent successfully!");
     } else {
-      console.log("❌ Failed to send Turkish support confirmation email");
+      console.log("Failed to send Turkish support confirmation email");
     }
 
     return result;
@@ -65,18 +65,14 @@ async function testAllSupportConfirmationEmails() {
   const turkishResult = await testSupportConfirmationEmailTurkish();
   console.log("");
 
-  console.log("📊 Test Summary:");
-  console.log(
-    `English template test: ${englishResult ? "✅ PASSED" : "❌ FAILED"}`
-  );
-  console.log(
-    `Turkish template test: ${turkishResult ? "✅ PASSED" : "❌ FAILED"}`
-  );
+  console.log("Test Summary:");
+  console.log(`English template test: ${englishResult ? "PASSED" : "FAILED"}`);
+  console.log(`Turkish template test: ${turkishResult ? "PASSED" : "FAILED"}`);
 
   const allPassed = englishResult && turkishResult;
   console.log(
     `\n🎯 Overall result: ${
-      allPassed ? "✅ ALL TESTS PASSED" : "❌ SOME TESTS FAILED"
+      allPassed ? "ALL TESTS PASSED" : "SOME TESTS FAILED"
     }`
   );
 

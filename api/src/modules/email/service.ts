@@ -1,6 +1,18 @@
 import { transporter } from "../../config/email";
+import { LOGO_URL } from "./config";
 
 export class EmailService {
+  private getLogoUrl(): string {
+    return LOGO_URL;
+  }
+
+  private getBaseContext() {
+    return {
+      logoUrl: this.getLogoUrl(),
+      year: new Date().getFullYear(),
+    };
+  }
+
   /**
    * Send verification email
    * @param email - receiver email address
@@ -32,9 +44,9 @@ export class EmailService {
         subject: subject,
         template: templateName,
         context: {
+          ...this.getBaseContext(),
           name: name,
           otp: otp,
-          year: new Date().getFullYear(),
         },
       };
 
@@ -78,9 +90,9 @@ export class EmailService {
         subject: subject,
         template: templateName,
         context: {
+          ...this.getBaseContext(),
           name: name,
           otp: otp,
-          year: new Date().getFullYear(),
         },
       };
 
@@ -121,8 +133,8 @@ export class EmailService {
         subject: subject,
         template: templateName,
         context: {
+          ...this.getBaseContext(),
           name: name,
-          year: new Date().getFullYear(),
           platformUrl:
             process.env.FRONTEND_URL || "https://rotaly-xyz.vercel.app/",
         },
@@ -166,12 +178,12 @@ export class EmailService {
         subject: `[Contact Us] ${subject}`,
         template: templateName,
         context: {
+          ...this.getBaseContext(),
           fromName: fromName,
           fromEmail: fromEmail,
           subject: subject,
           message: message,
           date: new Date().toLocaleString(),
-          year: new Date().getFullYear(),
         },
       };
 
@@ -213,8 +225,8 @@ export class EmailService {
         subject: subject,
         template: templateName,
         context: {
+          ...this.getBaseContext(),
           name: name,
-          year: new Date().getFullYear(),
           date: new Date().toLocaleString(),
         },
       };

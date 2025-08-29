@@ -29,7 +29,7 @@ export class MessageHandler {
       timestamp: new Date(),
     });
 
-    console.log(`✅ User ${socket.id} successfully joined room ${data.roomId}`);
+    console.log(`User ${socket.id} successfully joined room ${data.roomId}`);
   }
 
   handleLeaveRoom(socket: AuthenticatedSocket, roomId: string): void {
@@ -40,7 +40,7 @@ export class MessageHandler {
     console.log(`   - Room ID type: ${typeof roomId}`);
 
     if (!roomId || typeof roomId !== "string") {
-      console.error(`❌ Invalid roomId received:`, roomId);
+      console.error(`Invalid roomId received:`, roomId);
       return;
     }
 
@@ -53,7 +53,7 @@ export class MessageHandler {
       timestamp: new Date(),
     });
 
-    console.log(`✅ User ${socket.id} left room ${roomId}`);
+    console.log(`User ${socket.id} left room ${roomId}`);
   }
 
   handleNewMessage(socket: AuthenticatedSocket, data: MessageEventData): void {
@@ -130,7 +130,7 @@ export class MessageHandler {
       });
     }
 
-    console.log(`✅ Message sent from ${socket.id}`);
+    console.log(`Message sent from ${socket.id}`);
   }
 
   handleMessageRead(

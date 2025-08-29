@@ -22,9 +22,9 @@ async function testPasswordResetEmailEnglish() {
     console.log("English password reset email test result:", result);
 
     if (result) {
-      console.log("✅ English password reset email sent successfully!");
+      console.log("English password reset email sent successfully!");
     } else {
-      console.log("❌ Failed to send English password reset email");
+      console.log("Failed to send English password reset email");
     }
 
     return result;
@@ -51,9 +51,9 @@ async function testPasswordResetEmailTurkish() {
     console.log("Turkish password reset email test result:", result);
 
     if (result) {
-      console.log("✅ Turkish password reset email sent successfully!");
+      console.log("Turkish password reset email sent successfully!");
     } else {
-      console.log("❌ Failed to send Turkish password reset email");
+      console.log("Failed to send Turkish password reset email");
     }
 
     return result;
@@ -72,18 +72,14 @@ async function testAllPasswordResetEmails() {
   const turkishResult = await testPasswordResetEmailTurkish();
   console.log("");
 
-  console.log("📊 Test Summary:");
-  console.log(
-    `English template test: ${englishResult ? "✅ PASSED" : "❌ FAILED"}`
-  );
-  console.log(
-    `Turkish template test: ${turkishResult ? "✅ PASSED" : "❌ FAILED"}`
-  );
+  console.log("Test Summary:");
+  console.log(`English template test: ${englishResult ? "PASSED" : "FAILED"}`);
+  console.log(`Turkish template test: ${turkishResult ? "PASSED" : "FAILED"}`);
 
   const allPassed = englishResult && turkishResult;
   console.log(
     `\n🎯 Overall result: ${
-      allPassed ? "✅ ALL TESTS PASSED" : "❌ SOME TESTS FAILED"
+      allPassed ? "ALL TESTS PASSED" : "SOME TESTS FAILED"
     }`
   );
 

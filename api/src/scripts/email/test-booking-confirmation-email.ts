@@ -33,9 +33,9 @@ async function testBookingConfirmationEmailEnglish() {
     console.log("English booking confirmation email test result:", result);
 
     if (result) {
-      console.log("✅ English booking confirmation email sent successfully!");
+      console.log("English booking confirmation email sent successfully!");
     } else {
-      console.log("❌ Failed to send English booking confirmation email");
+      console.log("Failed to send English booking confirmation email");
     }
 
     return result;
@@ -74,9 +74,9 @@ async function testBookingConfirmationEmailTurkish() {
     console.log("Turkish booking confirmation email test result:", result);
 
     if (result) {
-      console.log("✅ Turkish booking confirmation email sent successfully!");
+      console.log("Turkish booking confirmation email sent successfully!");
     } else {
-      console.log("❌ Failed to send Turkish booking confirmation email");
+      console.log("Failed to send Turkish booking confirmation email");
     }
 
     return result;
@@ -95,18 +95,18 @@ async function runTests() {
   const turkishResult = await testBookingConfirmationEmailTurkish();
   console.log("");
 
-  console.log("📊 Test Summary:");
+  console.log("Test Summary:");
   console.log(
-    `English Booking Confirmation: ${englishResult ? "✅ PASS" : "❌ FAIL"}`
+    `English Booking Confirmation: ${englishResult ? "PASS" : "FAIL"}`
   );
   console.log(
-    `Turkish Booking Confirmation: ${turkishResult ? "✅ PASS" : "❌ FAIL"}`
+    `Turkish Booking Confirmation: ${turkishResult ? "PASS" : "FAIL"}`
   );
 
   if (englishResult && turkishResult) {
-    console.log("\n🎉 All booking confirmation email tests passed!");
+    console.log("\nAll booking confirmation email tests passed!");
   } else {
-    console.log("\n⚠️ Some booking confirmation email tests failed.");
+    console.log("\nSome booking confirmation email tests failed.");
   }
 
   process.exit(0);
