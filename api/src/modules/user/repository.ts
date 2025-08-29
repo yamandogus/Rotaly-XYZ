@@ -75,7 +75,10 @@ export class UserRepository {
     const { password, confirmPassword, ...userData } = data;
     return Prisma.user.create({
       data: {
-        ...userData,
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        phone: data.phone,
         hashedPassword: password,
       },
       select: {

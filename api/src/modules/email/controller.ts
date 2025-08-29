@@ -326,8 +326,20 @@ export class EmailController {
       const locale = req.params.locale;
 
       const isEmailSent = await emailService.sendPaymentConfirmationEmail(
-        data.email,
-        data,
+        data.email!,
+        {
+          name: data.name!,
+          totalAmount: data.totalAmount!,
+          cardLastFour: data.cardLastFour!,
+          hotelName: data.hotelName!,
+          checkInDate: data.checkInDate!,
+          checkInTime: data.checkInTime!,
+          checkOutDate: data.checkOutDate!,
+          checkOutTime: data.checkOutTime!,
+          guestCount: data.guestCount!,
+          roomType: data.roomType!,
+          confirmationNumber: data.confirmationNumber!,
+        },
         locale
       );
 
@@ -381,8 +393,23 @@ export class EmailController {
       const locale = req.params.locale;
 
       const isEmailSent = await emailService.sendBookingConfirmationEmail(
-        data.email,
-        data,
+        data.email!,
+        {
+          name: data.name!,
+          hotelName: data.hotelName!,
+          hotelAddress: data.hotelAddress!,
+          hotelPhone: data.hotelPhone,
+          checkInDate: data.checkInDate!,
+          checkInTime: data.checkInTime!,
+          checkOutDate: data.checkOutDate!,
+          checkOutTime: data.checkOutTime!,
+          nightCount: data.nightCount!,
+          guestCount: data.guestCount!,
+          roomType: data.roomType!,
+          totalAmount: data.totalAmount!,
+          confirmationNumber: data.confirmationNumber!,
+          specialRequest: data.specialRequest,
+        },
         locale
       );
 
@@ -436,8 +463,24 @@ export class EmailController {
       const locale = req.params.locale;
 
       const isEmailSent = await emailService.sendBookingCancellationEmail(
-        data.email,
-        data,
+        data.email!,
+        {
+          name: data.name!,
+          hotelName: data.hotelName!,
+          confirmationNumber: data.confirmationNumber!,
+          cancellationDate: data.cancellationDate!,
+          cancelledBy: data.cancelledBy!,
+          checkInDate: data.checkInDate!,
+          checkOutDate: data.checkOutDate!,
+          nightCount: data.nightCount!,
+          guestCount: data.guestCount!,
+          roomType: data.roomType!,
+          originalAmount: data.originalAmount!,
+          cancellationFee: data.cancellationFee!,
+          refundAmount: data.refundAmount!,
+          refundProcessingTime: data.refundProcessingTime!,
+          cancellationReason: data.cancellationReason,
+        },
         locale
       );
 
@@ -491,8 +534,22 @@ export class EmailController {
       const locale = req.params.locale;
 
       const isEmailSent = await emailService.sendCheckInReminderEmail(
-        data.email,
-        data,
+        data.email!,
+        {
+          name: data.name!,
+          hotelName: data.hotelName!,
+          hotelAddress: data.hotelAddress!,
+          hotelPhone: data.hotelPhone,
+          checkInDate: data.checkInDate!,
+          checkInTime: data.checkInTime!,
+          roomType: data.roomType!,
+          confirmationNumber: data.confirmationNumber!,
+          additionalGuests: data.additionalGuests,
+          parkingInfo: data.parkingInfo,
+          transportationInfo: data.transportationInfo,
+          mapsLink: data.mapsLink,
+          specialRequest: data.specialRequest,
+        },
         locale
       );
 

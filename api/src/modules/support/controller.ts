@@ -213,7 +213,10 @@ export class SupportController {
       const result = await this.supportService.handleAIChatWithAutoTicket(
         userId,
         validatedData.message,
-        validatedData.conversationHistory
+        validatedData.conversationHistory.map(msg => ({
+          role: msg.role!,
+          content: msg.content!
+        }))
       );
 
       console.log("🎯 AI Response:", result);

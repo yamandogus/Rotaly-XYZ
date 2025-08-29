@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
 import {
   MessageSquare,
@@ -36,13 +35,11 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supportService } from "@/services/support.service";
-import { RootState } from "@/store/store";
 import { SupportTicket } from "@/types/support";
 
 const HotelTicketsPage = () => {
   const t = useTranslations("TicketsDashboard");
   const router = useRouter();
-  const user = useSelector((state: RootState) => state.auth.user);
 
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [filteredTickets, setFilteredTickets] = useState<SupportTicket[]>([]);
@@ -53,29 +50,7 @@ const HotelTicketsPage = () => {
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [activeTab, setActiveTab] = useState("open");
 
-  useEffect(() => {
-    fetchTickets();
-  }, []);
-
-  useEffect(() => {
-    filterTickets();
-  }, [tickets, searchTerm, statusFilter, categoryFilter, activeTab]);
-
-  const fetchTickets = async () => {
-    try {
-      setIsLoading(true);
-      const response = await supportService.getSupportTickets();
-      setTickets(response.supports);
-      setError("");
-    } catch (err: unknown) {
-      const error = err as { response?: { data?: { message?: string } } };
-      setError(error.response?.data?.message || "Failed to fetch tickets");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const filterTickets = () => {
+  const filterTickets = useCallback(() => {
     let filtered = tickets;
 
     // Filter by tab (status groups)
@@ -98,7 +73,7 @@ const HotelTicketsPage = () => {
     if (statusFilter !== "all") {
       if (statusFilter === "OPEN") {
         filtered = filtered.filter((ticket) => !ticket.closedAt);
-      } else if (statusFilter === "CLOSED") {
+        } else if (statusFilter === "CLOSED") {
         filtered = filtered.filter((ticket) => ticket.closedAt !== null);
       }
     }
@@ -111,7 +86,31 @@ const HotelTicketsPage = () => {
     }
 
     setFilteredTickets(filtered);
+  }, [tickets, searchTerm, statusFilter, categoryFilter, activeTab]);
+
+  useEffect(() => {
+    fetchTickets();
+  }, []);
+
+  useEffect(() => {
+    filterTickets();
+  }, [filterTickets]);
+
+  const fetchTickets = async () => {
+    try {
+      setIsLoading(true);
+      const response = await supportService.getSupportTickets();
+      setTickets(response.supports);
+      setError("");
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || "Failed to fetch tickets");
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+
 
   const getStatusIcon = (isOpen: boolean) => {
     if (isOpen) {

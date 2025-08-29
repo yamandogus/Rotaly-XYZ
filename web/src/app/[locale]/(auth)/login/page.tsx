@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "@/i18n/routing";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -22,6 +22,7 @@ export default function LoginPage() {
   const [open, setOpen] = useState(false);
   const [closeVerify, setCloseVerify] = useState(false);
   const [otp, setOtp] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const loginSchema = z.object({
     email: z.string().email({ message: t("invalidEmail") }),
@@ -47,21 +48,44 @@ export default function LoginPage() {
   });
 
   // Timer bittiğinde çağrılacak fonksiyon
-  const handleTimeUp = () => {
+  const handleTimeUp = useCallback(() => {
     // Modal kapatılmasın, sadece mesaj göster
     toast.error(
       "Doğrulama süresi doldu. Şifre yenile butonunu kullanabilirsiniz."
     );
-  };
+  }, []);
 
-  // OTP submit fonksiyonu
-  const otpSubmit = async () => {
-    await handleOtpSubmit(otp, () => {
-      setOpen(false);
-      setOtp("");
-      form.reset();
-    });
-  };
+  // OTP submit fonksiyonu - useCallback ile optimize et
+  const otpSubmit = useCallback(async () => {
+    if (isSubmitting) return; // Çift tıklamayı engelle
+    
+    setIsSubmitting(true);
+    
+    try {
+      await handleOtpSubmit(otp, () => {
+        setOpen(false);
+        setOtp("");
+        form.reset();
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [otp, handleOtpSubmit, form, isSubmitting]);
+
+  // OTP değişikliğini handle et
+  const handleOtpChange = useCallback((value: string) => {
+    setOtp(value);
+  }, []);
+
+  // Dialog açılma durumunu handle et
+  const handleOpenChange = useCallback((isOpen: boolean) => {
+    if (!isSubmitting) { // Sadece submit edilmiyorsa değiştir
+      setOpen(isOpen);
+      if (!isOpen) {
+        setOtp(""); // Dialog kapanırken OTP'yi temizle
+      }
+    }
+  }, [isSubmitting]);
 
   return (
     <div className="min-h-screen flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
@@ -70,9 +94,9 @@ export default function LoginPage() {
       {/* Gerçek hesap doğrulama dialogu */}
       <OTPVerificationDialog
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={handleOpenChange}
         otp={otp}
-        onOtpChange={setOtp}
+        onOtpChange={handleOtpChange}
         onSubmit={otpSubmit}
         onTimeUp={handleTimeUp}
         title="Hesabı Doğrula"

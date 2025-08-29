@@ -10,7 +10,7 @@
     "register": "Register",
     "searchPlaceholder": "Search for Hotel, Pension, Apartment",
     "logout": "Logout",
-    "Hotels Add": "Add Hotel",
+    "Hotels Add": "Hotels for Rotaly",
     "profile": "Profile",
     "contact": "Contact",
     "sheetTitle": "ROTALY",
@@ -18,9 +18,9 @@
     "searchBar": {
       "noResultsFound": "No results found"
     },
-    "live-chat": "Live Chat",
     "close": "Close",
-    "user": "User"
+    "user": "User",
+    "favorites": "Favorites"
   },
   "HomePage": {
     "withRotaly": "With Rotaly",
@@ -1017,7 +1017,8 @@
     "categoriesTitle": "Categories",
     "supportTitle": "Support",
     "exploreUsTitle": "Explore Us",
-    "followUsTitle": "Follow Us"
+    "followUsTitle": "Follow Us",
+    "supportTickets": "Support Tickets"
   },
   "contact": {
     "title": "CONTACT US",
@@ -1087,18 +1088,16 @@
     "save": "Save"
   },
   "ResetPassword": {
-    "title": "Reset Password",
-    "description": "Please enter your email to reset your password",
-    "email": "Email",
-    "password": "Password",
-    "confirm_password": "Confirm Password",
-    "confirm_password_description": "Please enter your password again",
-    "password_description": "Please enter your password",
-    "submit": "Reset Password",
+    "title": "Forgot Password",
+    "description": "Enter your email address to reset your password",
+    "email": "Email Address",
+    "submit": "Send Reset Link",
     "back": "Back to Login",
     "emailPlaceholder": "example@email.com",
-    "passwordPlaceholder": "••••••••",
-    "confirmPasswordPlaceholder": "••••••••"
+    "invalidEmail": "Please enter a valid email address",
+    "resetSuccess": "Password reset link has been sent to your email address.",
+    "resetError": "An error occurred. Please try again.",
+    "sending": "Sending..."
   },
 
   "Rooms": {

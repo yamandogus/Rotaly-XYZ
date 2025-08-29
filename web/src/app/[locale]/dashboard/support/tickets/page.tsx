@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
 import {
   MessageSquare,
@@ -45,13 +44,11 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supportService } from "@/services/support.service";
-import { RootState } from "@/store/store";
 import { SupportTicket } from "@/types/support";
 
 const SupportTicketsPage = () => {
   const t = useTranslations("TicketsDashboard");
   const router = useRouter();
-  const user = useSelector((state: RootState) => state.auth.user);
 
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [filteredTickets, setFilteredTickets] = useState<SupportTicket[]>([]);
@@ -62,15 +59,7 @@ const SupportTicketsPage = () => {
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
   const [activeTab, setActiveTab] = useState("open");
 
-  useEffect(() => {
-    fetchTickets();
-  }, []);
-
-  useEffect(() => {
-    filterTickets();
-  }, [tickets, searchTerm, statusFilter, priorityFilter, activeTab]);
-
-  const fetchTickets = async () => {
+  const fetchTickets = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await supportService.getSupportTickets();
@@ -82,9 +71,9 @@ const SupportTicketsPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [t]);
 
-  const filterTickets = () => {
+  const filterTickets = useCallback(() => {
     let filtered = tickets;
 
     // Filter by tab (status groups)
@@ -122,7 +111,15 @@ const SupportTicketsPage = () => {
     }
 
     setFilteredTickets(filtered);
-  };
+  }, [tickets, searchTerm, statusFilter, priorityFilter, activeTab]);
+
+  useEffect(() => {
+    fetchTickets();
+  }, [fetchTickets]);
+
+  useEffect(() => {
+    filterTickets();
+  }, [filterTickets]);
 
   const handleCloseTicket = async (ticketId: string) => {
     try {

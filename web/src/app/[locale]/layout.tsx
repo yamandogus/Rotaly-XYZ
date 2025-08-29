@@ -8,7 +8,7 @@ import "../globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import StoreProvider from "@/components/store-provider";
 import LayoutWrapper from "./layout-wrapper";
-
+import DynamicTitle from "@/components/layout/metaData/dynamic-title";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -39,10 +39,10 @@ export async function generateMetadata({
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://rotaly.com';
   
   return {
-    title: {
-      default: locale === "tr" 
-        ? "Rotaly - En İyi Otel Rezervasyon Sistemi | Uygun Fiyatlı Konaklama"
-        : "Rotaly - Best Hotel Reservation System | Affordable Accommodation",
+          title: {
+        default: locale === "tr" 
+          ? "Rotaly - En İyi Otel Rezervasyon Sistemi | Uygun Fiyatlı Konaklama"
+          : "Rotaly - Best Hotel Reservation System | Affordable Accommodation",
       template: locale === "tr" 
         ? "%s | Rotaly Otel Rezervasyon"
         : "%s | Rotaly Hotel Reservation"
@@ -97,7 +97,7 @@ export async function generateMetadata({
       description: locale === "tr"
         ? "Türkiye'nin en güvenilir otel rezervasyon platformu"
         : "Turkey's most reliable hotel reservation platform",
-      images: ['/images/logo3.png'],
+      images: ['/images/logo3.PNG'],
     },
     robots: {
       index: true,
@@ -116,6 +116,8 @@ export async function generateMetadata({
     },
   };
 }
+
+
 
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
@@ -141,6 +143,7 @@ export default async function LocaleLayout({ children, params }: Props) {
               enableSystem
               disableTransitionOnChange
             >
+              <DynamicTitle locale={locale} />
               <LayoutWrapper>
                 {children}
               </LayoutWrapper>

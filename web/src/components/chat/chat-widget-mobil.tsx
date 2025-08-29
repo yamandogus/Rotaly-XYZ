@@ -17,6 +17,7 @@ import { Avatar, AvatarImage } from "../ui/avatar";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { aiChatService, type AIChatMessage } from "@/services/ai-chat.service";
+import ChatMessage from "./chat-message";
 
 // Welcome mesajını artık t ile oluşturuyoruz
 const welcomeMessages = (t: (key: string) => string, onButtonClick?: (action: string) => void) => {
@@ -46,6 +47,12 @@ const welcomeMessages = (t: (key: string) => string, onButtonClick?: (action: st
           >
             💬 {t("liveSupport")}
           </button>
+          <button 
+            className="w-full px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition"
+            onClick={() => onButtonClick?.('hotel')}
+          >
+            Oteller için Rotaly
+          </button>
         </div>
       </div>
     </div>
@@ -70,9 +77,6 @@ export default function ChatWidgetMobile() {
   const [isAIAvailable, setIsAIAvailable] = useState<boolean>(false);
   const [conversationHistory, setConversationHistory] = useState<AIChatMessage[]>([]);
 
-  // Mesaj sayısını sınırla (performans için)
-  const limitedMessages = messages.slice(-20);
-
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Welcome mesaj butonları için handler
@@ -90,24 +94,21 @@ export default function ChatWidgetMobile() {
         setIsOpen(false);
         router.push("/support");
         break;
+      case 'hotel':
+        setIsOpen(false);
+        router.push('/hotel');
+        break;
       default:
         break;
     }
   }, [router, setIsOpen]);
 
   const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
-    // Performans için setTimeout kullanarak scroll'u geciktiriyoruz
-    const timer = setTimeout(() => {
-      scrollToBottom();
-    }, 100);
-    
-    return () => clearTimeout(timer);
+    scrollToBottom();
   }, [messages]);
 
   // İlk welcome mesajını ekle
@@ -151,41 +152,40 @@ export default function ChatWidgetMobile() {
   };
 
   const handleSendMessage = async () => {
-    const trimmedMessage = message.trim();
-    if (!trimmedMessage) return;
-
-    const userMessage = {
-      id: Date.now(),
-      message: trimmedMessage,
-      sender: "user" as const,
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setMessage("");
-
-    // Özel komutları kontrol et
-    if (trimmedMessage.toLowerCase().includes("canlı destek")) {
-      const liveSupportMessage = {
-        id: Date.now() + 1,
-        message: t("liveSupportMessage"),
-        sender: "system" as const,
-        type: "live-support" as const,
+    if (message.trim()) {
+      const userMessage = {
+        id: Date.now(),
+        message: message,
+        sender: "user" as const,
       };
-      setMessages((prev) => [...prev, liveSupportMessage]);
-      return;
-    } 
-    
-    if (trimmedMessage.toLowerCase().includes("anamenu")) {
-      const reservationMessage = {
-        id: Date.now() + 1,
-        message: welcomeMessages(t, handleWelcomeAction),
-        sender: "bot" as const,
-      };
-      setMessages((prev) => [...prev, reservationMessage]);
-      return;
-    }
 
-    // Loading mesajı ekle
+      setMessages((prev) => [...prev, userMessage]);
+      const currentMessage = message;
+      setMessage("");
+
+      // Özel komutları kontrol et
+      if (currentMessage.toLowerCase().includes("canlı destek")) {
+        const liveSupportMessage = {
+          id: Date.now() + 1,
+          message: t("liveSupportMessage"),
+          sender: "system" as const,
+          type: "live-support" as const,
+        };
+        setMessages((prev) => [...prev, liveSupportMessage]);
+        return;
+      } 
+      
+      if (currentMessage.toLowerCase().includes("anamenu")) {
+        const reservationMessage = {
+          id: Date.now() + 1,
+          message: welcomeMessages(t, handleWelcomeAction),
+          sender: "bot" as const,
+        };
+        setMessages((prev) => [...prev, reservationMessage]);
+        return;
+      }
+
+      // Loading mesajı ekle
     const loadingMessage = {
       id: Date.now() + 1,
       message: "...",
@@ -206,7 +206,7 @@ export default function ChatWidgetMobile() {
         // AI ile sohbet et
         console.log("🤖 Chat Widget Mobile: Sending message to AI...");
         const aiResponse = await aiChatService.sendMessage(
-          trimmedMessage,
+          currentMessage,
           conversationHistory
         );
         
@@ -219,7 +219,7 @@ export default function ChatWidgetMobile() {
         // Konuşma geçmişini güncelle
         setConversationHistory(prev => [
           ...prev,
-          { role: "user", content: trimmedMessage },
+          { role: "user", content: currentMessage },
           { role: "assistant", content: aiResponse.response }
         ]);
       } else {
@@ -228,7 +228,7 @@ export default function ChatWidgetMobile() {
         if (!token) {
           botResponseText = "Merhaba! AI asistan özelliklerini kullanabilmek için lütfen giriş yapın. Genel sorularınız için size yardımcı olmaya devam edebilirim.";
         } else {
-          botResponseText = aiChatService.getFallbackMessage(trimmedMessage);
+          botResponseText = aiChatService.getFallbackMessage(currentMessage);
         }
       }
 
@@ -273,6 +273,7 @@ export default function ChatWidgetMobile() {
         )
       );
     }
+    }
   };
 
   return (
@@ -312,7 +313,7 @@ export default function ChatWidgetMobile() {
           {/* Body */}
           <div className="flex-1 overflow-y-auto p-3 bg-gray-50 dark:bg-gray-800 scrollbar-hide">
             <div className="flex flex-col gap-3 scrollbar-hide">
-              {limitedMessages.map((msg) => (
+              {messages.map((msg) => (
                 <div
                   key={msg.id}
                   className={`flex gap-2 ${
@@ -336,14 +337,21 @@ export default function ChatWidgetMobile() {
                           : "bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-bl-sm shadow-sm"
                       }`}
                     >
-                      {msg.isLoading ? (
-                        <div className="flex items-center gap-1">
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                        </div>
+                      {typeof msg.message === 'string' ? (
+                        <ChatMessage 
+                          message={msg.message} 
+                          isLoading={msg.isLoading} 
+                        />
                       ) : (
-                        msg.message
+                        msg.isLoading ? (
+                          <div className="flex items-center gap-1">
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                          </div>
+                        ) : (
+                          msg.message
+                        )
                       )}
                       {msg.sender === "system" &&
                         msg.type === "live-support" && (
@@ -404,7 +412,7 @@ export default function ChatWidgetMobile() {
                 className="flex-1 h-10 text-sm border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+                onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
               />
               <Button
                 size="sm"

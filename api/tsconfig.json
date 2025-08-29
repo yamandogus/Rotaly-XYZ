@@ -1,35 +1,38 @@
 {
   "compilerOptions": {
-    "target": "es2022",
-    "module": "es2022",
+    "target": "es2020",
+    "module": "commonjs",
+    "lib": ["es2020"],
     "moduleResolution": "node",
     "allowJs": true,
     "removeComments": true,
     "resolveJsonModule": true,
-    "typeRoots": ["./node_modules/@types"],
-    "noImplicitAny": true,
-    "sourceMap": true,
+    "types": ["node"],
+    "noImplicitAny": false,
+    "sourceMap": false,
     "outDir": "dist",
-    "strict": true,
+    "strict": false,
     "baseUrl": ".",
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
-    "experimentalDecorators": false,
-    "emitDecoratorMetadata": false,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "exactOptionalPropertyTypes": false,
-    "strictNullChecks": true
+    "strictNullChecks": false,
+    "declaration": false,
+    "declarationMap": false
   },
   "ts-node": {
     "compilerOptions": {
-      "moduleDetection": "force",
       "module": "CommonJS",
       "resolveJsonModule": true,
       "allowJs": true,
       "esModuleInterop": true,
-      "isolatedModules": true
+      "allowSyntheticDefaultImports": true
     }
   },
-  "include": ["src/**/*", "src/seed.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*", "main.ts", "*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

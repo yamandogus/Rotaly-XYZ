@@ -168,15 +168,6 @@ export default function HomePage() {
     <main className="flex-1">
       {/* Hero */}
       <section className="relative w-full flex flex-col items-center overflow-hidden">
-        {/* <div className="absolute top-0 left-0 w-full h-[400px] flex justify-center items-start pointer-events-none z-0">
-          <Image
-            src="/images/MAPPA.png"
-            alt="Mappa Logo"
-            width={900}
-            height={600}
-            className="opacity-100 object-contain dark:hidden"
-          />
-        </div> */}
         <div
           className="absolute -top-6 left-0 w-full h-[400px] flex justify-center items-start pointer-events-none z-0 bg-gray-100 dark:bg-gray-800"
           style={{

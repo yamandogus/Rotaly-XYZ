@@ -13,12 +13,7 @@ import {
   HotelDetailResponseSchema,
 } from "../../dto/hotel";
 import { Request, Response } from "express";
-import { TokenPayload } from "../../types/express";
-
-// Extend Express Request to include user from middleware
-interface AuthenticatedRequest extends Request {
-  user?: TokenPayload;
-}
+import { TokenPayload, AuthenticatedRequest } from "../../types/express";
 
 export async function createHotelHandler(req: Request, res: Response) {
   try {
@@ -150,4 +145,3 @@ export async function deleteHotelHandler(
     return res.status(500).json({ message: "Sunucu hatası" });
   }
 }
-

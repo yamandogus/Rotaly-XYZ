@@ -3,13 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import {
-  Plus,
-  MessageSquare,
-  Clock,
-  CheckCircle,
-  AlertCircle,
-} from "lucide-react";
+import { Plus, MessageSquare, Clock, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,11 +15,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supportService } from "@/services/support.service";
 import { SupportTicket, SupportCategory } from "@/types/support";
 import { CreateTicketDialog } from "./components/create-ticket-dialog";
-import { getErrorMessage } from "@/lib/error-utils";
 
 const categoryColors = {
   [SupportCategory.GENERAL]: "bg-blue-100 text-blue-800",
@@ -42,7 +34,6 @@ export default function SupportPage() {
   const tDetail = useTranslations("TicketDetail");
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"all" | "open" | "closed">("all");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const router = useRouter();
@@ -60,11 +51,10 @@ export default function SupportPage() {
   const fetchTickets = async (status: "all" | "open" | "closed" = "all") => {
     try {
       setLoading(true);
-      setError(null);
       const response = await supportService.getSupportTickets(1, 20, status);
       setTickets(response.supports);
-    } catch (err: unknown) {
-      setError(getErrorMessage(err, t("failedToLoad")));
+    } catch {
+      // setError(getErrorMessage(err, t("failedToLoad")));
     } finally {
       setLoading(false);
     }
@@ -168,7 +158,7 @@ export default function SupportPage() {
   );
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="max-w-7xl mx-auto py-8 px-4">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold">{t("title")}</h1>
@@ -183,12 +173,12 @@ export default function SupportPage() {
         </Button>
       </div>
 
-      {error && (
+      {/* {error && (
         <Alert className="mb-6" variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>{error}</AlertDescription>
         </Alert>
-      )}
+      )} */}
 
       <Tabs
         value={activeTab}
@@ -196,7 +186,7 @@ export default function SupportPage() {
           setActiveTab(value as "all" | "open" | "closed")
         }
       >
-        <TabsList className="grid w-full grid-cols-3 lg:w-400">
+        <TabsList className="">
           <TabsTrigger value="all">{t("allTickets")}</TabsTrigger>
           <TabsTrigger value="open">{t("openTickets")}</TabsTrigger>
           <TabsTrigger value="closed">{t("closedTickets")}</TabsTrigger>
