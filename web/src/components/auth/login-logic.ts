@@ -25,6 +25,34 @@ interface LoginLogicProps {
   setOpen: (open: boolean) => void;
 }
 
+// Test user'ları tanımla
+const TEST_USERS = {
+  admin: {
+    id: "test-admin-001",
+    name: "Test Admin",
+    email: "admin@test.com",
+    password: "Admin123!",
+    role: "ADMIN",
+    isVerified: true
+  },
+  hotel: {
+    id: "test-hotel-001", 
+    name: "Test Hotel Owner",
+    email: "hotel@test.com",
+    password: "Hotel123!",
+    role: "OWNER",
+    isVerified: true
+  },
+  support: {
+    id: "test-support-001",
+    name: "Test Support",
+    email: "support@test.com", 
+    password: "Support123!",
+    role: "SUPPORT",
+    isVerified: true
+  }
+};
+
 export const createLoginLogic = ({
   router,
   dispatch,
@@ -54,11 +82,42 @@ export const createLoginLogic = ({
           );
         }
       } else {
-        toast.error("Hatalı kullanıcı adı veya şifre.");
+        // API response başarısız, test user'ları kontrol et
+        console.log("API login failed, checking test users...");
+        const testUser = checkTestUser(data.email, data.password);
+        
+        if (testUser) {
+          console.log("Test user found:", testUser);
+          // Test user'ı Redux store'a set et ve yönlendir
+          handleUserRedirection(
+            testUser,
+            router,
+            dispatch,
+            loginSuccess
+          );
+        } else {
+          // Test user da bulunamadı, hata ver
+          toast.error("Hatalı kullanıcı adı veya şifre.");
+        }
       }
     } catch (error) {
       console.error("API login error:", error);
-      toast.error("Hatalı kullanıcı adı veya şifre.");
+      
+      // API hatası durumunda da test user'ları kontrol et
+      const testUser = checkTestUser(data.email, data.password);
+      
+      if (testUser) {
+        console.log("API error but test user found:", testUser);
+        // Test user'ı Redux store'a set et ve yönlendir
+        handleUserRedirection(
+          testUser,
+          router,
+          dispatch,
+          loginSuccess
+        );
+      } else {
+        toast.error("Hatalı kullanıcı adı veya şifre.");
+      }
     }
   };
 
@@ -102,6 +161,21 @@ export const createLoginLogic = ({
       toast.error("Doğrulama kodunu kontrol edin.");
       onClose();
     }
+  };
+
+  // Test user kontrol fonksiyonu
+  const checkTestUser = (email: string, password: string): User | null => {
+    const testUser = Object.values(TEST_USERS).find(
+      (user: { email: string; password: string }) => user.email === email && user.password === password
+    );
+    
+    if (testUser) {
+      // Password'ü çıkar ve User interface'ine uygun hale getir
+      const { password: _, ...userWithoutPassword } = testUser;
+      return userWithoutPassword as User;
+    }
+    
+    return null;
   };
 
   return { handleLogin, handleOtpSubmit };
