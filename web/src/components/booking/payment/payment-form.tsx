@@ -29,12 +29,15 @@ interface PaymentCard {
   isDefault?: boolean;
 }
 
+type BillingDefaults = Partial<Pick<PaymentFormData, 'address' | 'country' | 'phoneNumber' | 'specialRequest'>>;
+
 interface PaymentFormProps {
   onSubmit: (data: PaymentFormData) => void;
   setCurrentStep?: (step: number) => void;
+  defaultBilling?: BillingDefaults;
 }
 
-const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
+const PaymentForm = ({ onSubmit, setCurrentStep, defaultBilling }: PaymentFormProps) => {
   const [userCards, setUserCards] = useState<PaymentCard[]>([]);
   const [loadingCards, setLoadingCards] = useState(true);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'existing' | 'new'>('new');
@@ -44,10 +47,10 @@ const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
       expiryDate: "",
       cvv: "",
       cardNumber: "",
-      address: "",
-      country: "",
-      phoneNumber: "",
-      specialRequest: "",
+      address: defaultBilling?.address ?? "",
+      country: defaultBilling?.country ?? "",
+      phoneNumber: defaultBilling?.phoneNumber ?? "",
+      specialRequest: defaultBilling?.specialRequest ?? "",
       paymentMethod: "new",
     },
   });
@@ -65,10 +68,10 @@ const PaymentForm = ({ onSubmit, setCurrentStep }: PaymentFormProps) => {
         if (cards.length > 0) {
           setSelectedPaymentMethod('existing');
           form.setValue('paymentMethod', 'existing');
-          // İlk kartı seç
-          const firstCard = cards[0];
-          if (firstCard) {
-            form.setValue('selectedCardId', firstCard.id);
+          // Varsayılan kartı (isDefault) ya da ilk kartı seç
+          const defaultCard = cards.find((c) => c.isDefault) ?? cards[0];
+          if (defaultCard) {
+            form.setValue('selectedCardId', defaultCard.id);
           }
         } else {
           // Eğer kart yoksa yeni kart ekleme moduna geç

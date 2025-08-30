@@ -159,6 +159,12 @@ export default function BookingPaymentPage({ params }: BookingPaymentPageProps) 
                 setCurrentStep={(s) =>
                   router.push(`?step=${s}`, { scroll: false })
                 }
+                defaultBilling={{
+                  address: "Test Address 123",
+                  country: "Turkey",
+                  phoneNumber: "+90 531 761 7325",
+                  specialRequest: "Test special request",
+                }}
               />
             </div>
           ) : (

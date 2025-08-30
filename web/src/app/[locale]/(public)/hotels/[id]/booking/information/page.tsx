@@ -39,6 +39,15 @@ interface BookingInformationPageProps {
   params: Promise<{ id: string; locale: string }>;
 }
 
+const defaultHotelValue: BookingFormData = {
+  firstName: "Doğuş",
+  lastName: "Yaman",
+  email: "yamandogus251@gmail.com",
+  country: "Test",
+  phone: "+905317617325",
+  specialRequest: "test",
+}
+
 export default function BookingInformationPage({ params }: BookingInformationPageProps) {
   const { id, locale } = use(params);
   const dispatch = useDispatch();
@@ -50,14 +59,7 @@ export default function BookingInformationPage({ params }: BookingInformationPag
   
   const form = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      country: "",
-      phone: "",
-      specialRequest: "",
-    },
+    defaultValues: defaultHotelValue,
   });
 
   useEffect(() => {

@@ -75,7 +75,6 @@ const NewCardForm = ({ form, onNewCardSelect }: NewCardFormProps) => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    required
                     {...field}
                     placeholder="MM/YY"
                     className="w-full"
@@ -92,7 +91,6 @@ const NewCardForm = ({ form, onNewCardSelect }: NewCardFormProps) => {
                 <FormLabel className="text-sm">{t("cvvLabel")}</FormLabel>
                 <FormControl>
                   <Input
-                    required
                     {...field}
                     placeholder="CVV"
                     className="w-full"
@@ -111,7 +109,6 @@ const NewCardForm = ({ form, onNewCardSelect }: NewCardFormProps) => {
               <FormLabel className="text-sm">{t("cardNumberLabel")}</FormLabel>
               <FormControl>
                 <Input
-                  required
                   {...field}
                   placeholder="Kart Numarası"
                   className="w-full"
